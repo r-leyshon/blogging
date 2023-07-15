@@ -12,7 +12,7 @@ website:
       - python-shiny.qmd
 format:
   html:
-    theme: cosmo
+    theme: default
     css: styles.css
     toc: true
 

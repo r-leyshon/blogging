@@ -1,10 +1,9 @@
 ---
-title: "Shiny for Python is now a thing..."
+title: "Python for Shiny"
 author: "Rich Leyshon."
-date: today
-date-modified: last-modified
-toc: true
+toc: false
 ---
+# Python for Shiny is now a thing...
 
 ***
 ## Example Python Shiny Application
