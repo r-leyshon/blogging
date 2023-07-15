@@ -1,10 +1,10 @@
 [
   {
-    "objectID": "python-shiny.html",
-    "href": "python-shiny.html",
+    "objectID": "python-shiny.html#example-python-shiny-application",
+    "href": "python-shiny.html#example-python-shiny-application",
     "title": "Shiny for Python is now a thing…",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "section": "Example Python Shiny Application",
+    "text": "Example Python Shiny Application\nThis application is written in Python and served with a free shinyapps.io license."
   },
   {
     "objectID": "index.html",

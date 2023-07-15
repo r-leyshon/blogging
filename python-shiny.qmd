@@ -1,9 +1,16 @@
 ---
 title: "Shiny for Python is now a thing..."
+author: "Rich Leyshon."
+date: today
+date-modified: last-modified
+toc: true
 ---
 
-About this site
+***
+## Example Python Shiny Application
 
-```{r}
-1 + 1
-```
+This application is written in Python and served with a free [shinyapps.io](https://www.shinyapps.io/)
+license.
+
+<iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" height=600em width=1066 style="border:0.3em solid lightgray"></iframe>
+
