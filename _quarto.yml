@@ -1,15 +1,15 @@
 project:
   type: website
   output-dir: docs
-
+execute:
+  freeze: auto
 website:
-  title: "blogging"
+  title: "Blogging."
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
-
+      - python-shiny.qmd
 format:
   html:
     theme: cosmo

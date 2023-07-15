@@ -1,0 +1,9 @@
+---
+title: "Shiny for Python is now a thing..."
+---
+
+About this site
+
+```{r}
+1 + 1
+```

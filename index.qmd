@@ -1,11 +1,21 @@
 ---
-title: "blogging"
+title: "Another Nerd Blog."
+author: "Rich Leyshon."
+date: today
+date-modified: last-modified
+toc: true
 ---
 
-This is a Quarto website.
+## Intro
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+A place to store (micro) blogs about programming concepts, software development
+and data science. Generally things that future me will be thankful that I've 
+recorded these things somewhere. 
 
-```{r}
-1 + 1
-```
+## About Me
+
+pending
+
+## Blogs
+
+[Shiny for Python is now a thing...](python-shiny.qmd)
