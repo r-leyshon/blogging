@@ -10,8 +10,10 @@ anniversary on PyPi in July 2023. In case that needs further qualification, this
 is the Python-native implementation of the beloved RShiny dashboarding package
 that has been available in the R programming framework for over a decade now. 
 Python Shiny has benefited from the experience that the developers at
-[Posit](https://posit.co/) have developed in building its more mature,
+[Posit](https://posit.co/) have gained in building its more mature,
 R-flavoured sibling.
+
+<img src=www/DALLE-logos-in-love.png alt="DALL-E Prompt: A sketch of a blue letter R kissing a blue-yellow python with a love heart overhead." width=300em style="float:right;"></img>
 
 Python Shiny has experienced what I would describe as an accelerated evolution
 and has the potential to become a frontrunner in Pythonic, production-grade
@@ -22,7 +24,7 @@ is not always a great idea, particularly for procedural or object-oriented
 programming. But it does make event-drive applications more efficient and
 scalable. More on [Posit's take on the USP of Python Shiny here](https://posit.co/blog/why-shiny-for-python/).
 
-<img src=www/DALLE-logos-in-love.png alt="DALL-E Prompt: A sketch of a blue letter R kissing a blue-yellow python with a love heart overhead." width=300em></img>
+<br>
 
 ***
 ## Example Python Shiny Application
