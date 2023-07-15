@@ -4,6 +4,7 @@ author: "Rich Leyshon."
 date: today
 date-modified: last-modified
 toc: true
+resources: .nojekyll
 ---
 
 ## Intro
