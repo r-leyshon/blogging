@@ -14,39 +14,39 @@
     "text": "DALL.E prompt: python logo golden Sparkling glittery bokeh bright.\n\n\nPython Shiny celebrates its first year anniversary on PyPi in July 2023. In case that needs further qualification, this is the Python-native implementation of the beloved RShiny dashboarding package that has been available in the R programming framework for over a decade now. Python Shiny has benefited from the experience that the developers at Posit have gained in building its more mature, R-flavoured sibling.\nPython Shiny has experienced what I would describe as an accelerated evolution and has the potential to become a frontrunner in Pythonic, production-grade applications. Mainly because it adheres to an evaluation strategy which is a bit un-pythonic. Shiny introduces dashboarding with lazy evaluation, meaning that elements of your code will only be evaluated when there is a need to do so. This is not always a great idea, particularly for procedural or object-oriented programming. But it does make event-drive applications more efficient and scalable. More on Posit’s take on the USP of Python Shiny here."
   },
   {
-    "objectID": "python-shiny.html#cause-you-changed-the-way-you-kiss-me",
-    "href": "python-shiny.html#cause-you-changed-the-way-you-kiss-me",
+    "objectID": "python-shiny.html#an-example-python-shiny-app",
+    "href": "python-shiny.html#an-example-python-shiny-app",
     "title": "Python for Shiny",
-    "section": "’Cause you changed the way you kiss me",
-    "text": "’Cause you changed the way you kiss me\nThis application is written in Python and served with a free shinyapps.io license.\nTODO: Discuss features & limitations of this specific app.\nAlso, context of the use of this app."
+    "section": "An Example Python Shiny App",
+    "text": "An Example Python Shiny App\nThis application is written in Python and served with a free shinyapps.io license.\nTODO: Discuss features & limitations of this specific app.\nAlso, context of the use of this app."
   },
   {
-    "objectID": "python-shiny.html#its-a-new-dawn-its-a-new-day-its-a-new-life",
-    "href": "python-shiny.html#its-a-new-dawn-its-a-new-day-its-a-new-life",
+    "objectID": "python-shiny.html#getting-started-with-python-shiny",
+    "href": "python-shiny.html#getting-started-with-python-shiny",
     "title": "Python for Shiny",
-    "section": "its a new dawn, its a new day, its a new life",
-    "text": "its a new dawn, its a new day, its a new life\nGetting started\n\nFrontend\n\n\nBackend"
+    "section": "Getting Started with Python Shiny",
+    "text": "Getting Started with Python Shiny\nGetting started\n\nFrontend\n\n\nBackend"
   },
   {
-    "objectID": "python-shiny.html#youve-come-a-long-way-baby-but-in-a-very-short-time.",
-    "href": "python-shiny.html#youve-come-a-long-way-baby-but-in-a-very-short-time.",
+    "objectID": "python-shiny.html#a-years-progress",
+    "href": "python-shiny.html#a-years-progress",
     "title": "Python for Shiny",
-    "section": "You’ve come a long way baby… But in a very short time.",
-    "text": "You’ve come a long way baby… But in a very short time.\n\nReactivity\n\n\nModular Dashboard\n\n\nAdd-ins"
+    "section": "A Year’s Progress",
+    "text": "A Year’s Progress\n\nReactivity\n\n\nModular Dashboard"
   },
   {
-    "objectID": "python-shiny.html#there-goes-my-hero.-watch-him-as-he-goes.",
-    "href": "python-shiny.html#there-goes-my-hero.-watch-him-as-he-goes.",
+    "objectID": "python-shiny.html#the-shiny-ecosystem",
+    "href": "python-shiny.html#the-shiny-ecosystem",
     "title": "Python for Shiny",
-    "section": "There goes my hero. Watch him as he goes.",
-    "text": "There goes my hero. Watch him as he goes.\nA nostalgic look at RShiny ecosystem.\n\nShinyhelper\n\n\nShinytest\n\n\nDT tables\n\n\nGolem\n\n\nReactlog"
+    "section": "The Shiny Ecosystem",
+    "text": "The Shiny Ecosystem\nA nostalgic look at RShiny ecosystem.\n\nPython Shiny Add-ins\n\n\nPython Shiny Wishlist\n\n\nShinyhelper\n\nShinytest\n\n\nDT tables\n\n\nGolem\n\n\nReactlog"
   },
   {
-    "objectID": "python-shiny.html#and-i-think-its-gonna-be-a-long-long-time",
-    "href": "python-shiny.html#and-i-think-its-gonna-be-a-long-long-time",
+    "objectID": "python-shiny.html#in-review",
+    "href": "python-shiny.html#in-review",
     "title": "Python for Shiny",
-    "section": "And I think it’s gonna be a long, long time",
-    "text": "And I think it’s gonna be a long, long time\nFinal thoughts & sign off"
+    "section": "In Review",
+    "text": "In Review\nFinal thoughts & sign off"
   },
   {
     "objectID": "index.html",
