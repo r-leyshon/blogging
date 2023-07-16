@@ -168,9 +168,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="an-example-python-shiny-app" class="level2">
 <h2 class="anchored" data-anchor-id="an-example-python-shiny-app">An Example Python Shiny App</h2>
-<p>This application is written in Python and served with a free <a href="https://www.shinyapps.io/">shinyapps.io</a> license.</p>
-<p><strong>TODO:</strong> Discuss features &amp; limitations of this specific app.</p>
-<p>Also, context of the use of this app.</p>
+<p>This application is written in Python and served with a free <a href="https://www.shinyapps.io/">shinyapps.io</a> account. I made the app to explore the quality of the spatial data available within <a href="https://www.openstreetmap.org/">Open Street Map</a> (OSM) data for certain urban areas. Open Street Map is an open-source, community-maintained source of transport network data. The files also contain other spatial features, such as landuse polygons. The quality of this data varies by location, as you may find in the app.</p>
+<p>The application is pretty straight forward. It uses pandas to read in some pre-prepared data tables from a data folder. These files were prepared with a python package called <a href="https://pyrosm.readthedocs.io/en/latest/">pyrosm</a>. Pyrosm is a useful application for ingesting, assessing &amp; visualising OSM data. Selecting a city from the dropdowns then clicking the “Go” button will read the correct table from this little database, then using matplotlib, it visualises the selected spatial features. The app also presents some simple summary statistics in tables at the bottom of the page.</p>
+<p>The preparation of the data files is not strictly necessary. You can serve an app and have it make external connections to data services to ingest data. In this instance, I chose to pre-process the data as it helped to improve the performance of the app. Even so, selecting London or Leeds can result in some wait times, so please be aware of this. Options for improving the performance further could include parallel processing, though that is not implemented here and is beyond the scope of this little example.</p>
 <div class="centerdiv">
 <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" style="border:0.3em solid lightgray" align="center"></iframe>
 <div>

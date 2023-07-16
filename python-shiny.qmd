@@ -35,14 +35,30 @@ scalable. More on [Posit's take on the USP of Python Shiny here](https://posit.c
 ***
 ## An Example Python Shiny App
 
-
-
 This application is written in Python and served with a free [shinyapps.io](https://www.shinyapps.io/)
-license.
+account. I made the app to explore the quality of the spatial data available
+within [Open Street Map](https://www.openstreetmap.org/) (OSM) data for certain
+urban areas. Open Street Map is an open-source, community-maintained source of
+transport network data. The files also contain other spatial features, such as
+landuse polygons. The quality of this data varies by location, as you may find
+in the app. 
 
-<strong>TODO:</strong> Discuss features & limitations of this specific app. 
+The application is pretty straight forward. It uses pandas to read in some
+pre-prepared data tables from a data folder. These files were prepared with
+a python package called [pyrosm](https://pyrosm.readthedocs.io/en/latest/).
+Pyrosm is a useful application for ingesting, assessing & visualising OSM data.
+Selecting a city from the dropdowns then clicking the "Go" button will read the
+correct table from this little database, then using matplotlib, it visualises
+the selected spatial features. The app also presents some simple summary
+statistics in tables at the bottom of the page. 
 
-Also, context of the use of this app.
+The preparation of the data files is not strictly necessary. You can serve an 
+app and have it make external connections to data services to ingest data. In
+this instance, I chose to pre-process the data as it helped to improve the
+performance of the app. Even so, selecting London or Leeds can result in some
+wait times, so please be aware of this. Options for improving the performance 
+further could include parallel processing, though that is not implemented here
+and is beyond the scope of this little example.
 
 <div class=centerdiv>
   <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" style="border:0.3em solid lightgray" align=center></iframe>
