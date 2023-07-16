@@ -1,13 +1,13 @@
 ---
 title: "Python for Shiny"
 author: "Rich Leyshon."
-toc: false
+toc: true
 ---
 ## Python for Shiny is now a thing...
 
 <figure class=center>
-  <img src=www/01-python-shiny/DALLE-logos-in-love.png alt="AI-generated drawing of Python & R Logos.">
-  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): Python & R Logos turn their households' rancour to pure love.</figcaption>
+  <img src=www/01-python-shiny/shiny-python.png alt="AI-generated drawing of a shiny python.">
+  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): python logo golden Sparkling glittery bokeh bright.</figcaption>
 </figure>
 
 [Python Shiny](https://pypi.org/project/shiny/) celebrates its first year
