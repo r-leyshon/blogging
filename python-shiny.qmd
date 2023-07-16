@@ -33,7 +33,7 @@ scalable. More on [Posit's take on the USP of Python Shiny here](https://posit.c
 <br>
 
 ***
-## 'Cause you changed the way you kiss me
+## An Example Python Shiny App
 
 
 
@@ -52,7 +52,7 @@ Also, context of the use of this app.
 ***
 
 
-## its a new dawn, its a new day, its a new life
+## Getting Started with Python Shiny
 
 
 
@@ -65,9 +65,7 @@ Getting started
 
 ***
 
-## You've come a long way baby... But in a very short time. 
-
-
+## A Year's Progress
 
 
 ### Reactivity
@@ -75,34 +73,28 @@ Getting started
 
 ### Modular Dashboard
 
+***
 
-### Add-ins
-
-
-
-## There goes my hero. Watch him as he goes.
-
-
+## The Shiny Ecosystem
 
 A nostalgic look at RShiny ecosystem.
 
+### Python Shiny Add-ins
+
+### Python Shiny Wishlist
+
 ### Shinyhelper
 
-### Shinytest
+#### Shinytest
 
-### DT tables
+#### DT tables
 
-### Golem
+#### Golem
 
-### Reactlog
+#### Reactlog
 
+***
 
-
-## And I think it's gonna be a long, long time
-
-
+## In Review
 
 Final thoughts & sign off
-
-
-
