@@ -35,10 +35,6 @@ scalable. More on [Posit's take on the USP of Python Shiny here](https://posit.c
 ***
 ## 'Cause you changed the way you kiss me
 
-<figure class=center>
-  <img src=www/01-python-shiny/teddybear-kiss.png alt="AI-generated drawing of teddybear kiss.">
-  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): 'Cause you changed the way you kiss me. teddybears kissing on the cheek only.</figcaption>
-</figure>
 
 
 This application is written in Python and served with a free [shinyapps.io](https://www.shinyapps.io/)
@@ -58,10 +54,6 @@ Also, context of the use of this app.
 
 ## its a new dawn, its a new day, its a new life
 
-<figure class=center>
-  <img src=www/01-python-shiny/butterfly.png alt="AI-generated drawing of butterfly.">
-  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): Its a new dawn, its a new day, its a new life. Hatching chrysalis.</figcaption>
-</figure>
 
 
 
@@ -75,10 +67,7 @@ Getting started
 
 ## You've come a long way baby... But in a very short time. 
 
-<figure class=center>
-  <img src=www/01-python-shiny/kitten.png alt="AI-generated drawing of a kitten wearing a teeshirt.">
-  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): Kitten wearing a teeshirt with the words "You’ve come a long way baby… "</figcaption>
-</figure>
+
 
 
 ### Reactivity
@@ -93,10 +82,6 @@ Getting started
 
 ## There goes my hero. Watch him as he goes.
 
-<figure class=center>
-  <img src=www/01-python-shiny/myhero.png alt="AI-generated drawing of a person admiring their hero.">
-  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): There goes my hero. Watch him as he goes. Photorealistic.</figcaption>
-</figure>
 
 
 A nostalgic look at RShiny ecosystem.
@@ -115,10 +100,6 @@ A nostalgic look at RShiny ecosystem.
 
 ## And I think it's gonna be a long, long time
 
-<figure class=center>
-  <img src=www/01-python-shiny/rocketman.png alt="AI-generated drawing of rocketman.">
-  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): And I think it's gonna be a long, long time. Rocketman.</figcaption>
-</figure>
 
 
 Final thoughts & sign off
