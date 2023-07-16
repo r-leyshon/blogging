@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -109,8 +143,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#an-example-python-shiny-app" id="toc-an-example-python-shiny-app" class="nav-link" data-scroll-target="#an-example-python-shiny-app">An Example Python Shiny App</a></li>
   <li><a href="#getting-started-with-python-shiny" id="toc-getting-started-with-python-shiny" class="nav-link" data-scroll-target="#getting-started-with-python-shiny">Getting Started with Python Shiny</a>
   <ul class="collapse">
-  <li><a href="#frontend" id="toc-frontend" class="nav-link" data-scroll-target="#frontend">Frontend</a></li>
-  <li><a href="#backend" id="toc-backend" class="nav-link" data-scroll-target="#backend">Backend</a></li>
+  <li><a href="#basic-frontend" id="toc-basic-frontend" class="nav-link" data-scroll-target="#basic-frontend">Basic Frontend</a></li>
+  <li><a href="#basic-backend" id="toc-basic-backend" class="nav-link" data-scroll-target="#basic-backend">Basic Backend</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   </ul></li>
   <li><a href="#a-years-progress" id="toc-a-years-progress" class="nav-link" data-scroll-target="#a-years-progress">A Year’s Progress</a>
   <ul class="collapse">
@@ -162,7 +197,37 @@ ul.task-list li input[type="checkbox"] {
 </figcaption>
 </figure>
 <p><a href="https://pypi.org/project/shiny/">Python Shiny</a> celebrates its first year anniversary on PyPi in July 2023. In case that needs further qualification, this is the Python-native implementation of the beloved RShiny dashboarding package that has been available in the R programming framework for over a decade now. Python Shiny has benefited from the experience that the developers at <a href="https://posit.co/">Posit</a> have gained in building its more mature, R-flavoured sibling.</p>
-<p>Python Shiny has experienced what I would describe as an accelerated evolution and has the potential to become a frontrunner in Pythonic, production-grade applications. Mainly because it adheres to an evaluation strategy which is a bit un-pythonic. Shiny introduces dashboarding with lazy evaluation, meaning that elements of your code will only be evaluated when there is a need to do so. This is not always a great idea, particularly for procedural or object-oriented programming. But it does make event-drive applications more efficient and scalable. More on <a href="https://posit.co/blog/why-shiny-for-python/">Posit’s take on the USP of Python Shiny here</a>.</p>
+<p>Python Shiny has experienced what I would describe as an accelerated evolution and has the potential to become a front runner in production-grade applications. Mainly because it adheres to an evaluation strategy which is a bit ‘un-pythonic’. Shiny introduces dashboarding with lazy evaluation, meaning that elements of your code will only be evaluated when there is a need to do so. This is not always a great idea, particularly for standard scripting purposes. But it does make event-drive applications more efficient and scalable. More on <a href="https://posit.co/blog/why-shiny-for-python/">Posit’s take on the USP of Python Shiny here</a>.</p>
+<p>Let’s consider the following example in Python:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In Python</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> failing_print(param_a<span class="op">=</span><span class="st">"Am I lazy?"</span>, param_b<span class="op">=</span>absolutely_not):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(param_a)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">NameError</span>:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="st">"Python woud not allow me to define this function."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python woud not allow me to define this function.</code></pre>
+</div>
+</div>
+<p>Strict (also known as eager) evaluation in Python has triggered an error. I’ve had to catch the error above with the try/except clause in order to render this website. Even though <code>failing_print()</code> never calls on <code>param_b</code>, Python checks that the default value of that parameter exists on definition of the function.</p>
+<p>Let us now compare to the situation in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In R</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>passing_print <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">param_a =</span> <span class="st">"Am I lazy?"</span>, <span class="at">param_b =</span> yes_you_are){</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(param_a)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Does `yes_you_are` exist? : "</span>, <span class="fu">exists</span>(<span class="st">"yes_you_are"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Does `yes_you_are` exist? :  FALSE"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">passing_print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Am I lazy?"</code></pre>
+</div>
+</div>
+<p>No exception was raised although the value <code>yes_you_are</code> has not been defined.</p>
+<p>Lazy evaluation in Python Shiny minimises the work the application needs to undertake. Values in the app backend will only be re-evaluated as they are needed and contrasts with more pythonic approaches to dashboarding, such as the case with the <a href="https://streamlit.io/">streamlit package</a>.</p>
 <p><br></p>
 <hr>
 </section>
@@ -171,6 +236,7 @@ ul.task-list li input[type="checkbox"] {
 <p>This application is written in Python and served with a free <a href="https://www.shinyapps.io/">shinyapps.io</a> account. I made the app to explore the quality of the spatial data available within <a href="https://www.openstreetmap.org/">Open Street Map</a> (OSM) data for certain urban areas. Open Street Map is an open-source, community-maintained source of transport network data. The files also contain other spatial features, such as landuse polygons. The quality of this data varies by location, as you may find in the app.</p>
 <p>The application is pretty straight forward. It uses pandas to read in some pre-prepared data tables from a data folder. These files were prepared with a python package called <a href="https://pyrosm.readthedocs.io/en/latest/">pyrosm</a>. Pyrosm is a useful application for ingesting, assessing &amp; visualising OSM data. Selecting a city from the dropdowns then clicking the “Go” button will read the correct table from this little database, then using matplotlib, it visualises the selected spatial features. The app also presents some simple summary statistics in tables at the bottom of the page.</p>
 <p>The preparation of the data files is not strictly necessary. You can serve an app and have it make external connections to data services to ingest data. In this instance, I chose to pre-process the data as it helped to improve the performance of the app. Even so, selecting London or Leeds can result in some wait times, so please be aware of this. Options for improving the performance further could include parallel processing, though that is not implemented here and is beyond the scope of this little example.</p>
+<p>If you’d like to take a look at the application code and have a GitHub account, <a href="https://github.com/r-leyshon/pyrosm-experiments/blob/main/pyrosm-cities-app/app.py">you can access it here</a>.</p>
 <div class="centerdiv">
 <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" style="border:0.3em solid lightgray" align="center"></iframe>
 <div>
@@ -180,12 +246,15 @@ ul.task-list li input[type="checkbox"] {
 </div></div></section>
 <section id="getting-started-with-python-shiny" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started-with-python-shiny">Getting Started with Python Shiny</h2>
-<p>Getting started</p>
-<section id="frontend" class="level3">
-<h3 class="anchored" data-anchor-id="frontend">Frontend</h3>
+<p>There would be little value in emulating the excellent <a href="https://shiny.posit.co/py/">Posit documentation</a> on getting started with Python Shiny. In combination with the examples provided, a comprehensive introduction to Shiny is readily available. In this section, I will focus on introducing a minimal application and then expanding on some of the more subtle considerations.</p>
+<section id="basic-frontend" class="level3">
+<h3 class="anchored" data-anchor-id="basic-frontend">Basic Frontend</h3>
 </section>
-<section id="backend" class="level3">
-<h3 class="anchored" data-anchor-id="backend">Backend</h3>
+<section id="basic-backend" class="level3">
+<h3 class="anchored" data-anchor-id="basic-backend">Basic Backend</h3>
+</section>
+<section id="tips" class="level3">
+<h3 class="anchored" data-anchor-id="tips">Tips</h3>
 <hr>
 </section>
 </section>

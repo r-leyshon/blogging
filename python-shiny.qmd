@@ -18,17 +18,50 @@ Python Shiny has benefited from the experience that the developers at
 [Posit](https://posit.co/) have gained in building its more mature,
 R-flavoured sibling.
 
-  
-
 Python Shiny has experienced what I would describe as an accelerated evolution
-and has the potential to become a frontrunner in Pythonic, production-grade
+and has the potential to become a front runner in production-grade
 applications. Mainly because it adheres to an evaluation strategy which is a bit
-un-pythonic. Shiny introduces dashboarding with lazy evaluation, meaning that
+'un-pythonic'. Shiny introduces dashboarding with lazy evaluation, meaning that
 elements of your code will only be evaluated when there is a need to do so. This
-is not always a great idea, particularly for procedural or object-oriented
-programming. But it does make event-drive applications more efficient and
-scalable. More on [Posit's take on the USP of Python Shiny here](https://posit.co/blog/why-shiny-for-python/).
+is not always a great idea, particularly for standard scripting purposes. But it
+does make event-drive applications more efficient and scalable. More on
+[Posit's take on the USP of Python Shiny here](https://posit.co/blog/why-shiny-for-python/).
 
+Let's consider the following example in Python:
+
+```{python}
+# In Python
+try:
+  def failing_print(param_a="Am I lazy?", param_b=absolutely_not):
+    print(param_a)
+except NameError:
+  print("Python woud not allow me to define this function.")
+
+```
+
+Strict (also known as eager) evaluation in Python has triggered an error. I've
+had to catch the error above with the try/except clause in order to render this
+website. Even though `failing_print()` never calls on `param_b`, Python checks
+that the default value of that parameter exists on definition of the function.
+
+Let us now compare to the situation in R.
+
+```{r}
+# In R
+passing_print <- function(param_a = "Am I lazy?", param_b = yes_you_are){
+  print(param_a)
+}
+print(paste("Does `yes_you_are` exist? : ", exists("yes_you_are")))
+passing_print()
+
+```
+
+No exception was raised although the value `yes_you_are` has not been defined.
+
+Lazy evaluation in Python Shiny minimises the work the application needs to
+undertake. Values in the app backend will only be re-evaluated as they are
+needed and contrasts with more pythonic approaches to dashboarding, such as the
+case with the [streamlit package](https://streamlit.io/).
 
 <br>
 
@@ -73,14 +106,17 @@ If you'd like to take a look at the application code and have a GitHub account,
 
 ## Getting Started with Python Shiny
 
+There would be little value in emulating the excellent [Posit documentation](https://shiny.posit.co/py/) on getting started with Python Shiny.
+In combination with the examples provided, a comprehensive introduction to Shiny
+is readily available. In this section, I will focus on introducing a minimal
+application and then expanding on some of the more subtle considerations. 
 
 
+### Basic Frontend
 
-Getting started
+### Basic Backend
 
-### Frontend
-
-### Backend
+### Tips
 
 ***
 
