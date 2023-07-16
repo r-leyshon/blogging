@@ -5,6 +5,11 @@ toc: false
 ---
 ## Python for Shiny is now a thing...
 
+<figure class=center>
+<img src=www/01-python-shiny/DALLE-logos-in-love.png alt="AI-generated drawing of Python & R Logos.">
+<figcaption>DALL.E prompt: Python & R Logos turn their households' rancour to pure love.</figcaption>
+</figure>
+
 [Python Shiny](https://pypi.org/project/shiny/) celebrates its first year
 anniversary on PyPi in July 2023. In case that needs further qualification, this
 is the Python-native implementation of the beloved RShiny dashboarding package
@@ -13,7 +18,7 @@ Python Shiny has benefited from the experience that the developers at
 [Posit](https://posit.co/) have gained in building its more mature,
 R-flavoured sibling.
 
-<img src=www/DALLE-logos-in-love.png alt="DALL-E Prompt: A sketch of a blue letter R kissing a blue-yellow python with a love heart overhead." width=300em style="float:right;"></img>
+  
 
 Python Shiny has experienced what I would describe as an accelerated evolution
 and has the potential to become a frontrunner in Pythonic, production-grade
@@ -24,13 +29,73 @@ is not always a great idea, particularly for procedural or object-oriented
 programming. But it does make event-drive applications more efficient and
 scalable. More on [Posit's take on the USP of Python Shiny here](https://posit.co/blog/why-shiny-for-python/).
 
+
 <br>
 
 ***
-## Example Python Shiny Application
+## 'Cause you changed the way you kiss me
+
+'Cause you changed the way you kiss me. teddybears kissing on the cheek only.
 
 This application is written in Python and served with a free [shinyapps.io](https://www.shinyapps.io/)
 license.
 
-<iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" height=600em width=1066 style="border:0.3em solid lightgray"></iframe>
+<strong>TODO:</strong> Discuss features & limitations of this specific app. 
+
+Also, context of the use of this app.
+
+<div class=centerdiv>
+<iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" style="border:0.3em solid lightgray" align=center></iframe>
+<div>
+
+
+***
+
+
+## its a new dawn, its a new day, its a new life
+
+
+its a new dawn, its a new day, its a new life
+
+Getting started
+
+### Frontend
+
+### Backend
+
+***
+
+## You've come a long way baby... But in a very short time. 
+
+### Reactivity
+
+
+### Modular Dashboard
+
+
+### Add-ins
+
+
+
+## There goes my hero. Watch him as he goes.
+
+A nostalgic look at RShiny ecosystem.
+
+### Shinyhelper
+
+### Shinytest
+
+### DT tables
+
+### Golem
+
+### Reactlog
+
+
+
+## And I think it's gonna be a long, long time
+
+Final thoughts & sign off
+
+
 

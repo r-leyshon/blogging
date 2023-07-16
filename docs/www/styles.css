@@ -1,1 +1,23 @@
 /* css styles */
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}
+
+img {width:300px}
+
+iframe {
+    display: block;
+    width: 1066px;
+    height: 600px;
+    margin: 0 auto;
+    background-color: #777;
+}
+
+.centerdiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
