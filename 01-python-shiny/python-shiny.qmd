@@ -1,6 +1,8 @@
 ---
 title: "Python for Shiny"
 author: "Rich Leyshon."
+date: today
+date-modified: last-modified
 toc: true
 format:
   html:
