@@ -13,3 +13,5 @@ rendered.
 build from this directory, instead of root.
 * Be sure to check that the `docs` folder is not gitignored! Some template
 gitignores will blanket ignore a docs folder.
+* Quarto deletes any markdown file with the extension `.MD` on render, but not
+files with the extension `.md`.

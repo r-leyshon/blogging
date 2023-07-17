@@ -9,7 +9,7 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - python-shiny.qmd
+      - 01-python-shiny/python-shiny.qmd
 format:
   html:
     theme: default

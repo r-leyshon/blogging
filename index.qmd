@@ -3,8 +3,8 @@ title: "Another Nerd Blog."
 author: "Rich Leyshon."
 date: today
 date-modified: last-modified
-toc: true
-resources: .nojekyll
+resources:
+  - .nojekyll
 ---
 
 ## Intro
@@ -19,4 +19,4 @@ pending
 
 ## Blogs
 
-[Shiny for Python is now a thing...](python-shiny.qmd)
+[Shiny for Python is now a thing...](01-python-shiny/python-shiny.qmd)
