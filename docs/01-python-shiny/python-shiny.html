@@ -294,21 +294,26 @@ linkStyle default stroke-width:1px,color:blue;
 <h3 class="anchored" data-anchor-id="basic-frontend">Basic Frontend</h3>
 <p>Below is a really minimal app that doesn’t do very much at all. Try pasting it into the Posit webpage and clicking the play button in the corner of the page to re-run the code.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, App</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ui.output_text_verbatim(<span class="st">"greeting"</span>),</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a shiny.App object. It must be named `app`.</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 Import modules to help us build our app</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, App</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#^putting things above the app means they can be shared between your ui and server</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#2 all of the elements you wish to show your user should go within the ui</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#3 this is where your app logic should go. So far, not much...</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Finally - this bit packages up our ui and server. Super important - it must be named `app`.</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You’ll see that the code defines an <code>app_ui</code> object, which is a shiny ui instance. Within that <code>ui.page_fluid()</code> function, we can specify all the elements of the app that we would like to present to our users.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
@@ -324,13 +329,16 @@ On Users…
 <p>There are only two industries that call their customers “users”: illegal drugs and software – Edward Tufte</p>
 </div>
 </div>
-<p>So far, only one simple ui element has been defined. The humble text input <code>ui.input_text()</code> which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with <code>input...</code>. There’s <code>ui.input_text()</code> as we’ve seen, but there’s lots more. <code>ui.input_date()</code>, <code>ui.input_file()</code> and <code>ui.input_slider</code> to name a few. This consistent syntax approach is a subtle improvment over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you’re working in a modern editor such as <a href="https://code.visualstudio.com/">Visual Studio Code</a>, simply typing <code>ui.input</code> will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf">shiny cheatsheet</a> may be useful, though note that at the time of writing I could only find R-flavoured ones…</p>
+<p>So far, only one simple ui element has been defined. The humble text input <code>ui.input_text()</code> which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with <code>input...</code>. There’s <code>ui.input_text()</code> as we’ve seen, but there’s lots more. <code>ui.input_date()</code>, <code>ui.input_file()</code> and <code>ui.input_slider</code> to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you’re working in a modern editor such as <a href="https://code.visualstudio.com/">Visual Studio Code</a>, simply typing <code>ui.input</code> will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf">shiny cheatsheet</a> may be useful, though note that at the time of writing I could only find R-flavoured ones…</p>
+<p>All ui input elements start with the same 2 arguments, <code>id</code> and <code>label</code>: * <code>id</code>: The internal name of the input. What does that mean? Call it what you like. Whatever you choose, be aware that when you want to use the values from the text input to do something in the server, it’s this name that you will need to reference. * <code>label</code>: A short piece of text that prompts your user to do something. This will be displayed in your UI above the input element.</p>
+<p>Unfortunately, so far our app doesn’t actually do much. Typing into the empty text field yields no result. That’s because right now, our <code>server</code> function simply returns <code>None</code>.</p>
 </section>
 <section id="basic-backend" class="level3">
 <h3 class="anchored" data-anchor-id="basic-backend">Basic Backend</h3>
 </section>
 <section id="tips" class="level3">
 <h3 class="anchored" data-anchor-id="tips">Tips</h3>
+<p>Must be <code>app.py</code>.</p>
 <hr>
 </section>
 </section>

@@ -154,24 +154,29 @@ The fastest way to get up and running with Python Shiny would be to play with th
 
 ### Basic Frontend
 
-Below is a really minimal app that doesn't do very much at all. Try pasting it into the Posit webpage and clicking the play button in the corner of the page to re-run the code. 
+Below is a really minimal app that doesn't do very much at all. Try pasting it into the Posit webpage and clicking the play button in the corner of the page to re-run the code.
 
 
 ```{python eval=FALSE}
+#1 Import modules to help us build our app
 from shiny import ui, App
 
+#^putting things above the app means they can be shared between your ui and server
+
 app_ui = ui.page_fluid(
+  #2 all of the elements you wish to show your user should go within the ui
     ui.input_text(
         id="name_entry",
         label="Please enter your name",
         placeholder="Your name here"
-        ),
-    ui.output_text_verbatim("greeting"),
+        )
 )
 
 def server(input, output, session):
+  #3 this is where your app logic should go. So far, not much...
     return None
-# This is a shiny.App object. It must be named `app`.
+  
+# Finally - this bit packages up our ui and server. Super important - it must be named `app`.
 app = App(app_ui, server)
 
 ```
@@ -183,11 +188,19 @@ You'll see that the code defines an `app_ui` object, which is a shiny ui instanc
 There are only two industries that call their customers “users”: illegal drugs and software – Edward Tufte
 :::
 
-So far, only one simple ui element has been defined. The humble text input `ui.input_text()` which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with `input...`. There's `ui.input_text()` as we've seen, but there's lots more. `ui.input_date()`, `ui.input_file()` and `ui.input_slider` to name a few. This consistent syntax approach is a subtle improvment over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you're working in a modern editor such as [Visual Studio Code](https://code.visualstudio.com/), simply typing `ui.input` will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a [shiny cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf) may be useful, though note that at the time of writing I could only find R-flavoured ones...
+So far, only one simple ui element has been defined. The humble text input `ui.input_text()` which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with `input...`. There's `ui.input_text()` as we've seen, but there's lots more. `ui.input_date()`, `ui.input_file()` and `ui.input_slider` to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you're working in a modern editor such as [Visual Studio Code](https://code.visualstudio.com/), simply typing `ui.input` will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a [shiny cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf) may be useful, though note that at the time of writing I could only find R-flavoured ones...
+
+All ui input elements start with the same 2 arguments, `id` and `label`:
+* `id`: The internal name of the input. What does that mean? Call it what you like. Whatever you choose, be aware that when you want to use the values from the text input to do something in the server, it's this name that you will need to reference.
+* `label`: A short piece of text that prompts your user to do something. This will be displayed in your UI above the input element. 
+
+Unfortunately, so far our app doesn't actually do much. Typing into the empty text field yields no result. That's because right now, our `server` function simply returns `None`. 
 
 ### Basic Backend
 
 ### Tips
+
+Must be `app.py`.
 
 ***
 
