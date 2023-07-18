@@ -332,7 +332,7 @@ On Users…
 <p>All ui input elements start with the same 2 arguments, <code>id</code> and <code>label</code>:</p>
 <ul>
 <li><code>id</code>: The internal name of the input. What does that mean? Call it what you like. Whatever you choose, be aware that when you want to use the values from the text input to do something in the server, it’s this name that you will need to reference.</li>
-<li><code>label</code>: A short piece of text that prompts your user to do something. This will be displayed in your UI above the input element.</li>
+<li><code>label</code>: A short piece of text that prompts your user to do something. This will be displayed in your ui above the input element.</li>
 </ul>
 <p>Unfortunately, so far our app doesn’t actually do much. Typing into the empty text field yields no result. That’s because right now, our <code>server</code> function simply returns <code>None</code>. Let’s resolve this.</p>
 <div class="cell">
@@ -357,16 +357,17 @@ On Users…
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> greeting():</span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">        This function will take the output of the ui.input_text() element,</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">        format the string in a polite sentence and format it as an HTML               output for the UI to show.</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">        format the string in a polite sentence and format it as an HTML</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">        output for the UI to show.</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There’s quite a lot going on in the above code chunk. Let’s start with the decorators <code>@output</code> &amp; <code>@render.text</code>:</p>
 <ul>
 <li><code>@output</code>: Any function marked with this decorator will have its returned value made available to the user interface. Notice that in the line <code>ui.output_text_verbatim("greeting")</code> we are able to call on the values of the server’s <code>greeting()</code> function that we marked as an <code>@output</code>.</li>
-<li><code>@render.text</code>: This tells Shiny what type of output to handle. Is it text, a chart (<code>@render.plot</code>) or something more fancy, like dynamically rendered UI (<code>@render.ui</code>). These output types all have their corresponding output functions to use in the ui. Here we called <code>ui.output_text_verbatim()</code>.</li>
+<li><code>@render.text</code>: This tells Shiny what type of output to handle. Is it text, a chart (<code>@render.plot</code>) or something more fancy, like dynamically rendered ui (<code>@render.ui</code>). These output types all have their corresponding output functions to use in the ui. Here we called <code>ui.output_text_verbatim()</code>.</li>
 <li>Calling the wrong ui-side function may not result in an error, but can have unexpected results, such as your text disappearing from your app. Keep an eye out for that if things aren’t working - are you using the correct combination of <code>render</code> in the server with <code>output_...</code> in the ui?</li>
 </ul>
 <p>Did you notice anything off-putting about the above code? Yes, too many comments but please indulge me. Functions in the server and ui are passing values back and forth. That can be a bit overwhelming to get your head around when your new to what’s known as ‘event-driven programming’. All that means is that the program needs to respond to some action taken by the user. The syntax in which you reference the functions are inconsistent. Lets take a closer look:</p>
@@ -376,11 +377,14 @@ On Users…
     n = int_slider()
     return f"You chose {n}!"</code></pre>
 <p>Notice this time, we include brackets after our call to the widget id: <code>n = int_slider()</code>. Weird, right? Getting this wrong may result in unexpected behaviours. Keep an eye out for this. Also, wrapping server id references in speech marks results in unexpected behaviours, but not necessarily errors.</p>
-<p>If I haven’t lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part stack overflow (or chat GPT) and part coping mechanisms. I’ll cover some of those in the Tips section.</p>
+<p>If I haven’t lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part <a href="https://stackoverflow.com/">Stack Overflow</a> and part coping mechanisms. I’ll cover some of those in the Tips section.</p>
+<p>So there you have it. A very basic application that can be used to print out some simple messages to your user. This is of course a trivial app in order to keep things basic for the purposes of this blog. If you’d like to investigate what’s possible with Shiny, I’d suggest taking a peek through the <a href="https://shinylive.io/py/examples/">Posit docs examples</a> and the <a href="https://shiny.posit.co/py/gallery/">Python Shiny gallery</a>. In the next section I’ll go over some tips that may help with common pitfalls I’ve encountered while working in Shiny.</p>
 </section>
 <section id="tips" class="level3">
 <h3 class="anchored" data-anchor-id="tips">Tips</h3>
 <p>Must be <code>app.py</code>.</p>
+<p>Header accessibility adjustment.</p>
+<p>Debugging statement.</p>
 <hr>
 </section>
 </section>

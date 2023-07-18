@@ -193,7 +193,7 @@ So far, only one simple ui element has been defined. The humble text input `ui.i
 All ui input elements start with the same 2 arguments, `id` and `label`:
 
 * `id`: The internal name of the input. What does that mean? Call it what you like. Whatever you choose, be aware that when you want to use the values from the text input to do something in the server, it's this name that you will need to reference.
-* `label`: A short piece of text that prompts your user to do something. This will be displayed in your UI above the input element. 
+* `label`: A short piece of text that prompts your user to do something. This will be displayed in your ui above the input element. 
 
 Unfortunately, so far our app doesn't actually do much. Typing into the empty text field yields no result. That's because right now, our `server` function simply returns `None`. Let's resolve this.
 
@@ -219,7 +219,8 @@ def server(input, output, session):
     def greeting():
         """
         This function will take the output of the ui.input_text() element,
-        format the string in a polite sentence and format it as an HTML               output for the UI to show.
+        format the string in a polite sentence and format it as an HTML
+        output for the UI to show.
         """
         return f"Hi {input.name_entry()}, welcome to Python Shiny."
 
@@ -233,7 +234,7 @@ decorators `@output` & `@render.text`:
 * `@output`: Any function marked with this decorator will have its returned
 value made available to the user interface. Notice that in the line `ui.output_text_verbatim("greeting")` we are able to call on the values of the
 server's `greeting()` function that we marked as an `@output`.
-* `@render.text`: This tells Shiny what type of output to handle. Is it text, a chart (`@render.plot`) or something more fancy, like dynamically rendered UI (`@render.ui`). These output types all have their corresponding output functions to use in the ui. Here we called `ui.output_text_verbatim()`.
+* `@render.text`: This tells Shiny what type of output to handle. Is it text, a chart (`@render.plot`) or something more fancy, like dynamically rendered ui (`@render.ui`). These output types all have their corresponding output functions to use in the ui. Here we called `ui.output_text_verbatim()`.
 * Calling the wrong ui-side function may not result in an error, but can have unexpected results, such as your text disappearing from your app. Keep an eye out for that if things aren't working - are you using the correct combination of `render` in the server with `output_...` in the ui?
 
 Did you notice anything off-putting about the above code? Yes, too many comments but please indulge me. Functions in the server and ui are passing values back and forth. That can be a bit overwhelming to get your head around when your new to what's known as 'event-driven programming'. All that means is that the program needs to respond to some action taken by the user. The syntax in which you reference the functions are inconsistent. Lets take a closer look:
@@ -249,11 +250,17 @@ def print_selection():
 
 Notice this time, we include brackets after our call to the widget id: `n = int_slider()`. Weird, right? Getting this wrong may result in unexpected behaviours. Keep an eye out for this. Also, wrapping server id references in speech marks results in unexpected behaviours, but not necessarily errors.
 
-If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part stack overflow (or chat GPT) and part coping mechanisms. I'll cover some of those in the Tips section.
+If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part [Stack Overflow](https://stackoverflow.com/) and part coping mechanisms. I'll cover some of those in the Tips section.
+
+So there you have it. A very basic application that can be used to print out some simple messages to your user. This is of course a trivial app in order to keep things basic for the purposes of this blog. If you'd like to investigate what's possible with Shiny, I'd suggest taking a peek through the [Posit docs examples](https://shinylive.io/py/examples/) and the [Python Shiny gallery](https://shiny.posit.co/py/gallery/). In the next section I'll go over some tips that may help with common pitfalls I've encountered while working in Shiny.
 
 ### Tips
 
 Must be `app.py`.
+
+Header accessibility adjustment.
+
+Debugging statement.
 
 ***
 
