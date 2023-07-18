@@ -152,7 +152,7 @@ There would be little value in emulating the excellent Posit documentation on ge
 
 The fastest way to get up and running with Python Shiny would be to play with the interactive code snippets that Posit make available on their [overview documentation](https://shiny.posit.co/py/docs/overview.html). They host live Shiny sessions with the interactive app and backend code side-by-side. This is a great place to try things out and feel free to copy code from the examples I provide here.
 
-### Basic Frontend
+### Let's Build a Basic App
 
 Below is a really minimal app that doesn't do very much at all. Try pasting it into the Posit webpage and clicking the play button in the corner of the page to re-run the code.
 
@@ -191,12 +191,65 @@ There are only two industries that call their customers “users”: illegal dru
 So far, only one simple ui element has been defined. The humble text input `ui.input_text()` which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with `input...`. There's `ui.input_text()` as we've seen, but there's lots more. `ui.input_date()`, `ui.input_file()` and `ui.input_slider` to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you're working in a modern editor such as [Visual Studio Code](https://code.visualstudio.com/), simply typing `ui.input` will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a [shiny cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf) may be useful, though note that at the time of writing I could only find R-flavoured ones...
 
 All ui input elements start with the same 2 arguments, `id` and `label`:
+
 * `id`: The internal name of the input. What does that mean? Call it what you like. Whatever you choose, be aware that when you want to use the values from the text input to do something in the server, it's this name that you will need to reference.
 * `label`: A short piece of text that prompts your user to do something. This will be displayed in your UI above the input element. 
 
-Unfortunately, so far our app doesn't actually do much. Typing into the empty text field yields no result. That's because right now, our `server` function simply returns `None`. 
+Unfortunately, so far our app doesn't actually do much. Typing into the empty text field yields no result. That's because right now, our `server` function simply returns `None`. Let's resolve this.
 
-### Basic Backend
+```{python, eval=FALSE}
+#1 update the import statement to include `render` module
+from shiny import ui, App, render
+
+app_ui = ui.page_fluid(
+    ui.input_text(
+        id="name_entry",
+        label="Please enter your name",
+        placeholder="Your name here"
+        ),
+    #2 Include a UI output element. This will show the calculations
+    # made in the server back to the user.
+    ui.output_text_verbatim("greeting"),
+)
+
+def server(input, output, session):
+    #3 Update the server with a function that handles the text response.
+    @output # use the output decorator to mark this function
+    @render.text # also need to ensure we use the correct render decorator
+    def greeting():
+        """
+        This function will take the output of the ui.input_text() element,
+        format the string in a polite sentence and format it as an HTML               output for the UI to show.
+        """
+        return f"Hi {input.name_entry()}, welcome to Python Shiny."
+
+app = App(app_ui, server)
+
+```
+
+There's quite a lot going on in the above code chunk. Let's start with the
+decorators `@output` & `@render.text`:
+
+* `@output`: Any function marked with this decorator will have its returned
+value made available to the user interface. Notice that in the line `ui.output_text_verbatim("greeting")` we are able to call on the values of the
+server's `greeting()` function that we marked as an `@output`.
+* `@render.text`: This tells Shiny what type of output to handle. Is it text, a chart (`@render.plot`) or something more fancy, like dynamically rendered UI (`@render.ui`). These output types all have their corresponding output functions to use in the ui. Here we called `ui.output_text_verbatim()`.
+* Calling the wrong ui-side function may not result in an error, but can have unexpected results, such as your text disappearing from your app. Keep an eye out for that if things aren't working - are you using the correct combination of `render` in the server with `output_...` in the ui?
+
+Did you notice anything off-putting about the above code? Yes, too many comments but please indulge me. Functions in the server and ui are passing values back and forth. That can be a bit overwhelming to get your head around when your new to what's known as 'event-driven programming'. All that means is that the program needs to respond to some action taken by the user. The syntax in which you reference the functions are inconsistent. Lets take a closer look:
+
+If I mark some function `make_plot()` in the server as an `@output` and then wish to call on its value within the ui, I need to use `ui.output_plot("make_plot")`. Notice the lack of brackets following the function name `"make_plot"`. Getting this wrong will result in a `ValueError`. Forgetting to wrap the function reference in a string will result in a `NameError`.
+
+Now in the other direction, perhaps we have a numeric input passing integer values from the user to the server. We'll give the slider widget the `id="int_slider"`. Now when we want to use the value of this slider on the server-side, we use a different syntax: 
+```
+def print_selection():
+    n = int_slider()
+    return f"You chose {n}!"
+```
+
+Notice this time, we include brackets after our call to the widget id: `n = int_slider()`. Weird, right? Getting this wrong may result in unexpected behaviours. Keep an eye out for this. Also, wrapping server id references in speech marks results in unexpected behaviours, but not necessarily errors.
+
+If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part stack overflow (or chat GPT) and part coping mechanisms. I'll cover some of those in the Tips section.
 
 ### Tips
 
