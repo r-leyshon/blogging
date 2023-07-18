@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon.">
-<meta name="dcterms.date" content="2023-07-17">
+<meta name="dcterms.date" content="2023-07-18">
 
 <title>Blogging. - Python for Shiny</title>
 <style>
@@ -178,14 +178,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 17, 2023</p>
+      <p class="date">July 18, 2023</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">July 17, 2023</p>
+      <p class="date-modified">July 18, 2023</p>
     </div>
   </div>
     
@@ -289,8 +289,42 @@ linkStyle default stroke-width:1px,color:blue;
 <p>Having an attractive webpage that does not do something when you click around on it, enter your credit card details or click ‘decline’ on cookie consent notices would be rather pointless. This is where a web developer would use the language of the browser to work with data hehind that pretty frontend. That language is JavaScript and it’s remarkably versatile and intimidating to many data-types.</p>
 <p>So to make a functioning app, you need to learn 3 distinct languages. For this reason, packages such as Shiny, Dash and Streamlit have become very popular with analysts working within open-source programming frameworks such as Python and R. They allow the creation of applications while adhering to the syntax that an analyst would be more familiar with. Abstracting all that front-end know-how behind some very straight-forward Python code allows the analyst to focus their efforts on the parts of their job that they excel in - gaining insight from data.</p>
 <p>There would be little value in emulating the excellent Posit documentation on getting started with Python Shiny. To do that, I suggest <a href="https://shiny.posit.co/py/">using their docs</a>. In combination with the examples provided, a comprehensive introduction to Shiny is readily available. In the next section, I will focus on introducing a minimal application and then expanding on some of the more subtle considerations in the reactive flow of the backend. I’ll choose to focus on things where I’ve needed to learn by trial and error, or by searching the Stack Overflow boards through some of the inevitable roadblocks a person encounters when programming dashboards. I’ll throw in some common ‘gotchas’ for good measure.</p>
+<p>The fastest way to get up and running with Python Shiny would be to play with the interactive code snippets that Posit make available on their <a href="https://shiny.posit.co/py/docs/overview.html">overview documentation</a>. They host live Shiny sessions with the interactive app and backend code side-by-side. This is a great place to try things out and feel free to copy code from the examples I provide here.</p>
 <section id="basic-frontend" class="level3">
 <h3 class="anchored" data-anchor-id="basic-frontend">Basic Frontend</h3>
+<p>Below is a really minimal app that doesn’t do very much at all. Try pasting it into the Posit webpage and clicking the play button in the corner of the page to re-run the code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, App</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ui.output_text_verbatim(<span class="st">"greeting"</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a shiny.App object. It must be named `app`.</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You’ll see that the code defines an <code>app_ui</code> object, which is a shiny ui instance. Within that <code>ui.page_fluid()</code> function, we can specify all the elements of the app that we would like to present to our users.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+On Users…
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are only two industries that call their customers “users”: illegal drugs and software – Edward Tufte</p>
+</div>
+</div>
+<p>So far, only one simple ui element has been defined. The humble text input <code>ui.input_text()</code> which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with <code>input...</code>. There’s <code>ui.input_text()</code> as we’ve seen, but there’s lots more. <code>ui.input_date()</code>, <code>ui.input_file()</code> and <code>ui.input_slider</code> to name a few. This consistent syntax approach is a subtle improvment over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you’re working in a modern editor such as <a href="https://code.visualstudio.com/">Visual Studio Code</a>, simply typing <code>ui.input</code> will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf">shiny cheatsheet</a> may be useful, though note that at the time of writing I could only find R-flavoured ones…</p>
 </section>
 <section id="basic-backend" class="level3">
 <h3 class="anchored" data-anchor-id="basic-backend">Basic Backend</h3>

@@ -150,7 +150,40 @@ So to make a functioning app, you need to learn 3 distinct languages. For this r
 
 There would be little value in emulating the excellent Posit documentation on getting started with Python Shiny. To do that, I suggest [using their docs](https://shiny.posit.co/py/). In combination with the examples provided, a comprehensive introduction to Shiny is readily available. In the next section, I will focus on introducing a minimal application and then expanding on some of the more subtle considerations in the reactive flow of the backend. I'll choose to focus on things where I've needed to learn by trial and error, or by searching the Stack Overflow boards through some of the inevitable roadblocks a person encounters when programming dashboards. I'll throw in some common 'gotchas' for good measure. 
 
+The fastest way to get up and running with Python Shiny would be to play with the interactive code snippets that Posit make available on their [overview documentation](https://shiny.posit.co/py/docs/overview.html). They host live Shiny sessions with the interactive app and backend code side-by-side. This is a great place to try things out and feel free to copy code from the examples I provide here.
+
 ### Basic Frontend
+
+Below is a really minimal app that doesn't do very much at all. Try pasting it into the Posit webpage and clicking the play button in the corner of the page to re-run the code. 
+
+
+```{python eval=FALSE}
+from shiny import ui, App
+
+app_ui = ui.page_fluid(
+    ui.input_text(
+        id="name_entry",
+        label="Please enter your name",
+        placeholder="Your name here"
+        ),
+    ui.output_text_verbatim("greeting"),
+)
+
+def server(input, output, session):
+    return None
+# This is a shiny.App object. It must be named `app`.
+app = App(app_ui, server)
+
+```
+
+You'll see that the code defines an `app_ui` object, which is a shiny ui instance. Within that `ui.page_fluid()` function, we can specify all the elements of the app that we would like to present to our users.
+
+::: {.callout-note appearance="simple"}
+### On Users...
+There are only two industries that call their customers “users”: illegal drugs and software – Edward Tufte
+:::
+
+So far, only one simple ui element has been defined. The humble text input `ui.input_text()` which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with `input...`. There's `ui.input_text()` as we've seen, but there's lots more. `ui.input_date()`, `ui.input_file()` and `ui.input_slider` to name a few. This consistent syntax approach is a subtle improvment over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you're working in a modern editor such as [Visual Studio Code](https://code.visualstudio.com/), simply typing `ui.input` will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a [shiny cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf) may be useful, though note that at the time of writing I could only find R-flavoured ones...
 
 ### Basic Backend
 
