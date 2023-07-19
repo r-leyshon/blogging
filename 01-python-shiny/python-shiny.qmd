@@ -112,6 +112,52 @@ If you'd like to take a look at the application code and have a GitHub account,
 
 ## So what does a Shiny project look like?
 
+### Organising a Shiny Project
+
+Below is a directory tree diagram of the example Shiny application presented above. It shows the file structure in the various folders.
+
+```
+.
+├── 01-update-db.py
+├── app.py
+├── config
+│   └── 01-update-db.toml
+├── data
+│   ├── leeds-landuse-2023-06-19.arrow
+│   ├── leeds-natural-2023-06-19.arrow
+│   ├── leeds-net-driving-2023-06-19.arrow
+│   ├── london-landuse-2023-06-19.arrow
+│   ├── london-natural-2023-06-19.arrow
+│   ├── london-net-driving-2023-06-19.arrow
+│   ├── marseille-landuse-2023-06-19.arrow
+│   ├── marseille-natural-2023-06-19.arrow
+│   ├── marseille-net-driving-2023-06-19.arrow
+│   ├── newport-landuse-2023-06-19.arrow
+│   ├── newport-natural-2023-06-19.arrow
+│   └── newport-net-driving-2023-06-19.arrow
+├── requirements.txt
+└── rsconnect-python
+    └── pyrosm-cities-app.json
+```
+
+The shiny code that generates the application is in `app.py`. The data folder is where you put any data files you'd like to work with. Here I'm working with the .arrow format ([More on that here](https://datapythonista.me/blog/pandas-20-and-the-arrow-revolution-part-i)). However, this folder could be used to store csvs, images, a GeoJSON database, whatever your application needs. 
+
+The file `01-update-db.py` and the contents of the `config` folder are related. The python script is used to update the database in the `data` folder. This part of the workflow can be quite time consuming, particularly extracting the transport network from dense areas such as Greater London. In order to improve the performance of the app, I chose to pre-prepare this data and limit the number of areas to my specific use-case. A previous iteration of this dashboard simply sent requests using the python `pyrosm` package to get data for any valid area name. The TOML file in the config folder simply stores some parameters used to configure `01-update-db.py`, such as named areas of interest, bounding box coordinates in order to crop the maps, that sort of thing.
+The `requirements.txt` file is super important. Not only will it help others to re-run your dashboard with the required package dependencies made explicit, this is also a file that hosting services such as [shinyapps.io](https://www.shinyapps.io/) will use to recreate your development environment. More on that later.
+
+::: {.callout-note appearance="simple"}
+
+### Tip
+
+Ensuring that you have 'pinned' each package version in your requirements file will make publishing to a hosting service such as shinyapps.io a lot easier. It can be frustrating to push your locally working application up to a remote service, wait for a potentially lengthy deployment routine to complete only to see that your app breaks as your working on a different version of `numpy` than the one available by default in the remote server.
+
+:::
+
+Finally, the `rsconnect-python` directory is not something that would appear in your shiny project until you deploy it to a remote-hosting service like shinyapps.io. It contains some metadata about your application which the remote service will use to setup your app properly.
+
+### A Closer Look At `app.py`
+
+As stated earlier, this is where your app code goes. But before diving straight into some code, let's try to get a feel for how the reactivity works. 
 
 <div class="center_diagram">
 
@@ -144,7 +190,9 @@ linkStyle default stroke-width:1px,color:blue;
 
 Each Shiny application comes in two distinct sections. The user interface is the frontend of the application, where a person engages with elements of a web page in order to control visuals, filter tables and so on. The web page translates Python code into HyperText Markup Language (HTML). HTML can be interpreted by a web browser in order to present the user with a structured web page. But in order to present an attractive webpage, this HTML foundation needs to be styled. So Cascading Style Sheets (CSS) are used to add decoration to the foundation established by HTML.
 
-Having an attractive webpage that does not do something when you click around on it, enter your credit card details or click 'decline' on cookie consent notices would be rather pointless. This is where a web developer would use the language of the browser to work with data hehind that pretty frontend. That language is JavaScript and it's remarkably versatile and intimidating to many data-types. 
+### Server-Side Shenanigans
+
+Having an attractive webpage that does not do something when you click around on it, enter your credit card details or click 'decline' on cookie consent notices would be rather pointless. This is where a web developer would use the language of the browser to work with data behind that pretty frontend. That language is JavaScript and it's remarkably versatile and intimidating to many data-types. 
 
 So to make a functioning app, you need to learn 3 distinct languages. For this reason, packages such as Shiny, Dash and Streamlit have become very popular with analysts working within open-source programming frameworks such as Python and R. They allow the creation of applications while adhering to the syntax that an analyst would be more familiar with. Abstracting all that front-end know-how behind some very straight-forward Python code allows the analyst to focus their efforts on the parts of their job that they excel in - gaining insight from data.
 
@@ -256,7 +304,11 @@ So there you have it. A very basic application that can be used to print out som
 
 ### Tips
 
-Must be `app.py`.
+1. Shiny for Python VSCode Extension
+
+The [Shiny for Python](https://marketplace.visualstudio.com/items?itemName=Posit.shiny-python) extension is a convenient way to launch Python Shiny apps. It adds a 'Run Shiny App' button to the VS Code interface, allowing for options to serve the app locally within a dedicated VS Code viewer window, or alternatively launch the app directly within your default web browser.
+
+In order to run your application with this extension, you must ensure your app file is saved as `app.py`, otherwise the run button will not recognise that the currently selected document is a Shiny app.
 
 Header accessibility adjustment.
 
