@@ -41,7 +41,7 @@ try:
   def failing_print(param_a="Am I lazy?", param_b=absolutely_not):
     print(param_a)
 except NameError:
-  print("Python woud not allow me to define this function.")
+  print("Python would not allow me to define this function.")
 
 ```
 
@@ -400,10 +400,18 @@ print(dir(ui.tags))
 
 ```
 
+### Missing Commas
 
-Debugging statement.
+One of the more frustrating aspects of debugging Shiny applications, particularly as the application grows, is that a single misplaced comma can completely break your application. The thing to look out for here is when you run your app and you get the unexpected `SyntaxError: invalid syntax` error. I recall this being a real headache when I was learning how to get Shiny with R, so much so that I would leave a little comment after each comma reminding me of which element of the code was being closed within the preceding bracket.
 
-Missing commas
+I feel the Python errors are really helpful. They not only point to a problem with the syntax, but they identify the line number in the app where the first instance of this issue was encountered. 
+
+### Debugging Complex Apps
+
+check data type
+
+Debugging Statement.
+
 
 ***
 
