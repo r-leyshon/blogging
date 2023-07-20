@@ -428,40 +428,39 @@ This ensures that the working directory is set to that of the `app.py` file when
 
 ***
 
-## A Year's Progress
+## Meta Dashboards (Shiny Modules)
 
-As I mentioned above, the evolution of Python Shiny has occurred at a blistering pace. You [can keep up with its development here](https://github.com/rstudio/py-shiny/pulse/monthly). I will briefly summarise some early features that I have already been impressed with in this section, and generally why they are useful for application development.
-
-### Modular Dashboard
-
-This aspect of Shiny dashboarding is a bit meta. Essentially, when you (or your organisation) gets to a point that they have enough dashboards to be concerned with thinking about consistency and efficiency, take a read through the [Python Shiny Modules docs](https://shiny.posit.co/py/docs/workflow-modules.html). This is a way of re-using elements of your dashboard, much in the same way in which you reuse code by writing a function. Maybe your organisation has really committed to Shiny and has developed a beautifully-styled interface with house branding, or some interface component such as an Email field with some complex regular expression checking the validity of the Email address, there really is no need to copy paste that code when you want to use it again. Package the element up as a Shiny Module and you can roll out this feature across multiple dashboards, secure in the knowledge that the quality of this module has already been agreed. 
+This aspect of Shiny dashboarding is a bit meta. Essentially, when you (or your organisation) gets to a point that they have enough dashboards to be concerned with thinking about consistency and efficiency, take a read through the [Python Shiny Modules docs](https://shiny.posit.co/py/docs/workflow-modules.html). This is a way of re-using elements of your dashboard, much in the same way in which you reuse code by writing a function. Maybe your organisation has really committed to Shiny and has developed a beautifully-styled interface with house branding, or some interface component such as an Email field with some complex regular expression checking the validity of the Email address. There really is no need to copy-paste that code when you want to use it again. Package the element up as a Shiny Module and you can roll out this feature across multiple dashboards, secure in the knowledge that the quality of this module has already been agreed. Responsibility successfully deferred!
 
 ::: {.callout-note appearance="simple"}
 Code reuse is the Holy Grail of Software Engineering
 — Douglas Crockford
 :::
 
-### Python Shiny Add-Ins
+The fact that Python Shiny devs have prioritised modular dashboarding so early is great. It illustrates a commitment to reproducibility that is rightly lauded within the open source community. Just to note that the ability to do this in RShiny took approximately 3 years. Python users are quite spolit to be able to make use of this feature from the outset.
 
 ***
 
-## The Shiny Ecosystem
+## Python Shiny Ecosystem
+
+The success of Python Shiny will be down to the adoption & support of the open-source community. This was easier to achieve 10 years ago in the R framework as Shiny had no real competitors at that time. This is not the case in the modern-day Python framework. Even with it's particular USP in comparison to Streamlit & Dash, programmers and analysts are creatures of habit. Considering the new player on the block as an alternative to what you already know requires a considerable argument. There will always be overhead in developing familiarity with a new solution's particular quirks. That said, some of the community-developed packages in the more mature RShiny make building apps at scale very manageable. This final section of this blog takes a look at what Python Shiny bolt-ons we can already play with and a more wistful look over the programming divide at RShiny, considering some of the amazing packages that make me hopeful for the potential future of Python Shiny. 
+
+### What We Already Have
+
+## What I Really Want
 
 A nostalgic look at RShiny ecosystem.
 
-### Python Shiny Add-ins
+#### 1. Reactlog
 
-### Python Shiny Wishlist
+#### 2. Shinytest
 
-### Shinyhelper
+#### 3. DT tables
 
-#### Shinytest
+#### 4. Shinyhelper
 
-#### DT tables
+#### 5. Golem
 
-#### Golem
-
-#### Reactlog
 
 ***
 
