@@ -490,11 +490,16 @@ The [shinyhelper](https://github.com/cwthom/shinyhelper) package developed by Ch
 
 Shinyhelper allows the developer to include markdown files with extensive instructions, images and gif animations of how to use your application. These documents will be hidden from screen until the user chooses to click on the help icons that shinyhelper provides. These help icons can be easily styled and positioned around any element within your ui. Once clicked, they will launch modal windows with your beautifully formatted instructions, allowing a wealth of guidance to be included within your app without causing excessive clutter.
 
-#### 5. Golem
+Try clicking through the different helper symbols in the demo RShiny application below.
 
+<div class=centerdiv>
+  <iframe src="https://cwthom94.shinyapps.io/shinyhelper-demo/" title="Example shinyhelper demo application"></iframe>
+<div>
 
 ***
 
 ## In Review
 
-Final thoughts & sign off
+Python Shiny is a promising addition to the Python programming framework. It has a USP, and Posit have the know-how to apply the learning from their past development of RShiny to help ensure it has a bright future. It is also worth noting that Posit have recently put a lot of effort into developing [Quarto](https://quarto.org/), which you may think of as like Rmarkdown but with native Python, R and Julia support. The reason why this is important is that often, interactive widgets and solutions designed for use in notebooks or markdown documents take little refactoring to get them running in Shiny apps. Or conversely, there are ways to [convert rmarkdown docs into Shiny](https://shiny.posit.co/r/articles/build/rmarkdown/) or [Shiny-like applications](https://pkgs.rstudio.com/flexdashboard/). Understanding the synergies between these tools and how they have inflenced the evolution of RShiny may give some insight into how we may expect Python Shiny & Quarto to develop in the years ahead.
+
+The Python community is well-served by dashboarding solutions which will affect its wider adoption. If you are newer to dashboarding, or if you are looking for a solution that perhaps scales better than some of the other options available in the Python framework, then consider Python Shiny. It's already pretty great and will only get better as the community warms to this new tool in the Python toolkit.
