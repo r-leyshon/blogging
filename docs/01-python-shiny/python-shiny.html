@@ -148,15 +148,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#header-accessibility-adjustment" id="toc-header-accessibility-adjustment" class="nav-link" data-scroll-target="#header-accessibility-adjustment">Header Accessibility Adjustment</a></li>
   <li><a href="#missing-commas" id="toc-missing-commas" class="nav-link" data-scroll-target="#missing-commas">Missing Commas</a></li>
   <li><a href="#debugging-errors" id="toc-debugging-errors" class="nav-link" data-scroll-target="#debugging-errors">Debugging Errors</a></li>
+  <li><a href="#specifying-working-directory" id="toc-specifying-working-directory" class="nav-link" data-scroll-target="#specifying-working-directory">Specifying Working Directory</a></li>
   </ul></li>
   <li><a href="#a-years-progress" id="toc-a-years-progress" class="nav-link" data-scroll-target="#a-years-progress">A Year’s Progress</a>
   <ul class="collapse">
   <li><a href="#reactivity" id="toc-reactivity" class="nav-link" data-scroll-target="#reactivity">Reactivity</a></li>
   <li><a href="#modular-dashboard" id="toc-modular-dashboard" class="nav-link" data-scroll-target="#modular-dashboard">Modular Dashboard</a></li>
+  <li><a href="#python-shiny-add-ins" id="toc-python-shiny-add-ins" class="nav-link" data-scroll-target="#python-shiny-add-ins">Python Shiny Add-Ins</a></li>
   </ul></li>
   <li><a href="#the-shiny-ecosystem" id="toc-the-shiny-ecosystem" class="nav-link" data-scroll-target="#the-shiny-ecosystem">The Shiny Ecosystem</a>
   <ul class="collapse">
-  <li><a href="#python-shiny-add-ins" id="toc-python-shiny-add-ins" class="nav-link" data-scroll-target="#python-shiny-add-ins">Python Shiny Add-ins</a></li>
+  <li><a href="#python-shiny-add-ins-1" id="toc-python-shiny-add-ins-1" class="nav-link" data-scroll-target="#python-shiny-add-ins-1">Python Shiny Add-ins</a></li>
   <li><a href="#python-shiny-wishlist" id="toc-python-shiny-wishlist" class="nav-link" data-scroll-target="#python-shiny-wishlist">Python Shiny Wishlist</a></li>
   <li><a href="#shinyhelper" id="toc-shinyhelper" class="nav-link" data-scroll-target="#shinyhelper">Shinyhelper</a></li>
   </ul></li>
@@ -543,6 +545,12 @@ Language missing or invalid
 <h3 class="anchored" data-anchor-id="debugging-errors">Debugging Errors</h3>
 <p>At times it can be unclear why errors are being raised and it becomes important to investigate intermediate values that are being calculated in the server. Your usual python debugging tools may not work with Python Shiny, as these scripts are a bit different to the usual scripting these tools were designed for. Shiny is event-driven and the reactive flow and order of the object definitions in your scripts are treated a bit differently. Without a tool like R’s <code>Reactlog</code> package (see the section on <a href="#reactlog">Reactlog</a> for more), this is currently quite tricky to do in Python. The main coping mechanism available at the moment is to include some text outputs in the ui, paired with render text functions in the server. You can go ahead and use these elements to helpfully print out intermediate values such as DataFrame column names, data types etc and then comment them out when they’re no longer needed. Examining these intermediate values from within your ui is often the way to go when you can’t understand the root cause of your problem.</p>
 <p>One more approach to consider is to try to <strong>isolate your problem</strong>. Sometimes it can be hard to build a mental picture of all the moving elements under the hood in your server, and how they may be unexpectedly interacting with each other. The problem you’re encountering may be due to these complex interactions in your server. Simply commenting out the code not directly related to the issue you are experiencing helps to triangulate the source of the issue within your reactive model. This is also the first step towards producing a <a href="https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-create-one/5219">reprex</a> - a reproducible example. These should be as minimal as possible and are very helpful to start getting to the root of a programming problem.</p>
+</section>
+<section id="specifying-working-directory" class="level3">
+<h3 class="anchored" data-anchor-id="specifying-working-directory">Specifying Working Directory</h3>
+<p>This is more of a consideration for deployment to a service such as shinyapps.io. And you likely won’t encounter this issue if your <code>app.py</code> file is located in the top level of your project folder (also known as the project root). If your app is not in the root of the project folder, you may wish to include this snippet of code before you define your shiny ui:</p>
+<p><code>os.chdir(os.path.dirname(os.path.realpath(__file__)))</code></p>
+<p>This ensures that the working directory is set to that of the <code>app.py</code> file when it runs. If you encounter pandas errors complaining about <code>FileExistsError</code> when you deploy your app to shinyapps.io but not when you locally run your application, this may be the fix you need. Also something to consider if your app is styled correctly locally but not when you deploy. Potentially a relative path to a dedicated stylesheet has broken.</p>
 <hr>
 </section>
 </section>
@@ -553,14 +561,17 @@ Language missing or invalid
 </section>
 <section id="modular-dashboard" class="level3">
 <h3 class="anchored" data-anchor-id="modular-dashboard">Modular Dashboard</h3>
+</section>
+<section id="python-shiny-add-ins" class="level3">
+<h3 class="anchored" data-anchor-id="python-shiny-add-ins">Python Shiny Add-Ins</h3>
 <hr>
 </section>
 </section>
 <section id="the-shiny-ecosystem" class="level2">
 <h2 class="anchored" data-anchor-id="the-shiny-ecosystem">The Shiny Ecosystem</h2>
 <p>A nostalgic look at RShiny ecosystem.</p>
-<section id="python-shiny-add-ins" class="level3">
-<h3 class="anchored" data-anchor-id="python-shiny-add-ins">Python Shiny Add-ins</h3>
+<section id="python-shiny-add-ins-1" class="level3">
+<h3 class="anchored" data-anchor-id="python-shiny-add-ins-1">Python Shiny Add-ins</h3>
 </section>
 <section id="python-shiny-wishlist" class="level3">
 <h3 class="anchored" data-anchor-id="python-shiny-wishlist">Python Shiny Wishlist</h3>

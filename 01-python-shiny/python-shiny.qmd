@@ -412,8 +412,13 @@ At times it can be unclear why errors are being raised and it becomes important 
 
 One more approach to consider is to try to **isolate your problem**. Sometimes it can be hard to build a mental picture of all the moving elements under the hood in your server, and how they may be unexpectedly interacting with each other. The problem you're encountering may be due to these complex interactions in your server. Simply commenting out the code not directly related to the issue you are experiencing helps to triangulate the source of the issue within your reactive model. This is also the first step towards producing a [reprex](https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-create-one/5219) - a reproducible example. These should be as minimal as possible and are very helpful to start getting to the root of a programming problem.
 
-Setting WD for deployment.
+### Specifying Working Directory
 
+This is more of a consideration for deployment to a service such as shinyapps.io. And you likely won't encounter this issue if your `app.py` file is located in the top level of your project folder (also known as the project root). If your app is not in the root of the project folder, you may wish to include this snippet of code before you define your shiny ui:
+
+`os.chdir(os.path.dirname(os.path.realpath(__file__)))`
+
+This ensures that the working directory is set to that of the `app.py` file when it runs. If you encounter pandas errors complaining about `FileExistsError` when you deploy your app to shinyapps.io but not when you locally run your application, this may be the fix you need. Also something to consider if your app is styled correctly locally but not when you deploy. Potentially a relative path to a dedicated stylesheet has broken. 
 
 ***
 
@@ -424,6 +429,8 @@ Setting WD for deployment.
 
 
 ### Modular Dashboard
+
+### Python Shiny Add-Ins
 
 ***
 
