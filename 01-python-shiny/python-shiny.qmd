@@ -12,7 +12,7 @@ format:
 ## Python for Shiny is now a thing...
 
 <figure class=center>
-  <img src=/./www/01-python-shiny/shiny-python.png alt="AI-generated drawing of a shiny python.">
+  <img class=shaded_box src=/./www/01-python-shiny/shiny-python.png alt="AI-generated drawing of a shiny python.">
   <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): python logo golden Sparkling glittery bokeh bright.</figcaption>
 </figure>
 
@@ -102,8 +102,8 @@ and is beyond the scope of this little example.
 If you'd like to take a look at the application code and have a GitHub account,
 [you can access it here](https://github.com/r-leyshon/pyrosm-experiments/blob/main/pyrosm-cities-app/app.py).
 
-<div class=centerdiv>
-  <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" style="border:0.3em solid lightgray" align=center></iframe>
+<div class="centerdiv shaded_box">
+  <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application"></iframe>
 <div>
 
 
@@ -463,7 +463,10 @@ While I feel generally positive about the future of Python Shiny, I do look acro
 
 There's no 2 ways about it, debugging apps is a royal pain. One of my go to helpers in times of need is Posit's own [reactlog package](https://rstudio.github.io/reactlog/). Reactlog is such an understated tool, yet it has been crucial to me in understanding what's going on under the hood of my apps. So much so, that I now feel hopelessly exposed writing apps in Python without it to lean on.
 
-![RShiny Reactlog Animation](http://rstudio.github.io/reactlog/readme-images/pythagoras.gif)
+<center>
+  <img class=shaded_box src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" width=100%>
+<center>
+
 
 This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It's an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses.
 

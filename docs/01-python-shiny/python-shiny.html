@@ -150,17 +150,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#debugging-errors" id="toc-debugging-errors" class="nav-link" data-scroll-target="#debugging-errors">Debugging Errors</a></li>
   <li><a href="#specifying-working-directory" id="toc-specifying-working-directory" class="nav-link" data-scroll-target="#specifying-working-directory">Specifying Working Directory</a></li>
   </ul></li>
-  <li><a href="#a-years-progress" id="toc-a-years-progress" class="nav-link" data-scroll-target="#a-years-progress">A Year’s Progress</a>
+  <li><a href="#meta-dashboards-shiny-modules" id="toc-meta-dashboards-shiny-modules" class="nav-link" data-scroll-target="#meta-dashboards-shiny-modules">Meta Dashboards (Shiny Modules)</a></li>
+  <li><a href="#python-shiny-ecosystem" id="toc-python-shiny-ecosystem" class="nav-link" data-scroll-target="#python-shiny-ecosystem">Python Shiny Ecosystem</a>
   <ul class="collapse">
-  <li><a href="#modular-dashboard" id="toc-modular-dashboard" class="nav-link" data-scroll-target="#modular-dashboard">Modular Dashboard</a></li>
-  <li><a href="#python-shiny-add-ins" id="toc-python-shiny-add-ins" class="nav-link" data-scroll-target="#python-shiny-add-ins">Python Shiny Add-Ins</a></li>
+  <li><a href="#what-we-already-have" id="toc-what-we-already-have" class="nav-link" data-scroll-target="#what-we-already-have">What We Already Have</a></li>
   </ul></li>
-  <li><a href="#the-shiny-ecosystem" id="toc-the-shiny-ecosystem" class="nav-link" data-scroll-target="#the-shiny-ecosystem">The Shiny Ecosystem</a>
-  <ul class="collapse">
-  <li><a href="#python-shiny-add-ins-1" id="toc-python-shiny-add-ins-1" class="nav-link" data-scroll-target="#python-shiny-add-ins-1">Python Shiny Add-ins</a></li>
-  <li><a href="#python-shiny-wishlist" id="toc-python-shiny-wishlist" class="nav-link" data-scroll-target="#python-shiny-wishlist">Python Shiny Wishlist</a></li>
-  <li><a href="#shinyhelper" id="toc-shinyhelper" class="nav-link" data-scroll-target="#shinyhelper">Shinyhelper</a></li>
-  </ul></li>
+  <li><a href="#what-i-really-want" id="toc-what-i-really-want" class="nav-link" data-scroll-target="#what-i-really-want">What I Really Want</a></li>
   <li><a href="#in-review" id="toc-in-review" class="nav-link" data-scroll-target="#in-review">In Review</a></li>
   </ul>
 </nav>
@@ -206,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="python-for-shiny-is-now-a-thing" class="level2">
 <h2 class="anchored" data-anchor-id="python-for-shiny-is-now-a-thing">Python for Shiny is now a thing…</h2>
 <figure class="center figure">
-<img src=".././www/01-python-shiny/shiny-python.png" alt="AI-generated drawing of a shiny python." class="figure-img">
+<img class="shaded_box figure-img" src=".././www/01-python-shiny/shiny-python.png" alt="AI-generated drawing of a shiny python.">
 <figcaption class="figure-caption">
 <a href="https://huggingface.co/spaces/dalle-mini/dalle-mini">DALL.E prompt</a>: python logo golden Sparkling glittery bokeh bright.
 </figcaption>
@@ -252,8 +247,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The application is pretty straight forward. It uses pandas to read in some pre-prepared data tables from a data folder. These files were prepared with a python package called <a href="https://pyrosm.readthedocs.io/en/latest/">pyrosm</a>. Pyrosm is a useful application for ingesting, assessing &amp; visualising OSM data. Selecting a city from the dropdowns then clicking the “Go” button will read the correct table from this little database, then using matplotlib, it visualises the selected spatial features. The app also presents some simple summary statistics in tables at the bottom of the page.</p>
 <p>The preparation of the data files is not strictly necessary. You can serve an app and have it make external connections to data services to ingest data. In this instance, I chose to pre-process the data as it helped to improve the performance of the app. Even so, selecting London or Leeds can result in some wait times, so please be aware of this. Options for improving the performance further could include parallel processing, though that is not implemented here and is beyond the scope of this little example.</p>
 <p>If you’d like to take a look at the application code and have a GitHub account, <a href="https://github.com/r-leyshon/pyrosm-experiments/blob/main/pyrosm-cities-app/app.py">you can access it here</a>.</p>
-<div class="centerdiv">
-<iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application" style="border:0.3em solid lightgray" align="center"></iframe>
+<div class="centerdiv shaded_box">
+<iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application"></iframe>
 <div>
 
 
@@ -566,11 +561,8 @@ Language missing or invalid
 <hr>
 </section>
 </section>
-<section id="a-years-progress" class="level2">
-<h2 class="anchored" data-anchor-id="a-years-progress">A Year’s Progress</h2>
-<p>As I mentioned above, the evolution of Python Shiny has occurred at a blistering pace. You <a href="https://github.com/rstudio/py-shiny/pulse/monthly">can keep up with its development here</a>. I will briefly summarise some early features that I have already been impressed with in this section, and generally why they are useful for application development.</p>
-<section id="modular-dashboard" class="level3">
-<h3 class="anchored" data-anchor-id="modular-dashboard">Modular Dashboard</h3>
+<section id="meta-dashboards-shiny-modules" class="level2">
+<h2 class="anchored" data-anchor-id="meta-dashboards-shiny-modules">Meta Dashboards (Shiny Modules)</h2>
 <p>This aspect of Shiny dashboarding is a bit meta. Essentially, when you (or your organisation) gets to a point that they have enough dashboards to be concerned with thinking about consistency and efficiency, take a read through the <a href="https://shiny.posit.co/py/docs/workflow-modules.html">Python Shiny Modules docs</a>. This is a way of re-using elements of your dashboard, much in the same way in which you reuse code by writing a function. Maybe your organisation has really committed to Shiny and has developed a beautifully-styled interface with house branding, or some interface component such as an Email field with some complex regular expression checking the validity of the Email address. There really is no need to copy-paste that code when you want to use it again. Package the element up as a Shiny Module and you can roll out this feature across multiple dashboards, secure in the knowledge that the quality of this module has already been agreed. Responsibility successfully deferred!</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -582,36 +574,47 @@ Language missing or invalid
 </div>
 </div>
 </div>
-</section>
-<section id="python-shiny-add-ins" class="level3">
-<h3 class="anchored" data-anchor-id="python-shiny-add-ins">Python Shiny Add-Ins</h3>
+<p>The fact that Python Shiny devs have prioritised modular dashboarding so early is great. It illustrates a commitment to reproducibility that is rightly lauded within the open source community. Just to note that the ability to do this in RShiny took approximately 3 years. Python users are quite spolit to be able to make use of this feature from the outset.</p>
 <hr>
 </section>
+<section id="python-shiny-ecosystem" class="level2">
+<h2 class="anchored" data-anchor-id="python-shiny-ecosystem">Python Shiny Ecosystem</h2>
+<p>The success of Python Shiny will be down to the adoption &amp; support of the open-source community. This was easier to achieve 10 years ago in the R framework as Shiny had no real competitors at that time. This is not the case in the modern-day Python framework. Even with it’s particular USP in comparison to Streamlit &amp; Dash, programmers and analysts are creatures of habit. Considering the new player on the block as an alternative to what you already know requires a considerable argument. There will always be overhead in developing familiarity with a new solution’s particular quirks. That said, some of the community-developed packages in the more mature RShiny make building apps at scale very manageable. This final section of this blog takes a look at what Python Shiny bolt-ons we can already play with and a more wistful look over the programming divide at RShiny, considering some of the amazing packages that make me hopeful for the potential future of Python Shiny.</p>
+<section id="what-we-already-have" class="level3">
+<h3 class="anchored" data-anchor-id="what-we-already-have">What We Already Have</h3>
+<section id="compatability-with-jupyter-widgets" class="level4">
+<h4 class="anchored" data-anchor-id="compatability-with-jupyter-widgets">Compatability With <a href="https://ipywidgets.readthedocs.io/en/latest/">Jupyter Widgets</a></h4>
+<p>Jupyter Widgets is a well-known add-in for Jupyter Notebooks, allowing for interactive widgets to be displayed and used in Notebooks. This allows for some interesting mini-dashboard opportunities to be served directly within the notebook itself, alongside the code. Having this compatibility from the start is great. While it does introduce a little duplication (Python Shiny has many of its own equivalent ui input widgets), the particular look and range of these widgets will be appealing to many seasoned Python devs. Many of the Jupyter Widget aficionados would have previously developed the capability in specifying callback logic, to be able to capture the user’s interactions with elements of the widget. For example, select a category in a table and use that active selection to filter a chart, the sort of thing that tends to be more prevalent in Business Insight software. Achieving this sort of interaction in Shiny definitely falls under ‘advanced use’. In R, the package <a href="https://github.com/rstudio/crosstalk">crosstalk</a> has significantly lowered the bar in achieving this. Hopefully a dedicated Python Shiny module or package makes its way to PyPi soon.</p>
 </section>
-<section id="the-shiny-ecosystem" class="level2">
-<h2 class="anchored" data-anchor-id="the-shiny-ecosystem">The Shiny Ecosystem</h2>
-<p>A nostalgic look at RShiny ecosystem.</p>
-<section id="python-shiny-add-ins-1" class="level3">
-<h3 class="anchored" data-anchor-id="python-shiny-add-ins-1">Python Shiny Add-ins</h3>
+<section id="deploying-an-app-with-rsconnect-python" class="level4">
+<h4 class="anchored" data-anchor-id="deploying-an-app-with-rsconnect-python">Deploying An App With <a href="https://github.com/rstudio/rsconnect-python/tree/master"><code>rsconnect-python</code></a></h4>
+<p>This package is a useful command line interface (CLI) tool that allows you to build application manifests from your Shiny project and deploy them to services such as shinyapps.io. Once you’re ready to share an app with the wider community, check out the docs.</p>
 </section>
-<section id="python-shiny-wishlist" class="level3">
-<h3 class="anchored" data-anchor-id="python-shiny-wishlist">Python Shiny Wishlist</h3>
 </section>
-<section id="shinyhelper" class="level3">
-<h3 class="anchored" data-anchor-id="shinyhelper">Shinyhelper</h3>
+</section>
+<section id="what-i-really-want" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-really-want">What I Really Want</h2>
+<p>While I feel generally positive about the future of Python Shiny, I do look across the gulf that exists between the Python and R frameworks with hungry eyes. Particularly at the rich, community-driven plethora of RShiny add-ins that make Shiny the undeniable dashboarding front-runner in that framework. Here is my wish-list of Python Shiny helper tools, ranked order (opinionated warning).</p>
+<section id="reactlog" class="level4">
+<h4 class="anchored" data-anchor-id="reactlog">1. Reactlog</h4>
+<p>There’s no 2 ways about it, debugging apps is a royal pain. One of my go to helpers in times of need is Posit’s own <a href="https://rstudio.github.io/reactlog/">reactlog package</a>. Reactlog is such an understated tool, yet it has been crucial to me in understanding what’s going on under the hood of my apps. So much so, that I now feel hopelessly exposed writing apps in Python without it to lean on.</p>
+<center>
+<img class="shaded_box" src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" width="100%">
+<center>
+<p>This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It’s an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses.</p>
+</center></center></section>
 <section id="shinytest" class="level4">
-<h4 class="anchored" data-anchor-id="shinytest">Shinytest</h4>
+<h4 class="anchored" data-anchor-id="shinytest">2. Shinytest</h4>
 </section>
 <section id="dt-tables" class="level4">
-<h4 class="anchored" data-anchor-id="dt-tables">DT tables</h4>
+<h4 class="anchored" data-anchor-id="dt-tables">3. DT tables</h4>
+</section>
+<section id="shinyhelper" class="level4">
+<h4 class="anchored" data-anchor-id="shinyhelper">4. Shinyhelper</h4>
 </section>
 <section id="golem" class="level4">
-<h4 class="anchored" data-anchor-id="golem">Golem</h4>
-</section>
-<section id="reactlog" class="level4">
-<h4 class="anchored" data-anchor-id="reactlog">Reactlog</h4>
+<h4 class="anchored" data-anchor-id="golem">5. Golem</h4>
 <hr>
-</section>
 </section>
 </section>
 <section id="in-review" class="level2">
