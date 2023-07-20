@@ -141,7 +141,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#a-closer-look-at-app.py" id="toc-a-closer-look-at-app.py" class="nav-link" data-scroll-target="#a-closer-look-at-app.py">A Closer Look At <code>app.py</code></a></li>
   <li><a href="#server-side-shenanigans" id="toc-server-side-shenanigans" class="nav-link" data-scroll-target="#server-side-shenanigans">Server-Side Shenanigans</a></li>
   <li><a href="#lets-build-a-basic-app" id="toc-lets-build-a-basic-app" class="nav-link" data-scroll-target="#lets-build-a-basic-app">Let’s Build a Basic App</a></li>
-  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  </ul></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a>
+  <ul class="collapse">
+  <li><a href="#shiny-for-python-vscode-extension" id="toc-shiny-for-python-vscode-extension" class="nav-link" data-scroll-target="#shiny-for-python-vscode-extension">Shiny for Python VSCode Extension</a></li>
+  <li><a href="#header-accessibility-adjustment" id="toc-header-accessibility-adjustment" class="nav-link" data-scroll-target="#header-accessibility-adjustment">Header Accessibility Adjustment</a></li>
   </ul></li>
   <li><a href="#a-years-progress" id="toc-a-years-progress" class="nav-link" data-scroll-target="#a-years-progress">A Year’s Progress</a>
   <ul class="collapse">
@@ -471,14 +475,62 @@ On Users…
 <p>Also notice that the inconsistency in how to refer to functions on the other side of the ui:server divide rears it’s head once more. All in the server, when we want to use the values returned by the text input, we use the syntax <code>input.name_entry()</code>. When we want to use the action button in the reactive decorator, we have to use <code>input.go_button</code> - no parenthesis! The docs describe this as when you need to access the returned value versus when you need to call the function. This does makes sense but can introduce some cognitive conflict while you are working with Shiny. I hope by version 1.0 the development team can find a way to simplify things.</p>
 <p>So there you have it. A very basic application that can be used to print out some simple messages to your user. This is of course a trivial app in order to keep things basic for the purposes of this blog. If you’d like to investigate what’s possible with Shiny, I’d suggest taking a peek through the <a href="https://shinylive.io/py/examples/">Posit docs examples</a> and the <a href="https://shiny.posit.co/py/gallery/">Python Shiny gallery</a>. In the next section I’ll go over some tips that may help with common pitfalls I’ve encountered while working in Shiny.</p>
 </section>
-<section id="tips" class="level3">
-<h3 class="anchored" data-anchor-id="tips">Tips</h3>
-<ol type="1">
-<li>Shiny for Python VSCode Extension</li>
-</ol>
+</section>
+<section id="tips" class="level2">
+<h2 class="anchored" data-anchor-id="tips">Tips</h2>
+<section id="shiny-for-python-vscode-extension" class="level3">
+<h3 class="anchored" data-anchor-id="shiny-for-python-vscode-extension">Shiny for Python VSCode Extension</h3>
 <p>The <a href="https://marketplace.visualstudio.com/items?itemName=Posit.shiny-python">Shiny for Python</a> extension is a convenient way to launch Python Shiny apps. It adds a ‘Run Shiny App’ button to the VS Code interface, allowing for options to serve the app locally within a dedicated VS Code viewer window, or alternatively launch the app directly within your default web browser.</p>
 <p>In order to run your application with this extension, you must ensure your app file is saved as <code>app.py</code>, otherwise the run button will not recognise that the currently selected document is a Shiny app.</p>
-<p>Header accessibility adjustment.</p>
+</section>
+<section id="header-accessibility-adjustment" class="level3">
+<h3 class="anchored" data-anchor-id="header-accessibility-adjustment">Header Accessibility Adjustment</h3>
+<p>A big shoutout to Utah State University for making their fantastic suite of web accessibility-checking tools open source. These tools make checking the accessibility of your web products much easier. Simply visit the <a href="https://wave.webaim.org/">Web Accessibility Evaluation Tool (WAVE)</a> and enter a url under “Web page address:” and press return. The site will launch a helpful overlay on top of your specified url, highlighting accessibility alerts, warnings and features. There is also a sidebar helpfully explaining why the various alerts are important and what can be done to resolve them.</p>
+<p>Unless you have managed to host a Shiny application on a service such as shinyapps.io, unfortunately you won’t have a url to pass to WAVE. Working locally on your machine, your locally hosted app interface will launch with a url like: http://localhost:… There is another way to use WAVE to check localhost sites. Using the <a href="https://wave.webaim.org/extension/">WAVE browser extensions</a> will allow you to launch the WAVE tool within any of your browser windows. This would allow you to run these checks locally on your machine while also ensuring that your app looks good on Chrome, Firefox or Edge. When checking basic Python Shiny apps for accessibility, one of the common accessibility errors you will encounter will be:</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Language missing or invalid
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The language of the document is not identified or a lang attribute value is invalid.</p>
+</div>
+</div>
+<p>This is a bit of a frustrating accessibility error that is a bit of a hangover from RShiny. It means a screen reader may not detect the language of the website content and may not work properly. The ideal scenario would be that Shiny would ask you to specify the language of the application that you are working in at the point where you create the application. It’s a straight forward fix though. We can include some tags at the top of our ui that will update the webpage content with the required information:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, render, App, reactive</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a header and specify the language and title.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    ui.tags.header(ui.tags.html(lang<span class="op">=</span><span class="st">"en"</span>), ui.tags.title(<span class="st">"A Really Basic App"</span>)),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    ui.input_action_button(<span class="bu">id</span><span class="op">=</span><span class="st">"go_button"</span>, label<span class="op">=</span><span class="st">"Click to run..."</span>),</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    ui.tags.br(),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    ui.tags.br(),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    ui.output_text_verbatim(<span class="st">"greeting"</span>),</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">@output</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">@render.text</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">@reactive.event</span>(<span class="bu">input</span>.go_button)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> greeting():</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">dir</span>(ui.tags))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Debugging statement.</p>
 <p>Missing commas</p>
 <hr>

@@ -344,15 +344,62 @@ Also notice that the inconsistency in how to refer to functions on the other sid
 
 So there you have it. A very basic application that can be used to print out some simple messages to your user. This is of course a trivial app in order to keep things basic for the purposes of this blog. If you'd like to investigate what's possible with Shiny, I'd suggest taking a peek through the [Posit docs examples](https://shinylive.io/py/examples/) and the [Python Shiny gallery](https://shiny.posit.co/py/gallery/). In the next section I'll go over some tips that may help with common pitfalls I've encountered while working in Shiny.
 
-### Tips
+## Tips
 
-1. Shiny for Python VSCode Extension
+### Shiny for Python VSCode Extension
 
 The [Shiny for Python](https://marketplace.visualstudio.com/items?itemName=Posit.shiny-python) extension is a convenient way to launch Python Shiny apps. It adds a 'Run Shiny App' button to the VS Code interface, allowing for options to serve the app locally within a dedicated VS Code viewer window, or alternatively launch the app directly within your default web browser.
 
 In order to run your application with this extension, you must ensure your app file is saved as `app.py`, otherwise the run button will not recognise that the currently selected document is a Shiny app.
 
-Header accessibility adjustment.
+### Header Accessibility Adjustment
+
+A big shoutout to Utah State University for making their fantastic suite of web accessibility-checking tools open source. These tools make checking the accessibility of your web products much easier. Simply visit the [Web Accessibility Evaluation Tool (WAVE)](https://wave.webaim.org/) and enter a url under "Web page address:" and press return. The site will launch a helpful overlay on top of your specified url, highlighting accessibility alerts, warnings and features. There is also a sidebar helpfully explaining why the various alerts are important and what can be done to resolve them.
+
+Unless you have managed to host a Shiny application on a service such as shinyapps.io, unfortunately you won't have a url to pass to WAVE. Working locally on your machine, your locally hosted app interface will launch with a url like: http://localhost:... There is another way to use WAVE to check localhost sites. Using the [WAVE browser extensions](https://wave.webaim.org/extension/) will allow you to launch the WAVE tool within any of your browser windows. This would allow you to run these checks locally on your machine while also ensuring that your app looks good on Chrome, Firefox or Edge. When checking basic Python Shiny apps for accessibility, one of the common accessibility errors you will encounter will be:
+
+::: {.callout-caution}
+
+### Language missing or invalid
+The language of the document is not identified or a lang attribute value is invalid.
+
+:::
+
+This is a bit of a frustrating accessibility error that is a bit of a hangover from RShiny. It means a screen reader may not detect the language of the website content and may not work properly. The ideal scenario would be that Shiny would ask you to specify the language of the application that you are working in at the point where you create the application. It's a straight forward fix though. We can include some tags at the top of our ui that will update the webpage content with the required information:
+
+```{python eval=FALSE}
+
+from shiny import ui, render, App, reactive
+
+app_ui = ui.page_fluid(
+    # Add a header and specify the language and title.
+    ui.tags.header(ui.tags.html(lang="en"), ui.tags.title("A Really Basic App")),
+
+    ui.input_text(
+        id="name_entry",
+        label="Please enter your name",
+        placeholder="Your name here"
+        ),
+    ui.input_action_button(id="go_button", label="Click to run..."),
+    ui.tags.br(),
+    ui.tags.br(),
+
+    ui.output_text_verbatim("greeting"),
+)
+
+def server(input, output, session):
+    @output
+    @render.text
+    @reactive.event(input.go_button)
+    def greeting():
+        return f"Hi {input.name_entry()}, welcome to Python Shiny."
+
+app = App(app_ui, server)
+
+print(dir(ui.tags))
+
+```
+
 
 Debugging statement.
 
