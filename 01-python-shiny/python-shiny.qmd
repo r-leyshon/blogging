@@ -300,6 +300,48 @@ Notice this time, we include brackets after our call to the widget id: `n = int_
 
 If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part [Stack Overflow](https://stackoverflow.com/) and part coping mechanisms. I'll cover some of those in the Tips section.
 
+One final adjustment to this app. When you're typing a name into the text input field, there's a bit of a race going on. Can you type faster than the server can render the text? This may not be what you want. In fact, you may require a bunch of selections to be made prior to calculating anything in the server. We can use methods to interrupt and isolate elements of the server. In effect, we can tell any of our server functions to hang fire until a certain condition is met. In this example, we'll try out perhaps the simplest way of achieving this, enter the `ui.input_action_button()`.
+
+```{python eval=FALSE}
+#1 Import the reactive module from Shiny
+from shiny import ui, render, App, reactive
+
+app_ui = ui.page_fluid(
+    ui.input_text(
+        id="name_entry",
+        label="Please enter your name",
+        placeholder="Your name here"
+        ),
+    #2 add an action button to the ui, much like we did with the text input
+    ui.input_action_button(id="go_button", label="Click to run..."),
+    # add some visual separation to the text output
+    ui.tags.br(),
+    ui.tags.br(),
+
+    ui.output_text_verbatim("greeting"),
+)
+
+def server(input, output, session):
+    #3 add an additional mark below the others
+    @output
+    @render.text
+    @reactive.event(input.go_button)
+    def greeting():
+        return f"Hi {input.name_entry()}, welcome to Python Shiny."
+
+# This is a shiny.App object. It must be named `app`.
+app = App(app_ui, server)
+
+```
+
+If you copy the above code into the shiny docs, you should now see that an input button has appeared and the sentence won't get printed out until you press it. I also included some visual separation between elements in the ui by using `ui.tags.br()`. If you know a little HTML, you may get excited at that. You can access all the typical HTML tags in this way:
+```{python}
+from shiny import ui
+dir(ui.tags)
+```
+
+Also notice that the inconsistency in how to refer to functions on the other side of the ui:server divide rears it's head once more. All in the server, when we want to use the values returned by the text input, we use the syntax `input.name_entry()`. When we want to use the action button in the reactive decorator, we have to use `input.go_button` - no parenthesis! The docs describe this as when you need to access the returned value versus when you need to call the function. This does makes sense but can introduce some cognitive conflict while you are working with Shiny. I hope by version 1.0 the development team can find a way to simplify things.
+
 So there you have it. A very basic application that can be used to print out some simple messages to your user. This is of course a trivial app in order to keep things basic for the purposes of this blog. If you'd like to investigate what's possible with Shiny, I'd suggest taking a peek through the [Posit docs examples](https://shinylive.io/py/examples/) and the [Python Shiny gallery](https://shiny.posit.co/py/gallery/). In the next section I'll go over some tips that may help with common pitfalls I've encountered while working in Shiny.
 
 ### Tips
@@ -313,6 +355,8 @@ In order to run your application with this extension, you must ensure your app f
 Header accessibility adjustment.
 
 Debugging statement.
+
+Missing commas
 
 ***
 
