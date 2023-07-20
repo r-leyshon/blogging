@@ -447,11 +447,25 @@ The success of Python Shiny will be down to the adoption & support of the open-s
 
 ### What We Already Have
 
+#### Compatability With [Jupyter Widgets](https://ipywidgets.readthedocs.io/en/latest/)
+
+Jupyter Widgets is a well-known add-in for Jupyter Notebooks, allowing for interactive widgets to be displayed and used in Notebooks. This allows for some interesting mini-dashboard opportunities to be served directly within the notebook itself, alongside the code. Having this compatibility from the start is great. While it does introduce a little duplication (Python Shiny has many of its own equivalent ui input widgets), the particular look and range of these widgets will be appealing to many seasoned Python devs. Many of the Jupyter Widget aficionados would have previously developed the capability in specifying callback logic, to be able to capture the user's interactions with elements of the widget. For example, select a category in a table and use that active selection to filter a chart, the sort of thing that tends to be more prevalent in Business Insight software. Achieving this sort of interaction in Shiny definitely falls under 'advanced use'. In R, the package [crosstalk](https://github.com/rstudio/crosstalk) has significantly lowered the bar in achieving this. Hopefully a dedicated Python Shiny module or package makes its way to PyPi soon.
+
+#### Deploying An App With [`rsconnect-python`](https://github.com/rstudio/rsconnect-python/tree/master) 
+
+This package is a useful command line interface (CLI) tool that allows you to build application manifests from your Shiny project and deploy them to services such as shinyapps.io. Once you're ready to share an app with the wider community, check out the docs.
+
 ## What I Really Want
 
-A nostalgic look at RShiny ecosystem.
+While I feel generally positive about the future of Python Shiny, I do look across the gulf that exists between the Python and R frameworks with hungry eyes. Particularly at the rich, community-driven plethora of RShiny add-ins that make Shiny the undeniable dashboarding front-runner in that framework. Here is my wish-list of Python Shiny helper tools, ranked order (opinionated warning).
 
 #### 1. Reactlog
+
+There's no 2 ways about it, debugging apps is a royal pain. One of my go to helpers in times of need is Posit's own [reactlog package](https://rstudio.github.io/reactlog/). Reactlog is such an understated tool, yet it has been crucial to me in understanding what's going on under the hood of my apps. So much so, that I now feel hopelessly exposed writing apps in Python without it to lean on.
+
+![RShiny Reactlog Animation](http://rstudio.github.io/reactlog/readme-images/pythagoras.gif)
+
+This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It's an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses.
 
 #### 2. Shinytest
 
