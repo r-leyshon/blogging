@@ -201,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="python-for-shiny-is-now-a-thing" class="level2">
 <h2 class="anchored" data-anchor-id="python-for-shiny-is-now-a-thing">Python for Shiny is now a thing…</h2>
 <figure class="center figure">
-<img class="shaded_box figure-img" src=".././www/01-python-shiny/shiny-python.png" alt="AI-generated drawing of a shiny python.">
+<img class="shaded_box figure-img" src=".././www/01-python-shiny/shiny-python.png" alt="AI-generated drawing of a shiny python." width="300px">
 <figcaption class="figure-caption">
 <a href="https://huggingface.co/spaces/dalle-mini/dalle-mini">DALL.E prompt</a>: python logo golden Sparkling glittery bokeh bright.
 </figcaption>
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The application is pretty straight forward. It uses pandas to read in some pre-prepared data tables from a data folder. These files were prepared with a python package called <a href="https://pyrosm.readthedocs.io/en/latest/">pyrosm</a>. Pyrosm is a useful application for ingesting, assessing &amp; visualising OSM data. Selecting a city from the dropdowns then clicking the “Go” button will read the correct table from this little database, then using matplotlib, it visualises the selected spatial features. The app also presents some simple summary statistics in tables at the bottom of the page.</p>
 <p>The preparation of the data files is not strictly necessary. You can serve an app and have it make external connections to data services to ingest data. In this instance, I chose to pre-process the data as it helped to improve the performance of the app. Even so, selecting London or Leeds can result in some wait times, so please be aware of this. Options for improving the performance further could include parallel processing, though that is not implemented here and is beyond the scope of this little example.</p>
 <p>If you’d like to take a look at the application code and have a GitHub account, <a href="https://github.com/r-leyshon/pyrosm-experiments/blob/main/pyrosm-cities-app/app.py">you can access it here</a>.</p>
-<div class="centerdiv shaded_box">
+<div class="centerdiv">
 <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application"></iframe>
 <div>
 
@@ -300,14 +300,12 @@ Tip
 <section id="a-closer-look-at-app.py" class="level3">
 <h3 class="anchored" data-anchor-id="a-closer-look-at-app.py">A Closer Look At <code>app.py</code></h3>
 <p>As stated earlier, this is where your app code goes. But before diving straight into some code, let’s try to get a feel for how the reactivity works.</p>
-<div class="center_diagram">
+<div class="center_diagram shaded_box">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <div>
-<pre class="mermaid mermaid-js">%%linkStyle default stroke: blue
-
-flowchart TD
+<pre class="mermaid mermaid-js">flowchart TD
   user["User"]
   subgraph Application
   server["Server
@@ -597,14 +595,18 @@ Language missing or invalid
 <p>While I feel generally positive about the future of Python Shiny, I do look across the gulf that exists between the Python and R frameworks with hungry eyes. Particularly at the rich, community-driven plethora of RShiny add-ins that make Shiny the undeniable dashboarding front-runner in that framework. Here is my wish-list of Python Shiny helper tools, ranked order (opinionated warning).</p>
 <section id="reactlog" class="level4">
 <h4 class="anchored" data-anchor-id="reactlog">1. Reactlog</h4>
+<center>
+<img src="https://rstudio.github.io/reactlog/reference/figures/logo.svg" width="30%">
+</center>
 <p>There’s no 2 ways about it, debugging apps is a royal pain. One of my go to helpers in times of need is Posit’s own <a href="https://rstudio.github.io/reactlog/">reactlog package</a>. Reactlog is such an understated tool, yet it has been crucial to me in understanding what’s going on under the hood of my apps. So much so, that I now feel hopelessly exposed writing apps in Python without it to lean on.</p>
 <center>
 <img class="shaded_box" src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" width="100%">
-<center>
-<p>This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It’s an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses.</p>
-</center></center></section>
+</center>
+<p>This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It’s an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses. Reactlog visualises the dependency graph of variables in your server and really is an indispensable debugging tool.</p>
+</section>
 <section id="shinytest" class="level4">
 <h4 class="anchored" data-anchor-id="shinytest">2. Shinytest</h4>
+<p>Unit tests for your RShiny app anyone? Authored by the ubiquitous Hadley Wickham, <a href="https://github.com/rstudio/shinytest/">shinytest</a> allows you to make assertions about the behaviour of your application. In combination with the ability to design Shiny modules, this is a key piece of the RShiny toolkit allowing for the design of stable, production-ready Shiny components.</p>
 </section>
 <section id="dt-tables" class="level4">
 <h4 class="anchored" data-anchor-id="dt-tables">3. DT tables</h4>

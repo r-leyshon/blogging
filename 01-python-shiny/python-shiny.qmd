@@ -12,7 +12,7 @@ format:
 ## Python for Shiny is now a thing...
 
 <figure class=center>
-  <img class=shaded_box src=/./www/01-python-shiny/shiny-python.png alt="AI-generated drawing of a shiny python.">
+  <img class=shaded_box src=/./www/01-python-shiny/shiny-python.png alt="AI-generated drawing of a shiny python." width=300px>
   <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): python logo golden Sparkling glittery bokeh bright.</figcaption>
 </figure>
 
@@ -102,7 +102,7 @@ and is beyond the scope of this little example.
 If you'd like to take a look at the application code and have a GitHub account,
 [you can access it here](https://github.com/r-leyshon/pyrosm-experiments/blob/main/pyrosm-cities-app/app.py).
 
-<div class="centerdiv shaded_box">
+<div class=centerdiv>
   <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny Open Street Map Application"></iframe>
 <div>
 
@@ -159,10 +159,9 @@ Finally, the `rsconnect-python` directory is not something that would appear in 
 
 As stated earlier, this is where your app code goes. But before diving straight into some code, let's try to get a feel for how the reactivity works. 
 
-<div class="center_diagram">
+<div class="center_diagram shaded_box">
 
 ```{mermaid}
-%%linkStyle default stroke: blue
 
 flowchart TD
   user["User"]
@@ -460,17 +459,22 @@ This package is a useful command line interface (CLI) tool that allows you to bu
 While I feel generally positive about the future of Python Shiny, I do look across the gulf that exists between the Python and R frameworks with hungry eyes. Particularly at the rich, community-driven plethora of RShiny add-ins that make Shiny the undeniable dashboarding front-runner in that framework. Here is my wish-list of Python Shiny helper tools, ranked order (opinionated warning).
 
 #### 1. Reactlog
+<center>
+  <img src="https://rstudio.github.io/reactlog/reference/figures/logo.svg" width=30%>
+</center>
 
 There's no 2 ways about it, debugging apps is a royal pain. One of my go to helpers in times of need is Posit's own [reactlog package](https://rstudio.github.io/reactlog/). Reactlog is such an understated tool, yet it has been crucial to me in understanding what's going on under the hood of my apps. So much so, that I now feel hopelessly exposed writing apps in Python without it to lean on.
 
 <center>
   <img class=shaded_box src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" width=100%>
-<center>
+</center>
 
 
-This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It's an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses.
+This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It's an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses. Reactlog visualises the dependency graph of variables in your server and really is an indispensable debugging tool.
 
 #### 2. Shinytest
+
+Unit tests for your RShiny app anyone? Authored by the ubiquitous Hadley Wickham, [shinytest](https://github.com/rstudio/shinytest/) allows you to make assertions about the behaviour of your application. In combination with the ability to design Shiny modules, this is a key piece of the RShiny toolkit allowing for the design of stable, production-ready Shiny components. 
 
 #### 3. DT tables
 
