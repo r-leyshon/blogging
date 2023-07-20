@@ -238,7 +238,8 @@ You'll see that the code defines an `app_ui` object, which is a shiny ui instanc
 
 ::: {.callout-note appearance="simple"}
 ### On Users...
-There are only two industries that call their customers “users”: illegal drugs and software – Edward Tufte
+There are only two industries that call their customers “users”: illegal drugs and software
+– Edward Tufte
 :::
 
 So far, only one simple ui element has been defined. The humble text input `ui.input_text()` which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with `input...`. There's `ui.input_text()` as we've seen, but there's lots more. `ui.input_date()`, `ui.input_file()` and `ui.input_slider` to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you're working in a modern editor such as [Visual Studio Code](https://code.visualstudio.com/), simply typing `ui.input` will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a [shiny cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf) may be useful, though note that at the time of writing I could only find R-flavoured ones...
@@ -429,11 +430,16 @@ This ensures that the working directory is set to that of the `app.py` file when
 
 ## A Year's Progress
 
-
-### Reactivity
-
+As I mentioned above, the evolution of Python Shiny has occurred at a blistering pace. You [can keep up with its development here](https://github.com/rstudio/py-shiny/pulse/monthly). I will briefly summarise some early features that I have already been impressed with in this section, and generally why they are useful for application development.
 
 ### Modular Dashboard
+
+This aspect of Shiny dashboarding is a bit meta. Essentially, when you (or your organisation) gets to a point that they have enough dashboards to be concerned with thinking about consistency and efficiency, take a read through the [Python Shiny Modules docs](https://shiny.posit.co/py/docs/workflow-modules.html). This is a way of re-using elements of your dashboard, much in the same way in which you reuse code by writing a function. Maybe your organisation has really committed to Shiny and has developed a beautifully-styled interface with house branding, or some interface component such as an Email field with some complex regular expression checking the validity of the Email address, there really is no need to copy paste that code when you want to use it again. Package the element up as a Shiny Module and you can roll out this feature across multiple dashboards, secure in the knowledge that the quality of this module has already been agreed. 
+
+::: {.callout-note appearance="simple"}
+Code reuse is the Holy Grail of Software Engineering
+— Douglas Crockford
+:::
 
 ### Python Shiny Add-Ins
 

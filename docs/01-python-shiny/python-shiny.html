@@ -152,7 +152,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#a-years-progress" id="toc-a-years-progress" class="nav-link" data-scroll-target="#a-years-progress">A Year’s Progress</a>
   <ul class="collapse">
-  <li><a href="#reactivity" id="toc-reactivity" class="nav-link" data-scroll-target="#reactivity">Reactivity</a></li>
   <li><a href="#modular-dashboard" id="toc-modular-dashboard" class="nav-link" data-scroll-target="#modular-dashboard">Modular Dashboard</a></li>
   <li><a href="#python-shiny-add-ins" id="toc-python-shiny-add-ins" class="nav-link" data-scroll-target="#python-shiny-add-ins">Python Shiny Add-Ins</a></li>
   </ul></li>
@@ -569,11 +568,20 @@ Language missing or invalid
 </section>
 <section id="a-years-progress" class="level2">
 <h2 class="anchored" data-anchor-id="a-years-progress">A Year’s Progress</h2>
-<section id="reactivity" class="level3">
-<h3 class="anchored" data-anchor-id="reactivity">Reactivity</h3>
-</section>
+<p>As I mentioned above, the evolution of Python Shiny has occurred at a blistering pace. You <a href="https://github.com/rstudio/py-shiny/pulse/monthly">can keep up with its development here</a>. I will briefly summarise some early features that I have already been impressed with in this section, and generally why they are useful for application development.</p>
 <section id="modular-dashboard" class="level3">
 <h3 class="anchored" data-anchor-id="modular-dashboard">Modular Dashboard</h3>
+<p>This aspect of Shiny dashboarding is a bit meta. Essentially, when you (or your organisation) gets to a point that they have enough dashboards to be concerned with thinking about consistency and efficiency, take a read through the <a href="https://shiny.posit.co/py/docs/workflow-modules.html">Python Shiny Modules docs</a>. This is a way of re-using elements of your dashboard, much in the same way in which you reuse code by writing a function. Maybe your organisation has really committed to Shiny and has developed a beautifully-styled interface with house branding, or some interface component such as an Email field with some complex regular expression checking the validity of the Email address, there really is no need to copy paste that code when you want to use it again. Package the element up as a Shiny Module and you can roll out this feature across multiple dashboards, secure in the knowledge that the quality of this module has already been agreed.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Code reuse is the Holy Grail of Software Engineering — Douglas Crockford</p>
+</div>
+</div>
+</div>
 </section>
 <section id="python-shiny-add-ins" class="level3">
 <h3 class="anchored" data-anchor-id="python-shiny-add-ins">Python Shiny Add-Ins</h3>
