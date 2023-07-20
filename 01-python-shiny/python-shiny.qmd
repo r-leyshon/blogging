@@ -476,9 +476,19 @@ This package allows you to launch an app, showing you useful insights about the 
 
 Unit tests for your RShiny app anyone? Authored by the ubiquitous Hadley Wickham, [shinytest](https://github.com/rstudio/shinytest/) allows you to make assertions about the behaviour of your application. In combination with the ability to design Shiny modules, this is a key piece of the RShiny toolkit allowing for the design of stable, production-ready Shiny components. 
 
-#### 3. DT tables
+#### 3. DT Data Tables
+
+Another one of Posit's own packages, [DT](https://github.com/rstudio/DT) helps to create beautiful, customisable and interactive data tables for the presentation of tables. Not just for RShiny applications, DT is also widely used in Rmarkdown reports. A dedicated Python Shiny solution would be most welcome.
 
 #### 4. Shinyhelper
+
+The [shinyhelper](https://github.com/cwthom/shinyhelper) package developed by Chris Mason-Thom is an excellent solution for those involved applications that need a little more guidance for the user. 
+
+<center>
+  <img src="https://github.com/cwthom/shinyhelper/raw/master/man/figures/logo.png" width=30%>
+</center>
+
+Shinyhelper allows the developer to include markdown files with extensive instructions, images and gif animations of how to use your application. These documents will be hidden from screen until the user chooses to click on the help icons that shinyhelper provides. These help icons can be easily styled and positioned around any element within your ui. Once clicked, they will launch modal windows with your beautifully formatted instructions, allowing a wealth of guidance to be included within your app without causing excessive clutter.
 
 #### 5. Golem
 
