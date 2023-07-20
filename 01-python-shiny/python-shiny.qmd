@@ -103,14 +103,14 @@ If you'd like to take a look at the application code and have a GitHub account,
 [you can access it here](https://github.com/r-leyshon/pyrosm-experiments/blob/main/pyrosm-cities-app/app.py).
 
 <div class=centerdiv>
-  <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python ShinyOpenStreet Map Application"></iframe>
+  <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny OpenStreetMap Application"></iframe>
 <div>
 
 
 ***
 
 
-## So what does a Shiny project look like?
+## So What Does a Shiny Project Look Like?
 
 ### Organising a Shiny Project
 
@@ -140,7 +140,7 @@ Below is a directory tree diagram of the example Shiny application presented abo
     └── pyrosm-cities-app.json
 ```
 
-The shiny code that generates the application is in `app.py`. The data folder is where you put any data files you'd like to work with. Here I'm working with the .arrow format ([More on that here](https://datapythonista.me/blog/pandas-20-and-the-arrow-revolution-part-i)). However, this folder could be used to store csvs, images, a GeoJSON database, whatever your application needs. 
+The Shiny code that generates the application is in `app.py`. The data folder is where you put any data files you'd like to work with. Here I'm working with the .arrow format ([More on that here](https://datapythonista.me/blog/pandas-20-and-the-arrow-revolution-part-i)). However, this folder could be used to store csvs, images, a GeoJSON database, whatever your application needs. 
 
 The file `01-update-db.py` and the contents of the `config` folder are related. The python script is used to update the database in the `data` folder. This part of the workflow can be quite time consuming, particularly extracting the transport network from dense areas such as Greater London. In order to improve the performance of the app, I chose to pre-prepare this data and limit the number of areas to my specific use-case. A previous iteration of this dashboard simply sent requests using the python `pyrosm` package to get data for any valid area name. The TOML file in the config folder simply stores some parameters used to configure `01-update-db.py`, such as named areas of interest, bounding box coordinates in order to crop the maps, that sort of thing.
 The `requirements.txt` file is super important. Not only will it help others to re-run your dashboard with the required package dependencies made explicit, this is also a file that hosting services such as [shinyapps.io](https://www.shinyapps.io/) will use to recreate your development environment. More on that later.
@@ -153,9 +153,9 @@ Ensuring that you have 'pinned' each package version in your requirements file w
 
 :::
 
-Finally, the `rsconnect-python` directory is not something that would appear in your shiny project until you deploy it to a remote-hosting service like shinyapps.io. It contains some metadata about your application which the remote service will use to set up your app properly.
+Finally, the `rsconnect-python` directory is not something that would appear in your Shiny project until you deploy it to a remote-hosting service like shinyapps.io. It contains some metadata about your application which the remote service will use to set up your app properly.
 
-### A Closer Look At `app.py`
+### A Closer Look at `app.py`
 
 As stated earlier, this is where your app code goes. But before diving straight into some code, let's try to get a feel for how the reactivity works. 
 
@@ -233,7 +233,7 @@ app = App(app_ui, server)
 
 ```
 
-You'll see that the code defines an `app_ui` object, which is a shiny ui instance. Within that `ui.page_fluid()` function, we can specify all the elements of the app that we would like to present to our users.
+You'll see that the code defines an `app_ui` object, which is a Shiny ui instance. Within that `ui.page_fluid()` function, we can specify all the elements of the app that we would like to present to our users.
 
 ::: {.callout-note appearance="simple"}
 ### On Users...
@@ -241,7 +241,7 @@ There are only two industries that call their customers “users”: illegal dru
 – Edward Tufte
 :::
 
-So far, only one simple ui element has been defined. The humble text input `ui.input_text()` which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with `input...`. There's `ui.input_text()` as we've seen, but there's lots more. `ui.input_date()`, `ui.input_file()` and `ui.input_slider` to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you're working in a modern editor such as [Visual Studio Code](https://code.visualstudio.com/), simply typing `ui.input` will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a [shiny cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf) may be useful, though note that at the time of writing I could only find R-flavoured ones...
+So far, only one simple ui element has been defined. The humble text input `ui.input_text()` which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with `input...`. There's `ui.input_text()` as we've seen, but there's lots more. `ui.input_date()`, `ui.input_file()` and `ui.input_slider` to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you're working in a modern editor such as [Visual Studio Code](https://code.visualstudio.com/), simply typing `ui.input` will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a [Shiny cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf) may be useful, though note that at the time of writing I could only find R-flavoured ones...
 
 All ui input elements start with the same 2 arguments, `id` and `label`:
 
@@ -260,7 +260,7 @@ app_ui = ui.page_fluid(
         label="Please enter your name",
         placeholder="Your name here"
         ),
-    #2 Include a UI output element. This will show the calculations
+    #2 Include a ui output element. This will show the calculations
     # made in the server back to the user.
     ui.output_text_verbatim("greeting"),
 )
@@ -273,7 +273,7 @@ def server(input, output, session):
         """
         This function will take the output of the ui.input_text() element,
         format the string in a polite sentence and format it as an HTML
-        output for the UI to show.
+        output for the ui to show.
         """
         return f"Hi {input.name_entry()}, welcome to Python Shiny."
 
@@ -303,7 +303,7 @@ def print_selection():
 
 Notice this time, we include brackets after our call to the widget id: `n = int_slider()`. Weird, right? Getting this wrong may result in unexpected behaviours. Keep an eye out for this. Also, wrapping server id references in speech marks results in unexpected behaviours, but not necessarily errors.
 
-If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part [Stack Overflow](https://stackoverflow.com/) and part coping mechanisms. I'll cover some of those in the Tips section.
+If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of Shiny debugging, part [Stack Overflow](https://stackoverflow.com/) and part coping mechanisms. I'll cover some of those in the Tips section.
 
 One final adjustment to this app. When you're typing a name into the text input field, there's a bit of a race going on. Can you type faster than the server can render the text? This may not be what you want. In fact, you may require a bunch of selections to be made prior to calculating anything in the server. We can use methods to interrupt and isolate elements of the server. In effect, we can tell any of our server functions to hang fire until a certain condition is met. In this example, we'll try out perhaps the simplest way of achieving this, enter the `ui.input_action_button()`.
 
@@ -334,12 +334,12 @@ def server(input, output, session):
     def greeting():
         return f"Hi {input.name_entry()}, welcome to Python Shiny."
 
-# This is a shiny.App object. It must be named `app`.
+# This is a Shiny.App object. It must be named `app`.
 app = App(app_ui, server)
 
 ```
 
-If you copy the above code into the shiny docs, you should now see that an input button has appeared and the sentence won't get printed out until you press it. I also included some visual separation between elements in the ui by using `ui.tags.br()`. If you know a little HTML, you may get excited at that. You can access all the typical HTML tags in this way:
+If you copy the above code into the Shiny docs, you should now see that an input button has appeared and the sentence won't get printed out until you press it. I also included some visual separation between elements in the ui by using `ui.tags.br()`. If you know a little HTML, you may get excited at that. You can access all the typical HTML tags in this way:
 ```{python}
 from shiny import ui
 dir(ui.tags)
@@ -419,7 +419,7 @@ One more approach to consider is to try to **isolate your problem**. Sometimes i
 
 ### Specifying Working Directory
 
-This is more of a consideration for deployment to a service such as shinyapps.io. And you likely won't encounter this issue if your `app.py` file is located in the top level of your project folder (also known as the project root). If your app is not in the root of the project folder, you may wish to include this snippet of code before you define your shiny ui:
+This is more of a consideration for deployment to a service such as shinyapps.io. And you likely won't encounter this issue if your `app.py` file is located in the top level of your project folder (also known as the project root). If your app is not in the root of the project folder, you may wish to include this snippet of code before you define your Shiny ui:
 
 `os.chdir(os.path.dirname(os.path.realpath(__file__)))`
 

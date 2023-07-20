@@ -135,10 +135,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#python-for-shiny-is-now-a-thing" id="toc-python-for-shiny-is-now-a-thing" class="nav-link active" data-scroll-target="#python-for-shiny-is-now-a-thing">Python for Shiny is now a thing…</a></li>
   <li><a href="#an-example-python-shiny-app" id="toc-an-example-python-shiny-app" class="nav-link" data-scroll-target="#an-example-python-shiny-app">An Example Python Shiny App</a></li>
-  <li><a href="#so-what-does-a-shiny-project-look-like" id="toc-so-what-does-a-shiny-project-look-like" class="nav-link" data-scroll-target="#so-what-does-a-shiny-project-look-like">So what does a Shiny project look like?</a>
+  <li><a href="#so-what-does-a-shiny-project-look-like" id="toc-so-what-does-a-shiny-project-look-like" class="nav-link" data-scroll-target="#so-what-does-a-shiny-project-look-like">So What Does a Shiny Project Look Like?</a>
   <ul class="collapse">
   <li><a href="#organising-a-shiny-project" id="toc-organising-a-shiny-project" class="nav-link" data-scroll-target="#organising-a-shiny-project">Organising a Shiny Project</a></li>
-  <li><a href="#a-closer-look-at-app.py" id="toc-a-closer-look-at-app.py" class="nav-link" data-scroll-target="#a-closer-look-at-app.py">A Closer Look At <code>app.py</code></a></li>
+  <li><a href="#a-closer-look-at-app.py" id="toc-a-closer-look-at-app.py" class="nav-link" data-scroll-target="#a-closer-look-at-app.py">A Closer Look at <code>app.py</code></a></li>
   <li><a href="#server-side-shenanigans" id="toc-server-side-shenanigans" class="nav-link" data-scroll-target="#server-side-shenanigans">Server-Side Shenanigans</a></li>
   <li><a href="#lets-build-a-basic-app" id="toc-lets-build-a-basic-app" class="nav-link" data-scroll-target="#lets-build-a-basic-app">Let’s Build a Basic App</a></li>
   </ul></li>
@@ -248,14 +248,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The preparation of the data files is not strictly necessary. You can serve an app and have it make external connections to data services to ingest data. In this instance, I chose to pre-process the data as it helped to improve the performance of the app. Even so, selecting London or Leeds can result in some wait times, so please be aware of this. Options for improving the performance further could include parallel processing, though that is not implemented here and is beyond the scope of this little example.</p>
 <p>If you’d like to take a look at the application code and have a GitHub account, <a href="https://github.com/r-leyshon/pyrosm-experiments/blob/main/pyrosm-cities-app/app.py">you can access it here</a>.</p>
 <div class="centerdiv">
-<iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python ShinyOpenStreet Map Application"></iframe>
+<iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny OpenStreetMap Application"></iframe>
 <div>
 
 
 <hr>
 </div></div></section>
 <section id="so-what-does-a-shiny-project-look-like" class="level2">
-<h2 class="anchored" data-anchor-id="so-what-does-a-shiny-project-look-like">So what does a Shiny project look like?</h2>
+<h2 class="anchored" data-anchor-id="so-what-does-a-shiny-project-look-like">So What Does a Shiny Project Look Like?</h2>
 <section id="organising-a-shiny-project" class="level3">
 <h3 class="anchored" data-anchor-id="organising-a-shiny-project">Organising a Shiny Project</h3>
 <p>Below is a directory tree diagram of the example Shiny application presented above. It shows the file structure in the various folders.</p>
@@ -280,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ├── requirements.txt
 └── rsconnect-python
     └── pyrosm-cities-app.json</code></pre>
-<p>The shiny code that generates the application is in <code>app.py</code>. The data folder is where you put any data files you’d like to work with. Here I’m working with the .arrow format (<a href="https://datapythonista.me/blog/pandas-20-and-the-arrow-revolution-part-i">More on that here</a>). However, this folder could be used to store csvs, images, a GeoJSON database, whatever your application needs.</p>
+<p>The Shiny code that generates the application is in <code>app.py</code>. The data folder is where you put any data files you’d like to work with. Here I’m working with the .arrow format (<a href="https://datapythonista.me/blog/pandas-20-and-the-arrow-revolution-part-i">More on that here</a>). However, this folder could be used to store csvs, images, a GeoJSON database, whatever your application needs.</p>
 <p>The file <code>01-update-db.py</code> and the contents of the <code>config</code> folder are related. The python script is used to update the database in the <code>data</code> folder. This part of the workflow can be quite time consuming, particularly extracting the transport network from dense areas such as Greater London. In order to improve the performance of the app, I chose to pre-prepare this data and limit the number of areas to my specific use-case. A previous iteration of this dashboard simply sent requests using the python <code>pyrosm</code> package to get data for any valid area name. The TOML file in the config folder simply stores some parameters used to configure <code>01-update-db.py</code>, such as named areas of interest, bounding box coordinates in order to crop the maps, that sort of thing. The <code>requirements.txt</code> file is super important. Not only will it help others to re-run your dashboard with the required package dependencies made explicit, this is also a file that hosting services such as <a href="https://www.shinyapps.io/">shinyapps.io</a> will use to recreate your development environment. More on that later.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -295,10 +295,10 @@ Tip
 <p>Ensuring that you have ‘pinned’ each package version in your requirements file will make publishing to a hosting service such as shinyapps.io a lot easier. It can be frustrating to push your locally working application up to a remote service, waiting for a potentially lengthy deployment routine to complete only to see that your app breaks as you’re working on a different version of <code>numpy</code> than the one available by default in the remote server.</p>
 </div>
 </div>
-<p>Finally, the <code>rsconnect-python</code> directory is not something that would appear in your shiny project until you deploy it to a remote-hosting service like shinyapps.io. It contains some metadata about your application which the remote service will use to set up your app properly.</p>
+<p>Finally, the <code>rsconnect-python</code> directory is not something that would appear in your Shiny project until you deploy it to a remote-hosting service like shinyapps.io. It contains some metadata about your application which the remote service will use to set up your app properly.</p>
 </section>
 <section id="a-closer-look-at-app.py" class="level3">
-<h3 class="anchored" data-anchor-id="a-closer-look-at-app.py">A Closer Look At <code>app.py</code></h3>
+<h3 class="anchored" data-anchor-id="a-closer-look-at-app.py">A Closer Look at <code>app.py</code></h3>
 <p>As stated earlier, this is where your app code goes. But before diving straight into some code, let’s try to get a feel for how the reactivity works.</p>
 <div class="center_diagram shaded_box">
 <div class="cell">
@@ -378,7 +378,7 @@ Get Up And Running Quickly
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Finally - this bit packages up our ui and server. Super important - it must be named `app`.</span></span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You’ll see that the code defines an <code>app_ui</code> object, which is a shiny ui instance. Within that <code>ui.page_fluid()</code> function, we can specify all the elements of the app that we would like to present to our users.</p>
+<p>You’ll see that the code defines an <code>app_ui</code> object, which is a Shiny ui instance. Within that <code>ui.page_fluid()</code> function, we can specify all the elements of the app that we would like to present to our users.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -392,7 +392,7 @@ On Users…
 <p>There are only two industries that call their customers “users”: illegal drugs and software – Edward Tufte</p>
 </div>
 </div>
-<p>So far, only one simple ui element has been defined. The humble text input <code>ui.input_text()</code> which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with <code>input...</code>. There’s <code>ui.input_text()</code> as we’ve seen, but there’s lots more. <code>ui.input_date()</code>, <code>ui.input_file()</code> and <code>ui.input_slider</code> to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you’re working in a modern editor such as <a href="https://code.visualstudio.com/">Visual Studio Code</a>, simply typing <code>ui.input</code> will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf">shiny cheatsheet</a> may be useful, though note that at the time of writing I could only find R-flavoured ones…</p>
+<p>So far, only one simple ui element has been defined. The humble text input <code>ui.input_text()</code> which allows our users to place their own text into a text field. Notice that in Python, all the inputs begin with <code>input...</code>. There’s <code>ui.input_text()</code> as we’ve seen, but there’s lots more. <code>ui.input_date()</code>, <code>ui.input_file()</code> and <code>ui.input_slider</code> to name a few. This consistent syntax approach is a subtle improvement over RShiny and makes it so much easier to work with the vast array of widgets without having to remember them all. If you’re working in a modern editor such as <a href="https://code.visualstudio.com/">Visual Studio Code</a>, simply typing <code>ui.input</code> will remind you of all the options available to you. For those not working in a nice GUI like VSCode, a <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/shiny.pdf">Shiny cheatsheet</a> may be useful, though note that at the time of writing I could only find R-flavoured ones…</p>
 <p>All ui input elements start with the same 2 arguments, <code>id</code> and <code>label</code>:</p>
 <ul>
 <li><code>id</code>: The internal name of the input. What does that mean? Call it what you like. Whatever you choose, be aware that when you want to use the values from the text input to do something in the server, it’s this name that you will need to reference.</li>
@@ -409,7 +409,7 @@ On Users…
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#2 Include a UI output element. This will show the calculations</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#2 Include a ui output element. This will show the calculations</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># made in the server back to the user.</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    ui.output_text_verbatim(<span class="st">"greeting"</span>),</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -422,7 +422,7 @@ On Users…
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">        This function will take the output of the ui.input_text() element,</span></span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">        format the string in a polite sentence and format it as an HTML</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">        output for the UI to show.</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">        output for the ui to show.</span></span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
@@ -441,7 +441,7 @@ On Users…
     n = int_slider()
     return f"You chose {n}!"</code></pre>
 <p>Notice this time, we include brackets after our call to the widget id: <code>n = int_slider()</code>. Weird, right? Getting this wrong may result in unexpected behaviours. Keep an eye out for this. Also, wrapping server id references in speech marks results in unexpected behaviours, but not necessarily errors.</p>
-<p>If I haven’t lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of shiny debugging, part <a href="https://stackoverflow.com/">Stack Overflow</a> and part coping mechanisms. I’ll cover some of those in the Tips section.</p>
+<p>If I haven’t lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of Shiny debugging, part <a href="https://stackoverflow.com/">Stack Overflow</a> and part coping mechanisms. I’ll cover some of those in the Tips section.</p>
 <p>One final adjustment to this app. When you’re typing a name into the text input field, there’s a bit of a race going on. Can you type faster than the server can render the text? This may not be what you want. In fact, you may require a bunch of selections to be made prior to calculating anything in the server. We can use methods to interrupt and isolate elements of the server. In effect, we can tell any of our server functions to hang fire until a certain condition is met. In this example, we’ll try out perhaps the simplest way of achieving this, enter the <code>ui.input_action_button()</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 Import the reactive module from Shiny</span></span>
@@ -470,10 +470,10 @@ On Users…
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> greeting():</span>
 <span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
 <span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a shiny.App object. It must be named `app`.</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a Shiny.App object. It must be named `app`.</span></span>
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If you copy the above code into the shiny docs, you should now see that an input button has appeared and the sentence won’t get printed out until you press it. I also included some visual separation between elements in the ui by using <code>ui.tags.br()</code>. If you know a little HTML, you may get excited at that. You can access all the typical HTML tags in this way:</p>
+<p>If you copy the above code into the Shiny docs, you should now see that an input button has appeared and the sentence won’t get printed out until you press it. I also included some visual separation between elements in the ui by using <code>ui.tags.br()</code>. If you know a little HTML, you may get excited at that. You can access all the typical HTML tags in this way:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">dir</span>(ui.tags)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -553,7 +553,7 @@ Language missing or invalid
 </section>
 <section id="specifying-working-directory" class="level3">
 <h3 class="anchored" data-anchor-id="specifying-working-directory">Specifying Working Directory</h3>
-<p>This is more of a consideration for deployment to a service such as shinyapps.io. And you likely won’t encounter this issue if your <code>app.py</code> file is located in the top level of your project folder (also known as the project root). If your app is not in the root of the project folder, you may wish to include this snippet of code before you define your shiny ui:</p>
+<p>This is more of a consideration for deployment to a service such as shinyapps.io. And you likely won’t encounter this issue if your <code>app.py</code> file is located in the top level of your project folder (also known as the project root). If your app is not in the root of the project folder, you may wish to include this snippet of code before you define your Shiny ui:</p>
 <p><code>os.chdir(os.path.dirname(os.path.realpath(__file__)))</code></p>
 <p>This ensures that the working directory is set to that of the <code>app.py</code> file when it runs. If you encounter pandas errors complaining about <code>FileExistsError</code> when you deploy your app to shinyapps.io but not when you locally run your application, this may be the fix you need. Also something to consider if your app is styled correctly locally but not when you deploy. Potentially a relative path to a dedicated stylesheet has broken.</p>
 <hr>
