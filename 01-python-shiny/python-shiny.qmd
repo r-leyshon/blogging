@@ -404,13 +404,15 @@ print(dir(ui.tags))
 
 One of the more frustrating aspects of debugging Shiny applications, particularly as the application grows, is that a single misplaced comma can completely break your application. The thing to look out for here is when you run your app and you get the unexpected `SyntaxError: invalid syntax` error. I recall this being a real headache when I was learning how to get Shiny with R, so much so that I would leave a little comment after each comma reminding me of which element of the code was being closed within the preceding bracket.
 
-I feel the Python errors are really helpful. They not only point to a problem with the syntax, but they identify the line number in the app where the first instance of this issue was encountered. 
+The Python errors are really helpful. They not only point to a problem with the syntax, but they identify the line number in the app where the first instance of this issue was encountered. 
 
-### Debugging Complex Apps
+### Debugging Errors
 
-check data type
+At times it can be unclear why errors are being raised and it becomes important to investigate intermediate values that are being calculated in the server. Your usual python debugging tools may not work with Python Shiny, as these scripts are a bit different to the usual scripting these tools were designed for. Shiny is event-driven and the reactive flow and order of the object definitions in your scripts are treated a bit differently. Without a tool like R's `Reactlog` package (see the section on [Reactlog](#reactlog) for more), this is currently quite tricky to do in Python. The main coping mechanism available at the moment is to include some text outputs in the ui, paired with render text functions in the server. You can go ahead and use these elements to helpfully print out intermediate values such as DataFrame column names, data types etc and then comment them out when they're no longer needed. Examining these intermediate values from within your ui is often the way to go when you can't understand the root cause of your problem. 
 
-Debugging Statement.
+One more approach to consider is to try to **isolate your problem**. Sometimes it can be hard to build a mental picture of all the moving elements under the hood in your server, and how they may be unexpectedly interacting with each other. The problem you're encountering may be due to these complex interactions in your server. Simply commenting out the code not directly related to the issue you are experiencing helps to triangulate the source of the issue within your reactive model. This is also the first step towards producing a [reprex](https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-create-one/5219) - a reproducible example. These should be as minimal as possible and are very helpful to start getting to the root of a programming problem.
+
+Setting WD for deployment.
 
 
 ***

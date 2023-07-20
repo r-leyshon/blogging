@@ -147,7 +147,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#shiny-for-python-vscode-extension" id="toc-shiny-for-python-vscode-extension" class="nav-link" data-scroll-target="#shiny-for-python-vscode-extension">Shiny for Python VSCode Extension</a></li>
   <li><a href="#header-accessibility-adjustment" id="toc-header-accessibility-adjustment" class="nav-link" data-scroll-target="#header-accessibility-adjustment">Header Accessibility Adjustment</a></li>
   <li><a href="#missing-commas" id="toc-missing-commas" class="nav-link" data-scroll-target="#missing-commas">Missing Commas</a></li>
-  <li><a href="#debugging-complex-apps" id="toc-debugging-complex-apps" class="nav-link" data-scroll-target="#debugging-complex-apps">Debugging Complex Apps</a></li>
+  <li><a href="#debugging-errors" id="toc-debugging-errors" class="nav-link" data-scroll-target="#debugging-errors">Debugging Errors</a></li>
   </ul></li>
   <li><a href="#a-years-progress" id="toc-a-years-progress" class="nav-link" data-scroll-target="#a-years-progress">A Year’s Progress</a>
   <ul class="collapse">
@@ -537,12 +537,12 @@ Language missing or invalid
 <section id="missing-commas" class="level3">
 <h3 class="anchored" data-anchor-id="missing-commas">Missing Commas</h3>
 <p>One of the more frustrating aspects of debugging Shiny applications, particularly as the application grows, is that a single misplaced comma can completely break your application. The thing to look out for here is when you run your app and you get the unexpected <code>SyntaxError: invalid syntax</code> error. I recall this being a real headache when I was learning how to get Shiny with R, so much so that I would leave a little comment after each comma reminding me of which element of the code was being closed within the preceding bracket.</p>
-<p>I feel the Python errors are really helpful. They not only point to a problem with the syntax, but they identify the line number in the app where the first instance of this issue was encountered.</p>
+<p>The Python errors are really helpful. They not only point to a problem with the syntax, but they identify the line number in the app where the first instance of this issue was encountered.</p>
 </section>
-<section id="debugging-complex-apps" class="level3">
-<h3 class="anchored" data-anchor-id="debugging-complex-apps">Debugging Complex Apps</h3>
-<p>check data type</p>
-<p>Debugging Statement.</p>
+<section id="debugging-errors" class="level3">
+<h3 class="anchored" data-anchor-id="debugging-errors">Debugging Errors</h3>
+<p>At times it can be unclear why errors are being raised and it becomes important to investigate intermediate values that are being calculated in the server. Your usual python debugging tools may not work with Python Shiny, as these scripts are a bit different to the usual scripting these tools were designed for. Shiny is event-driven and the reactive flow and order of the object definitions in your scripts are treated a bit differently. Without a tool like R’s <code>Reactlog</code> package (see the section on <a href="#reactlog">Reactlog</a> for more), this is currently quite tricky to do in Python. The main coping mechanism available at the moment is to include some text outputs in the ui, paired with render text functions in the server. You can go ahead and use these elements to helpfully print out intermediate values such as DataFrame column names, data types etc and then comment them out when they’re no longer needed. Examining these intermediate values from within your ui is often the way to go when you can’t understand the root cause of your problem.</p>
+<p>One more approach to consider is to try to <strong>isolate your problem</strong>. Sometimes it can be hard to build a mental picture of all the moving elements under the hood in your server, and how they may be unexpectedly interacting with each other. The problem you’re encountering may be due to these complex interactions in your server. Simply commenting out the code not directly related to the issue you are experiencing helps to triangulate the source of the issue within your reactive model. This is also the first step towards producing a <a href="https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-create-one/5219">reprex</a> - a reproducible example. These should be as minimal as possible and are very helpful to start getting to the root of a programming problem.</p>
 <hr>
 </section>
 </section>
