@@ -202,6 +202,11 @@ The fastest way to get up and running with Python Shiny would be to play with th
 
 ### Let's Build a Basic App
 
+::: {.callout-note appearance="simple"}
+### Get Up And Running Quickly
+Copy-paste the code presented here to the code interfaces available in the [Posit overview documentation](https://shiny.posit.co/py/docs/overview.html). Feel free to tinker with the code and get a feel for how Shiny works.
+:::
+
 Below is a really minimal app that doesn't do very much at all. Try pasting it into the Posit webpage and clicking the play button in the corner of the page to re-run the code.
 
 
