@@ -12,9 +12,22 @@ format:
 ## Getting to grips with Python Shiny
 
 <figure class=center>
-  <img class=shaded_box src=/./www/01-python-shiny/shiny-python.png alt="AI-generated drawing of a shiny python." width=300px>
-  <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): python logo golden Sparkling glittery bokeh bright.</figcaption>
+  <img class=shaded_box src="https://c0.wallpaperflare.com/preview/564/703/665/school-coding-software-development-education.jpg" alt="Woman Instructing On Laptop." width=300px>
+  <figcaption>Source: <https://www.wallpaperflare.com/>. Creative Commons License.</figcaption>
 </figure>
+
+
+This blog is a light-weight, introductory Python Shiny tutorial. No
+installation of software is required, other than a web-browser (which you must
+already have) and a willingness to copy-paste and experiment. We will use the
+Posit website to display the application that we write and steadily add to a
+basic app, discussing some of the concepts as we go. Finally, let's regroup and 
+reflect on some coping techniques for when you begin writing your own Python
+Shiny apps.
+
+This tutorial will not attempt to reproduce any of [Posit's documentation](https://shiny.posit.co/py/), which is rather excellent so please check that out. Also, if you would prefer a
+conceptual treatment of the current state of Python Shiny and would it could
+potentially become, please see my other blog on [The Current State of Python Shiny](01-state-of-pyshiny.html).
 
 
 ::: {.callout-note appearance="simple"}
