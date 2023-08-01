@@ -133,7 +133,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#getting-to-grips-with-python-shiny" id="toc-getting-to-grips-with-python-shiny" class="nav-link active" data-scroll-target="#getting-to-grips-with-python-shiny">Getting to grips with Python Shiny</a></li>
+  <li><a href="#getting-to-grips-with-python-shiny" id="toc-getting-to-grips-with-python-shiny" class="nav-link active" data-scroll-target="#getting-to-grips-with-python-shiny">Getting to grips with Python Shiny</a>
+  <ul class="collapse">
+  <li><a href="#hello-python-shiny" id="toc-hello-python-shiny" class="nav-link" data-scroll-target="#hello-python-shiny">Hello Python Shiny!</a></li>
+  <li><a href="#doing-something-with-the-shiny-server" id="toc-doing-something-with-the-shiny-server" class="nav-link" data-scroll-target="#doing-something-with-the-shiny-server">Doing Something With the Shiny Server</a></li>
+  <li><a href="#ready-steady-go" id="toc-ready-steady-go" class="nav-link" data-scroll-target="#ready-steady-go">Ready, Steady, Go!</a></li>
+  </ul></li>
   <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a>
   <ul class="collapse">
   <li><a href="#shiny-for-python-vscode-extension" id="toc-shiny-for-python-vscode-extension" class="nav-link" data-scroll-target="#shiny-for-python-vscode-extension">Shiny for Python VSCode Extension</a></li>
@@ -207,6 +212,8 @@ Get Up And Running Quickly
 <p>Copy-paste the code presented here to the code interfaces available in the <a href="https://shiny.posit.co/py/docs/overview.html">Posit overview documentation</a>. Feel free to tinker with the code and get a feel for how Shiny works.</p>
 </div>
 </div>
+<section id="hello-python-shiny" class="level3">
+<h3 class="anchored" data-anchor-id="hello-python-shiny">Hello Python Shiny!</h3>
 <p>Below is a really minimal app that doesn’t do very much at all. Try pasting it into the Posit web page and clicking the play button in the corner of the page to re-run the code.</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 Import modules to help us build our app</span></span>
@@ -251,6 +258,9 @@ On Users…
 <li><code>label</code>: A short piece of text that prompts your user to do something. This will be displayed in your ui above the input element.</li>
 </ul>
 <p>Unfortunately, so far our app doesn’t actually do much. Typing into the empty text field yields no result. That’s because right now, our <code>server</code> function simply returns <code>None</code>. Let’s resolve this.</p>
+</section>
+<section id="doing-something-with-the-shiny-server" class="level3">
+<h3 class="anchored" data-anchor-id="doing-something-with-the-shiny-server">Doing Something With the Shiny Server</h3>
 <div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 update the import statement to include `render` module</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, App, render</span>
@@ -294,6 +304,9 @@ On Users…
     return f"You chose {n}!"</code></pre>
 <p>Notice this time, we include brackets after our call to the widget id: <code>n = int_slider()</code>. Weird, right? Getting this wrong may result in unexpected behaviours. Keep an eye out for this. Also, wrapping server id references in speech marks results in unexpected behaviours, but not necessarily errors.</p>
 <p>If I haven’t lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of Shiny debugging, part <a href="https://stackoverflow.com/">Stack Overflow</a> and part coping mechanisms. I’ll cover some of those in the Tips section.</p>
+</section>
+<section id="ready-steady-go" class="level3">
+<h3 class="anchored" data-anchor-id="ready-steady-go">Ready, Steady, Go!</h3>
 <p>One final adjustment to this app. When you’re typing a name into the text input field, there’s a bit of a race going on. Can you type faster than the server can render the text? This may not be what you want. In fact, you may require a bunch of selections to be made prior to calculating anything in the server. We can use methods to interrupt and isolate elements of the server. In effect, we can tell any of our server functions to hang fire until a certain condition is met. In this example, we’ll try out perhaps the simplest way of achieving this, enter the <code>ui.input_action_button()</code>.</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 Import the reactive module from Shiny</span></span>
@@ -329,7 +342,7 @@ On Users…
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">dir</span>(ui.tags)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>['Tag',
  'TagAttrValue',
  'TagAttrs',
@@ -462,6 +475,7 @@ On Users…
 <p>Also notice that the inconsistency in how to refer to functions on the other side of the ui:server divide rears its head once more. All in the server, when we want to use the values returned by the text input, we use the syntax <code>input.name_entry()</code>. When we want to use the action button in the reactive decorator, we have to use <code>input.go_button</code> - no parenthesis! The docs describe this as when you need to access the returned value versus when you need to call the function. This does make sense but can introduce some cognitive conflict while you are working with Shiny. I hope by version 1.0 the development team can find a way to simplify things.</p>
 <p>So there you have it. A very basic application that can be used to print out some simple messages to your user. This is of course a trivial app in order to keep things basic for the purposes of this blog. If you’d like to investigate what’s possible with Shiny, I’d suggest taking a peek through the <a href="https://shinylive.io/py/examples/">Posit docs examples</a> and the <a href="https://shiny.posit.co/py/gallery/">Python Shiny gallery</a>. In the next section I’ll go over some tips that may help with common pitfalls I’ve encountered while working in Shiny.</p>
 </section>
+</section>
 <section id="tips" class="level2">
 <h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <section id="shiny-for-python-vscode-extension" class="level3">
@@ -540,7 +554,8 @@ Language missing or invalid
 </section>
 <section id="in-review" class="level2">
 <h2 class="anchored" data-anchor-id="in-review">In Review</h2>
-<p>…</p>
+<p>We have written a very basic application that is not much use beyond a basic tutorial. Although we have successfully demonstrated how to have the <code>ui</code> and <code>server</code> elements of a Shiny application talk to one another. We’ve captured dynamic inputs provided by the user and presented them back within the interface. And we have been able to pause the server execution until the user asks for a response. That’s not a bad start at all. But so much more than this can be achieved in Python Shiny. A good place to go for inspiration is the <a href="https://shinylive.io/py/examples/">Posit Example Gallery</a>. And if you’d like to understand a little more about how Python Shiny fits into the Python dashboarding toolkit, please check out my other blog on <a href="01-state-of-pyshiny.html">The Current State of Python Shiny</a>.</p>
+<p>Happy dashboarding!</p>
 
 
 </section>

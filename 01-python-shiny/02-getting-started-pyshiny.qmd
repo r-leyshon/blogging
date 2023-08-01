@@ -35,6 +35,8 @@ potentially become, please see my other blog on [The Current State of Python Shi
 Copy-paste the code presented here to the code interfaces available in the [Posit overview documentation](https://shiny.posit.co/py/docs/overview.html). Feel free to tinker with the code and get a feel for how Shiny works.
 :::
 
+### Hello Python Shiny!
+
 Below is a really minimal app that doesn't do very much at all. Try pasting it into the Posit web page and clicking the play button in the corner of the page to re-run the code.
 
 
@@ -78,6 +80,8 @@ All ui input elements start with the same 2 arguments, `id` and `label`:
 * `label`: A short piece of text that prompts your user to do something. This will be displayed in your ui above the input element. 
 
 Unfortunately, so far our app doesn't actually do much. Typing into the empty text field yields no result. That's because right now, our `server` function simply returns `None`. Let's resolve this.
+
+### Doing Something With the Shiny Server
 
 ```{python, eval=FALSE}
 #1 update the import statement to include `render` module
@@ -134,6 +138,8 @@ Notice this time, we include brackets after our call to the widget id: `n = int_
 
 If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of Shiny debugging, part [Stack Overflow](https://stackoverflow.com/) and part coping mechanisms. I'll cover some of those in the Tips section.
 
+### Ready, Steady, Go!
+
 One final adjustment to this app. When you're typing a name into the text input field, there's a bit of a race going on. Can you type faster than the server can render the text? This may not be what you want. In fact, you may require a bunch of selections to be made prior to calculating anything in the server. We can use methods to interrupt and isolate elements of the server. In effect, we can tell any of our server functions to hang fire until a certain condition is met. In this example, we'll try out perhaps the simplest way of achieving this, enter the `ui.input_action_button()`.
 
 ```{python eval=FALSE}
@@ -169,6 +175,7 @@ app = App(app_ui, server)
 ```
 
 If you copy the above code into the Shiny docs, you should now see that an input button has appeared and the sentence won't get printed out until you press it. I also included some visual separation between elements in the ui by using `ui.tags.br()`. If you know a little HTML, you may get excited at that. You can access all the typical HTML tags in this way:
+
 ```{python}
 from shiny import ui
 dir(ui.tags)
@@ -257,4 +264,17 @@ This ensures that the working directory is set to that of the `app.py` file when
 
 ## In Review
 
-...
+We have written a very basic application that is not much use beyond a basic
+tutorial. Although we have successfully demonstrated how to have the `ui` and
+`server` elements of a Shiny application talk to one another. We've captured
+dynamic inputs provided by the user and presented them back within the
+interface. And we have been able to pause the server execution until the user
+asks for a response. That's not a bad start at all. But so much more than this
+can be achieved in Python Shiny. A good place to go for inspiration is the
+[Posit Example Gallery](https://shinylive.io/py/examples/). And if you'd like to
+understand a little more about how Python Shiny fits into the Python
+dashboarding toolkit, please check out my other blog on [The Current State of Python Shiny](01-state-of-pyshiny.html).
+
+Happy dashboarding!
+
+
