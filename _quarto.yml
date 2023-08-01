@@ -10,7 +10,8 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - 01-python-shiny/python-shiny.qmd
+      - 01-python-shiny/01-state-of-pyshiny.qmd
+      - 01-python-shiny/02-getting-started-pyshiny.qmd
 format:
   html:
     theme: default
