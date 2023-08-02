@@ -72,7 +72,7 @@ case with the [streamlit package](https://streamlit.io/).
 <br>
 
 
-## An Example Python Shiny App
+## An Example Python Shiny App.
 
 This application is written in Python and served with a free [shinyapps.io](https://www.shinyapps.io/)
 account. I made the app to explore the quality of the spatial data available
@@ -110,7 +110,7 @@ If you'd like to take a look at the application code and have a GitHub account,
 
 ## So What Does a Shiny Project Look Like?
 
-### Organising a Shiny Project
+### Organising a Shiny Project.
 
 Below is a directory tree diagram of the example Shiny application presented above. It shows the file structure in the various folders.
 
@@ -153,7 +153,7 @@ Ensuring that you have 'pinned' each package version in your requirements file w
 
 Finally, the `rsconnect-python` directory is not something that would appear in your Shiny project until you deploy it to a remote-hosting service like shinyapps.io. It contains some metadata about your application which the remote service will use to set up your app properly.
 
-### A Closer Look at `app.py`
+### A Closer Look at `app.py`.
 
 As stated earlier, this is where your app code goes. But before diving straight into some code, let's try to get a feel for how the reactivity works. 
 
@@ -187,7 +187,7 @@ linkStyle default stroke-width:1px,color:blue;
 
 Each Shiny application comes in two distinct sections. The user interface is the frontend of the application, where a person engages with elements of a web page in order to control visuals, filter tables and so on. The web page translates Python code into HyperText Markup Language (HTML). HTML can be interpreted by a web browser in order to present the user with a structured web page. But in order to present an attractive web page, this HTML foundation needs to be styled. So Cascading Style Sheets (CSS) are used to add decoration to the foundation established by HTML.
 
-### Server-Side Shenanigans
+### Server-Side Shenanigans.
 
 Having an attractive web page that does not do something when you click around on it, enter your credit card details or click 'decline' on cookie consent notices would be rather pointless. This is where a web developer would use the language of the browser to work with data behind that pretty frontend. That language is JavaScript and it's remarkably versatile and intimidating to many data-types. 
 
@@ -197,21 +197,21 @@ There would be little value in emulating the excellent Posit documentation on ge
 
 The fastest way to get up and running with Python Shiny would be to play with the interactive code snippets that Posit makes available on their [overview documentation](https://shiny.posit.co/py/docs/overview.html). They host live Shiny sessions with the interactive app and backend code side-by-side. This is a great place to try things out and feel free to copy code from the examples I provide here.
 
-## Python Shiny Ecosystem
+## Python Shiny Ecosystem.
 
 The success of Python Shiny will be down to the adoption & support of the open-source community. This was easier to achieve 10 years ago in the R framework as Shiny had no real competitors at that time. This is not the case in the modern-day Python framework. Even with its particular USP in comparison to Streamlit & Dash, programmers and analysts are creatures of habit. Considering the new player on the block as an alternative to what you already know requires a considerable argument. There will always be overhead in developing familiarity with a new solution's particular quirks. That said, some of the community-developed packages in the more mature RShiny make building apps at scale very manageable. This final section of this blog takes a look at what Python Shiny bolt-ons we can already play with and a more wistful look over the programming divide at RShiny, considering some of the amazing packages that make me hopeful for the potential future of Python Shiny. 
 
-### What We Already Have
+### What We Already Have.
 
-#### Compatibility With [Jupyter Widgets](https://ipywidgets.readthedocs.io/en/latest/)
+#### Compatibility With [Jupyter Widgets](https://ipywidgets.readthedocs.io/en/latest/).
 
 Jupyter Widgets is a well-known add-in for Jupyter Notebooks, allowing for interactive widgets to be displayed and used in Notebooks. This allows for some interesting mini-dashboard opportunities to be served directly within the notebook itself, alongside the code. Having this compatibility from the start is great. While it does introduce a little duplication (Python Shiny has many of its own equivalent ui input widgets), the particular look and range of these widgets will be appealing to many seasoned Python devs. Many of the Jupyter Widget aficionados would have previously developed the capability in specifying callback logic, to be able to capture the user's interactions with elements of the widget. For example, select a category in a table and use that active selection to filter a chart, the sort of thing that tends to be more prevalent in Business Insight software. Achieving this sort of interaction in Shiny definitely falls under 'advanced use'. In R, the package [crosstalk](https://github.com/rstudio/crosstalk) has significantly lowered the bar in achieving this. Hopefully a dedicated Python Shiny module or package makes its way to PyPi soon.
 
-#### Deploying An App With [`rsconnect-python`](https://github.com/rstudio/rsconnect-python/tree/master) 
+#### Deploying An App With [`rsconnect-python`](https://github.com/rstudio/rsconnect-python/tree/master). 
 
 This package is a useful command line interface (CLI) tool that allows you to build application manifests from your Shiny project and deploy them to services such as shinyapps.io. Once you're ready to share an app with the wider community, check out the docs.
 
-#### Meta Dashboards (Shiny Modules)
+#### Modular Dashboards (Shiny Modules).
 
 This aspect of Shiny dashboarding is a bit meta. Essentially, when you (or your organisation) gets to a point that they have enough dashboards to be concerned with thinking about consistency and efficiency, take a read through the [Python Shiny Modules docs](https://shiny.posit.co/py/docs/workflow-modules.html). This is a way of reusing elements of your dashboard, much in the same way in which you reuse code by writing a function. Maybe your organisation has really committed to Shiny and has developed a beautifully-styled interface with house branding, or some interface component such as an Email field with some complex regular expression checking the validity of the Email address. There really is no need to copy-paste that code when you want to use it again. Package the element up as a Shiny Module and you can roll out this feature across multiple dashboards, secure in the knowledge that the quality of this module has already been agreed. Responsibility successfully deferred!
 
@@ -222,11 +222,11 @@ Code reuse is the Holy Grail of Software Engineering
 
 The fact that Python Shiny devs have prioritised modular dashboarding so early is great. It illustrates a commitment to reproducibility that is rightly lauded within the open source community. Just to note that the ability to do this in RShiny took approximately 3 years. Python users are quite spoiled to be able to make use of this feature from the outset.
 
-### What I Really Want
+### What I Really Want.
 
 While I feel generally positive about the future of Python Shiny, I do look across the gulf that exists between the Python and R frameworks with hungry eyes. Particularly at the rich, community-driven plethora of RShiny add-ins that make Shiny the undeniable dashboarding front-runner in that framework. Here is my wish-list of Python Shiny helper tools, ranked order (opinionated warning).
 
-#### 1. Reactlog
+#### 1. Reactlog.
 <center>
   <img src="https://rstudio.github.io/reactlog/reference/figures/logo.svg" width=30%>
 </center>
@@ -240,15 +240,15 @@ There's no 2 ways about it, debugging apps is a royal pain. One of my go to help
 
 This package allows you to launch an app, showing you useful insights about the performance and reactive flow of your app. It's an app inception. It can be used in a variety of modes, you can record yourself clicking away on your app and then pause the interface to inspect variable statuses. Reactlog visualises the dependency graph of variables in your server and really is an indispensable debugging tool.
 
-#### 2. Shinytest
+#### 2. Shinytest.
 
 Unit tests for your RShiny app anyone? Authored by the ubiquitous Hadley Wickham, [shinytest](https://github.com/rstudio/shinytest/) allows you to make assertions about the behaviour of your application. In combination with the ability to design Shiny modules, this is a key piece of the RShiny toolkit allowing for the design of stable, production-ready Shiny components. 
 
-#### 3. DT Data Tables
+#### 3. DT Data Tables.
 
 Another one of Posit's own packages, [DT](https://github.com/rstudio/DT) helps to create beautiful, customisable and interactive data tables for the presentation of tables. Not just for RShiny applications, DT is also widely used in Rmarkdown reports. A dedicated Python Shiny solution would be most welcome.
 
-#### 4. Shinyhelper
+#### 4. Shinyhelper.
 
 The [shinyhelper](https://github.com/cwthom/shinyhelper) package developed by Chris Mason-Thom is an excellent solution for those involved applications that need a little more guidance for the user. 
 
@@ -265,7 +265,7 @@ Try clicking through the different helper symbols in the demo RShiny application
 <div>
 
 
-## In Review
+## In Review.
 
 Python Shiny is a promising addition to the Python programming framework. It has a USP, and Posit have the know-how to apply the learning from their past development of RShiny to help ensure it has a bright future. It is also worth noting that Posit have recently put a lot of effort into developing [Quarto](https://quarto.org/), which you may think of as like Rmarkdown but with native Python, R and Julia support. The reason why this is important is that often, interactive widgets and solutions designed for use in notebooks or markdown documents take little refactoring to get them running in Shiny apps. Or conversely, there are ways to [convert rmarkdown docs into Shiny](https://shiny.posit.co/r/articles/build/rmarkdown/) or [Shiny-like applications](https://pkgs.rstudio.com/flexdashboard/). Understanding the synergies between these tools and how they have influenced the evolution of RShiny may give some insight into how we may expect Python Shiny & Quarto to develop in the years ahead.
 
