@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon.">
-<meta name="dcterms.date" content="2023-08-02">
+<meta name="dcterms.date" content="2023-08-03">
 
 <title>Blogging. - Let’s Build a Basic Python Shiny App.</title>
 <style>
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -37,6 +71,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -117,14 +153,14 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 2, 2023</p>
+      <p class="date">August 3, 2023</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 2, 2023</p>
+      <p class="date-modified">August 3, 2023</p>
     </div>
   </div>
     
@@ -150,18 +186,44 @@ Source: <a href="https://www.wallpaperflare.com/" class="uri">https://www.wallpa
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Get Up And Running Quickly
+How to…
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Feel free to tinker with the code in the following example apps and then press play in the top-right hand corner of the console interface. Don’t worry - you won’t break anything important. To reset the code, simply refresh your web page.</p>
+<p>If the app doesn’t launch, you’ll see some spinning grey hexagons that never go away <i class="fa-regular fa-face-sad-tear fa-bounce fa-lg"></i>. This is likely to be a problem with permissions in your browser. But you can click on the collapsible code block below the app windows and copy the code to an app.py file on your computer. If you have python and python shiny installed, you should be good to go.</p>
 </div>
 </div>
-<section id="hello-python-shiny" class="level3">
-<h3 class="anchored" data-anchor-id="hello-python-shiny">Hello Python Shiny!</h3>
+<section id="hello-python-shiny-fa-brands-python" class="level3">
+<h3 class="anchored" data-anchor-id="hello-python-shiny-fa-brands-python">Hello Python Shiny! <i class="fa-brands fa-python" aria-label="python"></i></h3>
 <p>Below is a really minimal app that doesn’t do very much at all. The python code is presented on the left. The interactive app is presented on the right. You can type into the app’s text field, and that’s about it for now.</p>
 <div class="centerdiv">
 <p><iframe src="https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACASRlWICcyGZiATAVwA2cAM4MyxBgAs4g1A35iARvwCWg3g2L92DNKgA6EAGbtiMBiKmqI2BqtYcuavAwCC6I0ZoA9VPzIyGwBzcWsIYLEoJWIANzgwhP1uOCgIMTIZO0I0hiUEqyh2OE18sgB3OEoGbG1dNT0ITRE4dnj2L2h0AH0GgF4FVSwoYLhu40E1XgAKIwYGGgAmPUFBLWNEhlk4eHIxWv4GctUrcUkrYnKauoUW3QuhTWDJY8ybTbU5+cGMG38yboUAAeZFmEG+EPsvD6BkgsDGlDI7GwsLwX0hDEE0VkMLAAAVhFAWltyK1rjoGNB4Kj0ZDUFjCHApMQNK1cQBNG5UhIyYqw2kQgCURmFECMvDgGzu7WmfwCrm0ZH+rhaIhEqlIgsQXxoAGYwid7GJyryEgddMlBMRgqpCJZmY8GM8MAwAMqSYxFVwQYhcGD8QhSDDB2nFMg6cEAOVIcC+3gYADEbFBVnYALQG5SqLioKCEADWI1ECnkNwaaWarXaLtd-FQZIcbE4aS4Gez3EUZHj+Up8M0AAN9P2MEZkgMPKhpvpeqoVVXWoKwABfAC6QA" title="Getting Started with a basic Python Shiny App."></iframe></p>
+</div>
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 Import modules to help us build our app</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, App</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#^putting things above the app means they can be shared between your ui and server</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#2 all of the elements you wish to show your user should go within the ui</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#3 this is where your app logic should go. So far, not much...</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Finally - this bit packages up our ui and server. Super important - it must</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># be named `app`.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>You’ll see that the code defines an <code>app_ui</code> object, which is a Shiny ui instance. Within that <code>ui.page_fluid()</code> function, we can specify all the elements of the app that we would like to present to our users.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
@@ -191,6 +253,38 @@ On Users…
 <div class="centerdiv">
 <p><iframe src="https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACAV1QBMoKGyALOBgSxipiAJzIMAzmQ5x45LsQERCAGyas+AAxGUNIzQxjFWTFXAA6EAGYjiMSd34RsAoaPFN+eBgEF03nQg9S0s0VAB9TwYAXmZ+LCgAczhwqzV+VgAKSwZcuIwnVCYycIoADzJsiDyagVZo80hYFMoyEWxGvBza3JUoACM4FQawAAUzKAk+VrgRBmxiJjnoeE7untQ+wjhuYhU9EYBNReXmhl4dRvXagEou6ryaACYGAEllNQ0GKDiGRbIiuIhrJWhgGAAVRwSBgAd34KhUDmIMK4vAYhCgKkIpg4-FIEmuNEMUC+TlRfCmIgAbrMGP0oIQANYKcnMSkYa6eDD-QGlOAVcI0kT0siCbJgRI6OCiiCJRp3Sw3EJBOBWSSzIWZQrFbw8nXqiQSPEQG6IQkAZgYAFU2DJWZShbD+DxvgwrExlKLSKiOOcoEEzNCeHxyuIdBJhBAphyHrkAAJ68REphTVmJhgaEgiDiiFkwKAiZk8fjQ92e43XOOBPQYUMMImYiSKCBwOCsFmUCRLPgwvgpkNorM6Qhh3S0zOiHMia4aNWS1syxKZU3XGpXMBXWO1SElt0ekfGp0IrhQRkDvjp4hq4P5bUlUPLhjAuRke49XJWUT58Q3qQiJyJEorrCCozoUjMyh8P67afiI34COIkzfNUAAS4IALIADKrnk6awayURkIoEi7DCMbvgw66bhROhkEs1RWI0KH8AwIB3hgKwtOQ7TLgAvt4vZYnYIaKKM2A8N6ADKjjOByG4QKE6AxL46CZGEkReOq1KzDcYC8QAukAA" title="Basic Server Functionality in a Python Shiny App."></iframe></p>
 </div>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 update the import statement to include `render` module</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, App, render</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#2 Include a ui output element. This will show the calculations</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># made in the server back to the user.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    ui.output_text_verbatim(<span class="st">"greeting"</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#3 Update the server with a function that handles the text response.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">@output</span> <span class="co"># use the output decorator to mark this function</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">@render.text</span> <span class="co"># also need to ensure we use the correct render decorator</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> greeting():</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">        This function will take the output of the ui.input_text() element,</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">        format the string in a polite sentence and format it as an HTML</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">        output for the ui to show.</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>There’s quite a lot going on in the above code chunk. Let’s start with the decorators <code>@output</code> &amp; <code>@render.text</code>:</p>
 <ul>
 <li><code>@output</code>: Any function marked with this decorator will have its returned value made available to the user interface. Notice that in the line <code>ui.output_text_verbatim("greeting")</code> we are able to call on the values of the server’s <code>greeting()</code> function that we marked as an <code>@output</code>.</li>
@@ -212,11 +306,63 @@ On Users…
 <div class="centerdiv">
 <p><iframe src="https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACASRlWICcyGyALOB9nCiEyASwBu-GMQAmAVwA2-AGbtiMBgGUeoiNgA6EVeoYBnHXoajWHLnNF4BlGXHaOAgukeDhYyYcM0VAB9ewYAXgZ7LCgAczhg5QV7GQAKQwZMqNEMXVQ5MmCKAA8ydIgsyqsZcP1IWATKMnYDfAyqzIUoACM4BVqwAAUlKFN+JtcGbGI5dgZoeDq8do7ULsI4HmIFF3YBgE0ZuYX+PkE6laqASmWKrJoAJgYoGRlnit9RUgZugrJv-7cPjZRwwOSEHgMBSiADW-AA7vwZKI3vDRLwgfwSlw8gVLtFcYVPqRgr8yP8IKkUQNYsRSX9SEsoT0+gMAMLQwgw7jEARyCAYQV1G6XGjPV5mdT8cSiUxyKAKMxwVBQdhQMQA3m8LFwUoMGZkfJkfE5MhxUwYbrsVIiu6ZaJm2IWq0224mjAGo1FXWFSTsbrq6zpMCxQRwMQQWLC25XAIQFzKJXsP1UiBGxyegqOMamUxfCBXRCigDM4reUA+r3R+YVDBgqu5vQUxHhmP12vYpkuAAFM8a7Qxu4J464MNiez4RBI4Bg4JJyKmjRhafTyaRYwOEwxQ3Bw7pYjaiwPKoIyLMKso6gAJUQMECEjAnYJNFo2gC+jkRChI8B5DEG2C8N82i6NgGAXBAhhigAKjophWPBUBaBYYGeKg+rdAAVnAIgYMwXBgqYXC9PMDRvAABkE5HgdA6ARAwaGpEEoQOEmfobmAb4ALpAA" title="Control the Reactive Flow With the Action Button."></iframe></p>
 </div>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 Import the reactive module from Shiny</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, render, App, reactive</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#2 add an action button to the ui, much like we did with the text input</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    ui.input_action_button(<span class="bu">id</span><span class="op">=</span><span class="st">"go_button"</span>, label<span class="op">=</span><span class="st">"Click to run..."</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add some visual separation to the text output</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    ui.tags.br(),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    ui.tags.br(),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    ui.output_text_verbatim(<span class="st">"greeting"</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#3 add an additional mark below the others</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">@output</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">@render.text</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">@reactive.event</span>(<span class="bu">input</span>.go_button)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> greeting():</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a Shiny.App object. It must be named `app`.</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>You should now see that an input button has appeared and the sentence won’t get printed out until you press it.</p>
 <p>Also notice that the inconsistency in how to refer to functions on the other side of the ui:server divide rears its head once more. All in the server, when we want to use the values returned by the text input, we use the syntax <code>input.name_entry()</code>. When we want to use the action button in the reactive decorator, we have to use <code>input.go_button</code> - no parenthesis! The docs describe this as when you need to access the returned value versus when you need to call the function. This does make sense but can introduce some cognitive conflict while you are working with Shiny. I hope by version 1.0 the development team can find a way to simplify things.</p>
 <p>I also included some visual separation between elements in the ui by using <code>ui.tags.br()</code>. If you know a little HTML, you may get excited at that. You can access all the typical HTML tags in this way:</p>
 <div class="centerdiv">
 <p><iframe src="https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMArhzxMAgugl1KAEzh0AOhFVpUAfTFMAvKI5YoAcziaaAGzHyAFKqYODGMiZYY2ARjthJTC3AA3OAsmDyY2OCh5LmNlMABKPHtHMWdXdwAmb19-IJCM8MjoiFiEpIhHJxdjNwAjOhtE5IdU6rdUbwBlRjgmCgAPYTiJVvSWMgYS7y4mWuILeQwluPj41VU1tQhFGlYlIIauVBEyCWIT49O9lhYOUnjEZqY5MhE6CoA5Ujh16HQ9KToGwabTiPZ0A7xMAAXwAukA" title="Displaying DOM elements with Shiny Tags."></iframe></p>
+</div>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, App, render</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    ui.tags.h1(<span class="st">"A level 1 heading"</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ui.tags.h2(<span class="st">"A level 2 heading"</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    ui.tags.br(),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    ui.tags.p(<span class="st">"Some text "</span>, ui.tags.strong(<span class="st">"in bold..."</span>))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>So there you have it. A very basic application that can be used to print out some simple messages to your user. This is of course a trivial app in order to keep things basic for the purposes of this blog. If you’d like to investigate what’s possible with Shiny, I’d suggest taking a peek through the <a href="https://shinylive.io/py/examples/">Posit docs examples</a> and the <a href="https://shiny.posit.co/py/gallery/">Python Shiny gallery</a>. In the next section I’ll go over some tips that may help with common pitfalls I’ve encountered while working in Shiny.</p>
 </section>
@@ -248,6 +394,37 @@ Language missing or invalid!
 <p>This means a screen reader may not detect the language of the website content and may not work properly. The ideal scenario would be that Shiny would ask you to specify the language of the application that you are working in at the point where you create the application. It’s a straightforward fix though. We can include some tags at the top of our ui that will update the web page content with the required information:</p>
 <div class="centerdiv">
 <p><iframe src="https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMArhzxM6lACZw6EgILoJUqITIcAbnAA6EPWlQB9MUwC8ojligBzOEZoAbMdIAUepp6YBiJgunSTFBMbHBQsnRBEIEsqHCEHDQ8ZKFMjlAQNiK2cFGBGmSOcBgeXmIYZLYsGKHhcq7llTbVbGQwjq7pmWY6YJS9AJQSjVUVHIVw7mAKTABKYY6OPABCUCwchH7og0N6pZ7lXKgiZEYUAB5k7hBet7zSPZCw9pRkdNi9ePt36QBGcI5HgAFIprXKvORMbDEESRaDwT7fW6odKEOBsYiOCKPACaMLhzxCcl0YCRXl2NzKViOJyMag0pCMvxOZFIrg4D16NmITJZpE+aSg-0BvQAwo4NgBrJisyQiCAYRWDL6Ug5WJrVX50VwU24jZoYLU6lXfcowsjHU4XU7aOi-KAaGBTGxSOAaTLKvQDPbROA0VhyW3siCWiTm0MBljrUgDRDfAAC4ZOCakvroFTglxTYXUWmKcG05GDlow3N5ZFZEG9qqYsn9Lrgbq4Nh1cZrtykZFhNxovQAEhwmCAaWQMPCXuR3jqAL4SADuAJI8BlxCYQOwKVITAAypxuCVSfpoOhzFtUK5DCZxAG6Lbq2BpwBdIA" title="Add an Accessible Header to a Shiny App."></iframe></p>
+</div>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> ui, render, App, reactive</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a header and specify the language and title.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    ui.tags.header(ui.tags.html(lang<span class="op">=</span><span class="st">"en"</span>), ui.tags.title(<span class="st">"A Really Basic App"</span>)),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    ui.input_text(</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">id</span><span class="op">=</span><span class="st">"name_entry"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Please enter your name"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        placeholder<span class="op">=</span><span class="st">"Your name here"</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    ui.input_action_button(<span class="bu">id</span><span class="op">=</span><span class="st">"go_button"</span>, label<span class="op">=</span><span class="st">"Click to run..."</span>),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ui.tags.br(),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    ui.tags.br(),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    ui.output_text_verbatim(<span class="st">"greeting"</span>),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">@output</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">@render.text</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">@reactive.event</span>(<span class="bu">input</span>.go_button)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> greeting():</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi </span><span class="sc">{</span><span class="bu">input</span><span class="sc">.</span>name_entry()<span class="sc">}</span><span class="ss">, welcome to Python Shiny."</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="missing-commas." class="level3">
