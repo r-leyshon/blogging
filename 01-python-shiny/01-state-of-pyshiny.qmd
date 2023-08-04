@@ -104,7 +104,7 @@ If you'd like to take a look at the application code and have a GitHub account,
 
 <div class=centerdiv>
   <iframe src="https://richleysh84.shinyapps.io/pyrosm-cities-app/" title="Python Shiny OpenStreetMap Application"></iframe>
-<div>
+</div>
 
 
 
@@ -262,7 +262,7 @@ Try clicking through the different helper symbols in the demo RShiny application
 
 <div class=centerdiv>
   <iframe src="https://cwthom94.shinyapps.io/shinyhelper-demo/" title="Example shinyhelper demo application"></iframe>
-<div>
+</div>
 
 
 ## In Review.
