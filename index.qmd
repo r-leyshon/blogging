@@ -9,9 +9,9 @@ resources:
 
 ## Intro
 
-A place to store (micro) blogs about programming concepts, software development
-and data science. Generally things that future me will be thankful that I've 
-recorded these things somewhere. 
+A site to store blogs about programming concepts, software development and data
+science. Generally things that future me will be thankful that I've recorded
+these things somewhere. 
 
 ## About Me
 
@@ -19,6 +19,4 @@ pending
 
 ## Blogs
 
-[The Current State of Python Shiny](01-python-shiny/01-state-of-pyshiny.qmd)
-
-[Let's Build a Basic Python Shiny App](01-python-shiny/02-getting-started-pyshiny.qmd)
+[Click here to view a list of my blogs](blogs/index.qmd)

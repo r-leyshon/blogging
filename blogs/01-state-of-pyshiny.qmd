@@ -1,8 +1,12 @@
 ---
 title: "The State of Python Shiny."
 author: "Rich Leyshon."
-date: today
-date-modified: last-modified
+date: last-modified
+description: "An overview of the progress of Python Shiny, and where it could possibly go."
+categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+    - Explanation   # understanding-oriented
+image: /./www/01-python-shiny/shiny-python.png
+image-alt: "AI-generated drawing of a shiny python."
 toc: true
 format:
   html:

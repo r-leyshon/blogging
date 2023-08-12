@@ -1,8 +1,12 @@
 ---
 title: "Let's Build a Basic Python Shiny App."
 author: "Rich Leyshon."
-date: today
-date-modified: last-modified
+date: last-modified
+description: "An interactive tutorial allowing newcomers to Shiny to build a basic application."
+categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+    - Tutorial      # learning-oriented
+image: https://c0.wallpaperflare.com/preview/564/703/665/school-coding-software-development-education.jpg  # (e.g. /img/dsc_button.png)
+image-alt: "Woman Instructing On Laptop."
 toc: false # off to avoid overlapping larger iframes in this article
 execute: 
   eval: false
