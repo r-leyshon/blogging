@@ -171,6 +171,63 @@ Notice this time, we include brackets after our call to the widget id: `n = int_
 
 If I haven't lost you yet, well done! Debugging applications can be a very frustrating process - part intuition earned from hours of Shiny debugging, part [Stack Overflow](https://stackoverflow.com/) and part coping mechanisms. I'll cover some of those in the Tips section.
 
+#### Exercise
+
+Try modifying the app provided in the previous examples to repeat the greeting
+a number of times specified by the user.
+
+::: {.callout-tip collapse="true"}
+## Hints. Click to expand if needed.
+
+* You will need to include a UI input that will collect numbers from the user.
+* Update the `greeting()` function to return multiples of the greeting string.
+* Explore the other text output functions to avoid the message being truncated.
+* If you're stuck, click on "Show the code" to see a solution.
+:::
+
+<div class=centerdiv>
+  <iframe src="https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMAgujxM6lACZw6EgK4cAOhFVpUAfSVMAvEyVYoAcziaaAGyXSAFAEpVjiLJqs5ANzk2uqBWQnEfr7+biwsHKR2iKpMsZJwZAp0EEwAcqRwTuroeqLoNhraHBIsHnIOEGAAvgC6QA" title="Exercise 1 - repeat a message."></iframe>
+</div>
+
+```{python}
+from shiny import ui, App, render
+
+app_ui = ui.page_fluid(
+    ui.input_text(
+        id="name_entry",
+        label="Please enter your name",
+        placeholder="Your name here"
+        ),
+    # 1 update the UI with a way of taking numbers from the user. Here I use a
+    # slider, but a numeric input or even radio buttons would also work.
+    ui.input_slider(
+        id="n_greetings",
+        label="number of greetings", value=1, min=1, max=10, step=1),
+
+    #2 Change to output_text instead of output_text_verbatim, which uses strict
+    # rules for word wrapping and would hide most of a long greeting.
+    ui.output_text("greeting"),
+    ui.tags.br()
+)
+
+def server(input, output, session):
+    @output
+    @render.text
+    def greeting():
+        """
+        This function will take the output of the ui.input_text() element,
+        format the string in a polite sentence and format it as an HTML
+        output for the ui to show.
+        """
+        # multiply the greeting string by the number of times the user asked
+        return f"Hi {input.name_entry()}, welcome to Python Shiny." * input.n_greetings()
+
+app = App(app_ui, server)
+
+```
+
+
+
 ### Ready, Steady, Go!
 
 One final adjustment to this app. When you're typing a name into the text input field, there's a bit of a race going on. Can you type faster than the server can render the text? This may not be what you want. In fact, you may require a bunch of selections to be made prior to calculating anything in the server. We can use methods to interrupt and isolate elements of the server. In effect, we can tell any of our server functions to hang fire until a certain condition is met. In this example, we'll try out perhaps the simplest way of achieving this, enter the `ui.input_action_button()`.
@@ -239,6 +296,70 @@ def server(input, output, session):
     return None
 
 app = App(app_ui, server)
+
+```
+
+#### Exercise
+
+Do you know enough markdown syntax to convert the ui below from HTML tags into
+markdown? This will greatly simplify the code. You will need to use
+`ui.markdown("""some multiline markdown""")` to achieve that.
+
+
+::: {.callout-tip collapse="true"}
+## Hints. Click to expand if needed.
+* You can use this [markdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) to help.
+* If you're stuck, click on "Show the code" to see an example solution.
+:::
+
+<div class=centerdiv>
+  <iframe src="https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACASRlWICcyGyALOB9nCiEyASwBu-GMQAmAVwA2-AGbtiMBgGUeoiNgA6EVeoYBnHXoajWHLnNF4BlGXHaOAgukeDhYyYcM0VAB9ewYAXgZ7LCgAczhg5QV7GQAKQwZMqNEMMjjTDB46dLAACTgFBWIGAAVsXlItC2wAQn0wAEo8DKzovNiCgCN2VK6AiCzs3PysdInJrPaAFR1TBnbu+YWp-oLTMjUIWJLTa1QlBiCFUUIoMVJ2sa2F9oYAd1FKhlR2XS5sYhyS4MWKCOBiI4YR6bSZ9GbEBSpOEDDDXEoAUXIrgYALk7AY0Hg0J2MzR7UI10IAGsBHIII8nrCcrtZj1tu0akooKZ+OJRKcuBs2QtolBUiB2jxBMp2oh1mAeGQyKhTIgAPRqmR3bmEUSUQhwW6sOQFWKiXhyQYYUTENXtAC+jnapnU-DecEGArg0OFk1eyg4DGkgisRg4MDuNvpnRhvWZMylo02wuF0V0qDkZGCFAAHmQ5ttMqIZOF2oSEpQDgZ8L6sgooIMKqWwJyhDyGJXsbj8eWhc9JudhHAeAiXOxmwBNQE92D8PiCdq1zKMrI0ABMlxkMkuE18UYYg0zZEax+4fGyjhgckIPAY1ypbv4MmL73Nt94-FzXHTmdTOR-WZ7qQwSHkqpCpMWzaxMQIFHg8+B3g2TbtAAwpSNKnuwdIYDhPrPDQm7bi68AMHyphyFAChmHAqBQOwkYntUH7cHAeYMICyq-s8yJDCMK6ZDxGDDEm4xMhgHEZlmX7BJI7CDJGMAlKCcDgrosR4R04wuMo1HsLJEEQJJjgSZmjg8qYpykB0iDCjQADMhE7oR5pRpRQZ0TSjZVG8Z78MQH7sKYwoAAImWQIWCBAY65Kx4XPMFPgiBIcAYHAkjkAZkkYNBsFgRAmnPNpIJghCxzWUuThkHiEwymUogMCAAEYOWwSVuw2CjI67wVCQJGnnUDQTNoujYFCYDjARKz8lYaxQE0I0YJ4qDsYMABWhpkBgzBcFe+wHvw5bbgABkER1QtA6ARAwS2pEEoQOLpskFWA9oALpAA" title="Exercise 2 - convert ui from HTML to markdown."></iframe>
+</div>
+
+```{python}
+#1 Import the reactive module from Shiny
+from shiny import ui, render, App, reactive
+
+app_ui = ui.page_fluid(
+
+    ui.markdown(
+        """
+        # Hello Python Shiny!
+        This **simple application** will print you a greeting.
+
+        1. Enter your name
+        2. Click run
+
+        Please visit [some website](https://datasciencecampus.github.io/)
+        for more information
+        ***
+        """),
+    
+    ui.input_text(
+        id="name_entry",
+        label="Please enter your name",
+        placeholder="Your name here"
+        ),
+    #2 add an action button to the ui, much like we did with the text input
+    ui.input_action_button(id="go_button", label="Click to run..."),
+    # add some visual separation to the text output
+    ui.tags.br(),
+    ui.tags.br(),
+
+    ui.output_text_verbatim("greeting"),
+)
+
+def server(input, output, session):
+    #3 add an additional mark below the others
+    @output
+    @render.text
+    @reactive.event(input.go_button)
+    def greeting():
+        return f"Hi {input.name_entry()}, welcome to Python Shiny."
+
+# This is a Shiny.App object. It must be named `app`.
+app = App(app_ui, server)
+
 
 ```
 
