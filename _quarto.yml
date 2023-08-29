@@ -15,6 +15,6 @@ website:
       - book-reviews/index.qmd
 format:
   html:
-    theme: default
+    theme: cosmo
     css: /www/styles.css
     toc: true

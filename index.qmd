@@ -8,13 +8,14 @@ resources:
 format:
   html:
     css: /./www/styles.css
+    theme: united
 ---
 
 ## Intro
 
 A site to store blogs about programming concepts, software development and data
 science. Generally things that future me will be thankful that I've recorded
-these things somewhere. 
+these things somewhere.
 
 
 ## Site Overview
