@@ -5,5 +5,13 @@
       "/blogs/01-state-of-pyshiny.html",
       "/blogs/02-getting-started-pyshiny.html"
     ]
+  },
+  {
+    "listing": "/music-reviews/index.html",
+    "items": []
+  },
+  {
+    "listing": "/book-reviews/index.html",
+    "items": []
   }
 ]

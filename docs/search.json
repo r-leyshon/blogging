@@ -77,6 +77,20 @@
     "text": "In Review.\nWe have written a very basic application that is not much use beyond a basic tutorial. Although we have successfully demonstrated how to have the ui and server elements of a Shiny application talk to one another. We’ve captured dynamic inputs provided by the user and presented them back within the interface. And we have been able to pause the server execution until the user asks for a response. That’s not a bad start at all. But so much more than this can be achieved in Python Shiny. A good place to go for inspiration is the Posit Example Gallery. And if you’d like to understand a little more about how Python Shiny fits into the Python dashboarding toolkit, please check out my other blog on The Current State of Python Shiny.\nHappy dashboarding!"
   },
   {
+    "objectID": "music-reviews/index.html",
+    "href": "music-reviews/index.html",
+    "title": "Music Reviews (Pending)",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "book-reviews/index.html",
+    "href": "book-reviews/index.html",
+    "title": "Book Reviews (Pending)",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Another Nerd Blog.",
@@ -95,6 +109,6 @@
     "href": "index.html#site-overview",
     "title": "Another Nerd Blog.",
     "section": "Site Overview",
-    "text": "Site Overview\n\nBlogs : Explanations, tutorials, how-to guides. All blogs are regarding technical subjects and are categorised according to the excellent diataxis framework.\n\n\n\n\n\n© Daniele Procida.\n\n\n\nMusic Reviews : I listen to strictly non-verbal music when programming. This was a habit that I developed while programming within a busy office environment. Instrumental music of several genres has helped me efficiently establish a state of mental flow required for deep concentration. I’ll include reviews of some of my favourite albums here, categorised by genre.\nBook Reviews : Much of my casual reading is non-fiction tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects, categorised by genre."
+    "text": "Site Overview\n\nBlogs : Explanations, tutorials, how-to guides. All blogs are regarding technical subjects and are categorised according to the excellent diataxis framework.\n\n\n\n\n\n© Daniele Procida.\n\n\n\nMusic Reviews : I listen to strictly non-verbal music when programming. This was a habit that I developed while working within a busy office environment. Instrumental music of several genres has helped me efficiently establish a state of mental flow required for deep concentration. I’ll include reviews of some of my favourite albums here, categorised by genre.\nBook Reviews : Much of my casual reading is non-fiction tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects, categorised by genre."
   }
 ]

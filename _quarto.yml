@@ -11,6 +11,8 @@ website:
       - href: index.qmd
         text: Home
       - blogs/index.qmd
+      - music-reviews/index.qmd
+      - book-reviews/index.qmd
 format:
   html:
     theme: default
