@@ -110,5 +110,12 @@
     "title": "Another Nerd Blog.",
     "section": "Site Overview",
     "text": "Site Overview\n\nBlogs : Explanations, tutorials, how-to guides. All blogs are regarding technical subjects and are categorised according to the excellent diataxis framework.\n\n\n\n\n\n© Daniele Procida.\n\n\n\nMusic Reviews : I listen to strictly non-verbal music when programming. This was a habit that I developed while working within a busy office environment. Instrumental music of several genres has helped me efficiently establish a state of mental flow required for deep concentration. I’ll include reviews of some of my favourite albums here, categorised by genre.\nBook Reviews : Much of my casual reading is non-fiction tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects, categorised by genre."
+  },
+  {
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "Another Nerd Blog.",
+    "section": "About Me",
+    "text": "About Me\n\nI am a Senior Data Scientist at the Office for National Statistics Data Science Campus. I enjoy programming & automation and tend to work to the standards outlined in Quality Assurance of Code for Analysis & Research. For more detail regarding my professional experience, please follow this link to my resumé. And to collaborate with me, here’s my GitHub profile."
   }
 ]

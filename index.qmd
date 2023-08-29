@@ -35,3 +35,15 @@ I'll include reviews of some of my favourite albums here, categorised by genre.
 * [Book Reviews](book-reviews/index.qmd) : Much of my casual reading is
 non-fiction tangential to programming. I'll review material here that I have
 found to be supportive of my work in various aspects, categorised by genre.
+
+## About Me
+
+<img class=center src="https://github.com/r-leyshon/resume/blob/main/www/fin-conf-2020-bw.jpg?raw=true" alt="@r-leyshon">
+
+
+
+I am a Senior Data Scientist at the Office for National Statistics Data Science
+Campus. I enjoy programming & [automation](https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/) and tend to work to the standards outlined in
+[Quality Assurance of Code for Analysis & Research](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html). For more detail regarding my professional experience, please follow this
+[link to my resumé](https://r-leyshon.github.io/resume/). And to collaborate
+with me, here's [my GitHub profile](https://github.com/r-leyshon).
