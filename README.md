@@ -1,4 +1,6 @@
 # blogging
+[![Netlify Status](https://api.netlify.com/api/v1/badges/981c5fe4-bbc9-42ee-92b3-2087884fbdc8/deploy-status)](https://app.netlify.com/sites/anothernerdblog/deploys)
+
 Musings, ramblings, generally putting things down in text so I don't forget them.
 
 ## Quarto Notes
