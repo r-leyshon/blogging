@@ -12,6 +12,8 @@
   },
   {
     "listing": "/book-reviews/index.html",
-    "items": []
+    "items": [
+      "/book-reviews/01-deep-work.html"
+    ]
   }
 ]

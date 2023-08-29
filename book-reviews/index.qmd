@@ -1,5 +1,5 @@
 ---
-title: Book Reviews (Pending)
+title: Book Reviews
 listing:
     type: grid
     contents:
@@ -14,5 +14,5 @@ listing:
     date-format: medium
     image-placeholder: https://c1.wallpaperflare.com/preview/427/993/236/summer-resting-book-relaxing.jpg # creative commons license
     page-size: 9
-    fields: [image, date, title, author, reading-time, description]
+    fields: [image, date, title, author, reading-time, description, categories]
 ---

@@ -60,7 +60,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-reading-time','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-reading-time','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
       
       searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
@@ -116,7 +116,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../book-reviews/index.html" rel="" target="">
- <span class="menu-text">Book Reviews (Pending)</span></a>
+ <span class="menu-text">Book Reviews</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
@@ -193,6 +193,11 @@ The State of Python Shiny.
 <div class="listing-reading-time card-text text-muted">
 15 min
 </div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Explanation'); return false;">
+Explanation
+</div>
+</div>
 <div class="card-text listing-description">
 An overview of the progress of Python Shiny, and where it could possibly go.
 </div>
@@ -220,6 +225,11 @@ Let’s Build a Basic Python Shiny App.
 </h5>
 <div class="listing-reading-time card-text text-muted">
 21 min
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Tutorial'); return false;">
+Tutorial
+</div>
 </div>
 <div class="card-text listing-description">
 An interactive tutorial allowing newcomers to Shiny to build a basic application.

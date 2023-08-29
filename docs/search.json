@@ -46,7 +46,7 @@
     "href": "blogs/index.html",
     "title": "Blogs",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nThe State of Python Shiny.\n\n\n15 min\n\n\nAn overview of the progress of Python Shiny, and where it could possibly go.\n\n\n\nRich Leyshon.\n\n\nAug 29, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet’s Build a Basic Python Shiny App.\n\n\n21 min\n\n\nAn interactive tutorial allowing newcomers to Shiny to build a basic application.\n\n\n\nRich Leyshon.\n\n\nAug 12, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nThe State of Python Shiny.\n\n\n15 min\n\n\n\nExplanation\n\n\n\nAn overview of the progress of Python Shiny, and where it could possibly go.\n\n\n\nRich Leyshon.\n\n\nAug 29, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet’s Build a Basic Python Shiny App.\n\n\n21 min\n\n\n\nTutorial\n\n\n\nAn interactive tutorial allowing newcomers to Shiny to build a basic application.\n\n\n\nRich Leyshon.\n\n\nAug 12, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blogs/02-getting-started-pyshiny.html",
@@ -84,11 +84,67 @@
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
   },
   {
+    "objectID": "book-reviews/01-deep-work.html",
+    "href": "book-reviews/01-deep-work.html",
+    "title": "Deep Work.",
+    "section": "",
+    "text": "Fanal Forest, Madeira. Wikimedia Creative Commons."
+  },
+  {
+    "objectID": "book-reviews/01-deep-work.html#introduction",
+    "href": "book-reviews/01-deep-work.html#introduction",
+    "title": "Deep Work.",
+    "section": "Introduction",
+    "text": "Introduction\nAt the date of writing this review, Deep Work scores an average of 4.19 / 5.00 across over 141k ratings on goodreads. Also nominated by the same website for Best Nonfiction, 2016. Awarded gongs for best book best seller in business & leadership by Amazon & the Wall Street Journal.\nThis book comes personally recommended to me by a close colleague and was read on holidays during some much needed down time in the Summer of 2023."
+  },
+  {
+    "objectID": "book-reviews/01-deep-work.html#summary",
+    "href": "book-reviews/01-deep-work.html#summary",
+    "title": "Deep Work.",
+    "section": "Summary",
+    "text": "Summary"
+  },
+  {
+    "objectID": "book-reviews/01-deep-work.html#analysis-and-evaluation",
+    "href": "book-reviews/01-deep-work.html#analysis-and-evaluation",
+    "title": "Deep Work.",
+    "section": "Analysis and Evaluation",
+    "text": "Analysis and Evaluation"
+  },
+  {
+    "objectID": "book-reviews/01-deep-work.html#personal-reflection",
+    "href": "book-reviews/01-deep-work.html#personal-reflection",
+    "title": "Deep Work.",
+    "section": "Personal Reflection",
+    "text": "Personal Reflection"
+  },
+  {
+    "objectID": "book-reviews/01-deep-work.html#comparisons",
+    "href": "book-reviews/01-deep-work.html#comparisons",
+    "title": "Deep Work.",
+    "section": "Comparisons",
+    "text": "Comparisons"
+  },
+  {
+    "objectID": "book-reviews/01-deep-work.html#recommendation",
+    "href": "book-reviews/01-deep-work.html#recommendation",
+    "title": "Deep Work.",
+    "section": "Recommendation",
+    "text": "Recommendation"
+  },
+  {
+    "objectID": "book-reviews/01-deep-work.html#conclusion",
+    "href": "book-reviews/01-deep-work.html#conclusion",
+    "title": "Deep Work.",
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
     "objectID": "book-reviews/index.html",
     "href": "book-reviews/index.html",
-    "title": "Book Reviews (Pending)",
+    "title": "Book Reviews",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nDeep Work.\n\n\n1 min\n\n\n\nSelf-Help\n\n\nProductivity\n\n\nBusiness\n\n\nPsychology\n\n\nPhilosophy\n\n\n\nA review of Cal Newport’s much lauded productivity how to guide.\n\n\n\nRich Leyshon.\n\n\nAug 29, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",

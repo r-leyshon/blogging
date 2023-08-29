@@ -1,0 +1,44 @@
+---
+title: "Deep Work."
+subtitle: "Rules for Focused Success in a Distracted World."
+author: "Rich Leyshon."
+date: last-modified
+description: "A review of Cal Newport's much lauded productivity how to guide."
+categories:        
+    - Self-Help
+    - Productivity
+    - Business
+    - Psychology
+    - Philosophy 
+image: https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019
+image-alt: "Misty trees in Fanal Forest, Madeira."
+toc: true
+---
+
+<figure class=center>
+  <img class=shaded_box src=https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019 alt="Misty trees in Fanal Forest, Madeira." width=400px>
+  <figcaption>Fanal Forest, Madeira. Wikimedia Creative Commons.</figcaption>
+</figure>
+
+## Introduction
+
+At the date of writing this review, Deep Work scores an average of 4.19 / 5.00
+across over 141k ratings on
+[goodreads](https://www.goodreads.com/en/book/show/25744928). Also nominated by
+the same website for Best Nonfiction, 2016. Awarded gongs for best book best
+seller in business & leadership by Amazon & the Wall Street Journal. 
+
+This book comes personally recommended to me by a close colleague and was read
+on holidays during some much needed down time in the Summer of 2023. 
+
+## Summary
+
+## Analysis and Evaluation
+
+## Personal Reflection
+
+## Comparisons
+
+## Recommendation
+
+## Conclusion 

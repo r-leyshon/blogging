@@ -14,5 +14,5 @@ listing:
     date-format: medium
     image-placeholder: https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1260&amp;h=750&amp;dpr=1 # creative commons license
     page-size: 9
-    fields: [image, date, title, author, reading-time, description]
+    fields: [image, date, title, author, reading-time, description, categories]
 ---
