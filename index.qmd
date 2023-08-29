@@ -5,10 +5,6 @@ date: today
 date-modified: last-modified
 resources:
   - .nojekyll
-format:
-  html:
-    css: /./www/styles.css
-    theme: united
 ---
 
 ## Intro
