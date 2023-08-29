@@ -91,17 +91,10 @@
     "text": "A site to store blogs about programming concepts, software development and data science. Generally things that future me will be thankful that I’ve recorded these things somewhere."
   },
   {
-    "objectID": "index.html#about-me",
-    "href": "index.html#about-me",
+    "objectID": "index.html#site-overview",
+    "href": "index.html#site-overview",
     "title": "Another Nerd Blog.",
-    "section": "About Me",
-    "text": "About Me\npending"
-  },
-  {
-    "objectID": "index.html#blogs",
-    "href": "index.html#blogs",
-    "title": "Another Nerd Blog.",
-    "section": "Blogs",
-    "text": "Blogs\nClick here to view a list of my blogs"
+    "section": "Site Overview",
+    "text": "Site Overview\n\nBlogs : Explanations, tutorials, how-to guides. All blogs are regarding technical subjects and are categorised according to the excellent diataxis framework.\n\n\n\n\n\n© Daniele Procida.\n\n\n\nMusic Reviews : I listen to strictly non-verbal music when programming. This was a habit that I developed while programming within a busy office environment. Instrumental music of several genres has helped me efficiently establish a state of mental flow required for deep concentration. I’ll include reviews of some of my favourite albums here, categorised by genre.\nBook Reviews : Much of my casual reading is non-fiction tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects, categorised by genre."
   }
 ]

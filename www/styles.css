@@ -12,6 +12,13 @@
   width: 300px;
 }
 
+.center-for-index {
+  display: block;
+  margin-left: auto;
+  margin-right: 400px;
+  width: 300px;
+}
+
 .center_diagram {
   display: block;
   margin-left: auto;

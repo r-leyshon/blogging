@@ -5,6 +5,9 @@ date: today
 date-modified: last-modified
 resources:
   - .nojekyll
+format:
+  html:
+    css: /./www/blogs/styles.css
 ---
 
 ## Intro
@@ -13,10 +16,26 @@ A site to store blogs about programming concepts, software development and data
 science. Generally things that future me will be thankful that I've recorded
 these things somewhere. 
 
-## About Me
 
-pending
+## Site Overview
 
-## Blogs
+* [Blogs](blogs/index.qmd) : Explanations, tutorials, how-to guides. All blogs
+are regarding technical subjects and are categorised according to the excellent
+[diataxis framework](https://diataxis.fr/).
 
-[Click here to view a list of my blogs](blogs/index.qmd)
+<figure class=center-for-index>
+  <img alt="Diátaxis quadrant." src="https://diataxis.fr/_images/diataxis.png" style="width:600px"/>  
+  <figcaption class=center-for-index>© Daniele Procida.</figcaption> 
+</figure>
+
+
+* [Music Reviews](music-reviews/index.qmd) : I listen to strictly non-verbal
+music when programming. This was a habit that I developed while programming
+within a busy office environment. Instrumental music of several genres has
+helped me efficiently establish a state of mental flow required for deep
+concentration. I'll include reviews of some of my favourite albums here,
+categorised by genre.
+
+* [Book Reviews](book-reviews/index.qmd) : Much of my casual reading is
+non-fiction tangential to programming. I'll review material here that I have
+found to be supportive of my work in various aspects, categorised by genre.
