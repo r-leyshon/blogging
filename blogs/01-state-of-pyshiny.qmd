@@ -7,7 +7,7 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - Explanation   # understanding-oriented
 image: /./www/01-python-shiny/shiny-python.png
 image-alt: "AI-generated drawing of a shiny python."
-toc: true
+toc: false # toc overlapping iframe for shinyhelper
 format:
   html:
     mermaid:
