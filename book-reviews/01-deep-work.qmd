@@ -16,8 +16,8 @@ toc: true
 ---
 
 <figure class=center>
-  <img class=shaded_box src=https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019 alt="Misty trees in Fanal Forest, Madeira." width=400px>
-  <figcaption>Fanal Forest, Madeira. Wikimedia Creative Commons.</figcaption>
+ <img class=shaded_box src=https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019 alt="Misty trees in Fanal Forest, Madeira." width=400px>
+ <figcaption>Fanal Forest, Madeira. Wikimedia Creative Commons.</figcaption>
 </figure>
 
 ## Introduction
@@ -28,38 +28,42 @@ across over 141k ratings on
 the same website for Best Nonfiction, 2016. Awarded gongs for best book and
 best seller in business & leadership by Amazon & the Wall Street Journal. 
 
-This book was personally recommended to me by a close colleague and was read
-on holidays during some much-needed downtime in the Summer of 2023. 
+This book was recommended to me by a close colleague and I read it on holidays
+during some much-needed downtime in the Summer of 2023. I should note that I
+reflect on the relevance of the advice in this book to my own personal
+circumstances. To that end, it is worth noting that I currently work as a
+senior data scientist and that I happen to face many competing priorities in my
+day-to-day job.
 
 ## Summary
 
 Cal Newport is a celebrated author within the field of personal productivity.
-According to his website, Cal is an MIT Grad in Computer Science and a
+According to his website, Newport is an MIT Grad in Computer Science and a
 professor at Georgetown University @CalNewport. Deep Work is structured in 2
 parts.
 
-### Part 1: The Idea.
+### Part 1: The Idea
 
 Here the author sets out his stall, establishing definitions of fundamental
-concepts, such as deep and shallow work and their relative value to the author's
-definition of what he refers to as the 'knowledge worker'. The author sets out
-noteworthy examples of individuals who (have) had a proven ability to
+concepts, such as deep and shallow work and their relative value to the
+author's definition of what he refers to as the 'knowledge worker'. The author
+sets out noteworthy examples of individuals who (have) had a proven ability to
 establish deep thought throughout their illustrious careers. The author then
 sets out the case for why deep work is a rewarding endeavor and how its
-antithesis of a highly connected and responsive workday offers little benefit
-to the individual, the organisation or society. Yet counterintuitively, many
-modern organisations have perhaps unwittingly promoted and even entrenched a 
-shallow work culture among their employees.
+antithesis of a connected and responsive workday offers little benefit to the
+individual, the organisation or society. Yet , many modern organisations have
+unwittingly promoted and even entrenched a  shallow work culture among their
+employees.
 
-### Part 2: The Rules.
+### Part 2: The Rules
 
 In this section, the author offers suggested interventions to make within your
 workplace. Exemplifying strategies with personal experience and from those
-around him, Cal assists the reader in visualising a professional future where
-they can rule their schedule, rather than the reverse. The author identifies
-potential sticking points and attempts to proactively treat them, offering
+around him, Newport assists the reader in visualising a professional future
+where they can rule their schedule, rather than the reverse. The author
+identifies potential sticking points and attempts to treat them, offering
 suggested strategies for securing the support of colleagues, stakeholders and
-managers in the reader's pursuit of deep work. Moderating his message, Cal
+managers in the reader's pursuit of deep work. Moderating his message, Newport
 offers words of advice against the pursuit of deep work to the exclusion of 
 everything else, yet establishing set constraints within a schedule where
 shallow tasks and administrative commitments are not permitted to undo your
@@ -67,10 +71,100 @@ daily objectives.
 
 ## Analysis and Evaluation
 
-## Personal Reflection
+Much of the content in this book resonated with me. Newport takes a contrarian
+view of many modern professional practices, such as structuring your day around
+group ceremonies like stand ups or scrums, maintaining open channels of
+communication via Email and instant messaging applications, and as mentioned
+above, social media channels. Many I.T. professionals will find their progress
+hampered by a menagerie of ceremonies, administrative tasks and meetings of
+ambiguous impact. Understanding how to categorise such meetings and structure
+your day around your deep work goals is what Newport hopes to espouse. This has
+been a consistent feature of my data-related roles throughout my career.
+Striking that balance of engaging with stakeholders versus undertaking the work
+can all too often result in a fractured day with little developmental progress. 
+
+That's not to say that Newport promotes a hermetic approach to work. It's clear
+to most that the tool, statistic or analysis that is being developed can only
+be effective if it is useful. Newport states that these 'shallow' tasks should
+be kept in check. They should be minimised and must earn your attention.
+Placing a premium on your time and attention is at the core of the book's
+message.
+
+A lot of what Newport writes has rung true in my experience. While not all jobs
+have the same requirements, my roles in data have all required a deep focus
+disposition. In fact, some of the strategies that the author suggests for
+optimising your day, I had independently arrived at. Approaches such as
+starting your day before the rest of the office has woken up and keeping Email
+responses process-related have both served me well in my career progression so
+far. But, there are some suggested strategies that I have not quite been
+convinced of. At one point, Newport discusses cognitive strategies for
+extending your capacity for deep concentration. The suggested approach is to
+remember the order of a shuffled deck of cards. Newport outlines a method for
+doing so and cites some studies that are indicative of the positive
+relationship between such activities and the mental fortitude required for deep
+focus. Personally, I would sacrifice too much time in achieving such a feat,
+whereas I would gain more by implementing the task at hand, gradually
+incrementing my exposure to deep concentration sessions. Newport does state
+that this sort of thinking misses the point entirely, and that investing effort
+in such a mental feat pays dividends in the longer term, though I have yet to
+be convinced of this claim.
+
+At times throughout the book, I did find myself reflecting that some of the
+claims or advice were not as generalisable as the author had perceived. At one
+point for example, the Newport suggests diagnosing whether your workplace can
+support a culture of deep concentration and finding alternative employment if
+the answer was a clear enough 'no'. This did strike me as something that many
+colleagues could only dream of, with the reality of bills to pay, children to
+feed and job security in an uncertain sector. Advising people to leave rather
+than finding alternative strategies to influence managerial culture does seem a
+bit thoughtless.
+
+Another feature of this book which that requires some scepticism is in the
+outcomes of studies used to underpin the attitudes and strategies promoted as
+good practice. It's likely no news to you that the behavioural sciences has
+attracted a fair amount of criticism about the reproducibility of published
+findings over the last decade.
+
+> "Don’t trust everything you read in the psychology literature. In fact, two
+thirds of it should probably be distrusted." @NatureReproducibility
+
+Coupled with the widespread publication bias encountered in academic journals
+@BMJPubBias and confirmation bias abound in the field of psychology, I would
+suggest the author reveal some of the research that they have undertaken in
+validating the claims of the studies. It is unlikely that the average reader
+will have the necessary time to carry out their own investigation of the
+findings, and doubt in the ability to evidence some of the claims within the
+book is introduced. I do not wish to sound like I am criticising the author for
+choosing studies that help to evidence their claims, as I would have criticised
+them for not doing so had that been the case. I would ask that the author
+publishes their attempts to prove the hypotheses considered.
 
 ## Comparisons
 
+There are some obvious comparisons with other productivity self-help books. One
+of the most obvious is in Stephen Covey's The 7 Habits of Highly Effective
+People. Both books make an effort to discuss the management of competing
+priorities and how to go about organising your working day around prioritised,
+impactful goals. Covey's book dedicates more energy towards effectively
+triaging tasks and charting progress made against longer-term priorities than
+what is explored within Deep Work. In fact, this may be another presumption
+made by Newport - that the direction of progress is obvious to the reader and
+it is simply a matter of finding the undisturbed time to do the work. As many
+of us will encounter uncertainty and a fair amount of strategic thrashing in
+our working lives, this could prove to be a limiting assumption.
+
 ## Recommendation
 
-## Conclusion 
+There is a lot of wisdom to be gleaned from this book. Sure, some of it may be
+anecdotal and won't be true in all cases. But there is an undeniable pattern in
+the examples provided, that sustained effort yields desirable outcomes. This is
+something that I have always found to be true and connects with my wider
+values. It is this message and the useful reminders and strategies that would
+form the basis of my recommendation for this book. This book is an opportunity
+to gain insight into how the elite of the achievers in society get things done.
+You may be able to make some of this work for you but don't expect it to be
+easy, or perhaps even achievable in your current situation.
+
+To put it bluntly, if you have ever struggled to quiet the noise at work and
+get things done, then this book is for you. (It's not lost on me that that may
+qualify pretty much everyone who has ever worked in an office).
