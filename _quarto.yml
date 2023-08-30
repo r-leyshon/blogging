@@ -18,3 +18,6 @@ format:
     theme: cosmo
     css: /www/styles.css
     toc: true
+bibliography: ./bibliography/references.bib
+biblio-title: ""
+csl: ./bibliography/ieee.csl
