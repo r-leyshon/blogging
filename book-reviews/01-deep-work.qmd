@@ -55,12 +55,22 @@ individual, the organisation or society. Yet , many modern organisations have
 unwittingly promoted and even entrenched a  shallow work culture among their
 employees.
 
+
+
 ### Part 2: The Rules
 
 In this section, the author offers suggested interventions to make within your
 workplace. Exemplifying strategies with personal experience and from those
 around him, Newport assists the reader in visualising a professional future
-where they can rule their schedule, rather than the reverse. The author
+where they can rule their schedule, rather than the reverse.
+
+::: {.callout-note}
+"... remain unresponsive to the pinprick onslaught of small obligations that
+seem harmless in isolation but aggregate to serious injury to his deep work
+habit." [@DeepWork, p.142]
+:::
+
+The author
 identifies potential sticking points and attempts to treat them, offering
 suggested strategies for securing the support of colleagues, stakeholders and
 managers in the reader's pursuit of deep work. Moderating his message, Newport
@@ -90,6 +100,15 @@ be kept in check. They should be minimised and must earn your attention.
 Placing a premium on your time and attention is at the core of the book's
 message.
 
+::: {.callout-note}
+"...for decisions that involve large amounts of information and multiple vague,
+and perhaps even conflicting restraints, your unconscious mind is well suited
+to tackle the issue." [@DeepWork, p.145]
+:::
+>Above, Newport summarises a high level takeaway from unconscious thought theory
+(UTT), which may present a theoretical basis for sleeping on a particularly
+challenging problem.
+
 A lot of what Newport writes has rung true in my experience. While not all jobs
 have the same requirements, my roles in data have all required a deep focus
 disposition. In fact, some of the strategies that the author suggests for
@@ -109,6 +128,21 @@ that this sort of thinking misses the point entirely, and that investing effort
 in such a mental feat pays dividends in the longer term, though I have yet to
 be convinced of this claim.
 
+::: {.callout-note}
+"...attention restoration theory (ART), which claims that spending time in
+nature can improve your ability to concentrate. This theory... is based on the
+concept of attention fatigue. To concentrate requires what ART calls *directed*
+*attention*. This resource is finite: If you exhaust it, you'll struggle to
+concentrate." [@DeepWork, p.147]
+:::
+> I found this concept to be very interesting, and a little concerning.
+Managing burnout is something that I value. It seems that my pasttimes also
+require directed attention, and that perhaps I should pursue recreational
+activities that contrast with my professional interests. I have decided to note
+within my journal when I notice that I am lacking energy and to resolve to take
+a bike ride, swim or just a walk in order to efefctively disconnect and
+recharge.
+
 At times throughout the book, I did find myself reflecting that some of the
 claims or advice were not as generalisable as the author had perceived. At one
 point for example, the Newport suggests diagnosing whether your workplace can
@@ -119,31 +153,53 @@ feed and job security in an uncertain sector. Advising people to leave rather
 than finding alternative strategies to influence managerial culture does seem a
 bit thoughtless.
 
+::: {.callout-note}
+"Professional E-mail Sorting: Do not reply to an e-mail message if any of the
+following applies:
+
+* It's ambiguous or otherwise makes it hard for you to generate a reasonable
+response.
+* It's not a question or proposal that interests you.
+* Nothing really good would happen if you did respond and nothing really bad
+would happen if you didn't." [@DeepWork, p.255]
+:::
+>I find this advice to be a bit myopic. This is likely great advice for an
+accomplished academic with a strong internal locus of control. Junior entrants
+to a profession typically need to prove their utility to those with greater
+power around them - the decision makers that could be on their next promotion
+panel. Ignoring Emails that are a bit ambiguous could result in passing up an
+oportunity to help a colleague, forge a new professional relationship or prove
+your worth in the workplace. Rather than approaching the needs of others with
+derision, I would instead advise time-boxing a response and communicating your
+needs clearly to the other party. Something like - 'I'm a bit pushed for time
+right now and am not familiar with the context, but if you can point me to a
+briefing note I can get back to you on Monday, once I've cleared off my
+backlog'.
+
 Another feature of this book which that requires some scepticism is in the
 outcomes of studies used to underpin the attitudes and strategies promoted as
 good practice. It's likely no news to you that the behavioural sciences has
 attracted a fair amount of criticism about the reproducibility of published
-findings over the last decade.
+findings over the last decade. Coupled with the widespread publication bias
+encountered in academic journals @BMJPubBias and confirmation bias abound in
+the field of psychology, I would suggest the author reveal some of the research
+that they have undertaken in validating the claims of the studies. It is
+unlikely that the average reader will have the necessary time to carry out
+their own investigation of the findings, and doubt in the ability to evidence
+some of the claims within the book is introduced. I do not wish to sound like I
+am criticising the author for choosing studies that help to evidence their
+claims, as I would have criticised them for not doing so had that been the
+case. I would ask that the author publishes their attempts to prove the
+hypotheses considered.
 
 > "Don’t trust everything you read in the psychology literature. In fact, two
 thirds of it should probably be distrusted." @NatureReproducibility
-
-Coupled with the widespread publication bias encountered in academic journals
-@BMJPubBias and confirmation bias abound in the field of psychology, I would
-suggest the author reveal some of the research that they have undertaken in
-validating the claims of the studies. It is unlikely that the average reader
-will have the necessary time to carry out their own investigation of the
-findings, and doubt in the ability to evidence some of the claims within the
-book is introduced. I do not wish to sound like I am criticising the author for
-choosing studies that help to evidence their claims, as I would have criticised
-them for not doing so had that been the case. I would ask that the author
-publishes their attempts to prove the hypotheses considered.
 
 ## Comparisons
 
 There are some obvious comparisons with other productivity self-help books. One
 of the most obvious is in Stephen Covey's The 7 Habits of Highly Effective
-People. Both books make an effort to discuss the management of competing
+People @Covey. Both books make an effort to discuss the management of competing
 priorities and how to go about organising your working day around prioritised,
 impactful goals. Covey's book dedicates more energy towards effectively
 triaging tasks and charting progress made against longer-term priorities than
@@ -152,6 +208,12 @@ made by Newport - that the direction of progress is obvious to the reader and
 it is simply a matter of finding the undisturbed time to do the work. As many
 of us will encounter uncertainty and a fair amount of strategic thrashing in
 our working lives, this could prove to be a limiting assumption.
+
+Below is an example of what is commonly referred to as a "Covey Quadrant", a
+rubric for efficiently categorising tasks along dimensions of urgency and
+importance.
+
+<img alt="Covey quadrant, creative commons." src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/7_habits_decision-making_matrix.png/596px-7_habits_decision-making_matrix.png?20181120003806" width="400" class="center"/>
 
 ## Recommendation
 
