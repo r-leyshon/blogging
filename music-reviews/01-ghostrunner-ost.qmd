@@ -1,0 +1,34 @@
+---
+title: "Ghostrunner"
+subtitle: "Original Soundtrack"
+author: "Rich Leyshon."
+date: last-modified
+description: "A review of the soundtrack to the 2020 hit video game
+Ghostrunner, composed by Daniel Deluxe."
+categories:        
+    - Electronic
+    - Synthwave
+    - Video Game Music
+image: https://i.scdn.co/image/ab67616d0000b2736bbb199a6537fe7d858ec523
+image-alt: Album cover art
+toc: true
+---
+
+## Introduction
+
+```{r, width="300px", fig.align="center"}
+#| warning: false
+#| echo: false
+library(here)
+source(here("R/music-reviews/spotify-album.R"))
+source(here("R/music-reviews/config-secrets.R"))
+
+viz_album_audio_features(
+    title_font_size = 16,
+    subtitle_font_size = 12,
+    title_hjust = 1.8,
+    subtitle_hjust = 0.1
+
+)
+
+```

@@ -1,5 +1,5 @@
 ---
-title: Music Reviews (Pending)
+title: Music Reviews
 listing:
     type: grid
     contents:
