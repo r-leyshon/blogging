@@ -8,7 +8,9 @@
   },
   {
     "listing": "/music-reviews/index.html",
-    "items": []
+    "items": [
+      "/music-reviews/01-ghostrunner-ost.html"
+    ]
   },
   {
     "listing": "/book-reviews/index.html",

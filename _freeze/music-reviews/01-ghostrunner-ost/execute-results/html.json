@@ -1,0 +1,16 @@
+{
+  "hash": "3b29a5f14314fde9cce73c4104f72bdd",
+  "result": {
+    "markdown": "---\ntitle: \"Ghostrunner\"\nsubtitle: \"Original Soundtrack\"\nauthor: \"Rich Leyshon.\"\ndate: last-modified\ndescription: \"A review of the soundtrack to the 2020 hit video game\nGhostrunner, composed by Daniel Deluxe.\"\ncategories:        \n    - Electronic\n    - Synthwave\n    - Video Game Music\nimage: https://i.scdn.co/image/ab67616d0000b2736bbb199a6537fe7d858ec523\nimage-alt: Album cover art\ntoc: true\n---\n\n\n## Introduction\n\n\n::: {.cell layout-align=\"center\" width='300px'}\n::: {.cell-output-display}\n![](01-ghostrunner-ost_files/figure-html/unnamed-chunk-1-1.png){fig-align='center' width=672}\n:::\n:::\n",
+    "supporting": [
+      "01-ghostrunner-ost_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
