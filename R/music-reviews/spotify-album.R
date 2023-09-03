@@ -5,17 +5,15 @@ library(here)
 library(spotifyr)
 library(ggplot2)
 library(ggridges)
-#library(dplyr)
 library(tidyr)
+library(dplyr)
 library(glue)
-library(extrafont)
-library(methods)
 source(here("R/music-reviews/config-secrets.R"))
 
 
 get_album_artwork_url = function(
     spotify_id = "6mS0ssCxtLvB0IcVP7sR66",
-    api_key_path = here(".secrets.toml")
+    api_key_path = here::here(".secrets.toml")
     ){
     # configure api secrets
     config_secrets(api_key_path)
@@ -25,19 +23,28 @@ get_album_artwork_url = function(
     return(album[["images"]][["url"]][1])
     }
 
-viz_album_audio_features = function(
+get_album_audio_features = function(
     spotify_id = "6mS0ssCxtLvB0IcVP7sR66",
-    api_key_path = here(".secrets.toml"),
-    title_font_size = 14,
-    subtitle_font_size = 10,
-    title_hjust = 0.5,
-    subtitle_hjust = 0.5
+    api_key_path = here::here(".secrets.toml")
     ){
     # configure api secrets
     config_secrets(api_key_path)
     access_token <- spotifyr::get_spotify_access_token()
     # get album
     album = spotifyr::get_album(spotify_id)
+    return(album)
+}
+
+
+get_track_audio_features = function(
+    spotify_id = "6mS0ssCxtLvB0IcVP7sR66",
+    api_key_path = here::here(".secrets.toml"),
+    debug = FALSE
+    ){
+    # configure api secrets
+    config_secrets(api_key_path)
+    access_token <- spotifyr::get_spotify_access_token()
+    album = get_album_audio_features(spotify_id, api_key_path)
     # get artist name for title
     artist_name = album[["artists"]]$name
     # collect features for each track in album
@@ -47,16 +54,42 @@ viz_album_audio_features = function(
     track_names = tracks$items$name
     i = 1
     for(id in track_ids) {
-      track = get_track_audio_features(id)
-      track = cbind(track_name = track_names[i], track_order = i, track)
-      track_features = rbind(track_features, track)
-      i = i + 1
-    }
+        if (debug) {
+            print(glue::glue("Query track id: {id}"))
+        }
+        track = spotifyr::get_track_audio_features(id)
+        track = cbind(track_name = track_names[i], track_order = i, track)
+        track_features = rbind(track_features, track)
+        i = i + 1
+        }
+    out = list(
+        album_name = album$name,
+        artist = artist_name,
+        features = track_features)
+    return(out)
+}
+
+viz_album_audio_features = function(
+    spotify_id = "6mS0ssCxtLvB0IcVP7sR66",
+    api_key_path = here::here(".secrets.toml"),
+    audio_features = c("danceability", "energy", "speechiness",
+                       "acousticness", "instrumentalness", "valence"),
+    title_font_size = 14,
+    subtitle_font_size = 10,
+    title_hjust = 0.5,
+    subtitle_hjust = 0.5,
+    debug = FALSE
+    ){
+    # configure api secrets
+    config_secrets(api_key_path)
+    access_token <- spotifyr::get_spotify_access_token()
+    album_deets = get_track_audio_features(
+        spotify_id, api_key_path, debug = debug
+        )
     # pivot long on features to plot
-    interest_feats = c("danceability", "energy", "speechiness",
-                       "acousticness", "instrumentalness", "valence")
     tracks_long = tidyr::pivot_longer(
-        track_features, cols=all_of(interest_feats), names_to="features"
+        album_deets[["features"]], cols=all_of(audio_features),
+        names_to="features"
         )
     # create the plot
     plt = ggplot2::ggplot(
@@ -67,7 +100,7 @@ viz_album_audio_features = function(
         ) + 
     ggridges::theme_ridges(grid = FALSE, center_axis_labels = TRUE) +
     ggplot2::ggtitle(
-      glue::glue("{album$name} by {artist_name}"),
+      glue::glue("{album_deets[['album_name']]} by {album_deets[['artist']]}"),
       subtitle = "A Density Ridge Plot of Audio Features.") +
     ggplot2::labs(x = "", y = "") +
     ggplot2::theme(
@@ -89,3 +122,19 @@ viz_album_audio_features = function(
         ))
     print(plt)
     }
+
+
+create_album_audio_summary_table = function(
+    spotify_id = "6mS0ssCxtLvB0IcVP7sR66",
+    api_key_path = here::here(".secrets.toml"),
+    audio_features = c(
+        "danceability", "energy", "speechiness",
+        "acousticness", "instrumentalness", "valence")
+        ){
+            album_deets = get_track_audio_features(spotify_id, api_key_path)
+            track_features = dplyr::select(
+                album_deets[["features"]],
+                all_of(c("track_name", audio_features))
+                )
+                return(track_features)
+                }
