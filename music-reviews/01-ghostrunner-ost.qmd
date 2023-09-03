@@ -14,12 +14,17 @@ image-alt: Album cover art
 toc: true
 ---
 
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/6mS0ssCxtLvB0IcVP7sR66?utm_source=generator" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
+
 ## Introduction
+
 
 ```{r, width="300px", fig.align="center"}
 #| warning: false
 #| echo: false
 library(here)
+library(kableExtra)
+library(glue)
 source(here("R/music-reviews/spotify-album.R"))
 source(here("R/music-reviews/config-secrets.R"))
 
@@ -27,8 +32,29 @@ viz_album_audio_features(
     title_font_size = 16,
     subtitle_font_size = 12,
     title_hjust = 1.8,
-    subtitle_hjust = 0.1
-
+    subtitle_hjust = 0.1,
+    debug = FALSE
 )
 
 ```
+
+
+```{r}
+#| echo: false
+tab = create_album_audio_summary_table()
+# create album average
+numeric_cols = select(tab, where(is.numeric))
+summary_tab = summarise(numeric_cols, across(everything(), mean))
+summ_row = cbind(track_name = glue::glue("Album Mean"), summary_tab)
+tab = rbind(tab, summ_row)
+# Visualise
+summ_ind = nrow(tab)
+kableExtra::kbl(tab) %>%
+row_spec(summ_ind, color = "white", background = "#146542")
+
+
+```
+
+## About the Artist
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0Fjao3dmzO8S17aLXO1QvV?utm_source=generator&theme=0" width="100%" height="30px" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center ></iframe>

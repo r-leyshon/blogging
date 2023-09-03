@@ -77,11 +77,25 @@
     "text": "In Review.\nWe have written a very basic application that is not much use beyond a basic tutorial. Although we have successfully demonstrated how to have the ui and server elements of a Shiny application talk to one another. We’ve captured dynamic inputs provided by the user and presented them back within the interface. And we have been able to pause the server execution until the user asks for a response. That’s not a bad start at all. But so much more than this can be achieved in Python Shiny. A good place to go for inspiration is the Posit Example Gallery. And if you’d like to understand a little more about how Python Shiny fits into the Python dashboarding toolkit, please check out my other blog on The Current State of Python Shiny.\nHappy dashboarding!"
   },
   {
+    "objectID": "music-reviews/01-ghostrunner-ost.html#introduction",
+    "href": "music-reviews/01-ghostrunner-ost.html#introduction",
+    "title": "Ghostrunner",
+    "section": "Introduction",
+    "text": "Introduction\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntrack_name\ndanceability\nenergy\nspeechiness\nacousticness\ninstrumentalness\nvalence\n\n\n\n\nAir\n0.5730\n0.7320\n0.02960\n0.2660000\n0.8930\n0.05400\n\n\nInfiltrator\n0.6070\n0.5600\n0.04340\n0.0239000\n0.8120\n0.03720\n\n\nBlood and Steel\n0.6960\n0.3260\n0.05130\n0.0061700\n0.8210\n0.03760\n\n\nDharma\n0.6160\n0.8290\n0.03830\n0.1510000\n0.8860\n0.17100\n\n\nCapture\n0.7070\n0.6310\n0.04420\n0.0439000\n0.8350\n0.40100\n\n\nForget the Past\n0.4490\n0.5400\n0.03330\n0.2940000\n0.9050\n0.03320\n\n\nAccess Denied\n0.5680\n0.5320\n0.03660\n0.4890000\n0.8820\n0.04460\n\n\nLet Them Know\n0.8380\n0.6600\n0.05060\n0.7990000\n0.7790\n0.74100\n\n\nSector\n0.5450\n0.8440\n0.03040\n0.0035500\n0.7040\n0.03770\n\n\nFactory\n0.4630\n0.9280\n0.03680\n0.3610000\n0.8990\n0.29100\n\n\nStriker\n0.5340\n0.8180\n0.03440\n0.0102000\n0.8380\n0.22600\n\n\nCelerity\n0.6430\n0.8840\n0.03360\n0.0109000\n0.8540\n0.03650\n\n\nThe Orb\n0.5120\n0.9470\n0.05290\n0.3180000\n0.8410\n0.74600\n\n\nTruth to Power\n0.6530\n0.8970\n0.05590\n0.3430000\n0.8700\n0.61300\n\n\nBlaster\n0.5720\n0.8750\n0.03870\n0.2190000\n0.8380\n0.09020\n\n\nRazor\n0.3250\n0.9190\n0.05040\n0.0002510\n0.6570\n0.05070\n\n\nVendetta\n0.6400\n0.8900\n0.05720\n0.0502000\n0.8240\n0.14500\n\n\nAir (Cybervoid)\n0.5180\n0.7210\n0.02730\n0.3240000\n0.9510\n0.16400\n\n\nSolitude\n0.4830\n0.9510\n0.04010\n0.0090000\n0.8210\n0.39000\n\n\nSundown\n0.2860\n0.3880\n0.06380\n0.2700000\n0.6560\n0.06490\n\n\nAlbum Mean\n0.5614\n0.7436\n0.04244\n0.1996036\n0.8283\n0.21873"
+  },
+  {
+    "objectID": "music-reviews/01-ghostrunner-ost.html#about-the-artist",
+    "href": "music-reviews/01-ghostrunner-ost.html#about-the-artist",
+    "title": "Ghostrunner",
+    "section": "About the Artist",
+    "text": "About the Artist"
+  },
+  {
     "objectID": "music-reviews/index.html",
     "href": "music-reviews/index.html",
     "title": "Music Reviews",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nGhostrunner\n\n\n1 min\n\n\nA review of the soundtrack to the 2020 hit video game Ghostrunner, composed by Daniel Deluxe.\n\n\n\nRich Leyshon.\n\n\nSep 2, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nGhostrunner\n\n\n1 min\n\n\nA review of the soundtrack to the 2020 hit video game Ghostrunner, composed by Daniel Deluxe.\n\n\n\nRich Leyshon.\n\n\nSep 3, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "book-reviews/01-deep-work.html",
