@@ -108,6 +108,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#music-for-cyborg-ninjas" id="toc-music-for-cyborg-ninjas" class="nav-link" data-scroll-target="#music-for-cyborg-ninjas">Music for Cyborg Ninjas</a></li>
   <li><a href="#about-the-artist" id="toc-about-the-artist" class="nav-link" data-scroll-target="#about-the-artist">About the Artist</a></li>
   </ul>
 </nav>
@@ -155,10 +156,31 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/6mS0ssCxtLvB0IcVP7sR66?utm_source=generator" width="40%" height="80" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="center">
-</iframe>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>I’m thrilled to kick off the music review section of my blog with a highly engaging work by one of my favourite synth artists.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is a record with high turnover &amp; great energy - one to put on loop when you need to pull out all the stops on a thorny problem.</p>
+</div>
+</div>
+<p>Ghostrunner was one of the critically acclaimed independent platformer games of 2020. It’s aged particularly well on the latest generation of consoles, thanks in no small part to its fantastic soundtrack. The developers made a safe bet in selecting Daniel Deluxe to compose the nihilistic, cyberpunk soundtrack. Deluxe has been producing knockout darksynth since 2014 and has been a regular feature of my working music since I started programming.</p>
+</section>
+<section id="music-for-cyborg-ninjas" class="level2">
+<h2 class="anchored" data-anchor-id="music-for-cyborg-ninjas">Music for Cyborg Ninjas</h2>
+<p>It’s worth noting that this music isn’t for everyone. But I’ve never favoured that sort of music myself and wouldn’t find the time to review it. This music was written to energise players ready to engage in parkour-slash-em-up fun, without distracting from the brief interludes of narrative. As with all of my favoured music for work, you won’t find any ballads or warbling vocals here, so if you wan’t something to humm along to, you’d best find another blog!</p>
+<p>But if you’re down for this, I’d recommend clicking play on the spotify player button and enjoying the tunes while you read.</p>
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/6mS0ssCxtLvB0IcVP7sR66?utm_source=generator" width="40%" height="80" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="center">
+</iframe>
+<p><br> Let’s take a look at the audio feature analysis for this album. For a formal description of the audio feature categories presented here, please consult the <a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.</p>
 <div class="cell" data-layout-align="center" width="300px">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -168,6 +190,23 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpreting the Ridge Plot (Click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>These ridge plots show a histogram of the mean audio feature values across each track in the album. Look across the horizontal axis at where the peaks for each feature occur. For eample, if the album contains lots of tracks with busy vocals, the speechiness feature will show a peak to the right of the horizontal axis. Conversely, an instrumental album would have a speechiness peak to the left of the horizontal axis but you would also expect it to have a peak to the right of the axis in the instrumentalness feature.</p>
+</div>
+</div>
+</div>
+<p>Ghostrunner OST is clearly an instrumental album. These plots show that the tracks all score lowly on speechiness and highly on instrumentalness, with tight distributions. The album generally displays high measures for energy and danceability, though with broader distributions than that displayed by speechiness &amp; instrumentalness. The majority of the album is characterised by clear, steady and fast rhythm. Interestingly, the acousticness feature presents a very broad range of distribution in the confidence that tracks do not have electrical amplification. This really does not seem correct to me, as the album is unapologetically synth all the way. This has potentially been affected by production effects favouring reverb and echo, but that is surmising on my part. Lastly, I’ll turn to valence, which is a measure of positivity within the music. This feature is left-skewed. A higher number of lower valence values makes sense, as much of the album carries a sinister, Orwellian, digital-dystopian tone - generally interpretable as negative I would agree. The presence of higher values in this feature suggests that a fewer number of the tracks may be characterised with positive emotion.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">

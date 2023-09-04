@@ -14,10 +14,39 @@ image-alt: Album cover art
 toc: true
 ---
 
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/6mS0ssCxtLvB0IcVP7sR66?utm_source=generator" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
-
 ## Introduction
 
+I'm thrilled to kick off the music review section of my blog with a highly
+engaging work by one of my favourite synth artists.
+
+::: {.callout-note}
+This is a record with high turnover & great energy - one to put on loop when
+you need to pull out all the stops on a thorny problem.
+:::
+
+Ghostrunner was one of the critically acclaimed independent platformer games of
+2020. It's aged particularly well on the latest generation of consoles, thanks
+in no small part to its fantastic soundtrack. The developers made a safe bet
+in selecting Daniel Deluxe to compose the nihilistic, cyberpunk soundtrack.
+Deluxe has been producing knockout darksynth since 2014 and has been a regular
+feature of my working music since I started programming. 
+
+## Music for Cyborg Ninjas
+
+It's worth noting that this music isn't for everyone. But I've never favoured
+that sort of music myself and wouldn't find the time to review it. This music
+was written to energise players ready to engage in parkour-slash-em-up fun, 
+without distracting from the brief interludes of narrative. As with
+all of my favoured music for work, you won't find any ballads or warbling
+vocals here, so if you wan't something to humm along to, you'd best find
+another blog!
+
+But if you're down for this, I'd recommend clicking play on the spotify player button and enjoying the tunes while you read.
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/6mS0ssCxtLvB0IcVP7sR66?utm_source=generator" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
+<br>
+Let's take a look at the audio feature analysis for this album. For a formal description of the audio feature categories presented here, please consult the 
+<a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.
 
 ```{r, width="300px", fig.align="center"}
 #| warning: false
@@ -37,6 +66,14 @@ viz_album_audio_features(
 )
 
 ```
+
+::: {.callout-tip collapse="true"}
+## Interpreting the Ridge Plot (Click to expand)
+
+These ridge plots show a histogram of the mean audio feature values across each track in the album. Look across the horizontal axis at where the peaks for each feature occur. For eample, if the album contains lots of tracks with busy vocals, the speechiness feature will show a peak to the right of the horizontal axis. Conversely, an instrumental album would have a speechiness peak to the left of the horizontal axis but you would also expect it to have a peak to the right of the axis in the instrumentalness feature.
+:::
+
+Ghostrunner OST is clearly an instrumental album. These plots show that the tracks all score lowly on speechiness and highly on instrumentalness, with tight distributions. The album generally displays high measures for energy and danceability, though with broader distributions than that displayed by speechiness & instrumentalness. The majority of the album is characterised by clear, steady and fast rhythm. Interestingly, the acousticness feature presents a very broad range of distribution in the confidence that tracks do not have electrical amplification. This really does not seem correct to me, as the album is unapologetically synth all the way. This has potentially been affected by production effects favouring reverb and echo, but that is surmising on my part. Lastly, I'll turn to valence, which is a measure of positivity within the music. This feature is left-skewed. A higher number of lower valence values makes sense, as much of the album carries a sinister, Orwellian, digital-dystopian tone - generally interpretable as negative I would agree. The presence of higher values in this feature suggests that a fewer number of the tracks may be characterised with positive emotion. 
 
 
 ```{r}
