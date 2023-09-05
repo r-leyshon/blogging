@@ -5,10 +5,10 @@ author: "Rich Leyshon."
 date: last-modified
 description: "A review of the soundtrack to the 2020 hit video game
 Ghostrunner, composed by Daniel Deluxe."
-categories:        
-    - Electronic
-    - Synthwave
-    - Video Game Music
+categories:
+- Electronic
+- Synthwave
+- Video Game Music
 image: https://i.scdn.co/image/ab67616d0000b2736bbb199a6537fe7d858ec523
 image-alt: Album cover art
 toc: true
@@ -16,20 +16,20 @@ toc: true
 
 ## Introduction
 
-I'm thrilled to kick off the music review section of my blog with a highly
-engaging work by one of my favourite synth artists.
+I'm thrilled to kick off the music review section of my blog with an engaging
+work by one of my favourite synth artists.
 
 ::: {.callout-note}
 This is a record with high turnover & great energy - one to put on loop when
 you need to pull out all the stops on a thorny problem.
 :::
 
-Ghostrunner was one of the critically acclaimed independent platformer games of
+Ghostrunner was one of the acclaimed independent platformer games of
 2020. It's aged particularly well on the latest generation of consoles, thanks
 in no small part to its fantastic soundtrack. The developers made a safe bet
 in selecting Daniel Deluxe to compose the nihilistic, cyberpunk soundtrack.
 Deluxe has been producing knockout darksynth since 2014 and has been a regular
-feature of my working music since I started programming. 
+feature of my working music since I started programming.
 
 Deluxe's 2014 effort by the name of
 [Darkness](https://open.spotify.com/album/1G66EjFlNMcXL4sudDiYEF) was one of
@@ -38,7 +38,7 @@ gone so deep with this genre. It's a fantastic piece of 80s romantic nostalgia
 with evocative speech samples taken from the 1985 fantasy movie Legend,
 starring Tim Curry as the eponymous Darkness - a character that haunted the
 nightmares of many '80s children. Much of Deluxe's catalogue is worthy of your
-time and Ghostrunner OST is possibly the crowning achievement. As his fifth and
+time and Ghostrunner OST is the crowning achievement. As his fifth and
 latest (at time of writing) studio album, Ghostrunner draws and builds upon the
 stylistic themes explored in previous albums. Though in this effort, a shorter
 average track length has kept things laser-focussed. Ghostrunner is a great
@@ -50,10 +50,10 @@ vein.
 
 It's worth noting that this music isn't for everyone. But I've never favoured
 that sort of music myself and wouldn't find the time to review it. This music
-was written to energise players ready to engage in parkour-slash-em-up fun, 
+was written to energise players ready to engage in parkour-slash-em-up fun,
 without distracting from the brief interludes of narrative. As with
-all of my favoured music for work, you won't find any ballads or warbling
-vocals here, so if you wan't something to humm along to, you'd best find
+all my favoured music for work, you won't find any ballads or warbling
+vocals here, so if you want something to hum along to, you'd best find
 another blog!
 
 But if you're down for this, I'd recommend clicking play on the spotify player
@@ -62,7 +62,7 @@ button and enjoying the tunes while you read.
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/6mS0ssCxtLvB0IcVP7sR66?utm_source=generator" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
 <br>
 Let's take a look at the audio feature analysis for this album. For a formal
-description of the audio feature categories presented here, please consult the 
+description of the audio feature categories presented here, please consult the
 <a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.
 
 ```{r, width="300px", fig.align="center"}
@@ -75,11 +75,11 @@ source(here("R/music-reviews/spotify-album.R"))
 source(here("R/music-reviews/config-secrets.R"))
 
 viz_album_audio_features(
-    title_font_size = 16,
-    subtitle_font_size = 12,
-    title_hjust = 1.8,
-    subtitle_hjust = 0.1,
-    debug = FALSE
+title_font_size = 16,
+subtitle_font_size = 12,
+title_hjust = 1.8,
+subtitle_hjust = 0.1,
+debug = FALSE
 )
 
 ```
@@ -87,10 +87,31 @@ viz_album_audio_features(
 ::: {.callout-tip collapse="true"}
 ## Interpreting the Ridge Plot (Click to expand)
 
-These ridge plots show a histogram of the mean audio feature values across each track in the album. Look across the horizontal axis at where the peaks for each feature occur. For eample, if the album contains lots of tracks with busy vocals, the speechiness feature will show a peak to the right of the horizontal axis. Conversely, an instrumental album would have a speechiness peak to the left of the horizontal axis but you would also expect it to have a peak to the right of the axis in the instrumentalness feature.
+These ridge plots show a histogram of the mean audio feature values across each
+track in the album. Look across the horizontal axis at where the peaks for each
+feature occur. For example, if the album contains lots of tracks with busy
+vocals, the speechiness feature will show a peak to the right of the horizontal
+axis. Conversely, an instrumental album would have a speechiness peak to the
+left of the horizontal axis but you would also expect it to have a peak to the
+right of the axis in the instrumentalness feature.
 :::
 
-Ghostrunner OST is clearly an instrumental album. This plot show that the tracks all score lowly on speechiness and highly on instrumentalness, with tight distributions. The album generally displays high measures for energy and danceability, though with broader distributions than that displayed by speechiness & instrumentalness. The majority of the album is characterised by clear, steady and fast rhythm. Interestingly, the acousticness feature presents a very broad range of distribution in the confidence that tracks do not have electrical amplification. This really does not seem correct to me, as the album is unapologetically synth all the way. This has potentially been affected by production effects favouring reverb and echo, but that is surmising on my part. Lastly, I'll turn to valence, which is a measure of positivity within the music. This feature is left-skewed. A higher number of lower valence values makes sense, as much of the album carries a sinister, Orwellian, digital-dystopian tone - generally interpretable as negative I would agree. The presence of higher values in this feature suggests that a fewer number of the tracks may be characterised with positive emotion. 
+Ghostrunner OST is clearly an instrumental album. This plot shows that the
+tracks all score lowly on speechiness and highly on instrumentalness, with
+tight distributions. The album generally displays high measures for energy and
+danceability, though with broader distributions than that displayed by
+speechiness & instrumentalness. The majority of the album is clear, steady and
+fast rhythm. Interestingly, the acousticness feature presents a very broad
+range of distribution in the confidence that tracks do not have electrical
+amplification. This really does not seem correct to me, as the album is
+unapologetically synth all the way. This is potentially affected by production
+effects favouring reverb and echo, but that is surmising on my part. Lastly,
+I'll turn to valence, which is a measure of positivity within the music. This
+feature is right-skewed. A higher number of lower valence values makes sense,
+as much of the album carries a sinister, Orwellian, digital-dystopian tone -
+generally interpretable as negative I would agree. The presence of higher
+values in this feature suggests that a fewer number of the tracks may be
+characterised with positive emotion.
 
 ## The Tracks
 
@@ -110,33 +131,32 @@ summ_ind = nrow(tab)
 kableExtra::kbl(tab) %>%
 row_spec(summ_ind, color = "white", background = "#146542")
 
-
 ```
 
 **Air**
-Beautiful synth bleeparrangement overlayed with menacing robot groans. A mashy
+Beautiful synth bleep arrangement overlayed with menacing robot groans. A mashy
 bass beat rounds out this atmospheric ode to a mysterious, futuristic
 cityscape.
-
 
 **Infiltrator**
 Bassy experiments with tempo against a stripped-back rhythm section. Reminds me
 of scrap brain zone on sonic the hedgehog. Intermittent alert signals and
 robotic glitches. Glimpses of some wonderful serene motif before being thrust
-back into the main formation.
+back into the main formation. At the time of writing, this track is currently
+the most popular on this album.
 
 **Blood and steel**
-This track is very recognisable. Inspires an unsettling feeling of De ja vú
+This track is very recognizable. Inspires an unsettling feeling of Deja vú
 within the listener. Conjuring images of a futuristic crime scene
-investigation. A dreamy intro prior to a strong drum & bass injection. The
+investigation. A dreamy intro before a strong drum & bass injection. The
 track culminates in a growing phaser storm that smothers the rest of the track
 before it cuts at the point of its culmination. A highlight of the album.
 
 **Dharma**
-Anyone of a certain age will undoubtedly be reminded of ABC's gripping scifi 
-thriller Lost, of the early noughties. This track strikes a noticeably menacing
+Anyone of a certain age will likely remember ABC's gripping sci fi
+thriller Lost, of the early noughties. Dharma was the name of the malevolent. corporation behind much of the protagonists woes. This track strikes a fittingly menacing
 tone. A dripping, ticking lick loops over a bossy bass hook. Lazer phasers
-growing in tone & pitch throughout for good measure. 
+growing in tone & pitch throughout for good measure.
 
 **Capture**
 A zoned out, decidedly creepy intro with an android snigger looped over bell
@@ -145,7 +165,7 @@ beat chugging away only to take frequent breaks to peak at you from the
 shadows. Sinister but with style.
 
 **Forget the past**
-Begins on a melancholy reflection that seems to consider the song's title some 
+Begins on a melancholy reflection that seems to consider the song's title some
 advice to self. Continues the chilling set by the previous track with an
 inhumane battery of bass noise, giving way to serene, elongated spacetrips of
 harmonic synth.
@@ -154,35 +174,115 @@ harmonic synth.
 A collective of error signals experienced through a thick gelatinous membrane.
 This song feels like being rudely awoken from the matrix. An electric wire to
 the brain in the high tempo intro of a squelchy phaser bleep on loop. Drum &
-cymbal snares introduces some peril to the experience. Another favourite of
-mine. 
+cymbal snares introduce some peril to the experience. Another favourite of
+mine.
 
-**Let them know** - higher range melodic expletives over a stripped back drum beat, and a growing, bubbling, frothy arsenal of phaser barrages. Giving way to a much stronger bass and dipping in and out with further volleys. Wipeout style high speed wipe and some time out ticks, sounds like hitting a spoon on a tin bowl. Robot timeout. Layers wiped together in a busy, structured crescendo.
+**Let them know**
+High pitch melodic trills over a stripped back drum beat with a growing,
+bubbling, frothy arsenal of phaser barrages. The trills give way to a strong
+bass line, dipping in and out of the foreground. Halfway in, a Wipeout-style
+high speed fade is accompanied by checkpoint ticks that sound a bit like
+hitting metal on metal. This track has a great time trial feel. The layers
+wipe together in a busy, well-structured crescendo. This is the highlight of
+the album for me.
 
-**Sector** - mysterious hyper speed contrail sound. With some product ionised robot intonation, rapping over the crunchy bass drum. Imagine you programmed a robot with the licence to low-fi rap. 
+**Sector**
+Starting on a mysterious, hyper-speed contrail of sound. With some
+productionised robot intonation rapping over the crunchy bass drum. Joined
+later by a Japanese-inspired treble section for the interested Japanophile.
+Reminiscent of the excellent
+[Triads by Code Elektro](https://open.spotify.com/album/3K48lplYXbQSc87pfuJ0Pa)
+(review sure to come at some point).
 
-**Factory** - clever mix of major minor android aria signals. Locking in some bassy robo groans with some mysterious echo -flared laser trills. Descends into a mission impossible repeato added some beautiful high freq synth melody.
+**Factory**
+A clever mix of major and minor android aria signals. Locking in some bassy
+robo groans with some mysterious echo-flared laser trills. The track descends
+into a mission impossible repeato while adding some beautiful high frequency
+synth melody.
 
-**Striker** - enters with an industrial explosion experienced from a vast distance, echoing out into a wide pool of synth intergration tests, like circuit fingers working through a mossy undertow. High freq synth chimes with glitch notation slips away to a seedy, menacing robo bridge. The pretty synth returns to work over the menacing robo.
+**Striker**
+Enters with an industrial explosion experienced from a vast distance, rippling
+out into a wide pool of synth integration tests, like circuit fingers working
+through a mossy undertow. High frequency synth chimes with a glitched notation
+slips away to a seedy, menacing robotic bridge. The pretty synth
+returns to work over the menacing robo. A close second favourite.
 
-**Celerity** - Prodigy-like industrial D&B with some Charlie always tells his mommy fairground loop. Being glitched out with a jarring, chugging interference. Giving way to some graceful tech wipes for a moment before the interference invades once more. Moving to a double time march to up the ante, long distance robo chase,.
+**Celerity** - Celerity is not a word I have encountered before, but according
+to [dictionary.com](https://www.dictionary.com/browse/celerity) it means swift
+movement. An interesting choice of title for this track as I interpret the
+rhythm to be more steady.
+Starting on a
+[Prodigy-like industrial D&B](https://open.spotify.com/track/3xH7xicTlukrmnHIHINTW0)
+replete with an accompanying fairground loop. A glitched-up affair with a
+jarring, chugging interference playing with your expectations throughout. This
+moves on to some graceful tech wipes for a moment before the interference
+dominates once more. Ending on a commandeering double-time march to up the
+ante, this track conjures a long-distance robotic pursuit.
 
-**The orb** - shimmering, robot talk phasing in and out of consciousness. Moves onto experiment with the beat and tone, swaying in and out of the fore as the beat establishes command. 
+**The orb**
+At this point in the album, we encounter a run of shorter, more intense songs.
+The orb has a brilliant, shimmering, robot talk phasing in and out of
+consciousness. Moving on to experiment with beat and tone patterns, swaying in
+and out of the fore as the beat establishes command. Short, but oh, so sweet.
 
-**Truth to power** - a whispered android complaint grows and takes full form, before being resigned to radio playback. Jumps in and out of the foreground while comets wipe by and leaves a trail of icy debris zooming past the listener. 
+**Truth to power**
+A chunky drum section overlayed by a whispered android complaint growing
+to take full form, before relegated to radio playback. The android voice
+jumps in and out of focus while comets wipe by and leaves a trail of icy debris
+zooming past the listener. Likely to be the sort of music that Chat-GPT
+generates when frustrated by the lack of imagination presented by its users.
 
-**Blaster** - something larger rising out of the depths, waving away in front of your ears. Once surfaced, reveals itself to be largely drum-driven automation with a bassy tempest of brass billowing away under the surface. 
+**Blaster**
+Watch out for this one - there's something larger rising out of the depths,
+waving away in front of your ears. Once surfaced, it reveals itself to be
+largely drum-engined automation with a bassy tempest of brass billowing away
+under the surface, like an automaton that's managed to preserve the very last
+of the human tuba instrumentalists, lifespan extended with cybernetic implants.
 
-**Razor** - accusatory synth calls against a halloween-esque synth sustain. Emerges onto an 80s horror set before adopting a atention-demanding rhythm section. High-end synth parrots away while some os-level tech blurb ramps up to the fore. 
+**Razor**
+Accusatory synth calls out against a halloween-esque synth sustain. Emerging
+out onto an '80s horror set before adopting an attention-demanding rhythm.
+High-end synth parrots away while some os-level tech blurb ramps up to the
+fore.
 
-**Vendetta** - reliable, robot trill dances between pitches, laying off for some harmonious electro organ to swing in and out overhead. While machine gun volleys show their weight to the beat.
+**Vendetta**
+A reliable, robotic trill dances between pitches, laying off for some
+harmonious electro organ to swing in and out overhead. Machine gun volleys
+shower their weight to the beat.
 
-**Air** (Cybervoid) a welcome reprise to the first track revisits the suspicious first day in a cybernetic future. Blazing bass warmly intervenes the laser hook and meshes around as the track progresses. 
+**Air (Cybervoid)**
+A welcome reprise to the first track of the album revisits a suspicious first
+day in a cybernetic future. A subtle difference to the original but more
+immediate. Blazing and warm bass tones intervene the laser hook and encompasses
+around the track as it progresses.
 
-**Solitude** - dreamy space age synthetic  Bach - rises from the murky depths to sit in a shimmering orchestral pool while sum squishy, rubber deep bass robe vocals sound out over the morass. 
+**Solitude**
+A dreamy space-age synthetic Bach rises from the murky depths to sit in a
+shimmering orchestral pool, composing his techno-symphonies. In stark contrast,
+squishy, rubbery deep bass android vocals sound out over the alien morass.
 
-**Sundown** - gothic android monk prayer gives way to laser piano overlays. Cutting out to flatlined electro strings & the futuristic remnants of whatever birds evolved into once AI conquered the Earth. 
+**Sundown**
+A gothic android monk prayer cedes to laser piano overlays. Cutting out to
+flatlined electro strings & the futuristic remnants of whatever birds evolved
+into once AI conquered the Earth. A contemplative end to a high-energy album.
+Likely to reflect a sombre tone to the end of the video game, though I
+cannot confirm this as I was pretty rubbish when I tried it.
 
 ## Highs and Lows
 
+No real lows to talk of in this album, but the three standout tracks that I
+recommend are:
+
+1. Let them know
+2. Striker
+3. Blood and steel
+
 ## Overall
+
+A smashing piece of dark synthpop that delivers focussed energy while
+conserving your concentration. The theme is sinister at points but never loses
+its potency for concentrainment. A good choice for smashing out some shallow
+work or a briefing note in a short space of time. Perhaps not as inspiring or
+uplifting as some of my other instrumental ambient choices for creative energy.
+But this album establishes a steady cadence and will keep your foot tapping
+while your hands do the typing.
