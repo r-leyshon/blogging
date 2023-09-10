@@ -1,4 +1,11 @@
 /* css styles */
+p#fin {
+  color: #5A5A5A;
+  font-weight: bold;
+  font-family: cursive;
+  font-size: 64px;
+  text-align: center;
+}
 
 .shaded_box {
   border: 1px solid black;

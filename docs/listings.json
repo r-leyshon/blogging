@@ -2,6 +2,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/03-quarto-github-actions.html",
       "/blogs/02-getting-started-pyshiny.html",
       "/blogs/01-state-of-pyshiny.html"
     ]
