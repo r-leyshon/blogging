@@ -1,7 +1,7 @@
 ---
-title: "Deep Work."
-subtitle: "Rules for Focused Success in a Distracted World."
-author: "Rich Leyshon."
+title: "Deep Work"
+subtitle: "Rules for Focused Success in a Distracted World"
+author: "Rich Leyshon"
 date: last-modified
 description: "A review of Cal Newport's much lauded productivity how to guide."
 categories:        

@@ -1,6 +1,6 @@
 ---
-title: "Welcome to The Data Savvy Corner."
-author: "Rich Leyshon."
+title: "Welcome to The Data Savvy Corner!"
+author: "Rich Leyshon"
 date: today
 date-modified: last-modified
 resources:

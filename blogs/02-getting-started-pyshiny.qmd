@@ -1,6 +1,6 @@
 ---
-title: "Let's Build a Basic Python Shiny App."
-author: "Rich Leyshon."
+title: "Let's Build a Basic Python Shiny App"
+author: "Rich Leyshon"
 date: last-modified
 description: "An interactive tutorial allowing newcomers to Shiny to build a basic application."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
