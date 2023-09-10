@@ -18,5 +18,15 @@
     "items": [
       "/book-reviews/01-deep-work.html"
     ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/blogs/03-quarto-github-actions.html",
+      "/music-reviews/01-ghostrunner-ost.html",
+      "/book-reviews/01-deep-work.html",
+      "/blogs/02-getting-started-pyshiny.html",
+      "/blogs/01-state-of-pyshiny.html"
+    ]
   }
 ]

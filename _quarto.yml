@@ -4,10 +4,14 @@ project:
 execute:
   freeze: auto
 website:
+  site-url: "https://thedatasavvycorner.netlify.app/"
+  description: "Musings, ramblings, generally putting things down in text so I don't forget them."
   search: false
   title: "The Data Savvy Corner"
   navbar:
     left:
+      - icon: rss
+        href: index.xml
       - blogs/index.qmd
       - music-reviews/index.qmd
       - book-reviews/index.qmd
