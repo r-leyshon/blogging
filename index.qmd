@@ -1,5 +1,5 @@
 ---
-title: "Another Nerd Blog."
+title: "Welcome to The Data Savvy Corner."
 author: "Rich Leyshon."
 date: today
 date-modified: last-modified
@@ -16,9 +16,9 @@ these things somewhere.
 
 ## Site Overview
 
-* [Blogs](blogs/index.qmd) : Explanations, tutorials, how-to guides. All blogs
-are regarding technical subjects and are categorised according to the excellent
-[diataxis framework](https://diataxis.fr/).
+* [Byte-Wise Musings](blogs/index.qmd) : Technical blogs, Explanations,
+tutorials, how-to guides. All articles are categorised according to the
+excellent [diataxis framework](https://diataxis.fr/).
 
 <figure class=center-for-index>
   <img alt="Diátaxis quadrant." src="https://diataxis.fr/_images/diataxis.png" style="width:600px"/>  
@@ -26,15 +26,17 @@ are regarding technical subjects and are categorised according to the excellent
 </figure>
 
 
-* [Music Reviews](music-reviews/index.qmd) : I listen to strictly non-verbal
-music when programming. This was a habit that I developed while working within
-a busy office environment. Instrumental music of several genres has helped me
-efficiently establish a state of mental flow required for deep concentration.
-I'll include reviews of some of my favourite albums here, categorised by genre.
+* [Productivity Pulse](music-reviews/index.qmd) : Music reviews. I listen to
+strictly non-verbal music when programming. This was a habit that I developed
+while working within a busy office environment. Instrumental music of several
+genres has helped me efficiently establish a state of mental flow required for
+deep concentration. I'll include reviews of some of my favourite albums here,
+categorised by genre.
 
-* [Book Reviews](book-reviews/index.qmd) : Much of my casual reading is
-non-fiction tangential to programming. I'll review material here that I have
-found to be supportive of my work in various aspects, categorised by genre.
+* [Bookmarked Insights](book-reviews/index.qmd) : Book reviews. Much of my
+casual reading is non-fiction tangential to programming. I'll review material
+here that I have found to be supportive of my work in various aspects,
+categorised by genre.
 
 ## About Me
 
@@ -43,7 +45,7 @@ found to be supportive of my work in various aspects, categorised by genre.
 
 
 I am a Senior Data Scientist at the Office for National Statistics Data Science
-Campus. I enjoy programming & [automation](https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/) and tend to work to the standards outlined in
+Campus. I enjoy programming & [automation](https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/) and an advocate for the standards outlined in
 [Quality Assurance of Code for Analysis & Research](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html). For more detail regarding my professional experience, please follow this
 [link to my resumé](https://r-leyshon.github.io/resume/). And to collaborate
 with me, here's [my GitHub profile](https://github.com/r-leyshon).

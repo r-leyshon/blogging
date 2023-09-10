@@ -5,11 +5,9 @@ execute:
   freeze: auto
 website:
   search: false
-  title: "Blogging."
+  title: "The Data Savvy Corner"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
       - blogs/index.qmd
       - music-reviews/index.qmd
       - book-reviews/index.qmd

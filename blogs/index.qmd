@@ -1,5 +1,5 @@
 ---
-title: Blogs
+title: Byte-Wise Musings
 listing:
     type: grid
     contents:

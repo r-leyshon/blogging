@@ -1,5 +1,5 @@
 ---
-title: Music Reviews
+title: Productivity Pulse
 listing:
     type: grid
     contents:

@@ -44,7 +44,7 @@
   {
     "objectID": "blogs/index.html",
     "href": "blogs/index.html",
-    "title": "Blogs",
+    "title": "Byte-Wise Musings",
     "section": "",
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nThe State of Python Shiny.\n\n\n15 min\n\n\n\nExplanation\n\n\n\nAn overview of the progress of Python Shiny, and where it could possibly go.\n\n\n\nRich Leyshon.\n\n\nAug 29, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet’s Build a Basic Python Shiny App.\n\n\n21 min\n\n\n\nTutorial\n\n\n\nAn interactive tutorial allowing newcomers to Shiny to build a basic application.\n\n\n\nRich Leyshon.\n\n\nAug 12, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
@@ -121,7 +121,7 @@
   {
     "objectID": "music-reviews/index.html",
     "href": "music-reviews/index.html",
-    "title": "Music Reviews",
+    "title": "Productivity Pulse",
     "section": "",
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nGhostrunner\n\n\n9 min\n\n\nA review of the soundtrack to the 2020 hit video game Ghostrunner, composed by Daniel Deluxe.\n\n\n\nRich Leyshon.\n\n\nSep 5, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
@@ -170,36 +170,36 @@
   {
     "objectID": "book-reviews/index.html",
     "href": "book-reviews/index.html",
-    "title": "Book Reviews",
+    "title": "Bookmarked Insights",
     "section": "",
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nDeep Work.\n\n\n9 min\n\n\n\nSelf-Help\n\n\nProductivity\n\n\nBusiness\n\n\nPsychology\n\n\nPhilosophy\n\n\n\nA review of Cal Newport’s much lauded productivity how to guide.\n\n\n\nRich Leyshon.\n\n\nAug 31, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Another Nerd Blog.",
+    "title": "Welcome to The Data Savvy Corner.",
     "section": "",
     "text": "A site to store blogs about programming concepts, software development and data science. Generally things that future me will be thankful that I’ve recorded these things somewhere."
   },
   {
     "objectID": "index.html#intro",
     "href": "index.html#intro",
-    "title": "Another Nerd Blog.",
+    "title": "Welcome to The Data Savvy Corner.",
     "section": "",
     "text": "A site to store blogs about programming concepts, software development and data science. Generally things that future me will be thankful that I’ve recorded these things somewhere."
   },
   {
     "objectID": "index.html#site-overview",
     "href": "index.html#site-overview",
-    "title": "Another Nerd Blog.",
+    "title": "Welcome to The Data Savvy Corner.",
     "section": "Site Overview",
-    "text": "Site Overview\n\nBlogs : Explanations, tutorials, how-to guides. All blogs are regarding technical subjects and are categorised according to the excellent diataxis framework.\n\n\n\n\n\n© Daniele Procida.\n\n\n\nMusic Reviews : I listen to strictly non-verbal music when programming. This was a habit that I developed while working within a busy office environment. Instrumental music of several genres has helped me efficiently establish a state of mental flow required for deep concentration. I’ll include reviews of some of my favourite albums here, categorised by genre.\nBook Reviews : Much of my casual reading is non-fiction tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects, categorised by genre."
+    "text": "Site Overview\n\nByte-Wise Musings : Technical blogs, Explanations, tutorials, how-to guides. All articles are categorised according to the excellent diataxis framework.\n\n\n\n\n\n© Daniele Procida.\n\n\n\nProductivity Pulse : Music reviews. I listen to strictly non-verbal music when programming. This was a habit that I developed while working within a busy office environment. Instrumental music of several genres has helped me efficiently establish a state of mental flow required for deep concentration. I’ll include reviews of some of my favourite albums here, categorised by genre.\nBookmarked Insights : Book reviews. Much of my casual reading is non-fiction tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects, categorised by genre."
   },
   {
     "objectID": "index.html#about-me",
     "href": "index.html#about-me",
-    "title": "Another Nerd Blog.",
+    "title": "Welcome to The Data Savvy Corner.",
     "section": "About Me",
-    "text": "About Me\n\nI am a Senior Data Scientist at the Office for National Statistics Data Science Campus. I enjoy programming & automation and tend to work to the standards outlined in Quality Assurance of Code for Analysis & Research. For more detail regarding my professional experience, please follow this link to my resumé. And to collaborate with me, here’s my GitHub profile."
+    "text": "About Me\n\nI am a Senior Data Scientist at the Office for National Statistics Data Science Campus. I enjoy programming & automation and an advocate for the standards outlined in Quality Assurance of Code for Analysis & Research. For more detail regarding my professional experience, please follow this link to my resumé. And to collaborate with me, here’s my GitHub profile."
   }
 ]
