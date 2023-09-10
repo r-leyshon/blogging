@@ -10,7 +10,7 @@
 <atom:link href="https://thedatasavvycorner.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Musings, ramblings, generally putting things down in text so I don&#39;t forget them.</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Sun, 10 Sep 2023 11:48:37 GMT</lastBuildDate>
+<lastBuildDate>Sun, 10 Sep 2023 13:12:15 GMT</lastBuildDate>
 <item>
   <title>How to Automate Quarto Builds with GitHub Actions</title>
   <dc:creator>Rich Leyshon</dc:creator>
@@ -420,8 +420,10 @@ Finally, embed the url in the src of a markdown image, like: <code>![example wor
 </div>
 </div></section></div> ]]></description>
   <category>How-to</category>
+  <category>CI/CD</category>
+  <category>Front End Dev</category>
   <guid>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</guid>
-  <pubDate>Sun, 10 Sep 2023 11:48:37 GMT</pubDate>
+  <pubDate>Sun, 10 Sep 2023 13:12:15 GMT</pubDate>
   <media:content url="https://i1.pickpik.com/photos/452/586/379/code-html-digital-coding-preview.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>

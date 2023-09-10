@@ -6,6 +6,7 @@ date-modified: last-modified
 resources:
   - .nojekyll
 listing:
+    id: main-listing
     type: default
     contents:
         - /blogs/[!index]*.qmd
@@ -18,8 +19,8 @@ listing:
     filter-ui: true
     categories: true
     date-format: medium
+    max-items: 5
     image-placeholder: https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1260&amp;h=750&amp;dpr=1 # creative commons license
-    page-size: 9
     fields: [image, date, title, author, reading-time, description, categories]
     feed: true
 ---
@@ -54,6 +55,11 @@ categorised by genre.
 casual reading is non-fiction tangential to programming. I'll review material
 here that I have found to be supportive of my work in various aspects,
 categorised by genre.
+
+## Recent Articles
+
+::: {#main-listing}
+:::
 
 ## About Me
 

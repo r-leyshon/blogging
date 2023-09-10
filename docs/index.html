@@ -55,7 +55,7 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-main-listing .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
@@ -68,7 +68,7 @@ ul.task-list li input[type="checkbox"] {
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-main-listing'] = new List('listing-main-listing', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -139,10 +139,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#intro" id="toc-intro" class="nav-link active" data-scroll-target="#intro">Intro</a></li>
   <li><a href="#site-overview" id="toc-site-overview" class="nav-link" data-scroll-target="#site-overview">Site Overview</a></li>
+  <li><a href="#recent-articles" id="toc-recent-articles" class="nav-link" data-scroll-target="#recent-articles">Recent Articles</a></li>
   <li><a href="#about-me" id="toc-about-me" class="nav-link" data-scroll-target="#about-me">About Me</a></li>
   </ul>
 </nav>
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Business">Business <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Electronic">Electronic <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Explanation">Explanation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="How-to">How-to <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Philosophy">Philosophy <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Productivity">Productivity <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Psychology">Psychology <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Self-Help">Self-Help <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Synthwave">Synthwave <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tutorial">Tutorial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Video Game Music">Video Game Music <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Business">Business <span class="quarto-category-count">(1)</span></div><div class="category" data-category="CI/CD">CI/CD <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Electronic">Electronic <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Explanation">Explanation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Front End Dev">Front End Dev <span class="quarto-category-count">(1)</span></div><div class="category" data-category="How-to">How-to <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Philosophy">Philosophy <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Productivity">Productivity <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Psychology">Psychology <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Self-Help">Self-Help <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Synthwave">Synthwave <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tutorial">Tutorial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Video Game Music">Video Game Music <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -202,20 +203,13 @@ ul.task-list li input[type="checkbox"] {
 <li><p><a href="./book-reviews/index.html">Bookmarked Insights</a> : Book reviews. Much of my casual reading is non-fiction tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects, categorised by genre.</p></li>
 </ul>
 </section>
-<section id="about-me" class="level2">
-<h2 class="anchored" data-anchor-id="about-me">About Me</h2>
-<p><img class="center" src="https://github.com/r-leyshon/resume/blob/main/www/fin-conf-2020-bw.jpg?raw=true" alt="@r-leyshon"></p>
-<p>I am a Senior Data Scientist at the Office for National Statistics Data Science Campus. I enjoy programming &amp; <a href="https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/">automation</a> and an advocate for the standards outlined in <a href="https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html">Quality Assurance of Code for Analysis &amp; Research</a>. For more detail regarding my professional experience, please follow this <a href="https://r-leyshon.github.io/resume/">link to my resumé</a>. And to collaborate with me, here’s <a href="https://github.com/r-leyshon">my GitHub profile</a>.</p>
-
-
-
-</section>
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<section id="recent-articles" class="level2">
+<h2 class="anchored" data-anchor-id="recent-articles">Recent Articles</h2>
+<div id="listing-main-listing" class="quarto-listing quarto-listing-container-default">
 <div class="listing-actions-group">
    <div class="input-group input-group-sm quarto-listing-sort">
      <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+     <select id="listing-main-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-main-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
        <option value="" disabled="" selected="" hidden="">Order By</option>
        <option value="index" data-direction="asc">Default</option>
          <option value="listing-title" data-direction="asc">
@@ -235,7 +229,7 @@ ul.task-list li input[type="checkbox"] {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="How-to" data-listing-date-sort="1694346517000" data-listing-file-modified-sort="1694346517981" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="quarto-post image-right" data-index="0" data-categories="How-to,CI/CD,Front End Dev" data-listing-date-sort="1694351535000" data-listing-file-modified-sort="1694351535929" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
 <div class="thumbnail">
 <p><a href="./blogs/03-quarto-github-actions.html"> <img src="https://i1.pickpik.com/photos/452/586/379/code-html-digital-coding-preview.jpg" class="thumbnail-image" alt="HTML code."> </a></p>
 </div>
@@ -251,6 +245,12 @@ How to Automate Quarto Builds with GitHub Actions
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('How-to'); return false;">
 How-to
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('CI/CD'); return false;">
+CI/CD
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Front End Dev'); return false;">
+Front End Dev
 </div>
 </div>
 <a href="./blogs/03-quarto-github-actions.html">
@@ -447,7 +447,18 @@ Rich Leyshon
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div></main> <!-- /main -->
+</div>
+</section>
+<section id="about-me" class="level2">
+<h2 class="anchored" data-anchor-id="about-me">About Me</h2>
+<p><img class="center" src="https://github.com/r-leyshon/resume/blob/main/www/fin-conf-2020-bw.jpg?raw=true" alt="@r-leyshon"></p>
+<p>I am a Senior Data Scientist at the Office for National Statistics Data Science Campus. I enjoy programming &amp; <a href="https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/">automation</a> and an advocate for the standards outlined in <a href="https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html">Quality Assurance of Code for Analysis &amp; Research</a>. For more detail regarding my professional experience, please follow this <a href="https://r-leyshon.github.io/resume/">link to my resumé</a>. And to collaborate with me, here’s <a href="https://github.com/r-leyshon">my GitHub profile</a>.</p>
+
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
