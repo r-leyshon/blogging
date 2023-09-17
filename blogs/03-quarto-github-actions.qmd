@@ -51,8 +51,9 @@ The renderred site should look like this on
 9. `touch _quarto.yml`
 
 ### In the text editor 
-10. Copy and paste the below into the document (you may need to enable viewing
-hidden files on your system - command + shift + . On macOS):
+10. Copy and paste the below into `.github/workflows/publish-quarto.yml`
+(you may need to enable viewing hidden files on your system - command + shift +
+. On macOS):
 
 ```YML
 name: Render and Publish
@@ -84,7 +85,8 @@ jobs:
 
 ```
 
-11. Copy paste the below into the index.qmd, using your preferred text editor:
+11. Copy paste the below into the `index.qmd`, using your preferred text
+editor:
 
 ```YML
 ---
@@ -96,7 +98,7 @@ resources:
 Setting up CI for quarto website build & publish.
 ```
 
-12. Copy paste the following into _quarto.yml
+12. Copy paste the following into `_quarto.yml`:
 
 ```YML
 project:
