@@ -2,38 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
-    <lastmod>2023-09-17T06:50:37.188Z</lastmod>
+    <lastmod>2023-09-17T21:07:16.868Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
+    <lastmod>2023-09-17T21:26:15.247Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
-    <lastmod>2023-09-17T06:50:38.165Z</lastmod>
+    <lastmod>2023-09-17T21:07:19.430Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
-    <lastmod>2023-09-17T06:50:39.210Z</lastmod>
+    <lastmod>2023-09-17T21:07:20.938Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
-    <lastmod>2023-09-17T06:50:39.874Z</lastmod>
+    <lastmod>2023-09-17T21:07:21.894Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</loc>
-    <lastmod>2023-09-17T06:50:40.745Z</lastmod>
+    <lastmod>2023-09-17T21:07:23.115Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
-    <lastmod>2023-09-17T06:50:41.125Z</lastmod>
+    <lastmod>2023-09-17T21:07:23.676Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
-    <lastmod>2023-09-17T06:50:41.695Z</lastmod>
+    <lastmod>2023-09-17T21:07:24.541Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/index.html</loc>
-    <lastmod>2023-09-17T06:50:42.111Z</lastmod>
+    <lastmod>2023-09-17T21:07:25.157Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/index.html</loc>
-    <lastmod>2023-09-17T06:50:42.880Z</lastmod>
+    <lastmod>2023-09-17T21:26:16.565Z</lastmod>
   </url>
 </urlset>

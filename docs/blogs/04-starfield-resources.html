@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Rich Leyshon">
+<meta name="dcterms.date" content="2023-09-17">
+<meta name="description" content="Webscraping Starfield resource data to help decide which resources to fill your pockets with.">
 
-<title>The Data Savvy Corner - Byte-Wise Musings</title>
+<title>The Data Savvy Corner - Which Starfield Resources are Worth Looting?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,8 +28,6 @@ ul.task-list li input[type="checkbox"] {
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -37,6 +38,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -50,43 +53,12 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-reading-time','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../www/styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -108,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../blogs/index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../blogs/index.html" rel="" target="">
  <span class="menu-text">Byte-Wise Musings</span></a>
   </li>  
   <li class="nav-item">
@@ -130,22 +102,40 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="CI/CD">CI/CD <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Explanation">Explanation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Front End Dev">Front End Dev <span class="quarto-category-count">(1)</span></div><div class="category" data-category="How-to">How-to <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tutorial">Tutorial <span class="quarto-category-count">(2)</span></div></div></div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Byte-Wise Musings</h1>
-</div>
+<h1 class="title">Which Starfield Resources are Worth Looting?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Tutorial</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Webscraping Starfield resource data to help decide which resources to fill your pockets with.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Rich Leyshon </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 17, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -153,177 +143,102 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="an-ocd-for-looting" class="level2">
+<h2 class="anchored" data-anchor-id="an-ocd-for-looting">An OCD for Looting</h2>
+<figure class="center figure">
+<img class="shaded_box figure-img" src="https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg" alt="Starfield wallpaper" width="300px">
+<figcaption class="figure-caption">
+Image credit <a href="https://www.trustedreviews.com/" class="uri">https://www.trustedreviews.com/</a>
+</figcaption>
+</figure>
+<p>It’s been a while since I’ve dedicated to a Bethesda video game. The last would have been Fallout 3 in 2009-ish. Since then a lot has changed for me. Kids, a job in data science and a lot less time to absorb myself in RPGs. But with the hype around Bethesda’s Starfield, I once again find myself creeping abandoned outposts, stealing junk. This time, in space rather than a post-apocalyptic alternative Earth.</p>
+<p>While living out my unexplored kleptomania in Starfield, one thing has left me pondering. Just what junk is <strong>worth</strong> looting in this game? <i class="fa-solid fa-piggy-bank" title="a piggybank" aria-label="piggy-bank"></i> Grabbing everything quickly leads to an encumbered state (damn the developers), quickly penalising my rampant hoarding efforts with an inability to run or jump. So with my approach to looting tempered by a finite ability to carry it all, I don’t just need to know the mass and value of the items, I need to know the ratio of those 2 values.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A credit per gram ratio would allow comparison of the relative worth of all items available.</p>
+</div>
+</div>
+<p>Luckily, several websites publish tables of resources discovered within Starfield. To get the data I needed to produce the visualisations in this article, I chose to webscrape the data from <a href="https://inara.cz/starfield/database/" class="uri">https://inara.cz/starfield/database/</a>, as the site is permissive to webcrawling and the structure of the tables are friendly to work with. While this site contains data on over 100 Starfield resources, it does not claim to be exhaustive. Please bear in mind that other databases may vary in content.</p>
+<p>If you’re interested in the python code used to scrape the data, thats available <a href="https://github.com/r-leyshon/munge-starfield">on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i></a>.</p>
+</section>
+<section id="mass-value-rarity" class="level2">
+<h2 class="anchored" data-anchor-id="mass-value-rarity">Mass, Value &amp; Rarity</h2>
+<p>Below, I plot the available resources’ masses and values, colouring by rarity. An ordinary least squares (OLS) trend line across all item rarities has been plotted in white. This is the line of best fit that minimises the residuals - the differences between the observed values and trend line.</p>
+<p>What does the line mean for selecting resources to loot? Any point above that line is worth collecting. Anything below that line would probably be worth ditching if something higher in value or lower in mass became available. Hover over the points to get the resource names.</p>
+<p>Note that several resources with zero value and mass were removed from the data during processing. I’m generally not interested in things without mass as they pose no dilemma to my encumbered pockets.</p>
+<br>
+<div class="centerdiv">
+<p><iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-scatter.html" style="border: none;background: #FFFFFF;"></iframe></p>
+</div>
+<p>Some observations:</p>
+<ul>
+<li>Rare and exotics tend to be around average payoff.</li>
+<li>2 Notable exceptions for unique items are Caelumite and Quark-Degenerate Tissues - grab these!</li>
+<li>Exotic and Unique resources tend to be low mass, all being under 3 grams.</li>
+<li>Most uncommon resources do not offer good returns, apart from Helium, Silver and Benzene, the lower mass options for this rarity.</li>
+<li>Common items fare similarly, apart from Vac Grade Explosives which are worth grabbing.</li>
+<li>The rare class of resources tends to offer better returns with some notable outliers being Veryl Explosive and Vytinium Fuel Rod.</li>
+</ul>
+<p>As I have no data on the different likelihoods of discovering these items (rarity drop rates), I cannot comment on which items are best to target for farming. Though <a href="https://inara.cz/starfield/database/" class="uri">https://inara.cz/starfield/database/</a> does offer in game locations where these resources may be found.</p>
+</section>
+<section id="value-per-gram" class="level2">
+<h2 class="anchored" data-anchor-id="value-per-gram">Value Per Gram</h2>
+<p>Below I present the data for each resource in tabular format. The <code>ratio</code> column means value / mass, in credits per gram. The resources are sorted by descending ratio by default, but you can change that by clicking on the arrows in each column.</p>
+<div class="centerdiv" height="800px">
+<p><iframe src="https://r-leyshon.github.io/munge-starfield/table.html" style="height: 650px; border: none" class="shaded_box"></iframe></p>
+</div>
+<p>Caelumite and Quark-Degenerate Tissues are clear high outliers, again reinforcing their choice for the more discerning Starfield looters. Interestingly, Vac Grade Explosive pips Vytinium Fuel Rod to fourth best option in terms of credits per gram. Which is pretty remarkable since it’s categorised as a common resource.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Fill your boots up with Vac Grade Explosive. Though think about taking out good life insurance, first.</p>
+</div>
+</div>
+<p>Sorting the ratio column in ascending order reveals the poor choices of resources to collect. At least in terms of value per grams. Fiber, Water, Nutrient, all of these things sound so wholesome. Perhaps there are alternative reasons for hoarding such items, such as crafting or survival. It’s not all about becoming the richest spaceperson in the universe, right? <i class="fa-solid fa-user-astronaut fa-fade fa-lg"></i></p>
+<p>By plotting the density of value to mass ratio for each rarity class, an interesting picture emerges. Just be sure to filter out those 2 high-end unique outliers first, else you get very small traces.</p>
+<iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-joyplot.html" style="height: 800px; background: #FFFFFF;">
+</iframe>
+<p>Some observations:</p>
+<ul>
+<li>Exotic and Unique rarities show a bimodal distribution (2 peaks in value to mass ratio).</li>
+<li>The other rarities exhibit trimodal distributions.</li>
+<li>Common and Rare classes have a clear outlier (Vac Grade Explosive and Veryl Explosive). This game places a high value on blowing things up.</li>
+<li>Rare resources display a wider distribution in value per gram, making it a good compromise in availability, mass and value.</li>
+</ul>
+</section>
+<section id="in-summary" class="level2">
+<h2 class="anchored" data-anchor-id="in-summary">In Summary</h2>
+<p>By using some pretty basic python code, it’s possible to scrape web content to get at some pretty insightful data for making fundamental life choices, such as which virtual resources to greedily hoard and pawn for fictitious returns during your leisure time.</p>
+<p>The value per gram ratio reveals which items are worth targetting, along with a potentially subconscious predeliction to explosives and a distaste for wholesome items within the Starfield developer team. Sending them coffee and hugs - it’s been a great game so far! <i class="fa-solid fa-mug-hot fa-lg"></i></p>
+</section>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<ul>
+<li>With thanks to <a href="https://inara.cz/" class="uri">https://inara.cz/</a> for publishing the data and allowing others to scrape their site.</li>
+<li>Scraping achieved with python libraries <a href="https://pypi.org/project/requests/">requests</a> and <a href="https://pypi.org/project/beautifulsoup4/">beautifulsoup4</a>.</li>
+<li>Charts produced with python libraries <a href="https://pypi.org/project/plotly/">plotly</a> and <a href="https://pypi.org/project/ridgeplot/">ridgeplot</a>.</li>
+<li>Interactive table made with <a href="https://pypi.org/project/itables/">itables</a>.</li>
+</ul>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Order By</option>
-       <option value="index" data-direction="asc">Default</option>
-         <option value="listing-title" data-direction="asc">
-          Title
-        </option>
-         <option value="listing-date-sort" data-direction="asc">
-          Date - Oldest
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Date - Newest
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Tutorial" data-listing-date-sort="1694984829000" data-listing-file-modified-sort="1694984829321" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
-<a href="../blogs/04-starfield-resources.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg" class="thumbnail-image card-img" style="height: 150px;" alt="Starfield wallpaper.">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Which Starfield Resources are Worth Looting?
-</h5>
-<div class="listing-reading-time card-text text-muted">
-5 min
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Tutorial'); return false;">
-Tutorial
-</div>
-</div>
-<div class="card-text listing-description">
-Webscraping Starfield resource data to help decide which resources to fill your pockets with.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Rich Leyshon
-</div>
-<div class="listing-date">
-Sep 17, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="How-to,CI/CD,Front End Dev" data-listing-date-sort="1694933420000" data-listing-file-modified-sort="1694933420670" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<a href="../blogs/03-quarto-github-actions.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="https://i1.pickpik.com/photos/452/586/379/code-html-digital-coding-preview.jpg" class="thumbnail-image card-img" style="height: 150px;" alt="HTML code.">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-How to Automate Quarto Builds with GitHub Actions
-</h5>
-<div class="listing-reading-time card-text text-muted">
-4 min
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('How-to'); return false;">
-How-to
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('CI/CD'); return false;">
-CI/CD
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Front End Dev'); return false;">
-Front End Dev
-</div>
-</div>
-<div class="card-text listing-description">
-Setting up a website with Quarto? Want to automate the website build and publication with GitHub Actions? Could you use a quick guide? I’ve got your back.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Rich Leyshon
-</div>
-<div class="listing-date">
-Sep 17, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="Tutorial" data-listing-date-sort="1694327348000" data-listing-file-modified-sort="1694327348162" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21">
-<a href="../blogs/02-getting-started-pyshiny.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="https://c0.wallpaperflare.com/preview/564/703/665/school-coding-software-development-education.jpg" class="thumbnail-image card-img" style="height: 150px;" alt="Woman Instructing On Laptop.">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Let’s Build a Basic Python Shiny App
-</h5>
-<div class="listing-reading-time card-text text-muted">
-21 min
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Tutorial'); return false;">
-Tutorial
-</div>
-</div>
-<div class="card-text listing-description">
-An interactive tutorial allowing newcomers to Shiny to build a basic application.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Rich Leyshon
-</div>
-<div class="listing-date">
-Sep 10, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="Explanation" data-listing-date-sort="1694327334000" data-listing-file-modified-sort="1694327334769" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15">
-<a href="../blogs/01-state-of-pyshiny.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src=".././www/01-python-shiny/shiny-python.png" class="thumbnail-image card-img" style="height: 150px;" alt="AI-generated drawing of a shiny python.">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The State of Python Shiny
-</h5>
-<div class="listing-reading-time card-text text-muted">
-15 min
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Explanation'); return false;">
-Explanation
-</div>
-</div>
-<div class="card-text listing-description">
-An overview of the progress of Python Shiny, and where it could possibly go.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Rich Leyshon
-</div>
-<div class="listing-date">
-Sep 10, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -1,0 +1,161 @@
+---
+title: "Which Starfield Resources are Worth Looting?"
+author: "Rich Leyshon"
+date: last-modified
+description: "Webscraping Starfield resource data to help decide which
+resources to fill your pockets with."
+categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+    - Tutorial      # learning-oriented
+image: https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg
+image-alt: "Starfield wallpaper."
+toc: false # off to avoid overlapping larger iframes in this article
+execute: 
+  eval: false
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+## An OCD for Looting
+
+<figure class=center>
+  <img class=shaded_box src="https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg" alt="Starfield wallpaper" width=300px>
+  <figcaption>Image credit <https://www.trustedreviews.com/></figcaption>
+</figure>
+
+It's been a while since I've dedicated to a Bethesda video game. The last would
+have been Fallout 3 in 2009-ish. Since then a lot has changed for me. Kids, a
+job in data science and a lot less time to absorb myself in RPGs. But with the
+hype around Bethesda's Starfield, I once again find myself creeping abandoned
+outposts, stealing junk. This time, in space rather than a post-apocalyptic
+alternative Earth.
+
+While living out my unexplored kleptomania in Starfield, one thing has left me 
+pondering. Just what junk is **worth** looting in this game?
+{{< fa piggy-bank title="a piggybank" >}} Grabbing everything quickly leads to
+an encumbered state (damn the developers), quickly penalising my rampant
+hoarding efforts with an inability to run or jump. So with my approach to
+looting tempered by a finite ability to carry it all, I don't just need to know
+the mass and value of the items, I need to know the  ratio of those 2 values.
+
+:::{.callout-note}
+A credit per gram ratio would allow comparison of the relative worth of all
+items available. 
+:::
+
+Luckily, several websites publish tables of resources discovered within
+Starfield. To get the data I needed to produce the visualisations in this
+article, I chose to webscrape the data from
+<https://inara.cz/starfield/database/>, as the site is permissive to
+webcrawling and the structure of the tables are friendly to work with. While
+this site contains data on over 100 Starfield resources, it does not claim to
+be exhaustive. Please bear in mind that other databases may vary in content.
+
+If you're interested in the python code used to scrape the data, thats
+available [on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i>](https://github.com/r-leyshon/munge-starfield). 
+
+## Mass, Value & Rarity
+
+Below, I plot the available resources' masses and values, colouring by rarity.
+An ordinary least squares (OLS) trend line across all item rarities has been
+plotted in white. This is the line of best fit that minimises the residuals -
+the differences between the observed values and trend line.
+
+What does the line mean for selecting resources to loot? Any point above that
+line is worth collecting. Anything below that line would probably be worth
+ditching if something higher in value or lower in mass became available. Hover
+over the points to get the resource names.
+
+Note that several resources with zero value and mass were removed from the
+data during processing. I'm generally not interested in things without mass
+as they pose no dilemma to my encumbered pockets.
+
+<br>
+<div class=centerdiv>
+  <iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-scatter.html" style="border: none;background: #FFFFFF;"></iframe>
+</div>
+
+Some observations:
+
+* Rare and exotics tend to be around average payoff.
+* 2 Notable exceptions for unique items are Caelumite and Quark-Degenerate
+Tissues - grab these!
+* Exotic and Unique resources tend to be low mass, all being under 3 grams.
+* Most uncommon resources do not offer good returns, apart from Helium, Silver
+and Benzene, the lower mass options for this rarity.
+* Common items fare similarly, apart from Vac Grade Explosives which are worth
+grabbing.
+* The rare class of resources tends to offer better returns with some notable
+outliers being Veryl Explosive and Vytinium Fuel Rod.
+
+As I have no data on the different likelihoods of discovering these items
+(rarity drop rates), I cannot comment on which items are best to target for
+farming. Though <https://inara.cz/starfield/database/> does offer in game
+locations where these resources may be found.
+
+## Value Per Gram
+
+Below I present the data for each resource in tabular format. The `ratio`
+column means value / mass, in credits per gram. The resources are sorted by
+descending ratio by default, but you can change that by clicking on the arrows
+in each column.
+
+<div class=centerdiv height=800px>
+  <iframe src="https://r-leyshon.github.io/munge-starfield/table.html" style="height: 650px; border: none" class=shaded_box></iframe>
+</div>
+
+Caelumite and Quark-Degenerate Tissues are clear high outliers, again
+reinforcing their choice for the more discerning Starfield looters.
+Interestingly, Vac Grade Explosive pips Vytinium Fuel Rod to fourth best option
+in terms of credits per gram. Which is pretty remarkable since it's categorised
+as a common resource.
+
+:::{.callout-note}
+Fill your boots up with Vac Grade Explosive. Though think about taking out good
+life insurance, first.
+:::
+
+Sorting the ratio column in ascending order reveals the poor choices of
+resources to collect. At least in terms of value per grams. Fiber, Water,
+Nutrient, all of these things sound so wholesome. Perhaps there are alternative
+reasons for hoarding such items, such as crafting or survival. It's not all
+about becoming the richest spaceperson in the universe, right?
+<i class="fa-solid fa-user-astronaut fa-fade fa-lg"></i>
+
+By plotting the density of value to mass ratio for each rarity class, an
+interesting picture emerges. Just be sure to filter out those 2 high-end unique
+outliers first, else you get very small traces.
+
+<iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-joyplot.html" style="height: 800px; background: #FFFFFF;"></iframe>
+
+Some observations:
+
+* Exotic and Unique rarities show a bimodal distribution (2 peaks in value to
+mass ratio).
+* The other rarities exhibit trimodal distributions. 
+* Common and Rare classes have a clear outlier (Vac Grade Explosive and Veryl
+Explosive). This game places a high value on blowing things up.
+* Rare resources display a wider distribution in value per gram, making it a
+good compromise in availability, mass and value.
+
+## In Summary
+
+By using some pretty basic python code, it's possible to scrape web content to
+get at some pretty insightful data for making fundamental life choices, such as
+which virtual resources to greedily hoard and pawn for fictitious returns
+during your leisure time.
+
+The value per gram ratio reveals which items are worth targetting, along with
+a potentially subconscious predeliction to explosives and a distaste for
+wholesome items within the Starfield developer team. Sending them coffee and
+hugs - it's been a great game so far! <i class="fa-solid fa-mug-hot fa-lg"></i>
+
+## Acknowledgements
+
+* With thanks to <https://inara.cz/> for publishing the data and allowing
+others to scrape their site.
+* Scraping achieved with python libraries [requests](https://pypi.org/project/requests/)
+and [beautifulsoup4](https://pypi.org/project/beautifulsoup4/).
+* Charts produced with python libraries [plotly](https://pypi.org/project/plotly/)
+and [ridgeplot](https://pypi.org/project/ridgeplot/).
+* Interactive table made with [itables](https://pypi.org/project/itables/).
