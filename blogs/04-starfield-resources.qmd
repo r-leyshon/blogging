@@ -5,7 +5,9 @@ date: last-modified
 description: "Webscraping Starfield resource data to help decide which
 resources to fill your pockets with."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
-    - Tutorial      # learning-oriented
+    - Explanation
+    - Web scraping
+    - Video games
 image: https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg
 image-alt: "Starfield wallpaper."
 toc: false # off to avoid overlapping larger iframes in this article

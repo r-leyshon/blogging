@@ -10,7 +10,7 @@
 <atom:link href="https://thedatasavvycorner.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Musings, ramblings, generally putting things down in text so I don&#39;t forget them.</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Sun, 17 Sep 2023 21:26:10 GMT</lastBuildDate>
+<lastBuildDate>Sun, 17 Sep 2023 21:48:00 GMT</lastBuildDate>
 <item>
   <title>Which Starfield Resources are Worth Looting?</title>
   <dc:creator>Rich Leyshon</dc:creator>
@@ -115,9 +115,11 @@ Note
 </section>
 
  ]]></description>
-  <category>Tutorial</category>
+  <category>Explanation</category>
+  <category>Web scraping</category>
+  <category>Video games</category>
   <guid>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</guid>
-  <pubDate>Sun, 17 Sep 2023 21:26:10 GMT</pubDate>
+  <pubDate>Sun, 17 Sep 2023 21:48:00 GMT</pubDate>
   <media:content url="https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>

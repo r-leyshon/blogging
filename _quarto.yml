@@ -17,6 +17,9 @@ website:
       - book-reviews/index.qmd
 format:
   html:
+    include-in-header:
+      - text: |
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
     theme: cosmo
     css: /www/styles.css
     toc: true
