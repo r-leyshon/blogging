@@ -148,13 +148,28 @@ Deploy from a branch
 28. Check that the Branch setup is gh-pages /root
 29. After the CI has finished building, you can click on the url that appears
 at the top of this page under “GitHub Pages” to check that the site has been
-deployed properly
+deployed properly. Copy the url of your GitHub Pages site.
+
+### Head Back to your Local Repo
+
+30. Insert your url into your `_quarto.yml`, like below:
+
+```
+project:
+  type: website
+  output-dir: docs
+execute:
+  freeze: auto
+format: html
+website:
+  site-url: "<YOUR_URL_HERE>" # makes site links work on your remote site
+```
 
 ## Creating a Workflow Build Status Badge
-Use the following format to create a workflow build status badge in your
+* Use the following format to create a workflow build status badge in your
 readme: `https://github.com/OWNER/REPOSITORY/actions/workflows/WORKFLOW-FILE/badge.svg`   
 For example: `https://github.com/r-leyshon/quarto-ci-example/actions/workflows/publish-quarto.yml/badge.svg`    
-Finally, embed the url in the src of a markdown image, like: 
+* Finally, embed the url in the src of a markdown image, like: 
 `![example workflow](https://github.com/r-leyshon/quarto-ci-example/actions/workflows/publish-quarto.yml/badge.svg)`
 
 ![example workflow](https://github.com/r-leyshon/quarto-ci-example/actions/workflows/publish-quarto.yml/badge.svg)

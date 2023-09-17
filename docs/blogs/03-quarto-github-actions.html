@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2023-09-10">
+<meta name="dcterms.date" content="2023-09-17">
 <meta name="description" content="Setting up a website with Quarto? Want to automate the website build and publication with GitHub Actions? Could you use a quick guide? I’ve got your back.">
 
 <title>The Data Savvy Corner - How to Automate Quarto Builds with GitHub Actions</title>
@@ -167,6 +167,7 @@ div.csl-indent {
   <li><a href="#in-the-text-editor" id="toc-in-the-text-editor" class="nav-link" data-scroll-target="#in-the-text-editor">In the text editor</a></li>
   <li><a href="#back-in-the-cli" id="toc-back-in-the-cli" class="nav-link" data-scroll-target="#back-in-the-cli">Back in the CLI</a></li>
   <li><a href="#back-to-the-web-browser" id="toc-back-to-the-web-browser" class="nav-link" data-scroll-target="#back-to-the-web-browser">Back to the Web Browser</a></li>
+  <li><a href="#head-back-to-your-local-repo" id="toc-head-back-to-your-local-repo" class="nav-link" data-scroll-target="#head-back-to-your-local-repo">Head Back to your Local Repo</a></li>
   </ul></li>
   <li><a href="#creating-a-workflow-build-status-badge" id="toc-creating-a-workflow-build-status-badge" class="nav-link" data-scroll-target="#creating-a-workflow-build-status-badge">Creating a Workflow Build Status Badge</a></li>
   </ul>
@@ -204,7 +205,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 10, 2023</p>
+      <p class="date">September 17, 2023</p>
     </div>
   </div>
   
@@ -250,7 +251,7 @@ div.csl-indent {
 <section id="in-the-text-editor" class="level3">
 <h3 class="anchored" data-anchor-id="in-the-text-editor">In the text editor</h3>
 <ol start="10" type="1">
-<li>Copy and paste the below into the document (you may need to enable viewing hidden files on your system - command + shift + . On macOS):</li>
+<li>Copy and paste the below into <code>.github/workflows/publish-quarto.yml</code> (you may need to enable viewing hidden files on your system - command + shift + . On macOS):</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Render and Publish</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
@@ -279,7 +280,7 @@ div.csl-indent {
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">env</span><span class="kw">:</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">GITHUB_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span><span class="co"> # this secret is always available for github actions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol start="11" type="1">
-<li>Copy paste the below into the index.qmd, using your preferred text editor:</li>
+<li>Copy paste the below into the <code>index.qmd</code>, using your preferred text editor:</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Hello Quarto CI</span></span>
@@ -289,7 +290,7 @@ div.csl-indent {
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">Setting up CI for quarto website build &amp; publish.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol start="12" type="1">
-<li>Copy paste the following into _quarto.yml</li>
+<li>Copy paste the following into <code>_quarto.yml</code>:</li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
@@ -333,15 +334,32 @@ Untracked files:
 <li>Click on ‘Pages’ in the menu to the left</li>
 <li>Check that your GitHub Pages is setup is Build and deployment &gt; Source &gt; Deploy from a branch</li>
 <li>Check that the Branch setup is gh-pages /root</li>
-<li>After the CI has finished building, you can click on the url that appears at the top of this page under “GitHub Pages” to check that the site has been deployed properly</li>
+<li>After the CI has finished building, you can click on the url that appears at the top of this page under “GitHub Pages” to check that the site has been deployed properly. Copy the url of your GitHub Pages site.</li>
 </ol>
+</section>
+<section id="head-back-to-your-local-repo" class="level3">
+<h3 class="anchored" data-anchor-id="head-back-to-your-local-repo">Head Back to your Local Repo</h3>
+<ol start="30" type="1">
+<li>Insert your url into your <code>_quarto.yml</code>, like below:</li>
+</ol>
+<pre><code>project:
+  type: website
+  output-dir: docs
+execute:
+  freeze: auto
+format: html
+website:
+  site-url: "&lt;YOUR_URL_HERE&gt;" # makes site links work on your remote site</code></pre>
 </section>
 </section>
 <section id="creating-a-workflow-build-status-badge" class="level2">
 <h2 class="anchored" data-anchor-id="creating-a-workflow-build-status-badge">Creating a Workflow Build Status Badge</h2>
-<p>Use the following format to create a workflow build status badge in your readme: <code>https://github.com/OWNER/REPOSITORY/actions/workflows/WORKFLOW-FILE/badge.svg</code><br>
+<ul>
+<li>Use the following format to create a workflow build status badge in your readme: <code>https://github.com/OWNER/REPOSITORY/actions/workflows/WORKFLOW-FILE/badge.svg</code><br>
 For example: <code>https://github.com/r-leyshon/quarto-ci-example/actions/workflows/publish-quarto.yml/badge.svg</code><br>
-Finally, embed the url in the src of a markdown image, like: <code>![example workflow](https://github.com/r-leyshon/quarto-ci-example/actions/workflows/publish-quarto.yml/badge.svg)</code></p>
+</li>
+<li>Finally, embed the url in the src of a markdown image, like: <code>![example workflow](https://github.com/r-leyshon/quarto-ci-example/actions/workflows/publish-quarto.yml/badge.svg)</code></li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://github.com/r-leyshon/quarto-ci-example/actions/workflows/publish-quarto.yml/badge.svg" class="img-fluid figure-img"></p>
