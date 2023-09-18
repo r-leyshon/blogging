@@ -4,10 +4,14 @@ project:
 execute:
   freeze: auto
 website:
+  favicon: /./www/favicon.ico
   site-url: "https://thedatasavvycorner.netlify.app/"
   description: "Musings, ramblings, generally putting things down in text so I don't forget them."
   search: false
   title: "The Data Savvy Corner"
+  twitter-card:
+    site: "@Rich_L1984"
+  open-graph: true
   navbar:
     left:
       - icon: rss
