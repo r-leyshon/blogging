@@ -1,13 +1,15 @@
 ---
-title: "Which Starfield Resources are Worth Looting?"
+title: "Maximizing Loot Gains in Starfield: A Data-Driven Approach"
 author: "Rich Leyshon"
 date: last-modified
-description: "Webscraping Starfield resource data to help decide which
-resources to fill your pockets with."
+description: "Discover the hidden riches of Bethesda's Starfield with this
+data-driven guide. Learn what to strategically hoard in order to maximize your
+loot gains."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Explanation
     - Web scraping
     - Video games
+    - Data analysis
 image: https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg
 image-alt: "Starfield wallpaper."
 toc: false # off to avoid overlapping larger iframes in this article
@@ -18,7 +20,7 @@ format:
     code-fold: true
     code-summary: "Show the code"
 ---
-## An OCD for Looting
+## Unleashing Your Inner Space Scavenger
 
 <figure class=center>
   <img class=shaded_box src="https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg" alt="Starfield wallpaper" width=300px>
@@ -32,32 +34,45 @@ hype around Bethesda's Starfield, I once again find myself creeping abandoned
 outposts, stealing junk. This time, in space rather than a post-apocalyptic
 alternative Earth.
 
-While living out my unexplored kleptomania in Starfield, one thing has left me 
-pondering. Just what junk is **worth** looting in this game?
-{{< fa piggy-bank title="a piggybank" >}} Grabbing everything quickly leads to
-an encumbered state (damn the developers), quickly penalising my rampant
-hoarding efforts with an inability to run or jump. So with my approach to
-looting tempered by a finite ability to carry it all, I don't just need to know
-the mass and value of the items, I need to know the  ratio of those 2 values.
+Embarking on a galactic scavenger hunt in the realms of Bethesda's Starfield is
+akin to being a spacefaring treasure hunter. Imagine prowling through forsaken
+outposts, seeking riches beyond measure amidst the cosmos. The challenge,
+however, lies in discerning the true gems from the cosmic clutter.
+
+In this whirlwind of interstellar looting, the pivotal question arises: What
+celestial junk is truly worth hoarding in this game?
+
+{{< fa piggy-bank title="a piggybank" >}} Aiming to hoard everything may seem
+like a stellar strategy, but alas, even the boundless void of space has its
+limits. An excess of loot can weigh you down, impeding your maneuvers through
+the cosmos. To strike the perfect balance, we need to delve deeper, beyond just
+mass and value. We need to calculate the ratio of these two values, unveiling
+the true worth of each celestial find.
 
 :::{.callout-note}
-A credit per gram ratio would allow comparison of the relative worth of all
-items available. 
+Calculating the credit per gram ratio unlocks the secrets to discerning the
+relative value of all available items.
 :::
 
-Luckily, several websites publish tables of resources discovered within
-Starfield. To get the data I needed to produce the visualisations in this
-article, I chose to webscrape the data from
-<https://inara.cz/starfield/database/>, as the site is permissive to
-webcrawling and the structure of the tables are friendly to work with. While
-this site contains data on over 100 Starfield resources, it does not claim to
-be exhaustive. Please bear in mind that other databases may vary in content.
 
-If you're interested in the python code used to scrape the data, check out the
-code
-[on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i>](https://github.com/r-leyshon/munge-starfield). 
+## Unveiling the Cosmic Equation
 
-## Mass, Value & Rarity
+Join me as we venture into the depths of Starfield's resource catalogue. We'll
+decipher the mysteries of mass, value, and rarity to pinpoint the celestial
+treasures worth their weight in gold—or rather, in galactic credits.
+
+### Gathering Data in the Digital Cosmos
+
+To navigate this cosmic quest, we turn to the wealth of information readily
+available on Starfield's resources. Numerous websites offer tables detailing
+these cosmic artifacts. For this article, I opted to webscrape
+<https://inara.cz/starfield/database/>, a site open to web crawling, and a 
+straight forward web structure.
+
+For those curious about the code behind the scenes,
+[check it out on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i>](https://github.com/r-leyshon/munge-starfield).
+
+## The Cosmic Riches: Mass, Value, and Rarity
 
 Below, I plot the available resources' masses and values, colouring by rarity.
 An ordinary least squares (OLS) trend line across all item rarities has been
@@ -78,23 +93,31 @@ as they pose no dilemma to my encumbered pockets.
   <iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-scatter.html" style="border: none;background: #FFFFFF;"></iframe>
 </div>
 
-Some observations:
+### Insights from the Celestial Scatter
 
-* Rare and exotics tend to be around average payoff.
-* 2 Notable exceptions for unique items are Caelumite and Quark-Degenerate
-Tissues - grab these!
+Here's what we've discovered:
+
+* Rare and exotic items offer around average payoff.
+* Two standouts, Caelumite and Quark-Degenerate Tissues, are definitely worth
+collecting.
 * Exotic and Unique resources tend to be low mass, all being under 3 grams.
-* Most uncommon resources do not offer good returns, apart from Helium, Silver
-and Benzene, the lower mass options for this rarity.
-* Common items fare similarly, apart from Vac Grade Explosives which are worth
-grabbing.
-* The rare class of resources tends to offer better returns with some notable
-outliers being Veryl Explosive and Vytinium Fuel Rod.
+* Most uncommon resources don't offer substantial returns, except for select
+options like Helium, Silver, and Benzene. These are the lower mass options in
+this rarity class.
+* Vac Grade Explosives, a common item, stands out as a valuable choice.
+* The rare class of resources generally promises better returns, with notable
+outliers like Veryl Explosive and Vytinium Fuel Rod.
 
 As I have no data on the different likelihoods of discovering these items
 (rarity drop rates), I cannot comment on which items are best to target for
 farming. Though <https://inara.cz/starfield/database/> does offer in-game
 locations where these resources may be found.
+
+## Value Per Gram: The Cosmic Currency
+
+Let's break down the data further, showcasing each resource's value-to-mass
+ratio, measured in credits per gram. Unveil the best options to fill your
+cosmic coffers.
 
 ## Value Per Gram
 
@@ -107,11 +130,12 @@ in each column.
   <iframe src="https://r-leyshon.github.io/munge-starfield/table.html" style="height: 650px; border: none" class=shaded_box></iframe>
 </div>
 
-Caelumite and Quark-Degenerate Tissues are clear high outliers, again
-reinforcing their choice for the more discerning Starfield looters.
-Interestingly, Vac Grade Explosive pips Vytinium Fuel Rod to fourth best option
-in terms of credits per gram. Which is pretty remarkable since it's categorised
-as a common resource.
+### Key Takeaways:
+
+* Caelumite and Quark-Degenerate Tissues are high outliers, reaffirming their
+status as top choices.
+* Surprisingly, Vac Grade Explosive emerges as a standout, despite being
+categorized as common.
 
 :::{.callout-note}
 Fill your boots up with Vac Grade Explosive. Though think about taking out good
@@ -126,8 +150,8 @@ about becoming the richest spaceperson in the universe, right?
 <i class="fa-solid fa-user-astronaut fa-fade fa-lg"></i>
 
 By plotting the density of value to mass ratio for each rarity class, an
-interesting picture emerges. Just be sure to filter out those 2 high-end unique
-outliers first, else you get very small traces.
+interesting picture emerges. For this chart, I have filtered out those 2
+high-end unique outliers, otherwise the traces are a bit small and hard to see.
 
 <iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-joyplot.html" style="height: 800px; background: #FFFFFF;"></iframe>
 
@@ -141,24 +165,19 @@ Explosive). This game places a high value on blowing things up.
 * Rare resources display a wider distribution in value per gram, making it a
 good compromise in availability, mass and value.
 
-## In Summary
+## Thank You, Cosmic Voyagers
 
-By using some pretty basic python code, it's possible to scrape web content to
-get at some pretty insightful data for making fundamental life choices, such as
-which virtual resources to greedily hoard and pawn for fictitious returns
-during your leisure time.
+By deploying simple Python know-how, we've unraveled the secrets of the digital
+cosmos, empowering you to make informed choices. Your virtual pockets, now
+filled with strategic loot, pave the way to riches in your interstellar
+escapades.
 
-The value per gram ratio reveals which items are worth targeting, along with
-a potentially subconscious predilection to explosives and a distaste for
-wholesome items within the Starfield developer team. Sending them coffee and
-hugs - it's been a great game so far! <i class="fa-solid fa-mug-hot fa-lg"></i>
+Before we sign off, a massive thank you to <https://inara.cz/>  for graciously
+sharing their data, making this cosmic venture possible. And kudos to the
+Python libraries — [requests](https://pypi.org/project/requests/),
+[beautifulsoup4](https://pypi.org/project/beautifulsoup4/),
+[plotly](https://pypi.org/project/plotly/), and
+[ridgeplot](https://pypi.org/project/ridgeplot/) — for bringing this
+interstellar exploration to life.
 
-## Acknowledgements
-
-* With thanks to <https://inara.cz/> for publishing the data and allowing
-others to scrape their site.
-* Scraping achieved with python libraries [requests](https://pypi.org/project/requests/)
-and [beautifulsoup4](https://pypi.org/project/beautifulsoup4/).
-* Charts produced with python libraries [plotly](https://pypi.org/project/plotly/)
-and [ridgeplot](https://pypi.org/project/ridgeplot/).
-* Interactive table made with [itables](https://pypi.org/project/itables/).
+In the vast cosmic expanse of Starfield, live long and prosper. <i class="fa-solid fa-rocket fa-fade fa-lg"></i>
