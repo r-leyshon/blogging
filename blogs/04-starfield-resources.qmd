@@ -53,8 +53,9 @@ webcrawling and the structure of the tables are friendly to work with. While
 this site contains data on over 100 Starfield resources, it does not claim to
 be exhaustive. Please bear in mind that other databases may vary in content.
 
-If you're interested in the python code used to scrape the data, thats
-available [on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i>](https://github.com/r-leyshon/munge-starfield). 
+If you're interested in the python code used to scrape the data, check out the
+code
+[on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i>](https://github.com/r-leyshon/munge-starfield). 
 
 ## Mass, Value & Rarity
 
@@ -92,7 +93,7 @@ outliers being Veryl Explosive and Vytinium Fuel Rod.
 
 As I have no data on the different likelihoods of discovering these items
 (rarity drop rates), I cannot comment on which items are best to target for
-farming. Though <https://inara.cz/starfield/database/> does offer in game
+farming. Though <https://inara.cz/starfield/database/> does offer in-game
 locations where these resources may be found.
 
 ## Value Per Gram
@@ -118,7 +119,7 @@ life insurance, first.
 :::
 
 Sorting the ratio column in ascending order reveals the poor choices of
-resources to collect. At least in terms of value per grams. Fiber, Water,
+resources to collect. At least in terms of value per gram. Fiber, Water,
 Nutrient, all of these things sound so wholesome. Perhaps there are alternative
 reasons for hoarding such items, such as crafting or survival. It's not all
 about becoming the richest spaceperson in the universe, right?
@@ -147,8 +148,8 @@ get at some pretty insightful data for making fundamental life choices, such as
 which virtual resources to greedily hoard and pawn for fictitious returns
 during your leisure time.
 
-The value per gram ratio reveals which items are worth targetting, along with
-a potentially subconscious predeliction to explosives and a distaste for
+The value per gram ratio reveals which items are worth targeting, along with
+a potentially subconscious predilection to explosives and a distaste for
 wholesome items within the Starfield developer team. Sending them coffee and
 hugs - it's been a great game so far! <i class="fa-solid fa-mug-hot fa-lg"></i>
 
