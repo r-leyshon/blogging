@@ -17,12 +17,14 @@
   {
     "listing": "/book-reviews/index.html",
     "items": [
+      "/book-reviews/02-algorithms-to-live-by.html",
       "/book-reviews/01-deep-work.html"
     ]
   },
   {
     "listing": "/index.html",
     "items": [
+      "/book-reviews/02-algorithms-to-live-by.html",
       "/blogs/04-starfield-resources.html",
       "/blogs/03-quarto-github-actions.html",
       "/music-reviews/01-ghostrunner-ost.html",
