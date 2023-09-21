@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2023-09-18">
+<meta name="dcterms.date" content="2023-09-21">
 <meta name="description" content="Discover the hidden riches of Bethesda’s Starfield with this data-driven guide. Learn what to strategically hoard in order to maximize your loot gains.">
 
 <title>The Data Savvy Corner - Maximizing Loot Gains in Starfield: A Data-Driven Approach</title>
@@ -124,7 +124,6 @@ ul.task-list li input[type="checkbox"] {
 <h1 class="title">Maximizing Loot Gains in Starfield: A Data-Driven Approach</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Explanation</div>
-    <div class="quarto-category">Web scraping</div>
     <div class="quarto-category">Video games</div>
     <div class="quarto-category">Data analysis</div>
   </div>
@@ -149,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 18, 2023</p>
+      <p class="date">September 21, 2023</p>
     </div>
   </div>
   
@@ -190,8 +189,8 @@ Note
 <p>Join me as we venture into the depths of Starfield’s resource catalogue. We’ll decipher the mysteries of mass, value, and rarity to pinpoint the celestial treasures worth their weight in gold—or rather, in galactic credits.</p>
 <section id="gathering-data-in-the-digital-cosmos" class="level3">
 <h3 class="anchored" data-anchor-id="gathering-data-in-the-digital-cosmos">Gathering Data in the Digital Cosmos</h3>
-<p>To navigate this cosmic quest, we turn to the wealth of information readily available on Starfield’s resources. Numerous websites offer tables detailing these cosmic artifacts. For this article, I opted to webscrape <a href="https://inara.cz/starfield/database/" class="uri">https://inara.cz/starfield/database/</a>, a site open to web crawling, and a straight forward web structure.</p>
-<p>For those curious about the code behind the scenes, <a href="https://github.com/r-leyshon/munge-starfield">check it out on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i></a>.</p>
+<p>To navigate this cosmic quest, we turn to the wealth of information readily available on Starfield’s resources. Numerous websites offer tables detailing these cosmic artifacts. For this article, I selected <a href="https://inara.cz/starfield/database/" class="uri">https://inara.cz/starfield/database/</a>, a site that helpfully separates the various Starfield collectibles into meaningful categories.</p>
+<p>For those curious about the code behind the scenes, <a href="https://github.com/r-leyshon/munge-starfield/blob/main/viz-resources.ipynb">check it out on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i></a> (GitHub account required).</p>
 </section>
 </section>
 <section id="the-cosmic-riches-mass-value-and-rarity" class="level2">
@@ -228,7 +227,7 @@ Note
 <p><iframe src="https://r-leyshon.github.io/munge-starfield/table.html" style="height: 650px; border: none" class="shaded_box"></iframe></p>
 </div>
 <section id="key-takeaways" class="level3">
-<h3 class="anchored" data-anchor-id="key-takeaways">Key Takeaways:</h3>
+<h3 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h3>
 <ul>
 <li>Caelumite and Quark-Degenerate Tissues are high outliers, reaffirming their status as top choices.</li>
 <li>Surprisingly, Vac Grade Explosive emerges as a standout, despite being categorized as common.</li>
@@ -250,7 +249,9 @@ Note
 <p>By plotting the density of value to mass ratio for each rarity class, an interesting picture emerges. For this chart, I have filtered out those 2 high-end unique outliers, otherwise the traces are a bit small and hard to see.</p>
 <iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-joyplot.html" style="height: 800px; background: #FFFFFF;">
 </iframe>
-<p>Some observations:</p>
+</section>
+<section id="some-observations" class="level3">
+<h3 class="anchored" data-anchor-id="some-observations">Some observations</h3>
 <ul>
 <li>Exotic and Unique rarities show a bimodal distribution (2 peaks in value to mass ratio).</li>
 <li>The other rarities exhibit trimodal distributions.</li>

@@ -7,7 +7,6 @@ data-driven guide. Learn what to strategically hoard in order to maximize your
 loot gains."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Explanation
-    - Web scraping
     - Video games
     - Data analysis
 image: https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg
@@ -65,12 +64,13 @@ treasures worth their weight in gold—or rather, in galactic credits.
 
 To navigate this cosmic quest, we turn to the wealth of information readily
 available on Starfield's resources. Numerous websites offer tables detailing
-these cosmic artifacts. For this article, I opted to webscrape
-<https://inara.cz/starfield/database/>, a site open to web crawling, and a 
-straight forward web structure.
+these cosmic artifacts. For this article, I selected 
+<https://inara.cz/starfield/database/>, a site that helpfully separates the
+various Starfield collectibles into meaningful categories.
 
 For those curious about the code behind the scenes,
-[check it out on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i>](https://github.com/r-leyshon/munge-starfield).
+[check it out on GitHub <i class="fa-brands fa-github fa-shake fa-lg" style="color: #030303;"></i>](https://github.com/r-leyshon/munge-starfield/blob/main/viz-resources.ipynb)
+(GitHub account required).
 
 ## The Cosmic Riches: Mass, Value, and Rarity
 
@@ -130,7 +130,7 @@ in each column.
   <iframe src="https://r-leyshon.github.io/munge-starfield/table.html" style="height: 650px; border: none" class=shaded_box></iframe>
 </div>
 
-### Key Takeaways:
+### Key Takeaways
 
 * Caelumite and Quark-Degenerate Tissues are high outliers, reaffirming their
 status as top choices.
@@ -155,7 +155,7 @@ high-end unique outliers, otherwise the traces are a bit small and hard to see.
 
 <iframe src="https://r-leyshon.github.io/munge-starfield/outputs/starfield-resources-joyplot.html" style="height: 800px; background: #FFFFFF;"></iframe>
 
-Some observations:
+### Some observations
 
 * Exotic and Unique rarities show a bimodal distribution (2 peaks in value to
 mass ratio).
