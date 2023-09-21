@@ -1,5 +1,5 @@
 ---
-title: "Algorithms to Live By"
+title: "UNDER CONSTRUCTION: Algorithms to Live By"
 subtitle: "The Computer Science of Human Decisions"
 author: "Rich Leyshon"
 date: last-modified
@@ -15,7 +15,7 @@ toc: true
 
 
 <figure class=center>
- <img class=shaded_box src=https://images.rawpixel.com/image_400/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZsMjI2MTMzNTM5MjUtaW1hZ2Uta3A0dzFscHAuanBn.jpg alt="Misty trees in Fanal Forest, Madeira." width=400px>
+ <img class=shaded_box src=https://images.rawpixel.com/image_400/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZsMjI2MTMzNTM5MjUtaW1hZ2Uta3A0dzFscHAuanBn.jpg alt="Low-level radio-frequency controller for magnetron.." width=400px>
  <figcaption>Image credit: <https://www.rawpixel.com/></figcaption>
 </figure>
 
