@@ -24,8 +24,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/blogs/04-starfield-resources.html",
       "/book-reviews/02-algorithms-to-live-by.html",
+      "/blogs/04-starfield-resources.html",
       "/blogs/03-quarto-github-actions.html",
       "/music-reviews/01-ghostrunner-ost.html",
       "/book-reviews/01-deep-work.html",
