@@ -81,6 +81,36 @@ almost Douglas Adams sort of quality to it.
 
 ### 1: Optimal Stopping
 
+This chapter of the book dedicates more to explaining the debated origins of
+what has become known as 'The Secretary Problem' - a common decsription of the 
+Catch-22 described in the introduction. It also discusses some interesting
+statistics. In the context of hiring an employee for example, hiring at random
+regardless of the candidate's performance would result in success for the
+employer on average 1% of the time. By following the optimal stopping strategy,
+the chances of hiring the best candidate within the pool increases to 37%.
+Whether or not you feel that is a good outcome is sort of subjective, but the
+authors discuss that this outcome remains stable as you scale up the applicant
+pool - interviewing a million candidates while observing optimal stopping
+should bag you the best candidate on average 37% of the time.
+
+There are a few caveats to these scenarios which I feel makes the secretary
+problem a little less generalisable to real world applications than perhaps the
+authors allude to. This probem presumes that the information available to the
+interviewer about the quality of the candidates is relative rather than
+absolute. For example, you can compare or rank the candidates but do not have,
+for example, a list of criteria or aptitude tests to measure your candidates
+against. 
+
+Another assumption of the secretary problem would be in that making an offer
+would guarantee the candidate would accept, while passing up on a candidate
+would result in losing out on the possibility of recruiting that candidate
+forever. Few recruitment campaigns could operate under such conditions, however
+these assuptions could hold more relevance to scenarios such as selecting a
+parking space or selecting a long-term partner. Possibly. Although humans are
+complex organisms with confounding behaviour, the motivations driving that
+behaviour may lead to stable, predictable outcomes when considering a larger
+sample size. 
+
 ### 2: Explore/Exploit
 
 ### 3: Sorting
