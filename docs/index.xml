@@ -10,7 +10,7 @@
 <atom:link href="https://thedatasavvycorner.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Musings, ramblings, generally putting things down in text so I don&#39;t forget them.</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Fri, 22 Sep 2023 20:18:38 GMT</lastBuildDate>
+<lastBuildDate>Sat, 23 Sep 2023 06:29:04 GMT</lastBuildDate>
 <item>
   <title>UNDER CONSTRUCTION: Algorithms to Live By</title>
   <dc:creator>Rich Leyshon</dc:creator>
@@ -33,12 +33,18 @@ Image credit: <a href="https://www.rawpixel.com/" class="uri">https://www.rawpix
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <p>AtLB is a fantastic read for those naive to the complexity of computer science and how it can be applied to everyday life. From deciding whether to try a new restaurant, how best to go about finding your next home to optimising your socks draw. It turns out, the big brains in modern history have already solved these problems. The authors take us through the surprising implications that computer science can have for how we muddle through things, keeping things light and accessible enough to be categorised under popular science. Though the authors manage not to undersell sell the impact and after reading this book, you will never think about sorting in the same way again.</p>
+<p>…On the authors…</p>
+</section>
+<section id="an-overview-of-the-book" class="level2">
+<h2 class="anchored" data-anchor-id="an-overview-of-the-book">An Overview of the Book</h2>
+<p>…</p>
 </section>
 <section id="chapters" class="level2">
 <h2 class="anchored" data-anchor-id="chapters">Chapters</h2>
-<section id="introduction-1" class="level3">
-<h3 class="anchored" data-anchor-id="introduction-1">Introduction</h3>
-<p>The authors cater for my (and possibly the larger portion of their audience’s) needs by tackling some rather large misconceptions about computer science and human behaviour. Namely that humans are far too fuzzy-minded, fallible and that the real world is far too complex to benefit from optimal solutions. Indeed, the authors do state that some problems are known to be intractible due to a near infinite number of potential solutions, however those problems can be defined from the outset. And the rest of life’s challenges may often be reduced to outcomes affected by chance - the search for the right New York apartment being the particular focus for the intro. Briefly introducing the optimal stopping problem of whether to put an offer in for an apartment or to risk losing out on possibly the best apartment on the market by continuing your search provides an accessible and familiar insight to the direction of the book.</p>
+<p>In the sections below, I will explore some of the more engaging aspects of the book’s content.</p>
+<section id="a-gentle-introduction-to-operational-research" class="level3">
+<h3 class="anchored" data-anchor-id="a-gentle-introduction-to-operational-research">A Gentle Introduction to Operational Research</h3>
+<p>The authors cater for my (and possibly the larger portion of their audience’s) needs by tackling some rather large misconceptions about computer science and human behaviour. Namely that humans are far too fuzzy-minded, fallible and that the real world is far too complex to benefit from optimisation. Indeed, the authors do state that some problems are known to be intractible due to a near infinite number of potential solutions, however those problems can be defined from the outset. And the rest of life’s challenges may often be reduced to outcomes affected by chance - the search for the right New York apartment being the particular focus for the intro. Briefly introducing the optimal stopping problem of whether to put an offer in for an apartment or to risk losing out on possibly the best apartment on the market by continuing your search provides an accessible and familiar insight to the direction of the book.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -68,7 +74,26 @@ Note
 </div>
 </section>
 <section id="optimal-stopping" class="level3">
-<h3 class="anchored" data-anchor-id="optimal-stopping">1: Optimal Stopping</h3>
+<h3 class="anchored" data-anchor-id="optimal-stopping">Optimal Stopping</h3>
+<p>Chapter 1 of the book dedicates more to explaining the debated origins of what has become known as ‘The Secretary Problem’ - a common description of the Catch-22 described in the introduction. In the context of hiring an employee for example, hiring at random regardless of the candidate’s performance from a pool of 100 candidates would result in success for the employer on average 1% of the time. Success meaning that the employer has selected the best applicant from the pool.</p>
+<p>By following the optimal stopping strategy, the average chances of hiring the best candidate within the pool increases to 37%. Whether or not you feel that is a good outcome is sort of subjective, but the authors discuss that this outcome remains stable as you scale up the applicant pool while random recruitment does not - interviewing a million candidates while observing optimal stopping should bag you the best candidate on average 37% of the time. Random recruitment however, would result in successful recruitment of the strongest candidate in 0.0001% of the time.</p>
+<p>The example of scaling up this problem prompted me to consider some potential flaws in human behaviour, that would render any recruitment campaign unfair - optimised or otherwise. Standardising the recruitment process is known to be extremely challenging. Treating the problem like trial design, controlling for factors quickly results in confounding variables. If choosing to minimise variation in the appraisal process, you may consider retaining the same panel for each interview. Ensuring that the panel’s sattention and mood are not affected by a demanding interview schedule becomes the next problem. Attempting to control for that results in extending the schedule period, possibly from days to months.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>““…no free lunch” (NFL) theorems… for any algorithm, any elevated performance over one class of problems is offset by performance over another class” <span class="citation" data-cites="NFL">[3]</span></p>
+</div>
+</div>
+<p>The secretary problem presumes that the information available to the interviewer about the quality of the candidates is relative rather than absolute. You can compare or rank the candidates but do not have a list of absolute criteria or aptitude tests to measure your candidates against. Any such approach to interviewing would swiftly be decried for lacking any objective threshold, leaving the entire process wide open to human bias.</p>
+<p>Another assumption of the secretary problem is that making an offer would guarantee the candidate would accept, while passing up on a candidate would result in losing out on the possibility of recruiting that candidate forever. Few recruitment campaigns could operate under such conditions, however these assuptions could hold more relevance to scenarios such as selecting a parking space or selecting a long-term partner. Possibly. Although humans are complex organisms with confounding behaviour, the motivations driving that behaviour may lead to stable, predictable outcomes when considering a larger sample size.</p>
+<p>Overall, I felt the authors offered an interesting treatment of optimal stopping solutions. The relevance to everyday scenarios piqued my interest and had me thinking of broader implications. I am not wholly convinced that the approach is generalisable to most real-world scenarios, which may violate the problem’s assumptions.</p>
 </section>
 <section id="exploreexploit" class="level3">
 <h3 class="anchored" data-anchor-id="exploreexploit">2: Explore/Exploit</h3>
@@ -175,12 +200,166 @@ Note
 <div id="ref-Hitchhikers" class="csl-entry">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">Douglas Adams, <em><span class="nocase">The Hitchhikers Guide to the Galaxy</span></em>. 1981.</div>
 </div>
+<div id="ref-NFL" class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">D.H. Wolpert; W.G. Macready, <span>“No free lunch theorems for optimization,”</span> <em>IEEE Transactions on Evolutionary Computation</em>, vol. 1, no. 1, 1997.</div>
+</div>
 </div></section></div> ]]></description>
   <category>Mathematical Modelling</category>
   <category>Computer Science</category>
   <guid>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</guid>
-  <pubDate>Fri, 22 Sep 2023 20:18:38 GMT</pubDate>
+  <pubDate>Sat, 23 Sep 2023 06:29:04 GMT</pubDate>
   <media:content url="https://images.rawpixel.com/image_400/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZsMjI2MTMzNTM5MjUtaW1hZ2Uta3A0dzFscHAuanBn.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Deep Work</title>
+  <dc:creator>Rich Leyshon</dc:creator>
+  <link>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</link>
+  <description><![CDATA[ 
+
+
+
+<figure class="center figure">
+<img class="shaded_box figure-img" src="https://thedatasavvycorner.netlify.app/book-reviews/https:/upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019" alt="Misty trees in Fanal Forest, Madeira." width="400px">
+<figcaption class="figure-caption">
+Fanal Forest, Madeira. Wikimedia Creative Commons.
+</figcaption>
+</figure>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>At the date of writing this review, Deep Work scores an average of 4.19 / 5.00 across over 141k ratings on <a href="https://www.goodreads.com/en/book/show/25744928">goodreads</a>. Also nominated by the same website for Best Nonfiction, 2016. Awarded gongs for best book and best seller in business &amp; leadership by Amazon &amp; the Wall Street Journal.</p>
+<p>This book was recommended to me by a close colleague and I read it on holidays during some much-needed downtime in the Summer of 2023. I should note that I reflect on the relevance of the advice in this book to my own personal circumstances. To that end, it is worth noting that I currently work as a senior data scientist and that I happen to face many competing priorities in my day-to-day job.</p>
+<p>Cal Newport is a celebrated author within the field of personal productivity. According to his website, Newport is an MIT Grad in Computer Science and a professor at Georgetown University <span class="citation" data-cites="CalNewport">[1]</span>.</p>
+</section>
+<section id="an-overview-of-the-book" class="level2">
+<h2 class="anchored" data-anchor-id="an-overview-of-the-book">An Overview of the Book</h2>
+<p>Deep Work is structured in 2 parts:</p>
+<section id="part-1-the-idea" class="level3">
+<h3 class="anchored" data-anchor-id="part-1-the-idea">Part 1: The Idea</h3>
+<p>Here the author sets out his stall, establishing definitions of fundamental concepts, such as deep and shallow work and their relative value to the author’s definition of what he refers to as the ‘knowledge worker’. The author sets out noteworthy examples of individuals who (have) had a proven ability to establish deep thought throughout their illustrious careers. The author then sets out the case for why deep work is a rewarding endeavor and how its antithesis of a connected and responsive workday offers little benefit to the individual, the organisation or society. Yet , many modern organisations have unwittingly promoted and even entrenched a shallow work culture among their employees.</p>
+</section>
+<section id="part-2-the-rules" class="level3">
+<h3 class="anchored" data-anchor-id="part-2-the-rules">Part 2: The Rules</h3>
+<p>In this section, the author offers suggested interventions to make within your workplace. Exemplifying strategies with personal experience and from those around him, Newport assists the reader in visualising a professional future where they can rule their schedule, rather than the reverse.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“… remain unresponsive to the pinprick onslaught of small obligations that seem harmless in isolation but aggregate to serious injury to his deep work habit.” <span class="citation" data-cites="DeepWork">[2, p. 142]</span></p>
+</div>
+</div>
+<p>The author identifies potential sticking points and attempts to treat them, offering suggested strategies for securing the support of colleagues, stakeholders and managers in the reader’s pursuit of deep work. Moderating his message, Newport offers words of advice against the pursuit of deep work to the exclusion of everything else, yet establishing set constraints within a schedule where shallow tasks and administrative commitments are not permitted to undo your daily objectives.</p>
+</section>
+</section>
+<section id="analysis-and-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-and-evaluation">Analysis and Evaluation</h2>
+<p>Much of the content in this book resonated with me. Newport takes a contrarian view of many modern professional practices, such as structuring your day around group ceremonies like stand ups or scrums, maintaining open channels of communication via Email and instant messaging applications, and as mentioned above, social media channels. Many I.T. professionals will find their progress hampered by a menagerie of ceremonies, administrative tasks and meetings of ambiguous impact. Understanding how to categorise such meetings and structure your day around your deep work goals is what Newport hopes to espouse. This has been a consistent feature of my data-related roles throughout my career. Striking that balance of engaging with stakeholders versus undertaking the work can all too often result in a fractured day with little developmental progress.</p>
+<p>That’s not to say that Newport promotes a hermetic approach to work. It’s clear to most that the tool, statistic or analysis that is being developed can only be effective if it is useful. Newport states that these ‘shallow’ tasks should be kept in check. They should be minimised and must earn your attention. Placing a premium on your time and attention is at the core of the book’s message.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“…for decisions that involve large amounts of information and multiple vague, and perhaps even conflicting restraints, your unconscious mind is well suited to tackle the issue.” <span class="citation" data-cites="DeepWork">[2, p. 145]</span></p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Above, Newport summarises a high level takeaway from unconscious thought theory (UTT), which may present a theoretical basis for sleeping on a particularly challenging problem.</p>
+</blockquote>
+<p>A lot of what Newport writes has rung true in my experience. While not all jobs have the same requirements, my roles in data have all required a deep focus disposition. In fact, some of the strategies that the author suggests for optimising your day, I had independently arrived at. Approaches such as starting your day before the rest of the office has woken up and keeping Email responses process-related have both served me well in my career progression so far. But, there are some suggested strategies that I have not quite been convinced of. At one point, Newport discusses cognitive strategies for extending your capacity for deep concentration. The suggested approach is to remember the order of a shuffled deck of cards. Newport outlines a method for doing so and cites some studies that are indicative of the positive relationship between such activities and the mental fortitude required for deep focus. Personally, I would sacrifice too much time in achieving such a feat, whereas I would gain more by implementing the task at hand, gradually incrementing my exposure to deep concentration sessions. Newport does state that this sort of thinking misses the point entirely, and that investing effort in such a mental feat pays dividends in the longer term, though I have yet to be convinced of this claim.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“…attention restoration theory (ART), which claims that spending time in nature can improve your ability to concentrate. This theory… is based on the concept of attention fatigue. To concentrate requires what ART calls <em>directed</em> <em>attention</em>. This resource is finite: If you exhaust it, you’ll struggle to concentrate.” <span class="citation" data-cites="DeepWork">[2, p. 147]</span></p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>I found this concept to be very interesting, and a little concerning. Managing burnout is something that I value. It seems that my pasttimes also require directed attention, and that perhaps I should pursue recreational activities that contrast with my professional interests. I have decided to note within my journal when I notice that I am lacking energy and to resolve to take a bike ride, swim or just a walk in order to efefctively disconnect and recharge.</p>
+</blockquote>
+<p>At times throughout the book, I did find myself reflecting that some of the claims or advice were not as generalisable as the author had perceived. At one point for example, the Newport suggests diagnosing whether your workplace can support a culture of deep concentration and finding alternative employment if the answer was a clear enough ‘no’. This did strike me as something that many colleagues could only dream of, with the reality of bills to pay, children to feed and job security in an uncertain sector. Advising people to leave rather than finding alternative strategies to influence managerial culture does seem a bit thoughtless.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Professional E-mail Sorting: Do not reply to an e-mail message if any of the following applies:</p>
+<ul>
+<li>It’s ambiguous or otherwise makes it hard for you to generate a reasonable response.</li>
+<li>It’s not a question or proposal that interests you.</li>
+<li>Nothing really good would happen if you did respond and nothing really bad would happen if you didn’t.” <span class="citation" data-cites="DeepWork">[2, p. 255]</span></li>
+</ul>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>I find this advice to be a bit myopic. This is likely great advice for an accomplished academic with a strong internal locus of control. Junior entrants to a profession typically need to prove their utility to those with greater power around them - the decision makers that could be on their next promotion panel. Ignoring Emails that are a bit ambiguous could result in passing up an oportunity to help a colleague, forge a new professional relationship or prove your worth in the workplace. Rather than approaching the needs of others with derision, I would instead advise time-boxing a response and communicating your needs clearly to the other party. Something like - ‘I’m a bit pushed for time right now and am not familiar with the context, but if you can point me to a briefing note I can get back to you on Monday, once I’ve cleared off my backlog’.</p>
+</blockquote>
+<p>Another feature of this book which that requires some scepticism is in the outcomes of studies used to underpin the attitudes and strategies promoted as good practice. It’s likely no news to you that the behavioural sciences has attracted a fair amount of criticism about the reproducibility of published findings over the last decade. Coupled with the widespread publication bias encountered in academic journals <span class="citation" data-cites="BMJPubBias">[3]</span> and confirmation bias abound in the field of psychology, I would suggest the author reveal some of the research that they have undertaken in validating the claims of the studies. It is unlikely that the average reader will have the necessary time to carry out their own investigation of the findings, and doubt in the ability to evidence some of the claims within the book is introduced. I do not wish to sound like I am criticising the author for choosing studies that help to evidence their claims, as I would have criticised them for not doing so had that been the case. I would ask that the author publishes their attempts to prove the hypotheses considered.</p>
+<blockquote class="blockquote">
+<p>“Don’t trust everything you read in the psychology literature. In fact, two thirds of it should probably be distrusted.” <span class="citation" data-cites="NatureReproducibility">[4]</span></p>
+</blockquote>
+</section>
+<section id="comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="comparisons">Comparisons</h2>
+<p>There are some obvious comparisons with other productivity self-help books. One of the most obvious is in Stephen Covey’s The 7 Habits of Highly Effective People <span class="citation" data-cites="Covey">[5]</span>. Both books make an effort to discuss the management of competing priorities and how to go about organising your working day around prioritised, impactful goals. Covey’s book dedicates more energy towards effectively triaging tasks and charting progress made against longer-term priorities than what is explored within Deep Work. In fact, this may be another presumption made by Newport - that the direction of progress is obvious to the reader and it is simply a matter of finding the undisturbed time to do the work. As many of us will encounter uncertainty and a fair amount of strategic thrashing in our working lives, this could prove to be a limiting assumption.</p>
+<p>Below is an example of what is commonly referred to as a “Covey Quadrant”, a rubric for efficiently categorising tasks along dimensions of urgency and importance.</p>
+<p><img alt="Covey quadrant, creative commons." src="https://thedatasavvycorner.netlify.app/book-reviews/https:/upload.wikimedia.org/wikipedia/commons/thumb/3/33/7_habits_decision-making_matrix.png/596px-7_habits_decision-making_matrix.png?20181120003806" width="400" class="center"></p>
+</section>
+<section id="recommendation" class="level2">
+<h2 class="anchored" data-anchor-id="recommendation">Recommendation</h2>
+<p>There is a lot of wisdom to be gleaned from this book. Sure, some of it may be anecdotal and won’t be true in all cases. But there is an undeniable pattern in the examples provided, that sustained effort yields desirable outcomes. This is something that I have always found to be true and connects with my wider values. It is this message and the useful reminders and strategies that would form the basis of my recommendation for this book. This book is an opportunity to gain insight into how the elite of the achievers in society get things done. You may be able to make some of this work for you but don’t expect it to be easy, or perhaps even achievable in your current situation.</p>
+<p>To put it bluntly, if you have ever struggled to quiet the noise at work and get things done, then this book is for you. (It’s not lost on me that that may qualify pretty much everyone who has ever worked in an office).</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body">
+<div id="ref-CalNewport" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Cal Newport, <span>“Calnewport.com.”</span> <a href="https://calnewport.com/">https://calnewport.com/</a></div>
+</div>
+<div id="ref-DeepWork" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Cal Newport, <em><span>Deep Work</span></em>. PIATKUS, 1997.</div>
+</div>
+<div id="ref-BMJPubBias" class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">Evelyne Decullier &amp; François Chapuis, <span>“BMJ 2005;331:433.”</span> <a href="https://www.bmj.com/rapid-response/2011/10/31/what-publication-bias">https://www.bmj.com/rapid-response/2011/10/31/what-publication-bias</a></div>
+</div>
+<div id="ref-NatureReproducibility" class="csl-entry">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">Monya Baker, <span>“Nature.com.”</span> <a href="https://www.nature.com/articles/nature.2015.18248">https://www.nature.com/articles/nature.2015.18248</a></div>
+</div>
+<div id="ref-Covey" class="csl-entry">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">Stephen R. Covey, <em><span class="nocase">The Seven Habits of Highly Effective People</span></em>. <span>Free Press</span>, 2004.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>Self-Help</category>
+  <category>Productivity</category>
+  <category>Business</category>
+  <category>Psychology</category>
+  <category>Philosophy</category>
+  <guid>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</guid>
+  <pubDate>Sat, 23 Sep 2023 06:26:24 GMT</pubDate>
+  <media:content url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019" medium="image"/>
 </item>
 <item>
   <title>Maximizing Loot Gains in Starfield: A Data-Driven Approach</title>
@@ -1059,156 +1238,6 @@ Interpreting the Ridge Plot (Click to expand)
   <guid>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</guid>
   <pubDate>Sun, 10 Sep 2023 06:29:29 GMT</pubDate>
   <media:content url="https://i.scdn.co/image/ab67616d0000b2736bbb199a6537fe7d858ec523" medium="image"/>
-</item>
-<item>
-  <title>Deep Work</title>
-  <dc:creator>Rich Leyshon</dc:creator>
-  <link>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</link>
-  <description><![CDATA[ 
-
-
-
-<figure class="center figure">
-<img class="shaded_box figure-img" src="https://thedatasavvycorner.netlify.app/book-reviews/https:/upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019" alt="Misty trees in Fanal Forest, Madeira." width="400px">
-<figcaption class="figure-caption">
-Fanal Forest, Madeira. Wikimedia Creative Commons.
-</figcaption>
-</figure>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>At the date of writing this review, Deep Work scores an average of 4.19 / 5.00 across over 141k ratings on <a href="https://www.goodreads.com/en/book/show/25744928">goodreads</a>. Also nominated by the same website for Best Nonfiction, 2016. Awarded gongs for best book and best seller in business &amp; leadership by Amazon &amp; the Wall Street Journal.</p>
-<p>This book was recommended to me by a close colleague and I read it on holidays during some much-needed downtime in the Summer of 2023. I should note that I reflect on the relevance of the advice in this book to my own personal circumstances. To that end, it is worth noting that I currently work as a senior data scientist and that I happen to face many competing priorities in my day-to-day job.</p>
-</section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>Cal Newport is a celebrated author within the field of personal productivity. According to his website, Newport is an MIT Grad in Computer Science and a professor at Georgetown University <span class="citation" data-cites="CalNewport">[1]</span>. Deep Work is structured in 2 parts.</p>
-<section id="part-1-the-idea" class="level3">
-<h3 class="anchored" data-anchor-id="part-1-the-idea">Part 1: The Idea</h3>
-<p>Here the author sets out his stall, establishing definitions of fundamental concepts, such as deep and shallow work and their relative value to the author’s definition of what he refers to as the ‘knowledge worker’. The author sets out noteworthy examples of individuals who (have) had a proven ability to establish deep thought throughout their illustrious careers. The author then sets out the case for why deep work is a rewarding endeavor and how its antithesis of a connected and responsive workday offers little benefit to the individual, the organisation or society. Yet , many modern organisations have unwittingly promoted and even entrenched a shallow work culture among their employees.</p>
-</section>
-<section id="part-2-the-rules" class="level3">
-<h3 class="anchored" data-anchor-id="part-2-the-rules">Part 2: The Rules</h3>
-<p>In this section, the author offers suggested interventions to make within your workplace. Exemplifying strategies with personal experience and from those around him, Newport assists the reader in visualising a professional future where they can rule their schedule, rather than the reverse.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“… remain unresponsive to the pinprick onslaught of small obligations that seem harmless in isolation but aggregate to serious injury to his deep work habit.” <span class="citation" data-cites="DeepWork">[2, p. 142]</span></p>
-</div>
-</div>
-<p>The author identifies potential sticking points and attempts to treat them, offering suggested strategies for securing the support of colleagues, stakeholders and managers in the reader’s pursuit of deep work. Moderating his message, Newport offers words of advice against the pursuit of deep work to the exclusion of everything else, yet establishing set constraints within a schedule where shallow tasks and administrative commitments are not permitted to undo your daily objectives.</p>
-</section>
-</section>
-<section id="analysis-and-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-and-evaluation">Analysis and Evaluation</h2>
-<p>Much of the content in this book resonated with me. Newport takes a contrarian view of many modern professional practices, such as structuring your day around group ceremonies like stand ups or scrums, maintaining open channels of communication via Email and instant messaging applications, and as mentioned above, social media channels. Many I.T. professionals will find their progress hampered by a menagerie of ceremonies, administrative tasks and meetings of ambiguous impact. Understanding how to categorise such meetings and structure your day around your deep work goals is what Newport hopes to espouse. This has been a consistent feature of my data-related roles throughout my career. Striking that balance of engaging with stakeholders versus undertaking the work can all too often result in a fractured day with little developmental progress.</p>
-<p>That’s not to say that Newport promotes a hermetic approach to work. It’s clear to most that the tool, statistic or analysis that is being developed can only be effective if it is useful. Newport states that these ‘shallow’ tasks should be kept in check. They should be minimised and must earn your attention. Placing a premium on your time and attention is at the core of the book’s message.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“…for decisions that involve large amounts of information and multiple vague, and perhaps even conflicting restraints, your unconscious mind is well suited to tackle the issue.” <span class="citation" data-cites="DeepWork">[2, p. 145]</span></p>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>Above, Newport summarises a high level takeaway from unconscious thought theory (UTT), which may present a theoretical basis for sleeping on a particularly challenging problem.</p>
-</blockquote>
-<p>A lot of what Newport writes has rung true in my experience. While not all jobs have the same requirements, my roles in data have all required a deep focus disposition. In fact, some of the strategies that the author suggests for optimising your day, I had independently arrived at. Approaches such as starting your day before the rest of the office has woken up and keeping Email responses process-related have both served me well in my career progression so far. But, there are some suggested strategies that I have not quite been convinced of. At one point, Newport discusses cognitive strategies for extending your capacity for deep concentration. The suggested approach is to remember the order of a shuffled deck of cards. Newport outlines a method for doing so and cites some studies that are indicative of the positive relationship between such activities and the mental fortitude required for deep focus. Personally, I would sacrifice too much time in achieving such a feat, whereas I would gain more by implementing the task at hand, gradually incrementing my exposure to deep concentration sessions. Newport does state that this sort of thinking misses the point entirely, and that investing effort in such a mental feat pays dividends in the longer term, though I have yet to be convinced of this claim.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“…attention restoration theory (ART), which claims that spending time in nature can improve your ability to concentrate. This theory… is based on the concept of attention fatigue. To concentrate requires what ART calls <em>directed</em> <em>attention</em>. This resource is finite: If you exhaust it, you’ll struggle to concentrate.” <span class="citation" data-cites="DeepWork">[2, p. 147]</span></p>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>I found this concept to be very interesting, and a little concerning. Managing burnout is something that I value. It seems that my pasttimes also require directed attention, and that perhaps I should pursue recreational activities that contrast with my professional interests. I have decided to note within my journal when I notice that I am lacking energy and to resolve to take a bike ride, swim or just a walk in order to efefctively disconnect and recharge.</p>
-</blockquote>
-<p>At times throughout the book, I did find myself reflecting that some of the claims or advice were not as generalisable as the author had perceived. At one point for example, the Newport suggests diagnosing whether your workplace can support a culture of deep concentration and finding alternative employment if the answer was a clear enough ‘no’. This did strike me as something that many colleagues could only dream of, with the reality of bills to pay, children to feed and job security in an uncertain sector. Advising people to leave rather than finding alternative strategies to influence managerial culture does seem a bit thoughtless.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“Professional E-mail Sorting: Do not reply to an e-mail message if any of the following applies:</p>
-<ul>
-<li>It’s ambiguous or otherwise makes it hard for you to generate a reasonable response.</li>
-<li>It’s not a question or proposal that interests you.</li>
-<li>Nothing really good would happen if you did respond and nothing really bad would happen if you didn’t.” <span class="citation" data-cites="DeepWork">[2, p. 255]</span></li>
-</ul>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>I find this advice to be a bit myopic. This is likely great advice for an accomplished academic with a strong internal locus of control. Junior entrants to a profession typically need to prove their utility to those with greater power around them - the decision makers that could be on their next promotion panel. Ignoring Emails that are a bit ambiguous could result in passing up an oportunity to help a colleague, forge a new professional relationship or prove your worth in the workplace. Rather than approaching the needs of others with derision, I would instead advise time-boxing a response and communicating your needs clearly to the other party. Something like - ‘I’m a bit pushed for time right now and am not familiar with the context, but if you can point me to a briefing note I can get back to you on Monday, once I’ve cleared off my backlog’.</p>
-</blockquote>
-<p>Another feature of this book which that requires some scepticism is in the outcomes of studies used to underpin the attitudes and strategies promoted as good practice. It’s likely no news to you that the behavioural sciences has attracted a fair amount of criticism about the reproducibility of published findings over the last decade. Coupled with the widespread publication bias encountered in academic journals <span class="citation" data-cites="BMJPubBias">[3]</span> and confirmation bias abound in the field of psychology, I would suggest the author reveal some of the research that they have undertaken in validating the claims of the studies. It is unlikely that the average reader will have the necessary time to carry out their own investigation of the findings, and doubt in the ability to evidence some of the claims within the book is introduced. I do not wish to sound like I am criticising the author for choosing studies that help to evidence their claims, as I would have criticised them for not doing so had that been the case. I would ask that the author publishes their attempts to prove the hypotheses considered.</p>
-<blockquote class="blockquote">
-<p>“Don’t trust everything you read in the psychology literature. In fact, two thirds of it should probably be distrusted.” <span class="citation" data-cites="NatureReproducibility">[4]</span></p>
-</blockquote>
-</section>
-<section id="comparisons" class="level2">
-<h2 class="anchored" data-anchor-id="comparisons">Comparisons</h2>
-<p>There are some obvious comparisons with other productivity self-help books. One of the most obvious is in Stephen Covey’s The 7 Habits of Highly Effective People <span class="citation" data-cites="Covey">[5]</span>. Both books make an effort to discuss the management of competing priorities and how to go about organising your working day around prioritised, impactful goals. Covey’s book dedicates more energy towards effectively triaging tasks and charting progress made against longer-term priorities than what is explored within Deep Work. In fact, this may be another presumption made by Newport - that the direction of progress is obvious to the reader and it is simply a matter of finding the undisturbed time to do the work. As many of us will encounter uncertainty and a fair amount of strategic thrashing in our working lives, this could prove to be a limiting assumption.</p>
-<p>Below is an example of what is commonly referred to as a “Covey Quadrant”, a rubric for efficiently categorising tasks along dimensions of urgency and importance.</p>
-<p><img alt="Covey quadrant, creative commons." src="https://thedatasavvycorner.netlify.app/book-reviews/https:/upload.wikimedia.org/wikipedia/commons/thumb/3/33/7_habits_decision-making_matrix.png/596px-7_habits_decision-making_matrix.png?20181120003806" width="400" class="center"></p>
-</section>
-<section id="recommendation" class="level2">
-<h2 class="anchored" data-anchor-id="recommendation">Recommendation</h2>
-<p>There is a lot of wisdom to be gleaned from this book. Sure, some of it may be anecdotal and won’t be true in all cases. But there is an undeniable pattern in the examples provided, that sustained effort yields desirable outcomes. This is something that I have always found to be true and connects with my wider values. It is this message and the useful reminders and strategies that would form the basis of my recommendation for this book. This book is an opportunity to gain insight into how the elite of the achievers in society get things done. You may be able to make some of this work for you but don’t expect it to be easy, or perhaps even achievable in your current situation.</p>
-<p>To put it bluntly, if you have ever struggled to quiet the noise at work and get things done, then this book is for you. (It’s not lost on me that that may qualify pretty much everyone who has ever worked in an office).</p>
-
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body">
-<div id="ref-CalNewport" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Cal Newport, <span>“Calnewport.com.”</span> <a href="https://calnewport.com/">https://calnewport.com/</a></div>
-</div>
-<div id="ref-DeepWork" class="csl-entry">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Cal Newport, <em><span>Deep Work</span></em>. PIATKUS, 1997.</div>
-</div>
-<div id="ref-BMJPubBias" class="csl-entry">
-<div class="csl-left-margin">[3] </div><div class="csl-right-inline">Evelyne Decullier &amp; François Chapuis, <span>“BMJ 2005;331:433.”</span> <a href="https://www.bmj.com/rapid-response/2011/10/31/what-publication-bias">https://www.bmj.com/rapid-response/2011/10/31/what-publication-bias</a></div>
-</div>
-<div id="ref-NatureReproducibility" class="csl-entry">
-<div class="csl-left-margin">[4] </div><div class="csl-right-inline">Monya Baker, <span>“Nature.com.”</span> <a href="https://www.nature.com/articles/nature.2015.18248">https://www.nature.com/articles/nature.2015.18248</a></div>
-</div>
-<div id="ref-Covey" class="csl-entry">
-<div class="csl-left-margin">[5] </div><div class="csl-right-inline">Stephen R. Covey, <em><span class="nocase">The Seven Habits of Highly Effective People</span></em>. <span>Free Press</span>, 2004.</div>
-</div>
-</div></section></div> ]]></description>
-  <category>Self-Help</category>
-  <category>Productivity</category>
-  <category>Business</category>
-  <category>Psychology</category>
-  <category>Philosophy</category>
-  <guid>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</guid>
-  <pubDate>Sun, 10 Sep 2023 06:29:22 GMT</pubDate>
-  <media:content url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019" medium="image"/>
 </item>
 <item>
   <title>Let’s Build a Basic Python Shiny App</title>

@@ -35,12 +35,13 @@ circumstances. To that end, it is worth noting that I currently work as a
 senior data scientist and that I happen to face many competing priorities in my
 day-to-day job.
 
-## Summary
-
 Cal Newport is a celebrated author within the field of personal productivity.
 According to his website, Newport is an MIT Grad in Computer Science and a
-professor at Georgetown University @CalNewport. Deep Work is structured in 2
-parts.
+professor at Georgetown University @CalNewport.
+
+## An Overview of the Book
+
+Deep Work is structured in 2 parts:
 
 ### Part 1: The Idea
 
@@ -54,8 +55,6 @@ antithesis of a connected and responsive workday offers little benefit to the
 individual, the organisation or society. Yet , many modern organisations have
 unwittingly promoted and even entrenched a  shallow work culture among their
 employees.
-
-
 
 ### Part 2: The Rules
 

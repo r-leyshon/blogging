@@ -41,23 +41,31 @@ light and accessible enough to be categorised under popular science. Though the
 authors manage not to undersell sell the impact and after reading this book,
 you will never think about sorting in the same way again.
 
+...On the authors...
+
+## An Overview of the Book
+
+...
+
 ## Chapters
 
-### Introduction
+In the sections below, I will explore some of the more engaging aspects of the
+book's content.
+
+### A Gentle Introduction to Operational Research
 
 The authors cater for my (and possibly the larger portion of their audience's)
 needs by tackling some rather large misconceptions about computer science and
 human behaviour. Namely that humans are far too fuzzy-minded, fallible and that
-the real world is far too complex to benefit from optimal solutions.
-Indeed, the authors do state that some problems are known to be intractible due
-to a near infinite number of potential solutions, however those problems
-can be defined from the outset. And the rest of life's challenges may often be
-reduced to outcomes affected by chance - the search for the right New York
-apartment being the particular focus for the intro. Briefly introducing the
-optimal stopping problem of whether to put an offer in for an apartment or to
-risk losing out on possibly the best apartment on the market by continuing your
-search provides an accessible and familiar insight to the direction of the
-book.
+the real world is far too complex to benefit from optimisation. Indeed, the
+authors do state that some problems are known to be intractible due to a near
+infinite number of potential solutions, however those problems can be defined
+from the outset. And the rest of life's challenges may often be reduced to
+outcomes affected by chance - the search for the right New York apartment being
+the particular focus for the intro. Briefly introducing the optimal stopping
+problem of whether to put an offer in for an apartment or to risk losing out on
+possibly the best apartment on the market by continuing your search provides an
+accessible and familiar insight to the direction of the book.
 
 :::{.callout-note}
 "...spend 37% of your apartment hunt (eleven days, if you've given yourself a
@@ -75,41 +83,67 @@ at 37% of your search time you should immediately flip to committing has an
 almost Douglas Adams sort of quality to it.
 
 :::{.callout-note}
-42: the "Answer to the Ultimate Question of Life, the Universe, and Everything" @Hitchhikers
+42: the "Answer to the Ultimate Question of Life, the Universe, and Everything"
+@Hitchhikers
 :::
 
+### Optimal Stopping
 
-### 1: Optimal Stopping
+Chapter 1 of the book dedicates more to explaining the debated origins of what
+has become known as 'The Secretary Problem' - a common description of the 
+Catch-22 described in the introduction. In the context of hiring an employee
+for example, hiring at random regardless of the candidate's performance from a
+pool of 100 candidates would result in success for the employer on average 1%
+of the time. Success meaning that the employer has selected the best applicant
+from the pool.
 
-This chapter of the book dedicates more to explaining the debated origins of
-what has become known as 'The Secretary Problem' - a common decsription of the 
-Catch-22 described in the introduction. It also discusses some interesting
-statistics. In the context of hiring an employee for example, hiring at random
-regardless of the candidate's performance would result in success for the
-employer on average 1% of the time. By following the optimal stopping strategy,
-the chances of hiring the best candidate within the pool increases to 37%.
-Whether or not you feel that is a good outcome is sort of subjective, but the
-authors discuss that this outcome remains stable as you scale up the applicant
-pool - interviewing a million candidates while observing optimal stopping
-should bag you the best candidate on average 37% of the time.
+By following the optimal stopping strategy, the average chances of hiring the
+best candidate within the pool increases to 37%. Whether or not you feel that
+is a good outcome is sort of subjective, but the authors discuss that this
+outcome remains stable as you scale up the applicant pool while random
+recruitment does not - interviewing a million candidates while observing
+optimal stopping should bag you the best candidate on average 37% of the time.
+Random recruitment however, would result in successful recruitment of the
+strongest candidate in 0.0001% of the time. 
 
-There are a few caveats to these scenarios which I feel makes the secretary
-problem a little less generalisable to real world applications than perhaps the
-authors allude to. This probem presumes that the information available to the
+The example of scaling up this problem prompted me to consider some
+potential flaws in human behaviour, that would render any recruitment campaign
+unfair - optimised or otherwise. Standardising the recruitment process is known
+to be extremely challenging. Treating the problem like trial design,
+controlling for factors quickly results in confounding variables. If choosing
+to minimise variation in the appraisal process, you may consider
+retaining the same panel for each interview. Ensuring that the panel's
+sattention and mood are not affected by a demanding interview schedule becomes
+the next problem. Attempting to control for that results in extending the
+schedule period, possibly from days to months. 
+
+:::{.callout-note}
+""...no free lunch" (NFL) theorems... for any algorithm, any elevated
+performance over one class of problems is offset by performance over another
+class" @NFL
+:::
+
+The secretary problem presumes that the information available to the
 interviewer about the quality of the candidates is relative rather than
-absolute. For example, you can compare or rank the candidates but do not have,
-for example, a list of criteria or aptitude tests to measure your candidates
-against. 
+absolute. You can compare or rank the candidates but do not have a list of
+absolute criteria or aptitude tests to measure your candidates against. Any
+such approach to interviewing would swiftly be decried for lacking any
+objective threshold, leaving the entire process wide open to human bias. 
 
-Another assumption of the secretary problem would be in that making an offer
-would guarantee the candidate would accept, while passing up on a candidate
-would result in losing out on the possibility of recruiting that candidate
-forever. Few recruitment campaigns could operate under such conditions, however
-these assuptions could hold more relevance to scenarios such as selecting a
-parking space or selecting a long-term partner. Possibly. Although humans are
-complex organisms with confounding behaviour, the motivations driving that
-behaviour may lead to stable, predictable outcomes when considering a larger
-sample size. 
+Another assumption of the secretary problem is that making an offer would
+guarantee the candidate would accept, while passing up on a candidate would
+result in losing out on the possibility of recruiting that candidate forever.
+Few recruitment campaigns could operate under such conditions, however these
+assuptions could hold more relevance to scenarios such as selecting a parking
+space or selecting a long-term partner. Possibly. Although humans are complex
+organisms with confounding behaviour, the motivations driving that behaviour
+may lead to stable, predictable outcomes when considering a larger sample size. 
+
+Overall, I felt the authors offered an interesting treatment of optimal
+stopping solutions. The relevance to everyday scenarios piqued my interest and
+had me thinking of broader implications. I am not wholly convinced that the 
+approach is generalisable to most real-world scenarios, which may violate the
+problem's assumptions.
 
 ### 2: Explore/Exploit
 
