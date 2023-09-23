@@ -138,23 +138,19 @@ div.csl-indent {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#on-the-authors" id="toc-on-the-authors" class="nav-link" data-scroll-target="#on-the-authors">On the Authors</a></li>
+  </ul></li>
   <li><a href="#an-overview-of-the-book" id="toc-an-overview-of-the-book" class="nav-link" data-scroll-target="#an-overview-of-the-book">An Overview of the Book</a></li>
   <li><a href="#chapters" id="toc-chapters" class="nav-link" data-scroll-target="#chapters">Chapters</a>
   <ul class="collapse">
   <li><a href="#a-gentle-introduction-to-operational-research" id="toc-a-gentle-introduction-to-operational-research" class="nav-link" data-scroll-target="#a-gentle-introduction-to-operational-research">A Gentle Introduction to Operational Research</a></li>
   <li><a href="#optimal-stopping" id="toc-optimal-stopping" class="nav-link" data-scroll-target="#optimal-stopping">Optimal Stopping</a></li>
-  <li><a href="#exploreexploit" id="toc-exploreexploit" class="nav-link" data-scroll-target="#exploreexploit">2: Explore/Exploit</a></li>
   <li><a href="#sorting" id="toc-sorting" class="nav-link" data-scroll-target="#sorting">3: Sorting</a></li>
   <li><a href="#caching" id="toc-caching" class="nav-link" data-scroll-target="#caching">4: Caching</a></li>
-  <li><a href="#scheduling" id="toc-scheduling" class="nav-link" data-scroll-target="#scheduling">5: Scheduling</a></li>
-  <li><a href="#bayess-rule" id="toc-bayess-rule" class="nav-link" data-scroll-target="#bayess-rule">6: Bayes’s Rule</a></li>
   <li><a href="#overfitting" id="toc-overfitting" class="nav-link" data-scroll-target="#overfitting">7: Overfitting</a></li>
-  <li><a href="#relaxation" id="toc-relaxation" class="nav-link" data-scroll-target="#relaxation">8: Relaxation</a></li>
-  <li><a href="#randomness" id="toc-randomness" class="nav-link" data-scroll-target="#randomness">9: Randomness</a></li>
-  <li><a href="#networking" id="toc-networking" class="nav-link" data-scroll-target="#networking">10: Networking</a></li>
   <li><a href="#game-theory" id="toc-game-theory" class="nav-link" data-scroll-target="#game-theory">11: Game Theory</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
   <li><a href="#analysis-and-evaluation" id="toc-analysis-and-evaluation" class="nav-link" data-scroll-target="#analysis-and-evaluation">Analysis and Evaluation</a></li>
   <li><a href="#comparisons" id="toc-comparisons" class="nav-link" data-scroll-target="#comparisons">Comparisons</a></li>
@@ -218,7 +214,11 @@ Image credit: <a href="https://www.rawpixel.com/" class="uri">https://www.rawpix
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <p>AtLB is a fantastic read for those naive to the complexity of computer science and how it can be applied to everyday life. From deciding whether to try a new restaurant, how best to go about finding your next home to optimising your socks draw. It turns out, the big brains in modern history have already solved these problems. The authors take us through the surprising implications that computer science can have for how we muddle through things, keeping things light and accessible enough to be categorised under popular science. Though the authors manage not to undersell sell the impact and after reading this book, you will never think about sorting in the same way again.</p>
-<p>…On the authors…</p>
+<section id="on-the-authors" class="level3">
+<h3 class="anchored" data-anchor-id="on-the-authors">On the Authors</h3>
+<p>Tom Griffiths is a celebrated Princeton professor in computational cognition and director of the University’s Computational Cognitive Science Laboratory <span class="citation" data-cites="PrinceCCSL"><a href="#ref-PrinceCCSL" role="doc-biblioref">[1]</a></span>. The recipient of numerous awards and a leader in applied artificial intelligence research, Griffiths has many influential papers across a diverse set of problem spaces: Causal inference, natural language processing and pedagogy.</p>
+<p>Brian Christian has written several award winning works of non-fiction, notably “The Alignment Problem” which examines machine learning ethics, for which he received numerous awards. A visiting scholar at the University of California, Berkeley; Christian’s expertise ranges from programming to poetry, earning his laureate at San Francisco Public Library in 2016.</p>
+</section>
 </section>
 <section id="an-overview-of-the-book" class="level2">
 <h2 class="anchored" data-anchor-id="an-overview-of-the-book">An Overview of the Book</h2>
@@ -240,7 +240,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>“…spend 37% of your apartment hunt (eleven days, if you’ve given yourself a month for the search) noncommittally exploring options. Leave the checkbook at home; you’re just calibrating. But after that point, be prepared to immediately commit - deposit and all - to the very first place that beats whatever you’ve already seen.” <span class="citation" data-cites="AtLB"><a href="#ref-AtLB" role="doc-biblioref">[1, p. 2]</a></span></p>
+<p>“…spend 37% of your apartment hunt (eleven days, if you’ve given yourself a month for the search) noncommittally exploring options. Leave the checkbook at home; you’re just calibrating. But after that point, be prepared to immediately commit - deposit and all - to the very first place that beats whatever you’ve already seen.” <span class="citation" data-cites="AtLB"><a href="#ref-AtLB" role="doc-biblioref">[2, p. 2]</a></span></p>
 </div>
 </div>
 <p>At that point, the authors hit the reader with a little taste of the magic in this book - that this problem is in many ways solved. That this same type of solution can be applied to a rane of real world problems from parking your car to choosing a long-term partner, the concept that there exists a proof that at 37% of your search time you should immediately flip to committing has an almost Douglas Adams sort of quality to it.</p>
@@ -254,7 +254,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>42: the “Answer to the Ultimate Question of Life, the Universe, and Everything” <span class="citation" data-cites="Hitchhikers"><a href="#ref-Hitchhikers" role="doc-biblioref">[2]</a></span></p>
+<p>42: the “Answer to the Ultimate Question of Life, the Universe, and Everything” <span class="citation" data-cites="Hitchhikers"><a href="#ref-Hitchhikers" role="doc-biblioref">[3]</a></span></p>
 </div>
 </div>
 </section>
@@ -273,15 +273,12 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>““…no free lunch” (NFL) theorems… for any algorithm, any elevated performance over one class of problems is offset by performance over another class” <span class="citation" data-cites="NFL"><a href="#ref-NFL" role="doc-biblioref">[3]</a></span></p>
+<p>““…no free lunch” (NFL) theorems… for any algorithm, any elevated performance over one class of problems is offset by performance over another class” <span class="citation" data-cites="NFLTheorem"><a href="#ref-NFLTheorem" role="doc-biblioref">[4]</a></span></p>
 </div>
 </div>
 <p>The secretary problem presumes that the information available to the interviewer about the quality of the candidates is relative rather than absolute. You can compare or rank the candidates but do not have a list of absolute criteria or aptitude tests to measure your candidates against. Any such approach to interviewing would swiftly be decried for lacking any objective threshold, leaving the entire process wide open to human bias.</p>
-<p>Another assumption of the secretary problem is that making an offer would guarantee the candidate would accept, while passing up on a candidate would result in losing out on the possibility of recruiting that candidate forever. Few recruitment campaigns could operate under such conditions, however these assuptions could hold more relevance to scenarios such as selecting a parking space or selecting a long-term partner. Possibly. Although humans are complex organisms with confounding behaviour, the motivations driving that behaviour may lead to stable, predictable outcomes when considering a larger sample size.</p>
+<p>Another assumption of the secretary problem is that making an offer would guarantee the candidate would accept, while passing up on a candidate would result in losing out on the possibility of recruiting that candidate forever. Few recruitment campaigns could operate under such conditions, however these assumptions could hold more relevance to scenarios such as selecting a parking space or selecting a long-term partner. Possibly. Although humans are complex organisms, the motivations driving that behaviour may lead to stable, predictable outcomes when considering a larger sample size.</p>
 <p>Overall, I felt the authors offered an interesting treatment of optimal stopping solutions. The relevance to everyday scenarios piqued my interest and had me thinking of broader implications. I am not wholly convinced that the approach is generalisable to most real-world scenarios, which may violate the problem’s assumptions.</p>
-</section>
-<section id="exploreexploit" class="level3">
-<h3 class="anchored" data-anchor-id="exploreexploit">2: Explore/Exploit</h3>
 </section>
 <section id="sorting" class="level3">
 <h3 class="anchored" data-anchor-id="sorting">3: Sorting</h3>
@@ -289,104 +286,38 @@ Note
 <section id="caching" class="level3">
 <h3 class="anchored" data-anchor-id="caching">4: Caching</h3>
 </section>
-<section id="scheduling" class="level3">
-<h3 class="anchored" data-anchor-id="scheduling">5: Scheduling</h3>
-</section>
-<section id="bayess-rule" class="level3">
-<h3 class="anchored" data-anchor-id="bayess-rule">6: Bayes’s Rule</h3>
-</section>
 <section id="overfitting" class="level3">
 <h3 class="anchored" data-anchor-id="overfitting">7: Overfitting</h3>
-</section>
-<section id="relaxation" class="level3">
-<h3 class="anchored" data-anchor-id="relaxation">8: Relaxation</h3>
-</section>
-<section id="randomness" class="level3">
-<h3 class="anchored" data-anchor-id="randomness">9: Randomness</h3>
-</section>
-<section id="networking" class="level3">
-<h3 class="anchored" data-anchor-id="networking">10: Networking</h3>
 </section>
 <section id="game-theory" class="level3">
 <h3 class="anchored" data-anchor-id="game-theory">11: Game Theory</h3>
 </section>
-<section id="conclusion" class="level3">
-<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“… remain unresponsive t</p>
-</div>
-</div>
-</section>
 </section>
 <section id="analysis-and-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-and-evaluation">Analysis and Evaluation</h2>
-<p>Much of the content in this book resonated with me. Newport takes a contrarian</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“…for decisions</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“…attention restoration theory (ART), w</p>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>I found this concept to be very interesting, and a little concerning. Managing burnout is something that I value. It seems that my pasttimes also</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>I find this advice to be a bit myopic. This is likely great advice for an accomplished academic with a strong internal locus of control. Junior entrants</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>“Don’t trust everything you read in the psychology literature</p>
-</blockquote>
 </section>
 <section id="comparisons" class="level2">
 <h2 class="anchored" data-anchor-id="comparisons">Comparisons</h2>
-<p>There are some obvious comparisons with other productivity self-help books. One</p>
 </section>
 <section id="recommendation" class="level2">
-<h2 class="anchored" data-anchor-id="recommendation">Recommendation</h2>
-<p>There is a lot of wisdom to be gleaned from this book. Sure, some of it may be</p>
+
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Recommendation</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-PrinceCCSL" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><a href="https://cocosci.princeton.edu/">https://cocosci.princeton.edu/</a></div>
+</div>
 <div id="ref-AtLB" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Brian Christian &amp; Tom Griffiths, <em><span class="nocase">Algorithms to Live By</span></em>. <span>William Collins</span>, 2016.</div>
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Brian Christian &amp; Tom Griffiths, <em><span class="nocase">Algorithms to Live By</span></em>. <span>William Collins</span>, 2016.</div>
 </div>
 <div id="ref-Hitchhikers" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Douglas Adams, <em><span class="nocase">The Hitchhikers Guide to the Galaxy</span></em>. 1981.</div>
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">Douglas Adams, <em><span class="nocase">The Hitchhikers Guide to the Galaxy</span></em>. 1981.</div>
 </div>
-<div id="ref-NFL" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[3] </div><div class="csl-right-inline">D.H. Wolpert; W.G. Macready, <span>“No free lunch theorems for optimization,”</span> <em>IEEE Transactions on Evolutionary Computation</em>, vol. 1, no. 1, 1997.</div>
+<div id="ref-NFLTheorem" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">D.H. Wolpert; W.G. Macready, <span>“No free lunch theorems for optimization,”</span> <em>IEEE Transactions on Evolutionary Computation</em>, vol. 1, no. 1, 1997.</div>
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
