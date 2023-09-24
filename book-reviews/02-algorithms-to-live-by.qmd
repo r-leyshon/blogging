@@ -27,8 +27,6 @@ As of today's date, Algorithms to Live By (AtLB) scores an average of
 
 AtLB made the [MiT Technology Review Best Books of 2016](https://www.technologyreview.com/2016/12/23/243930/best-books-of-2016/) and [Forbes' Must Read Brain Books](https://www.forbes.com/sites/daviddisalvo/2016/12/19/the-best-brain-books-of-2016/) of the same year.
 
-
-
 ## Summary
 
 AtLB is a fantastic read for those naive to the complexity of computer science
@@ -58,9 +56,15 @@ and director of the University's Computational Cognitive Science Laboratory
 
 ## An Overview of the Book
 
-...
-
-## Chapters
+Each of the book's eleven chapters focusses on a specific problem set and the
+algorithms that have been developed to help overcome them. The problem domains
+explored range from the superficially 'simple' optimised sorting of returned
+library books to the profound insights that behavioural economics can yield in
+the chapter on game theory. There is a general trend within the chapters'
+progress towards problems of higher complexity. The authors have provided a
+wealth of relatable examples of problem applications throughout the entire
+book, limiting the use of equations to only a few occasions. This is not a book
+aimed exclusively at a highly numerate audience.
 
 In the sections below, I will explore some of the more engaging aspects of the
 book's content.
