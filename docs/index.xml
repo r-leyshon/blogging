@@ -10,7 +10,7 @@
 <atom:link href="https://thedatasavvycorner.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Musings, ramblings, generally putting things down in text so I don&#39;t forget them.</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Sun, 24 Sep 2023 18:12:16 GMT</lastBuildDate>
+<lastBuildDate>Tue, 26 Sep 2023 17:17:58 GMT</lastBuildDate>
 <item>
   <title>UNDER CONSTRUCTION: Algorithms to Live By</title>
   <dc:creator>Rich Leyshon</dc:creator>
@@ -97,16 +97,41 @@ Note
 <p>Overall, I felt the authors offered an interesting treatment of optimal stopping solutions. The relevance to everyday scenarios piqued my interest and had me thinking of broader implications. I am not wholly convinced that the approach is generalisable to most real-world scenarios, which may violate the problem’s assumptions.</p>
 </section>
 <section id="sorting" class="level3">
-<h3 class="anchored" data-anchor-id="sorting">3: Sorting</h3>
+<h3 class="anchored" data-anchor-id="sorting">Sorting</h3>
+<p>Going into this book, I realised that I had relied upon sorting algorithms in my professional and everyday life, but was a bit oblivious to how their implementation leads to vast differences in outcomes for the user. Namely in the amount of time taken to complete the sort. It is quite a commonplace need when exploring data to be able to sort columns of values in order to spot trends, identify outliers or problem values within a table. In everyday life, the authors prove the point that sorting has become so fundamental that we have become ignorant to its utility, and largely ignorant of its implementation. Some of the more obvious sorting requirements explored are sorting library books, the results of your Google search query and managing your Email inbox. Being able to select any ordinal aspect of your data to sequence your return list can become pivotal at times.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>‘“What’s the best way to sort a million thirty-two-bit integers?” Without missing a beat, Obama cracked a wry smile and replied, “I think the <strong>Bubble Sort</strong> would be the wrong way to go.”’ <span class="citation" data-cites="AtLB">[2, p. 65]</span></p>
+</div>
+</div>
+<p>This chapter explores different sort algorithms efficacy. Shunning bubble-sort, dancing through insertion-sort, illustrating bucket-sort with actual buckets, talking through merge-sort complete with its own flow chart - the diversity on offer here is astounding. The method selection when sorting your sock drawer could have some fundamental implications for anyone really. Did you know you could be wasting your life with a completely inefficient insertion sort method? Do you care? Well, I fail to see how we could get any more fundamental than your socks…</p>
+<p>Perhaps the most meaningful takeaway for me in this chapter, is the concept that relaxing the rules of the sort can be acceptable in certain circumstances, and leads to pretty big performance gains. In most cases, a sort is useless without a search.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Sorting something that you will never search is a complete waste; searching something you never sorted is merely inefficient” <span class="citation" data-cites="AtLB">[2, p. 72]</span></p>
+</div>
+</div>
+<p>Relaxing the constraints on the accuracy of the sort and pre-sorting popular search items is revealed to be the approach adopted by many of the big search engines. With big data at their disposal, Google can ensure popular search terms have cached sorted results to be served immediately, ensuring a smooth experience for their users. The amount of resource and infrastructure in cacheing high traffic sorts across different territories must be mind-boggling.</p>
+<p>This chapter manages to peel away the seemingly mundane veneer of sort problems, somehow making them simultaneously more tangible while inspiring respect for the minds that have brought us to where we are today. In combination with the next chapter on cacheing, the insights gained are pretty applicable to everyday life.</p>
 </section>
 <section id="caching" class="level3">
-<h3 class="anchored" data-anchor-id="caching">4: Caching</h3>
-</section>
-<section id="overfitting" class="level3">
-<h3 class="anchored" data-anchor-id="overfitting">7: Overfitting</h3>
-</section>
-<section id="game-theory" class="level3">
-<h3 class="anchored" data-anchor-id="game-theory">11: Game Theory</h3>
+<h3 class="anchored" data-anchor-id="caching">Caching</h3>
 </section>
 </section>
 <section id="analysis-and-evaluation" class="level2">
@@ -139,7 +164,7 @@ Note
   <category>Mathematical Modelling</category>
   <category>Computer Science</category>
   <guid>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</guid>
-  <pubDate>Sun, 24 Sep 2023 18:12:16 GMT</pubDate>
+  <pubDate>Tue, 26 Sep 2023 17:17:58 GMT</pubDate>
   <media:content url="https://images.rawpixel.com/image_400/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZsMjI2MTMzNTM5MjUtaW1hZ2Uta3A0dzFscHAuanBn.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>

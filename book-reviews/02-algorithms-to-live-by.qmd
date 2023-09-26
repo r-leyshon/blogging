@@ -162,13 +162,62 @@ had me thinking of broader implications. I am not wholly convinced that the
 approach is generalisable to most real-world scenarios, which may violate the
 problem's assumptions.
 
-### 3: Sorting
+### Sorting
 
-### 4: Caching
+Going into this book, I realised that I had relied upon sorting algorithms in
+my professional and everyday life, but was a bit oblivious to how their
+implementation leads to vast differences in outcomes for the user. Namely in
+the amount of time taken to complete the sort. It is quite a commonplace need
+when exploring data to be able to sort columns of values in order to spot
+trends, identify outliers or problem values within a table. In everyday life, 
+the authors prove the point that sorting has become so fundamental that we have
+become ignorant to its utility, and largely ignorant of its implementation.
+Some of the more obvious sorting requirements explored are sorting library
+books, the results of your Google search query and managing your Email inbox.
+Being able to select any ordinal aspect of your data to sequence your return
+list can become pivotal at times. 
 
-### 7: Overfitting
+:::{.callout-note}
+'"What's the best way to sort a million thirty-two-bit integers?" Without
+missing a beat, Obama cracked a wry smile and replied, "I think the
+**Bubble Sort** would be the wrong way to go."' [@AtLB, p.65]
+:::
 
-### 11: Game Theory
+This chapter explores different sort algorithms efficacy. Shunning bubble-sort,
+dancing through insertion-sort, illustrating bucket-sort with actual buckets,
+talking through merge-sort complete with its own flow chart - the diversity on
+offer here is astounding. The method selection when sorting your sock drawer
+could have some fundamental implications for anyone really. Did you know you
+could be wasting your life with a completely inefficient insertion sort method?
+Do you care? Well, I fail to see how we could get any more fundamental than
+your socks...
+
+Perhaps the most meaningful takeaway for me in this chapter, is the concept
+that relaxing the rules of the sort can be acceptable in certain circumstances, 
+and leads to pretty big performance gains. In most cases, a sort is useless
+without a search. 
+
+:::{.callout-note}
+"Sorting something that you will never search is a complete waste; searching
+something you never sorted is merely inefficient" [@AtLB, p.72]
+:::
+
+Relaxing the constraints on the accuracy of the sort and pre-sorting popular
+search items is revealed to be the approach adopted by many of the big search
+engines. With big data at their disposal, Google can ensure popular search
+terms have cached sorted results to be served immediately, ensuring a smooth
+experience for their users. The amount of resource and infrastructure in
+cacheing high traffic sorts across different territories must be mind-boggling.
+
+This chapter manages to peel away the seemingly mundane veneer of sort
+problems, somehow making them simultaneously more tangible while inspiring
+respect for the minds that have brought us to where we are today. In
+combination with the next chapter on cacheing, the insights gained are pretty
+applicable to everyday life. 
+
+
+### Caching
+
 
 
 ## Analysis and Evaluation
