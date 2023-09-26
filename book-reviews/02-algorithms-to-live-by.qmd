@@ -48,7 +48,7 @@ and director of the University's Computational Cognitive Science Laboratory
  a diverse set of problem spaces: Causal inference, natural language
  processing and pedagogy.
 
- Brian Christian has written several award winning works of non-fiction,
+ Brian Christian has written several award winning works of nonfiction,
  notably "The Alignment Problem" which examines machine learning ethics, for
  which he received numerous awards. A visiting scholar at the University of
  California, Berkeley; Christian's expertise ranges from programming to poetry,
@@ -56,7 +56,7 @@ and director of the University's Computational Cognitive Science Laboratory
 
 ## An Overview of the Book
 
-Each of the book's eleven chapters focusses on a specific problem set and the
+Each of the book's eleven chapters focuses on a specific problem set and the
 algorithms that have been developed to help overcome them. The problem domains
 explored range from the superficially 'simple' optimised sorting of returned
 library books to the profound insights that behavioural economics can yield in
@@ -75,7 +75,7 @@ The authors cater for my (and possibly the larger portion of their audience's)
 needs by tackling some rather large misconceptions about computer science and
 human behaviour. Namely that humans are far too fuzzy-minded, fallible and that
 the real world is far too complex to benefit from optimisation. Indeed, the
-authors do state that some problems are known to be intractible due to a near
+authors do state that some problems are known to be intractable due to a near
 infinite number of potential solutions, however those problems can be defined
 from the outset. And the rest of life's challenges may often be reduced to
 outcomes affected by chance - the search for the right New York apartment being
@@ -94,7 +94,7 @@ already seen." [@AtLB, p.2]
 
 At that point, the authors hit the reader with a little taste of the magic in
 this book - that this problem is in many ways solved. That this same type of
-solution can be applied to a rane of real world problems from parking your car
+solution can be applied to a range of real world problems from parking your car
 to choosing a long-term partner, the concept that there exists a proof that
 at 37% of your search time you should immediately flip to committing has an
 almost Douglas Adams sort of quality to it.
@@ -130,7 +130,7 @@ to be extremely challenging. Treating the problem like trial design,
 controlling for factors quickly results in confounding variables. If choosing
 to minimise variation in the appraisal process, you may consider
 retaining the same panel for each interview. Ensuring that the panel's
-sattention and mood are not affected by a demanding interview schedule becomes
+attention and mood are not affected by a demanding interview schedule becomes
 the next problem. Attempting to control for that results in extending the
 schedule period, possibly from days to months. 
 
@@ -183,7 +183,7 @@ missing a beat, Obama cracked a wry smile and replied, "I think the
 **Bubble Sort** would be the wrong way to go."' [@AtLB, p.65]
 :::
 
-This chapter explores different sort algorithms efficacy. Shunning bubble-sort,
+This chapter explores different sort algorithm's efficacy. Shunning bubble-sort,
 dancing through insertion-sort, illustrating bucket-sort with actual buckets,
 talking through merge-sort complete with its own flow chart - the diversity on
 offer here is astounding. The method selection when sorting your sock drawer
@@ -207,12 +207,12 @@ search items is revealed to be the approach adopted by many of the big search
 engines. With big data at their disposal, Google can ensure popular search
 terms have cached sorted results to be served immediately, ensuring a smooth
 experience for their users. The amount of resource and infrastructure in
-cacheing high traffic sorts across different territories must be mind-boggling.
+caching high traffic sorts across different territories must be mind-boggling.
 
 This chapter manages to peel away the seemingly mundane veneer of sort
 problems, somehow making them simultaneously more tangible while inspiring
 respect for the minds that have brought us to where we are today. In
-combination with the next chapter on cacheing, the insights gained are pretty
+combination with the next chapter on caching, the insights gained are pretty
 applicable to everyday life. 
 
 
