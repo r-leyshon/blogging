@@ -218,7 +218,38 @@ applicable to everyday life.
 
 ### Caching
 
+This chapter is my highlight of the book. Beginning with a tangible concept of
+treating your wardrobe as a physical cache for your clothes, this chapter goes
+on to explore the evolution of memory management. Beginning with the
+fundamental trade off between capacity and performance, the authors discuss the
+invention of the memory hierarchy. This concept that forms the basis of modern
+memory management introduces a hierarchical structure, with a small, fast
+(high performance) amount of memory used to cache high frequency data. This
+memory cache would be coupled with larger, less expensive forms of
+slower-access memory.
 
+:::{.callout-note}
+"The key, of course, would be managing that small, fast, precious memory so it
+had what you were looking for as often as possible." [@AtLB, p.87]
+:::
+
+Clever optimisation of a more and more elaborate cache system is cited as the
+principle solution to the disparity in the exponential improvement of
+processing power relative to memory performance over the previous half a
+century. Again, the authors with their ability to ground the computer science
+in tangible analogy. Imagine a factory able to double its productivity year on
+year only to find that its output is soon limited by its supply chain - it
+simply cannot ingest the raw material at a rate to satisfy its output
+potential. Overcoming the problem of memory performance, referred to as the
+'memory wall' has been crucial in securing performant applications and devices.
+
+Managing the state of the cache is treated with some detail. Competing
+algorithms for cache eviction - rules used to decide which memory to free up
+and when - are compared against the success criteria of avoiding what is known
+as a cache miss. A cache miss is a state where the data that you are looking
+for cannot be found within the cache and therefore must be retrieved from the
+slower memory store. Achieving this state appears to be on a par with divining 
+the future, as who knows what the user will ask for next?
 
 ## Analysis and Evaluation
 
