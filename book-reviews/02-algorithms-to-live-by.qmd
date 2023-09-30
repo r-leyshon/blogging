@@ -29,15 +29,16 @@ AtLB made the [MiT Technology Review Best Books of 2016](https://www.technologyr
 
 ## Summary
 
-AtLB is a fantastic read for those naive to the complexity of computer science
-and how it can be applied to everyday life. From deciding whether to try a new
-restaurant, how best to go about finding your next home to optimising your
-socks draw. It turns out, the big brains in modern history have already solved
-these problems. The authors take us through the surprising implications that
-computer science can have for how we muddle through things, keeping things
-light and accessible enough to be categorised under popular science. Though the
-authors manage not to undersell sell the impact and after reading this book,
-you will never think about sorting in the same way again.
+AtLB is a captivating read for those unfamiliar with the intricacies of
+computer science and how it manifests in our daily lives. Whether it's deciding
+on a new restaurant to try, efficiently finding your next home, or optimizing
+your sock drawer, this book unveils how the brilliance of computer science has
+already addressed these everyday dilemmas. The authors guide us through the
+unexpected implications that computer science offers, presented in a manner
+that makes it easily accessible to a wider audience under the umbrella of
+popular science. While they skillfully refrain from downplaying its impact,
+reading this book will undoubtedly reshape your perception of sorting and
+problem-solving
 
 ### On the Authors
 
@@ -56,33 +57,35 @@ and director of the University's Computational Cognitive Science Laboratory
 
 ## An Overview of the Book
 
-Each of the book's eleven chapters focuses on a specific problem set and the
-algorithms that have been developed to help overcome them. The problem domains
-explored range from the superficially 'simple' optimised sorting of returned
-library books to the profound insights that behavioural economics can yield in
-the chapter on game theory. There is a general trend within the chapters'
-progress towards problems of higher complexity. The authors have provided a
-wealth of relatable examples of problem applications throughout the entire
-book, limiting the use of equations to only a few occasions. This is not a book
-aimed exclusively at a highly numerate audience.
+Each of the book's eleven chapters delves into specific problem domains,
+unraveling the algorithms crafted to tackle them. From seemingly 'simple' tasks
+like optimized sorting of library books to the profound insights into
+behavioural economics explored in the game theory chapter, the book covers a
+spectrum of complexity in the problems addressed. The authors skillfully
+illustrate these concepts, infusing the text with a wealth of relatable
+examples, making it approachable even for those not well-versed in numerical
+intricacies.
 
 In the sections below, I will explore some of the more engaging aspects of the
 book's content.
 
 ### A Gentle Introduction to Operational Research
 
-The authors cater for my (and possibly the larger portion of their audience's)
-needs by tackling some rather large misconceptions about computer science and
-human behaviour. Namely that humans are far too fuzzy-minded, fallible and that
-the real world is far too complex to benefit from optimisation. Indeed, the
-authors do state that some problems are known to be intractable due to a near
-infinite number of potential solutions, however those problems can be defined
-from the outset. And the rest of life's challenges may often be reduced to
-outcomes affected by chance - the search for the right New York apartment being
-the particular focus for the intro. Briefly introducing the optimal stopping
-problem of whether to put an offer in for an apartment or to risk losing out on
-possibly the best apartment on the market by continuing your search provides an
-accessible and familiar insight to the direction of the book.
+The authors skillfully address prevalent misconceptions about both computer
+science and human behavior in a manner that resonates with their audience. They
+challenge the notion that humans are too fuzzy-minded and fallible to benefit
+from optimization, emphasizing that many real-world challenges can indeed be
+optimised, albeit within defined parameters. Although certain problems may
+prove intractable due to an overwhelming number of potential solutions, the
+authors adeptly navigate this complexity by outlining how problems can be
+defined at their outset.
+
+The introductory chapter poignantly captures these concepts through a relatable
+scenario — the search for the perfect New York apartment. By briefly exploring
+the optimal stopping problem in this context—whether to make an offer for an
+apartment or risk losing out on potentially the best one on the market, the
+authors provide readers with a glimpse into the fascinating direction of the
+book.
 
 :::{.callout-note}
 "...spend 37% of your apartment hunt (eleven days, if you've given yourself a
@@ -111,28 +114,28 @@ has become known as 'The Secretary Problem' - a common description of the
 Catch-22 described in the introduction. In the context of hiring an employee
 for example, hiring at random regardless of the candidate's performance from a
 pool of 100 candidates would result in success for the employer on average 1%
-of the time. Success meaning that the employer has selected the best applicant
-from the pool.
+of the time. Success implies selecting the best applicant available in the
+pool.
 
 By following the optimal stopping strategy, the average chances of hiring the
 best candidate within the pool increases to 37%. Whether or not you feel that
 is a good outcome is sort of subjective, but the authors discuss that this
 outcome remains stable as you scale up the applicant pool while random
-recruitment does not - interviewing a million candidates while observing
-optimal stopping should bag you the best candidate on average 37% of the time.
-Random recruitment however, would result in successful recruitment of the
-strongest candidate in 0.0001% of the time. 
+recruitment does not. For instance, interviewing a million candidates while
+adhering to optimal stopping could result in successfully recruiting the best
+candidate 37% of the time. Conversely, random recruitment under the same
+conditions would yield success at a rate of merely 0.0001%. 
 
-The example of scaling up this problem prompted me to consider some
-potential flaws in human behaviour, that would render any recruitment campaign
-unfair - optimised or otherwise. Standardising the recruitment process is known
-to be extremely challenging. Treating the problem like trial design,
-controlling for factors quickly results in confounding variables. If choosing
-to minimise variation in the appraisal process, you may consider
-retaining the same panel for each interview. Ensuring that the panel's
-attention and mood are not affected by a demanding interview schedule becomes
-the next problem. Attempting to control for that results in extending the
-schedule period, possibly from days to months. 
+The example of scaling up this problem prompted me to consider some potential
+flaws in human behaviour, that would render any recruitment campaign unfair -
+optimised or otherwise. Standardising the recruitment process is known to be
+extremely challenging. Treating the problem like trial design, controlling for
+factors quickly results in confounding variables. If choosing to minimise
+variation in the appraisal process, you may consider retaining the same panel
+for each interview. Ensuring that the panel's attention and mood are not
+affected by a demanding interview schedule becomes the next problem. Attempting
+to control for that results in extending the schedule period, possibly from
+days to months. 
 
 :::{.callout-note}
 ""...no free lunch" (NFL) theorems... for any algorithm, any elevated
@@ -140,15 +143,14 @@ performance over one class of problems is offset by performance over another
 class" @NFLTheorem
 :::
 
-The secretary problem presumes that the information available to the
-interviewer about the quality of the candidates is relative rather than
-absolute. You can compare or rank the candidates but do not have a list of
-absolute criteria or aptitude tests to measure your candidates against. Any
-such approach to interviewing would swiftly be decried for lacking any
-objective threshold, leaving the entire process wide open to human bias. 
+The secretary problem is based on the presumption that an interviewer can only
+make relative comparisons or rankings of candidates, lacking absolute criteria
+or standardized aptitude tests to measure them against. Such an approach to
+interviewing, devoid of an objective threshold, would rightly be criticized for
+its susceptibility to human bias.
 
-Another assumption of the secretary problem is that making an offer would
-guarantee the candidate would accept, while passing up on a candidate would
+Additionally, the secretary problem assumes that an offer of employment would
+always lead to the candidate accepting, while passing up on a candidate would
 result in losing out on the possibility of recruiting that candidate forever.
 Few recruitment campaigns could operate under such conditions, however these
 assumptions could hold more relevance to scenarios such as selecting a parking
@@ -156,26 +158,25 @@ space or selecting a long-term partner. Possibly. Although humans are complex
 organisms, the motivations driving that behaviour may lead to stable,
 predictable outcomes when considering a larger sample size. 
 
-Overall, I felt the authors offered an interesting treatment of optimal
-stopping solutions. The relevance to everyday scenarios piqued my interest and
-had me thinking of broader implications. I am not wholly convinced that the 
-approach is generalisable to most real-world scenarios, which may violate the
-problem's assumptions.
+In my assessment, the authors provided an intriguing treatment of optimal
+stopping solutions, prompting contemplation on their relevance to everyday
+scenarios and broader implications. However, I remain cautious about
+generalising this approach to most real-world scenarios, given the potential
+violations of the problem's underlying assumptions.
 
 ### Sorting
 
-Going into this book, I realised that I had relied upon sorting algorithms in
-my professional and everyday life, but was a bit oblivious to how their
-implementation leads to vast differences in outcomes for the user. Namely in
-the amount of time taken to complete the sort. It is quite a commonplace need
-when exploring data to be able to sort columns of values in order to spot
-trends, identify outliers or problem values within a table. In everyday life, 
-the authors prove the point that sorting has become so fundamental that we have
-become ignorant to its utility, and largely ignorant of its implementation.
-Some of the more obvious sorting requirements explored are sorting library
-books, the results of your Google search query and managing your Email inbox.
-Being able to select any ordinal aspect of your data to sequence your return
-list can become pivotal at times. 
+At the outset of the book, I realised that I had relied upon sorting algorithms
+in my professional and everyday life, but was a bit oblivious to their
+implementation. It is a commonplace need when exploring data to be able to sort
+columns of values in order to spot trends, identify outliers or problem values
+within a table. The authors demonstrate that sorting has become so deeply
+integrated into our lives that we may not even consciously acknowledge its
+presence or its role in enhancing our efficiency.  Some of the more tangible
+sorting requirements explored are returning library books, the results of your
+Google search query and managing your Email inbox. Being able to sort based on
+any ordinal aspect of our data proves pivotal, allowing us to sequence our
+results and efficiently extract meaning. 
 
 :::{.callout-note}
 '"What's the best way to sort a million thirty-two-bit integers?" Without
@@ -183,24 +184,39 @@ missing a beat, Obama cracked a wry smile and replied, "I think the
 **Bubble Sort** would be the wrong way to go."' [@AtLB, p.65]
 :::
 
-This chapter explores different sort algorithm's efficacy. Shunning bubble-sort,
-dancing through insertion-sort, illustrating bucket-sort with actual buckets,
-talking through merge-sort complete with its own flow chart - the diversity on
-offer here is astounding. The method selection when sorting your sock drawer
-could have some fundamental implications for anyone really. Did you know you
-could be wasting your life with a completely inefficient insertion sort method?
-Do you care? Well, I fail to see how we could get any more fundamental than
-your socks...
+This chapter explores different sort algorithm's efficacy. Shunning
+bubble-sort, dancing through insertion-sort, illustrating bucket-sort with
+actual buckets, talking through merge-sort complete with its own flow chart -
+the diversity on offer here is unexpected.
+
+Consider the method you choose for sorting your sock drawer. It may seem
+trivial, but it could have more fundamental implications than you might think.
+Did you ever imagine that you might be wasting precious moments of your life
+employing an inefficient insertion sort method? Perhaps the prospect of sock
+sorting inefficiencies isn't the most pressing concern, but it does underscore
+a fascinating point — sorting algorithms, even in the realm of socks, can have
+a surprising impact on our daily routines. After all, can anything get more
+fundamental than starting with your socks?
 
 Perhaps the most meaningful takeaway for me in this chapter, is the concept
 that relaxing the rules of the sort can be acceptable in certain circumstances, 
-and leads to pretty big performance gains. In most cases, a sort is useless
-without a search. 
+and leads to pretty big performance gains. In all cases, performing a sort is useless
+without a search. Deciding on the accuracy (and time) of the sort should first
+consider the needs of the subsequent search.
 
 :::{.callout-note}
 "Sorting something that you will never search is a complete waste; searching
 something you never sorted is merely inefficient" [@AtLB, p.72]
 :::
+
+Consider a scenario where you have a vast dataset of customer transactions. If
+the objective is to quickly identify recent transactions within the last week,
+a more relaxed sorting approach might be perfectly adequate, prioritizing speed
+over precise chronological order. This relaxation of the sort rules can
+significantly improve the search efficiency and overall system performance.
+Understanding when and how to optimize the sort based on the requirements of
+the subsequent search is a crucial skill in efficiently handling data and
+making informed decisions.
 
 Relaxing the constraints on the accuracy of the sort and pre-sorting popular
 search items is revealed to be the approach adopted by many of the big search
@@ -209,11 +225,12 @@ terms have cached sorted results to be served immediately, ensuring a smooth
 experience for their users. The amount of resource and infrastructure in
 caching high traffic sorts across different territories must be mind-boggling.
 
-This chapter manages to peel away the seemingly mundane veneer of sort
-problems, somehow making them simultaneously more tangible while inspiring
-respect for the minds that have brought us to where we are today. In
-combination with the next chapter on caching, the insights gained are pretty
-applicable to everyday life. 
+This glimpse into the inner workings of search engine optimization not only
+makes the abstract concepts of sorting tangible but also instills a sense of
+admiration for the innovative minds behind these technological advancements.
+Paired with the forthcoming chapter on caching, the insights gained here are
+remarkably applicable to our everyday lives, shedding light on the strategies
+that power our online searches and experiences.
 
 
 ### Caching
@@ -256,13 +273,14 @@ cache eviction algorithms considered are:
 Apparently not as poor a choice as it sounds.
 * **First in, First Out (FIFO)**: Overwriting the data that first entered the
 cache.
-* **Least Recently Used (LRU)**: Overwriting the data that has gone the longest
-period without being accessed.
+* **Least Recently Used (LRU)**: Overwriting the data that has remained
+untouched for the longest duration.
 
-Of these choices, LRU is celebrated as the optimal choice, consistently
-outperforming the other options in avoiding a cache miss. The authors then
-elucidate on the implications that this has in some surprising scenarios, from
-the physical construction of processors, to Amazon warehouse logistics. 
+Among these, the 'Least Recently Used' algorithm emerges as the optimal choice,
+consistently outperforming the others in preventing cache misses. The authors
+go on to illuminate the far-reaching implications of this optimization,
+spanning from the physical construction of processors to the logistics of
+Amazon's warehouses.
 
 :::{.callout-note}
 "Computers' default file-browsing interface makes you click through folders in
@@ -273,11 +291,12 @@ looking for will almost always be at or near the top." [@AtLB, p.98]
 
 ## Analysis and Evaluation
 
-AtLB is a great read for anyone without an undergrad in computer science. It
-does a great job of walking the reader through half a century's development in
-computational thought and implementation. The matter is never too heavy for the
-casual reader. The emphasis on analogy with tangible and often practical
-implications for everyday life is thought provoking. 
+AtLB proves to be an engaging read, making the intricate world of computer
+science accessible even to those without an undergrad in the field. The book
+adeptly navigates through five decades of computational thought and its
+implementation, ensuring the content never overwhelms the casual reader. One of
+its strengths lies in emphasizing tangible analogies and illustrating practical
+implications for everyday life, prompting thought and curiosity.
 
 There are a number of instances where the problem domains have been framed in a
 way that has not aged so well. By today's standard, The Secretary Problem could
@@ -287,12 +306,11 @@ AtLB is to provide the historic context and evolution of an idea, where it is
 available. In doing so, the authors reveal the stories of the people behind the
 big ideas, aspects of their life, work and the problems they were wrangling. 
 
-For those professionals in the Information Technology sector, AtLB may not
-cover much new ground. It does, however, do a much better job at securing the
-impact of the optimisation than most formal textbooks. Although the purpose of
-a text differs to that of AtLB, which is definitely in explaining and
-understanding how computation has bettered society. This book would help many
-professionals in building a framework of awareness around their subject.
+For IT professionals, while AtLB may not break new ground, it excels in
+illustrating the impact of optimization in a way that surpasses many formal
+textbooks. The book effectively builds awareness around the subject and its
+role in advancing society, providing a valuable framework for professionals in
+the field.
 
 ## Comparisons
 
@@ -301,30 +319,32 @@ society has implemented and optimised in response to the knowledge. This book
  can therefore be compared to a broad selection of popular science. Some
  similar books are:
  
- * Naked Statistics by Charles Wheelan @NakedStats.
- * Hello World by Hannah Fry @HelloFry.
+ * Naked Statistics by Charles Wheelan @NakedStats explores how statistics can
+ be misused to obfuscate key findings or serve a political agenda. It serves as
+ a toolkit for understanding algorithms and being aware of their potential
+ misapplications, providing readers with the ability to discern and critically
+ analyse statistical information.
 
- These books all help the reader gain a greater understanding of how
- computational thought can be applied within real life scenarios. Though AtLB
- is distinctly optimistic in its treatment in comparison. AtLB intends to
- educate and give an appreciation of the scale and implication of an optimised
- solution. 
+ * Hello World by Hannah Fry @HelloFry delves into the implementation of
+ algorithms in complex domains like Crime, Justice, and Healthcare. The book
+ grapples with intricate ethical challenges, approaching the subject with
+ warranted skepticism and scrutinising the far-reaching implications of
+ algorithmic applications in various societal domains.
 
- Naked Statistics contrasts with this, in that it explores how statistics can
- be misused, in order to obfuscate key findings or further a political
- agenda. That book is a sort of toolkit in understanding algorithms to apply
- and what to look out for in their misapplication. Whereas Hello World covers
- algorithmic implementation in complex domains such as Crime, Justice and
- Healthcare. As one would imagine, an incredibly complicated set of ethical
- challenges are discussed with a high degree of warranted scepticism. Both are
- great reads but offer a distinct purpose when contrasted with AtLB.
+In contrast, AtLB offers a distinctly optimistic treatment, aiming to educate
+and instill an appreciation for the scale and implication of optimized
+solutions. It provides readers with an understanding of how computational
+thought has shaped our world and the positive impacts it can have in our
+rapidly evolving society.
 
 ## Recommendation
 
-I finished reading AtLB in January of 2023. In order to write this review I
-revisited the book, speed-reading notable areas in order to reacquaint myself
-with the messages. At times I began deep reading the material again, as it is
-generally very enjoyable. Some of the anecdotes and key summaries are absolute
-gold. In my estimation, this is too good to miss for anyone with an interest in
+I completed my reading of 'AtLB' in January of 2023, and to pen down this
+review, I revisited the book, speed-reading through noteworthy sections to
+reacquaint myself with its messages. At times I began deep reading the
+material, drawn in by its captivating narrative and insightful content. The
+book is a treasure trove of anecdotes and key summaries.
+
+In my estimation, this is too good to miss for anyone with an interest in
 logic, analysis or is generally curious about exactly what computer science has
 achieved for us so far.
