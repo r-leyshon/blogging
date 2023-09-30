@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2023-09-26">
+<meta name="dcterms.date" content="2023-09-30">
 <meta name="description" content="Thoughts on Brian Christian &amp; Tom Griffiths treatment of applied computer science.">
 
-<title>The Data Savvy Corner - UNDER CONSTRUCTION: Algorithms to Live By</title>
+<title>The Data Savvy Corner - Algorithms to Live By</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -75,12 +75,12 @@ div.csl-indent {
 
 
 <link rel="stylesheet" href="../www/styles.css">
-<meta property="og:title" content="The Data Savvy Corner - UNDER CONSTRUCTION: Algorithms to Live By">
+<meta property="og:title" content="The Data Savvy Corner - Algorithms to Live By">
 <meta property="og:description" content="Thoughts on Brian Christian &amp; Tom Griffiths treatment of applied computer science.">
 <meta property="og:image" content="https://images.rawpixel.com/image_400/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZsMjI2MTMzNTM5MjUtaW1hZ2Uta3A0dzFscHAuanBn.jpg">
 <meta property="og:site-name" content="The Data Savvy Corner">
 <meta property="og:image:alt" content="Low-level radio-frequency controller for magnetron.">
-<meta name="twitter:title" content="The Data Savvy Corner - UNDER CONSTRUCTION: Algorithms to Live By">
+<meta name="twitter:title" content="The Data Savvy Corner - Algorithms to Live By">
 <meta name="twitter:description" content="Thoughts on Brian Christian &amp; Tom Griffiths treatment of applied computer science.">
 <meta name="twitter:image" content="https://images.rawpixel.com/image_400/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZsMjI2MTMzNTM5MjUtaW1hZ2Uta3A0dzFscHAuanBn.jpg">
 <meta name="twitter:site" content="@Rich_L1984">
@@ -160,7 +160,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">UNDER CONSTRUCTION: Algorithms to Live By</h1>
+<h1 class="title">Algorithms to Live By</h1>
 <p class="subtitle lead">The Computer Science of Human Decisions</p>
   <div class="quarto-categories">
     <div class="quarto-category">Mathematical Modelling</div>
@@ -187,7 +187,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 26, 2023</p>
+      <p class="date">September 30, 2023</p>
     </div>
   </div>
   
@@ -310,24 +310,70 @@ Note
 </section>
 <section id="caching" class="level3">
 <h3 class="anchored" data-anchor-id="caching">Caching</h3>
+<p>This chapter is my highlight of the book. Beginning with a tangible concept of treating your wardrobe as a physical cache for your clothes, this chapter goes on to explore the evolution of memory management. Beginning with the fundamental trade off between capacity and performance, the authors discuss the invention of the memory hierarchy. This concept that forms the basis of modern memory management introduces a hierarchical structure, with a small, fast (high performance) amount of memory used to cache high frequency data. This memory cache would be coupled with larger, less expensive forms of slower-access memory.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“The key, of course, would be managing that small, fast, precious memory so it had what you were looking for as often as possible.” <span class="citation" data-cites="AtLB"><a href="#ref-AtLB" role="doc-biblioref">[2, p. 87]</a></span></p>
+</div>
+</div>
+<p>Clever optimisation of a more and more elaborate cache system is cited as the principle solution to the disparity in the exponential improvement of processing power relative to memory performance over the previous half a century. Again, the authors with their ability to ground the computer science in tangible analogy. Imagine a factory able to double its productivity year on year only to find that its output is soon limited by its supply chain - it simply cannot ingest the raw material at a rate to satisfy its output potential. Overcoming the problem of memory performance, referred to as the ‘memory wall’ has been crucial in securing performant applications and devices.</p>
+<p>Managing the state of the cache is treated with some detail. Competing algorithms for cache eviction - rules used to decide which memory to free up and when - are compared against the success criteria of avoiding what is known as a cache miss. A cache miss is a state where the data that you are looking for cannot be found within the cache and therefore must be retrieved from the slower memory store. Achieving this state appears to be on a par with divining the future, as who knows what the user will ask for next. Of the competing cache eviction algorithms considered are:</p>
+<ul>
+<li><strong>Random Eviction</strong>: Overwriting old data from the cache at random. Apparently not as poor a choice as it sounds.</li>
+<li><strong>First in, First Out (FIFO)</strong>: Overwriting the data that first entered the cache.</li>
+<li><strong>Least Recently Used (LRU)</strong>: Overwriting the data that has gone the longest period without being accessed.</li>
+</ul>
+<p>Of these choices, LRU is celebrated as the optimal choice, consistently outperforming the other options in avoiding a cache miss. The authors then elucidate on the implications that this has in some surprising scenarios, from the physical construction of processors, to Amazon warehouse logistics.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Computers’ default file-browsing interface makes you click through folders in alphabetical order - but the power of LRU suggest that you should override this, and display your files by”Last Opened” rather than “Name”. What you’re looking for will almost always be at or near the top.” <span class="citation" data-cites="AtLB"><a href="#ref-AtLB" role="doc-biblioref">[2, p. 98]</a></span></p>
+</div>
+</div>
 </section>
 </section>
 <section id="analysis-and-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-and-evaluation">Analysis and Evaluation</h2>
+<p>AtLB is a great read for anyone without an undergrad in computer science. It does a great job of walking the reader through half a century’s development in computational thought and implementation. The matter is never too heavy for the casual reader. The emphasis on analogy with tangible and often practical implications for everyday life is thought provoking.</p>
+<p>There are a number of instances where the problem domains have been framed in a way that has not aged so well. By today’s standard, The Secretary Problem could do with an overhaul. The authors acknowledge that the framing of this problem is a product of its time and that it could use an overhaul. But an aspect of AtLB is to provide the historic context and evolution of an idea, where it is available. In doing so, the authors reveal the stories of the people behind the big ideas, aspects of their life, work and the problems they were wrangling.</p>
+<p>For those professionals in the Information Technology sector, AtLB may not cover much new ground. It does, however, do a much better job at securing the impact of the optimisation than most formal textbooks. Although the purpose of a text differs to that of AtLB, which is definitely in explaining and understanding how computation has bettered society. This book would help many professionals in building a framework of awareness around their subject.</p>
 </section>
 <section id="comparisons" class="level2">
 <h2 class="anchored" data-anchor-id="comparisons">Comparisons</h2>
+<p>This book offers a treatment of understanding the nuts and bolts <strong>and</strong> how society has implemented and optimised in response to the knowledge. This book can therefore be compared to a broad selection of popular science. Some similar books are:</p>
+<ul>
+<li>Naked Statistics by Charles Wheelan <span class="citation" data-cites="NakedStats"><a href="#ref-NakedStats" role="doc-biblioref">[5]</a></span>.</li>
+<li>Hello World by Hannah Fry <span class="citation" data-cites="HelloFry"><a href="#ref-HelloFry" role="doc-biblioref">[6]</a></span>.</li>
+</ul>
+<p>These books all help the reader gain a greater understanding of how computational thought can be applied within real life scenarios. Though AtLB is distinctly optimistic in its treatment in comparison. AtLB intends to educate and give an appreciation of the scale and implication of an optimised solution.</p>
+<p>Naked Statistics contrasts with this, in that it explores how statistics can be misused, in order to obfuscate key findings or further a political agenda. That book is a sort of toolkit in understanding algorithms to apply and what to look out for in their misapplication. Whereas Hello World covers algorithmic implementation in complex domains such as Crime, Justice and Healthcare. As one would imagine, an incredibly complicated set of ethical challenges are discussed with a high degree of warranted scepticism. Both are great reads but offer a distinct purpose when contrasted with AtLB.</p>
 </section>
 <section id="recommendation" class="level2">
-
+<h2 class="anchored" data-anchor-id="recommendation">Recommendation</h2>
+<p>I finished reading AtLB in January of 2023. In order to write this review I revisited the book, speed-reading notable areas in order to reacquaint myself with the messages. At times I began deep reading the material again, as it is generally very enjoyable. Some of the anecdotes and key summaries are absolute gold. In my estimation, this is too good to miss for anyone with an interest in logic, analysis or is generally curious about exactly what computer science has achieved for us so far.</p>
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Recommendation</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
 <div id="ref-PrinceCCSL" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><a href="https://cocosci.princeton.edu/">https://cocosci.princeton.edu/</a></div>
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Princeton University, <span>“<span>Computational Cognitive Science Lab</span>.”</span> <a href="https://cocosci.princeton.edu/">https://cocosci.princeton.edu/</a></div>
 </div>
 <div id="ref-AtLB" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">Brian Christian &amp; Tom Griffiths, <em><span class="nocase">Algorithms to Live By</span></em>. <span>William Collins</span>, 2016.</div>
@@ -337,6 +383,12 @@ Note
 </div>
 <div id="ref-NFLTheorem" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[4] </div><div class="csl-right-inline">D.H. Wolpert; W.G. Macready, <span>“No free lunch theorems for optimization,”</span> <em>IEEE Transactions on Evolutionary Computation</em>, vol. 1, no. 1, 1997.</div>
+</div>
+<div id="ref-NakedStats" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">Charles Wheelan, <em><span>Naked Statistics</span>: <span class="nocase">Stripping the Dread from Data</span></em>. <span>W.W. Norton &amp; Co.</span>, 2013.</div>
+</div>
+<div id="ref-HelloFry" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">Hannah Fry, <em><span>Hello World</span>: <span class="nocase">How to Be Human in the Age of the Machine</span></em>. <span>Penguin Random House</span>, 2018.</div>
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

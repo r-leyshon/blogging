@@ -1,5 +1,5 @@
 ---
-title: "UNDER CONSTRUCTION: Algorithms to Live By"
+title: "Algorithms to Live By"
 subtitle: "The Computer Science of Human Decisions"
 author: "Rich Leyshon"
 date: last-modified
@@ -249,13 +249,82 @@ and when - are compared against the success criteria of avoiding what is known
 as a cache miss. A cache miss is a state where the data that you are looking
 for cannot be found within the cache and therefore must be retrieved from the
 slower memory store. Achieving this state appears to be on a par with divining 
-the future, as who knows what the user will ask for next?
+the future, as who knows what the user will ask for next. Of the competing
+cache eviction algorithms considered are:
+
+* **Random Eviction**: Overwriting old data from the cache at random.
+Apparently not as poor a choice as it sounds.
+* **First in, First Out (FIFO)**: Overwriting the data that first entered the
+cache.
+* **Least Recently Used (LRU)**: Overwriting the data that has gone the longest
+period without being accessed.
+
+Of these choices, LRU is celebrated as the optimal choice, consistently
+outperforming the other options in avoiding a cache miss. The authors then
+elucidate on the implications that this has in some surprising scenarios, from
+the physical construction of processors, to Amazon warehouse logistics. 
+
+:::{.callout-note}
+"Computers' default file-browsing interface makes you click through folders in
+alphabetical order - but the power of LRU suggest that you should override
+this, and display your files by "Last Opened" rather than "Name". What you're
+looking for will almost always be at or near the top." [@AtLB, p.98]
+:::
 
 ## Analysis and Evaluation
 
+AtLB is a great read for anyone without an undergrad in computer science. It
+does a great job of walking the reader through half a century's development in
+computational thought and implementation. The matter is never too heavy for the
+casual reader. The emphasis on analogy with tangible and often practical
+implications for everyday life is thought provoking. 
+
+There are a number of instances where the problem domains have been framed in a
+way that has not aged so well. By today's standard, The Secretary Problem could
+do with an overhaul. The authors acknowledge that the framing of this problem
+is a product of its time and that it could use an overhaul. But an aspect of
+AtLB is to provide the historic context and evolution of an idea, where it is
+available. In doing so, the authors reveal the stories of the people behind the
+big ideas, aspects of their life, work and the problems they were wrangling. 
+
+For those professionals in the Information Technology sector, AtLB may not
+cover much new ground. It does, however, do a much better job at securing the
+impact of the optimisation than most formal textbooks. Although the purpose of
+a text differs to that of AtLB, which is definitely in explaining and
+understanding how computation has bettered society. This book would help many
+professionals in building a framework of awareness around their subject.
 
 ## Comparisons
 
+This book offers a treatment of understanding the nuts and bolts **and** how
+society has implemented and optimised in response to the knowledge. This book
+ can therefore be compared to a broad selection of popular science. Some
+ similar books are:
+ 
+ * Naked Statistics by Charles Wheelan @NakedStats.
+ * Hello World by Hannah Fry @HelloFry.
+
+ These books all help the reader gain a greater understanding of how
+ computational thought can be applied within real life scenarios. Though AtLB
+ is distinctly optimistic in its treatment in comparison. AtLB intends to
+ educate and give an appreciation of the scale and implication of an optimised
+ solution. 
+
+ Naked Statistics contrasts with this, in that it explores how statistics can
+ be misused, in order to obfuscate key findings or further a political
+ agenda. That book is a sort of toolkit in understanding algorithms to apply
+ and what to look out for in their misapplication. Whereas Hello World covers
+ algorithmic implementation in complex domains such as Crime, Justice and
+ Healthcare. As one would imagine, an incredibly complicated set of ethical
+ challenges are discussed with a high degree of warranted scepticism. Both are
+ great reads but offer a distinct purpose when contrasted with AtLB.
 
 ## Recommendation
 
+I finished reading AtLB in January of 2023. In order to write this review I
+revisited the book, speed-reading notable areas in order to reacquaint myself
+with the messages. At times I began deep reading the material again, as it is
+generally very enjoyable. Some of the anecdotes and key summaries are absolute
+gold. In my estimation, this is too good to miss for anyone with an interest in
+logic, analysis or is generally curious about exactly what computer science has
+achieved for us so far.
