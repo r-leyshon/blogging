@@ -1,0 +1,109 @@
+---
+title: "Zelda & Chill"
+author: "Rich Leyshon"
+date: last-modified
+description: "A Lofi Homage to Nintendo's Zelda Series, composed by Mikel &
+GameChops"
+categories:
+- Electronic
+- Lofi
+- Video Game Music
+image: https://i.scdn.co/image/ab67616d0000b273fbd9b41a77b7bb918a820541
+image-alt: Album cover art
+toc: true
+---
+
+## Introduction
+
+...
+
+::: {.callout-note}
+...
+:::
+
+...
+
+## ...
+
+...
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/3oNO1P0Qlr4oSlMA2MIj67?utm_source=generator&theme=0" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
+<br>
+Let's take a look at the audio feature analysis for this album. For a formal
+description of the audio feature categories presented here, please consult the
+<a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.
+
+```{r, width="300px", fig.align="center"}
+#| warning: false
+#| echo: false
+library(here)
+library(kableExtra)
+library(glue)
+source(here("R/music-reviews/spotify-album.R"))
+source(here("R/music-reviews/config-secrets.R"))
+
+viz_album_audio_features(
+spotify_id = "3oNO1P0Qlr4oSlMA2MIj67",    
+title_font_size = 16,
+subtitle_font_size = 12,
+title_hjust = 0.2,
+subtitle_hjust = 0.1,
+debug = FALSE
+)
+
+```
+
+::: {.callout-tip collapse="true"}
+## Interpreting the Ridge Plot (Click to expand)
+
+These ridge plots show a histogram of the mean audio feature values across each
+track in the album. Look across the horizontal axis at where the peaks for each
+feature occur. For example, if the album contains lots of tracks with busy
+vocals, the speechiness feature will show a peak to the right of the horizontal
+axis. Conversely, an instrumental album would have a speechiness peak to the
+left of the horizontal axis but you would also expect it to have a peak to the
+right of the axis in the instrumentalness feature.
+:::
+
+...
+
+## The Tracks
+
+Below are the mean audio feature values for each track. The last row (green)
+presents a mean summary of the album.
+
+```{r}
+#| echo: false
+tab = create_album_audio_summary_table(spotify_id = "3oNO1P0Qlr4oSlMA2MIj67")
+# create album average
+numeric_cols = select(tab, where(is.numeric))
+summary_tab = summarise(numeric_cols, across(everything(), mean))
+summ_row = cbind(track_name = glue::glue("Album Mean"), summary_tab)
+tab = rbind(tab, summ_row)
+# Visualise
+summ_ind = nrow(tab)
+kableExtra::kbl(tab) %>%
+row_spec(summ_ind, color = "white", background = "#146542")
+
+```
+
+**Air**
+...
+
+**Infiltrator**
+...
+
+**Blood and steel**
+...
+
+**Dharma**
+...
+
+
+
+## Highs and Lows
+
+...
+## Overall
+
+...

@@ -200,7 +200,42 @@
     "href": "music-reviews/index.html",
     "title": "Productivity Pulse",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nGhostrunner\n\n\n9 min\n\n\nA review of the soundtrack to the 2020 hit video game Ghostrunner, composed by Daniel Deluxe.\n\n\n\nRich Leyshon\n\n\nSep 10, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nZelda & Chill\n\n\n2 min\n\n\nA Lofi Homage to Nintendo’s Zelda Series, composed by Mikel & GameChops\n\n\n\nRich Leyshon\n\n\nOct 7, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGhostrunner\n\n\n9 min\n\n\nA review of the soundtrack to the 2020 hit video game Ghostrunner, composed by Daniel Deluxe.\n\n\n\nRich Leyshon\n\n\nSep 10, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "music-reviews/02-zelda-and-chill.html",
+    "href": "music-reviews/02-zelda-and-chill.html",
+    "title": "Zelda & Chill",
+    "section": "",
+    "text": "…\n\n\n\n\n\n\nNote\n\n\n\n…\n\n\n…"
+  },
+  {
+    "objectID": "music-reviews/02-zelda-and-chill.html#introduction",
+    "href": "music-reviews/02-zelda-and-chill.html#introduction",
+    "title": "Zelda & Chill",
+    "section": "",
+    "text": "…\n\n\n\n\n\n\nNote\n\n\n\n…\n\n\n…"
+  },
+  {
+    "objectID": "music-reviews/02-zelda-and-chill.html#section",
+    "href": "music-reviews/02-zelda-and-chill.html#section",
+    "title": "Zelda & Chill",
+    "section": "…",
+    "text": "…\n…\n\n\n Let’s take a look at the audio feature analysis for this album. For a formal description of the audio feature categories presented here, please consult the Spotify Developer API Documentation.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInterpreting the Ridge Plot (Click to expand)\n\n\n\n\n\nThese ridge plots show a histogram of the mean audio feature values across each track in the album. Look across the horizontal axis at where the peaks for each feature occur. For example, if the album contains lots of tracks with busy vocals, the speechiness feature will show a peak to the right of the horizontal axis. Conversely, an instrumental album would have a speechiness peak to the left of the horizontal axis but you would also expect it to have a peak to the right of the axis in the instrumentalness feature.\n\n\n\n…"
+  },
+  {
+    "objectID": "music-reviews/02-zelda-and-chill.html#the-tracks",
+    "href": "music-reviews/02-zelda-and-chill.html#the-tracks",
+    "title": "Zelda & Chill",
+    "section": "The Tracks",
+    "text": "The Tracks\nBelow are the mean audio feature values for each track. The last row (green) presents a mean summary of the album.\n\n\n\n\n\ntrack_name\ndanceability\nenergy\nspeechiness\nacousticness\ninstrumentalness\nvalence\n\n\n\n\nFairy Fountain\n0.6710000\n0.5250000\n0.0506000\n0.4040000\n0.924\n0.2830000\n\n\nDark World\n0.6700000\n0.3380000\n0.0569000\n0.4400000\n0.864\n0.5620000\n\n\nLost Woods\n0.7150000\n0.5440000\n0.0513000\n0.0895000\n0.935\n0.9080000\n\n\nSong of Storms\n0.6750000\n0.4580000\n0.0305000\n0.0181000\n0.889\n0.4790000\n\n\nMinuet of Forest\n0.7910000\n0.4820000\n0.0434000\n0.1750000\n0.857\n0.6980000\n\n\nGerudo Valley\n0.8430000\n0.4340000\n0.0844000\n0.4400000\n0.832\n0.1670000\n\n\nOath to Order\n0.7830000\n0.4640000\n0.1500000\n0.7480000\n0.805\n0.2200000\n\n\nDragon Roost Island\n0.7730000\n0.2450000\n0.0582000\n0.2530000\n0.932\n0.5530000\n\n\nKakariko Village\n0.7110000\n0.4330000\n0.1990000\n0.4520000\n0.905\n0.6260000\n\n\nBallad of the Goddess\n0.7590000\n0.4100000\n0.0595000\n0.0061500\n0.821\n0.3540000\n\n\nBreath of the Wild\n0.5410000\n0.4050000\n0.0418000\n0.0471000\n0.840\n0.0387000\n\n\nHateno Village\n0.7600000\n0.3470000\n0.0337000\n0.3430000\n0.689\n0.3940000\n\n\nLegend of Zelda\n0.5210000\n0.6270000\n0.0265000\n0.2510000\n0.847\n0.7260000\n\n\nOcarina of Time\n0.6440000\n0.4870000\n0.0419000\n0.1540000\n0.858\n0.2450000\n\n\nAlbum Mean\n0.7040714\n0.4427857\n0.0662643\n0.2729179\n0.857\n0.4466929\n\n\n\n\n\n\n\nAir …\nInfiltrator …\nBlood and steel …\nDharma …"
+  },
+  {
+    "objectID": "music-reviews/02-zelda-and-chill.html#highs-and-lows",
+    "href": "music-reviews/02-zelda-and-chill.html#highs-and-lows",
+    "title": "Zelda & Chill",
+    "section": "Highs and Lows",
+    "text": "Highs and Lows\n… ## Overall\n…"
   },
   {
     "objectID": "book-reviews/01-deep-work.html",
@@ -326,7 +361,7 @@
     "href": "index.html#recent-articles",
     "title": "Welcome to The Data Savvy Corner!",
     "section": "Recent Articles",
-    "text": "Recent Articles\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nAlgorithms to Live By\n\n\nThe Computer Science of Human Decisions\n\n\n\n\nMathematical Modelling\n\n\nComputer Science\n\n\n\n\nThoughts on Brian Christian & Tom Griffiths treatment of applied computer science.\n\n\n\n\n\n\nSep 30, 2023\n\n\nRich Leyshon\n\n\n13 min\n\n\n\n\n\n\n  \n\n\n\n\nDeep Work\n\n\nRules for Focused Success in a Distracted World\n\n\n\n\nSelf-Help\n\n\nProductivity\n\n\nBusiness\n\n\nPsychology\n\n\nPhilosophy\n\n\n\n\nA review of Cal Newport’s much lauded productivity how to guide.\n\n\n\n\n\n\nSep 23, 2023\n\n\nRich Leyshon\n\n\n9 min\n\n\n\n\n\n\n  \n\n\n\n\nMaximizing Loot Gains in Starfield: A Data-Driven Approach\n\n\n\n\n\n\n\nExplanation\n\n\nVideo games\n\n\nData analysis\n\n\n\n\nDiscover the hidden riches of Bethesda’s Starfield with this data-driven guide. Learn what to strategically hoard in order to maximize your loot gains.\n\n\n\n\n\n\nSep 21, 2023\n\n\nRich Leyshon\n\n\n5 min\n\n\n\n\n\n\n  \n\n\n\n\nHow to Automate Quarto Builds with GitHub Actions\n\n\n\n\n\n\n\nHow-to\n\n\nCI/CD\n\n\nFront End Dev\n\n\n\n\nSetting up a website with Quarto? Want to automate the website build and publication with GitHub Actions? Could you use a quick guide? I’ve got your back.\n\n\n\n\n\n\nSep 17, 2023\n\n\nRich Leyshon\n\n\n4 min\n\n\n\n\n\n\n  \n\n\n\n\nGhostrunner\n\n\nOriginal Soundtrack\n\n\n\n\nElectronic\n\n\nSynthwave\n\n\nVideo Game Music\n\n\n\n\nA review of the soundtrack to the 2020 hit video game Ghostrunner, composed by Daniel Deluxe.\n\n\n\n\n\n\nSep 10, 2023\n\n\nRich Leyshon\n\n\n9 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Recent Articles\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nZelda & Chill\n\n\n\n\n\n\n\nElectronic\n\n\nLofi\n\n\nVideo Game Music\n\n\n\n\nA Lofi Homage to Nintendo’s Zelda Series, composed by Mikel & GameChops\n\n\n\n\n\n\nOct 7, 2023\n\n\nRich Leyshon\n\n\n2 min\n\n\n\n\n\n\n  \n\n\n\n\nAlgorithms to Live By\n\n\nThe Computer Science of Human Decisions\n\n\n\n\nMathematical Modelling\n\n\nComputer Science\n\n\n\n\nThoughts on Brian Christian & Tom Griffiths treatment of applied computer science.\n\n\n\n\n\n\nSep 30, 2023\n\n\nRich Leyshon\n\n\n13 min\n\n\n\n\n\n\n  \n\n\n\n\nDeep Work\n\n\nRules for Focused Success in a Distracted World\n\n\n\n\nSelf-Help\n\n\nProductivity\n\n\nBusiness\n\n\nPsychology\n\n\nPhilosophy\n\n\n\n\nA review of Cal Newport’s much lauded productivity how to guide.\n\n\n\n\n\n\nSep 23, 2023\n\n\nRich Leyshon\n\n\n9 min\n\n\n\n\n\n\n  \n\n\n\n\nMaximizing Loot Gains in Starfield: A Data-Driven Approach\n\n\n\n\n\n\n\nExplanation\n\n\nVideo games\n\n\nData analysis\n\n\n\n\nDiscover the hidden riches of Bethesda’s Starfield with this data-driven guide. Learn what to strategically hoard in order to maximize your loot gains.\n\n\n\n\n\n\nSep 21, 2023\n\n\nRich Leyshon\n\n\n5 min\n\n\n\n\n\n\n  \n\n\n\n\nHow to Automate Quarto Builds with GitHub Actions\n\n\n\n\n\n\n\nHow-to\n\n\nCI/CD\n\n\nFront End Dev\n\n\n\n\nSetting up a website with Quarto? Want to automate the website build and publication with GitHub Actions? Could you use a quick guide? I’ve got your back.\n\n\n\n\n\n\nSep 17, 2023\n\n\nRich Leyshon\n\n\n4 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#about-me",

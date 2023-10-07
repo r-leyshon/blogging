@@ -12,7 +12,7 @@ source(here("R/music-reviews/config-secrets.R"))
 
 
 get_album_artwork_url = function(
-    spotify_id = "6mS0ssCxtLvB0IcVP7sR66",
+    spotify_id = "3oNO1P0Qlr4oSlMA2MIj67",
     api_key_path = here::here(".secrets.toml")
     ){
     # configure api secrets
