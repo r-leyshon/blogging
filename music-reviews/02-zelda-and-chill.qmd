@@ -23,9 +23,9 @@ universe to series.
 The music of the games has often been at the core of establishing its identity.
 At times, music has played a key construct in the games' development. The N64
 batch of games adopted a core game mechanic where the ability to accurately
-play specified songs on an instrument called an ocarina triggered key plot
-events such as travelling through time. Perhaps due to this, many of the tracks
-here are from this period of Zelda's history.
+play songs on an instrument called an ocarina triggered key plot events such as
+travelling through time. Perhaps due to this, many of the tracks here are from
+this period of Zelda's history.
 
 
 ## Songs for the Recovering Adventurers
@@ -80,7 +80,7 @@ the songs. I expected the album to be distributed centrally as the pace and
 tone of the music is generally understated. But there are a couple of tracks
 that strike a more melancholy tone, such as Dark World and Gerudo Valley. At
 the other end of the scale, the Legend of Zelda theme is likely the most
-positive on offer, so an even distribution of alence perhaps makes sense. The
+positive on offer, so an even valence distribution perhaps makes sense. The
 album's speechiness and instrumentalness score as you'd expect. Danceability is
 notably high, potentially as a result of the crunchy drum & bass lines present
 in all the songs. Acousticness is generally low throughout the tracks though
@@ -136,7 +136,7 @@ original, hence the "Relax" in the album title. There’s a curious reverb effec
 at play that sounds a bit like a harpsichord fed through a tin can. After
 listening to quite a bit of lofi I am on board with this, but I could see that
 it may be an acquired taste for some. Against the light and airy melody, the
-low-tech prodcsion works really well. 
+low-tech production works really well. 
 
 **Song of Storms**
 
@@ -170,7 +170,7 @@ in that game - apparently to summon giants. I have little association with
 Majora’s Mask and having listened to it, I fail to identify the link to the
 original. Someone with a greater familiarity would potentially find more to
 identify with. As a standalone piece, Oath to Order is a very warm-sounding,
-fuzzy sensation with a warbly theramin effect permeating throughout for a
+fuzzy sensation with a warbly theremin effect permeating throughout for a
 unique twist.
 
 **Dragon Roost Island**
@@ -195,18 +195,18 @@ bouncy bassline, there’s plenty to appreciate here.
 **Ballad of the Goddess**
 
 Another recurring song in the later games within the Zelda series, I find it a
-very enjoyable rendition despite my lack of familiarity with the sourcematerial
-. The song seems to originate from Skyward Sword, building upon the melody
-using sweet harp strings and later a dramatic orchestral accompaniment. In this
-version, the artist has retained the harp in support of the main melody but has
-worked with piano for the main melody. 
+very enjoyable rendition despite my lack of familiarity with the source
+material. The song seems to originate from Skyward Sword, building upon the
+melody using sweet harp strings and later a dramatic orchestral accompaniment.
+In this version, the artist has retained the harp in support of the main melody
+but has worked with piano for the main melody. 
 
 **Breath of the Wild**
 
 Taking its inspiration from the main theme of Breath of the Wild which perhaps
 lacks a distinctive identity in my opinion, this song starts with a promising
 loop of one of its more distinct movements. However, mid-way through the song
-it introduces some distinctly unharmonic keys that introduce a sort of
+it introduces some distinctly discordant keys that introduce a sort of
 dilapidated fairground motif to the song. This is one that I tend to skip for
 those reasons - I find it hard to concentrate on my work with discordant sound
 in my ears. I view the track as an experiment and not in keeping with the rest
@@ -226,11 +226,10 @@ source material.
 
 Maybe the most iconic video theme of all time. This mix pays homage to the
 series’ 8-bit roots by experimenting with a chiptune style that does a great
-job of not getting skipped while I work - chiptune can be fun but not always
-good to concentrate to. One of the more moving songs on offer, this track
-builds to a crescendo replete with choral and piano arrangements, leaving the
-listener with a distinct sense of grandeur capturing the scale of the video
-games. 
+job of not getting skipped while I work - chiptune can be fun but not generally
+for concentration. One of the more moving songs on offer, this track builds to
+a crescendo replete with choral and piano arrangements, leaving the listener
+with a distinct sense of grandeur capturing the scale of the video games. 
 
 **Ocarina of Time**
 
@@ -246,7 +245,7 @@ Great times.
 Breath of the Wild is not to my taste and on writing this review, I suppose
 I've realised that I consider the soundtrack for this game to be somewhat
 inferior to the older games. No hate to Breath of the Wild, which is a
-materpiece in modern gaming, but perhaps the soundtrack is less of a focal
+masterpiece in modern gaming, but perhaps the soundtrack is less of a focal
 point and potentially appealing to a broader and more mature audience than the
 older games in the series.
 
