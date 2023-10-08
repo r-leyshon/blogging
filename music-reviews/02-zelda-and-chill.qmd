@@ -15,17 +15,27 @@ toc: true
 
 ## Introduction
 
-...
+Nintendo's Zelda series likely needs no introduction. In its fourth decade and
+one of the most successful adventure series in video games, beloved for its
+sense of innovation each game has added a fresh interpretation of the Zelda
+universe to series. 
 
-::: {.callout-note}
-...
-:::
+The music of the games has often been at the core of establishing its identity.
+At times, music has played a key construct in the games' development. The N64
+batch of games adopted a core game mechanic where the ability to accurately
+play specified songs on an instrument called an ocarina triggered key plot
+events such as travelling through time. Perhaps due to this, many of the tracks
+here are from this period of Zelda's history.
 
-...
 
-## ...
+## Songs for the Recovering Adventurers
 
-...
+Zelda & Chill is a love note to the iconic music produced by the Zelda
+developers. As a casual fan, I have enjoyed many of the games in the series
+and the album manages to prod the nostalgia sensor in my brain even on multiple
+playthroughs. But even for those disinterested in video games, this album is 
+great for drowning out the outside world and establishing the focus needed for
+ deep work. 
 
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/3oNO1P0Qlr4oSlMA2MIj67?utm_source=generator&theme=0" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
 <br>
@@ -65,7 +75,21 @@ left of the horizontal axis but you would also expect it to have a peak to the
 right of the axis in the instrumentalness feature.
 :::
 
-...
+I find it surprising that there is such a wide distribution in the valence of
+the songs. I expected the album to be distributed centrally as the pace and
+tone of the music is generally understated. But there are a couple of tracks
+that strike a more melancholy tone, such as Dark World and Gerudo Valley. At
+the other end of the scale, the Legend of Zelda theme is likely the most
+positive on offer, so an even distribution of alence perhaps makes sense. The
+album's speechiness and instrumentalness score as you'd expect. Danceability is
+notably high, potentially as a result of the crunchy drum & bass lines present
+in all the songs. Acousticness is generally low throughout the tracks though
+with a broad distribution that is potentially influenced by recurring use of
+piano and string sections. Perhaps the most interesting feature for this album
+is energy, which describes the album as distinctly middle-of-the-road in terms
+of intensity. As a chill album you'd likely expect a lower energy but the
+string rhythm section likely lifts the distribution of this feature.
+
 
 ## The Tracks
 
@@ -180,13 +204,13 @@ worked with piano for the main melody.
 **Breath of the Wild**
 
 Taking its inspiration from the main theme of Breath of the Wild which perhaps
- lacks a distinctive identity in my opinion, this song starts with a promising
- loop of one of its more distinct movements. However, mid-way through the song
- it introduces some distinctly unharmonic keys that introduce a sort of
- dilapidated fairground motif to the song. This is one that I tend to skip for
- those reasons - I find it hard to concentrate on my work with discordant sound
- in my ears. I view the track as an experiment and not in keeping with the rest
- of the album. 
+lacks a distinctive identity in my opinion, this song starts with a promising
+loop of one of its more distinct movements. However, mid-way through the song
+it introduces some distinctly unharmonic keys that introduce a sort of
+dilapidated fairground motif to the song. This is one that I tend to skip for
+those reasons - I find it hard to concentrate on my work with discordant sound
+in my ears. I view the track as an experiment and not in keeping with the rest
+of the album. 
 
 **Hateno Village**
 
@@ -219,7 +243,24 @@ Great times.
 
 ## Highs and Lows
 
-...
+Breath of the Wild is not to my taste and on writing this review, I suppose
+I've realised that I consider the soundtrack for this game to be somewhat
+inferior to the older games. No hate to Breath of the Wild, which is a
+materpiece in modern gaming, but perhaps the soundtrack is less of a focal
+point and potentially appealing to a broader and more mature audience than the
+older games in the series.
+
+Standout tracks to my mind are Song of Storms, Kakariko Village and Legend of
+Zelda.
+
 ## Overall
 
-...
+This album is a great choice for steadying the ship following a busy schedule.
+It establishes quiet, focus and allows your brain's operating system to reboot
+following a demanding presentation. I'd suggest this album as the first in a
+playlist dedicated to carving out an afternoon of focus time. Set your status
+to 'do not disturb' and eliminate your to do list with the help of Link and his
+friends.
+
+For more music to encourage your work efforts, check out
+[Productivity Pulse](index.qmd).
