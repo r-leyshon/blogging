@@ -38,12 +38,6 @@ these things somewhere.
 tutorials, how-to guides. All articles are categorised according to the
 excellent [diataxis framework](https://diataxis.fr/).
 
-<figure class=center-for-index>
-  <img alt="Diátaxis quadrant." src="https://diataxis.fr/_images/diataxis.png" style="width:600px"/>  
-  <figcaption class=center-for-index>© Daniele Procida.</figcaption> 
-</figure>
-
-
 * [Productivity Pulse](music-reviews/index.qmd) : Music reviews. I listen to
 strictly non-verbal music when programming. This was a habit that I developed
 while working within a busy office environment. Instrumental music of several

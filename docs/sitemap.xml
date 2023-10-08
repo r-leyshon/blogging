@@ -2,46 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
-    <lastmod>2023-09-30T08:11:25.637Z</lastmod>
+    <lastmod>2023-10-08T06:21:38.591Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
-    <lastmod>2023-09-30T08:11:26.174Z</lastmod>
+    <lastmod>2023-10-08T06:21:39.157Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
-    <lastmod>2023-09-30T08:11:27.321Z</lastmod>
+    <lastmod>2023-10-08T06:21:40.553Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
-    <lastmod>2023-09-30T08:11:28.366Z</lastmod>
+    <lastmod>2023-10-08T06:21:41.703Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
-    <lastmod>2023-09-30T08:11:29.007Z</lastmod>
+    <lastmod>2023-10-08T06:21:42.359Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</loc>
-    <lastmod>2023-09-30T08:11:29.869Z</lastmod>
+    <lastmod>2023-10-08T06:21:43.146Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
-    <lastmod>2023-09-30T08:11:30.230Z</lastmod>
+    <lastmod>2023-10-08T06:21:43.642Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/music-reviews/02-zelda-and-chill.html</loc>
+    <lastmod>2023-10-08T06:21:44.393Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
-    <lastmod>2023-09-30T08:11:30.807Z</lastmod>
+    <lastmod>2023-10-08T06:21:45.072Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/index.html</loc>
-    <lastmod>2023-09-30T08:11:31.341Z</lastmod>
+    <lastmod>2023-10-08T06:21:45.631Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</loc>
-    <lastmod>2023-09-30T08:11:32.030Z</lastmod>
+    <lastmod>2023-10-08T06:21:46.390Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/index.html</loc>
-    <lastmod>2023-09-30T08:11:32.828Z</lastmod>
+    <lastmod>2023-10-08T06:24:10.655Z</lastmod>
   </url>
 </urlset>

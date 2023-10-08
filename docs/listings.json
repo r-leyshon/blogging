@@ -11,6 +11,7 @@
   {
     "listing": "/music-reviews/index.html",
     "items": [
+      "/music-reviews/02-zelda-and-chill.html",
       "/music-reviews/01-ghostrunner-ost.html"
     ]
   },
@@ -24,6 +25,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/music-reviews/02-zelda-and-chill.html",
       "/book-reviews/02-algorithms-to-live-by.html",
       "/book-reviews/01-deep-work.html",
       "/blogs/04-starfield-resources.html",

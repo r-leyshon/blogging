@@ -1,0 +1,264 @@
+---
+title: "Zelda & Chill"
+author: "Rich Leyshon"
+date: last-modified
+description: "A Lofi Homage to Nintendo's Zelda Series, Composed by Mikel &
+GameChops"
+categories:
+- Electronic
+- Lofi
+- Video Game Music
+image: https://i.scdn.co/image/ab67616d0000b273fbd9b41a77b7bb918a820541
+image-alt: Album cover art
+toc: true
+---
+
+## Introduction
+
+Nintendo's Zelda series likely needs no introduction. In its fourth decade and
+one of the most successful adventure series in video games, Zelda is beloved
+for its sense of innovation. 
+
+The music of the games has often been at the core of establishing its identity
+and; at times; has played a key construct in the games' development. The N64
+batch of games adopted a core game mechanic where the ability to accurately
+play songs on an instrument called an ocarina triggered key plot events such as
+travelling through time. Perhaps due to this, many of the tracks here are from
+this period of Zelda's history.
+
+## Songs for the Recovering Adventurers
+
+Zelda & Chill is a love note to the iconic music produced by the Zelda
+developers. As a casual fan, I have enjoyed many of the games in the series and
+the album manages to prod the nostalgia sensor in my brain even after multiple
+playthroughs. But for those disinterested in video games, this album is  great
+for drowning out the outside world and establishing the focus needed for deep
+work. 
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/3oNO1P0Qlr4oSlMA2MIj67?utm_source=generator&theme=0" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
+<br>
+Let's take a look at the audio feature analysis for this album. For a formal
+description of the audio feature categories presented here, please consult the
+<a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.
+
+```{r, width="300px", fig.align="center"}
+#| warning: false
+#| echo: false
+library(here)
+library(kableExtra)
+library(glue)
+source(here("R/music-reviews/spotify-album.R"))
+source(here("R/music-reviews/config-secrets.R"))
+
+viz_album_audio_features(
+spotify_id = "3oNO1P0Qlr4oSlMA2MIj67",    
+title_font_size = 16,
+subtitle_font_size = 12,
+title_hjust = 0.2,
+subtitle_hjust = 0.1,
+debug = FALSE
+)
+
+```
+
+::: {.callout-tip collapse="true"}
+## Interpreting the Ridge Plot (Click to expand)
+
+These ridge plots show a histogram of the mean audio feature values across each
+track in the album. Look across the horizontal axis at where the peaks for each
+feature occur. For example, if the album contains lots of tracks with busy
+vocals, the speechiness feature will show a peak to the right of the horizontal
+axis. Conversely, an instrumental album would have a speechiness peak to the
+left of the horizontal axis but you would also expect it to have a peak to the
+right of the axis in the instrumentalness feature.
+:::
+
+I find it surprising that there is such a wide distribution in the valence of
+the songs. I expected the album to be distributed centrally as the pace and
+tone of the music is generally understated. But there are a couple of tracks
+that strike a more melancholy tone, such as Dark World and Gerudo Valley. At
+the other end of the scale, the Legend of Zelda theme is likely the most
+positive on offer, helping to explain why a broad distribution of valence is
+observed. The album's speechiness and instrumentalness score as you'd expect.
+Danceability is notably high, potentially as a result of the crunchy drum &
+bass lines present in all the songs. Acousticness is generally low throughout
+the tracks though with a broad distribution that is potentially influenced by
+recurring use of piano and string sections. Perhaps the most interesting
+feature for this album is energy, which describes the album as distinctly
+middle-of-the-road in terms of intensity. As a chill album you'd likely expect
+a lower energy but the strong rhythm section likely lifts the distribution of
+this feature.
+
+
+## The Tracks
+
+Below are the mean audio feature values for each track. The last row (green)
+presents a mean summary of the album.
+
+```{r}
+#| echo: false
+tab = create_album_audio_summary_table(spotify_id = "3oNO1P0Qlr4oSlMA2MIj67")
+# create album average
+numeric_cols = select(tab, where(is.numeric))
+summary_tab = summarise(numeric_cols, across(everything(), mean))
+summ_row = cbind(track_name = glue::glue("Album Mean"), summary_tab)
+tab = rbind(tab, summ_row)
+# Visualise
+summ_ind = nrow(tab)
+kableExtra::kbl(tab) %>%
+row_spec(summ_ind, color = "white", background = "#146542")
+
+```
+
+**Fairy Fountain**
+
+64-bit nostalgia ahead. While the Fairy Fountain has offered sanctuary to any
+daring adventurer donning the guise of Link throughout the entire Zelda series,
+this theme is synonymous with the N64's Ocarina of Time. This rendition is a
+wonderful, crunchy production over a stripped-back ragtime tempo. Warm feelings
+of safe havens are immediately conjured from the outset, with that iconic
+dreamy harp intro. A strong start to the album that sets the mood for what's to
+come.
+
+**Dark world**
+
+For those Zelda fans who can identify with A Link to the Past, this track may
+hold more significance. I have not played that game and checking out the
+original track, I’d say this version seems like a marked improvement. There's a
+fascinating contrast in this song - the meaty bass forms the perfect foil to
+the high pitch tubular bell-effect hook.
+
+**Lost Woods**
+
+Another one for the Ocarina of Time fans. A slower tempo than theoriginal,
+hence the "Relax" in the album title. There’s a curious reverb effect at play
+that sounds a bit like a harpsichord fed through a tin can. After listening to
+quite a bit of lofi I am on board with this, but I could see that it may be an
+acquired taste for some. Against the light and airy melody, the low-tech
+production works really well. 
+
+**Song of Storms**
+
+Familiar to those wishing to summon rain in Ocarina of Time, this laid back
+rendition is mixed with a loop of the cooking theme from Breath of the Wild,
+replete with periodic pot whistles & cutlery clanking against china. The
+creative flair on show as the looped Song of Storms theme builds to a modest
+crescendo (it’s chill after all) makes this one of my album highlights. 
+
+**Minuet of Forest**
+
+This song was originally used in Ocarina of Time to warp characters back to the
+start of the lost woods play area - one of the more challenging areas in the
+early game. The artists have expertly built on what was a very brief movement
+in the original material, adding a bouncy low-end bass while keeping the track
+structured with a snappy drum section. 
+
+**Gerudo Valley**
+
+Another Ocarina of Time offering here. The original Gerudo Valley theme was
+played on Spanish guitar in a flamenco-style with a high tempo. This rendition
+ is nearly unrecognisable and undoubtedly brilliant. How the artist has
+ isolated the key movements and set them against the slow, chuffing rhythm is
+ quite amazing. The song is one of the more melancholy tunes and while lower in
+ mood is undoubtedly beautiful.
+
+**Oath to Order**
+
+This song originally appeared in Majora’s Mask and was used as a plot construct
+in that game - apparently to summon giants. I have little association with
+Majora’s Mask and having listened to it, I fail to identify the musical
+connection with the source material. Someone with a greater familiarity would
+potentially find more to identify with. As a standalone piece, Oath to Order is
+a very warm-sounding, fuzzy sensation with a warbly theremin effect permeating
+throughout for a unique twist.
+
+**Dragon Roost Island**
+
+It's great to have a theme from the Windwaker on the album, which in my opinion
+is one of the best Zelda games and is often overlooked for its cute exterior.
+The original track was distinctly latin with Spanish guitar, maracas and a
+forlorn panpipe high in the mix.  As in Gerudo Valley, the artists have slowed
+the pace while emphasising the main movement in the original source material.
+The guitars have been replaced with warm, fuzzy piano for a more relaxed
+atmosphere. 
+
+**Kakariko Village**
+
+Kakariko Village has made recurring appearances throughout the Zelda series of
+games and I have struggled to identify which version of the series soundtracks
+this song takes its inspiration from. Though the melody is very distinct and
+the track is another of my album highlights. I presume it must be from one of
+the games I am less familiar with. A light and plucky lick against a bright and
+bouncy bassline, there’s plenty to appreciate here.
+
+**Ballad of the Goddess**
+
+Another recurring song in the later games within the Zelda series, I find it a
+very enjoyable rendition despite my lack of familiarity with the source
+material. The song seems to originate from Skyward Sword, building upon the
+melody using sweet harp strings and later a dramatic orchestral accompaniment.
+In this version, the artist has retained the harp but has worked with piano for
+the main melody. 
+
+**Breath of the Wild**
+
+Taking its inspiration from the main theme of Breath of the Wild which perhaps
+lacks a distinctive identity in my opinion, this song starts with a promising
+loop of one of its more recognisable movements. However, mid-way through the
+song it introduces some distinctly discordant keys that introduce a sort of
+dilapidated fairground motif to the song. This is one that I tend to skip for
+those reasons - I find it hard to concentrate on my work with discordant sound
+in my ears. I view the track as an experiment and not in keeping with the rest
+of the album. 
+
+**Hateno Village**
+
+Another Breath of the Wild arrangement, Hateno Village is notably home to the
+Ancient Tech Lab - an important site for acquiring gear upgrades as the game
+progresses. In this rendition of the theme, the artists have retained some deep
+bass strings although the main melody is now expertly played on piano. Again, I
+feel that the original material is not the strongest explored in this album,
+while the reimagining on offer here is perhaps more interesting than the source
+material.
+
+**Legend of Zelda**
+
+Maybe the most iconic video theme of all time. This mix pays homage to the
+series’ 8-bit roots by experimenting with a chiptune style that does a great
+job of not getting skipped while I work - chiptune can be fun but not generally
+for concentration. One of the more moving songs on offer, this track builds to
+a crescendo replete with choral and piano arrangements, leaving the listener
+with a distinct sense of grandeur capturing the scale of the video games. 
+
+**Ocarina of Time**
+
+The theme from the original N64 Zelda title is a fitting end to this fantastic
+homage to perhaps one of the greatest video game adventure series. Kids of my
+generation will recall this iconic track as it accompanied the Ocarina of Time
+intro. The intro that blew the minds of a generation of Zelda fans who got to
+see Link in 3D and on horseback in an amazing open world like never before.
+Great times.
+
+## Highs and Lows
+
+The Breath of the Wild track is not to my taste and on writing this review,
+I've realised that I consider the soundtrack for this game to be somewhat
+inferior to the older games. No hate to Breath of the Wild, which is a
+masterpiece in modern gaming, but perhaps the soundtrack is less of a focal
+point and potentially appealing to a broader and more mature audience than the
+older games in the series.
+
+Standout tracks to my mind are Song of Storms, Kakariko Village and Legend of
+Zelda.
+
+## Overall
+
+This album is a great choice for steadying the ship following a busy schedule.
+It establishes a quiet focus, allowing your brain's operating system to reboot
+following a demanding presentation. I'd suggest this album as the first in a
+playlist dedicated to carving out an afternoon of focus time. Set your status
+to 'do not disturb' and eliminate your to-do list with the help of Link and his
+friends.
+
+For more music to encourage your work efforts, check out
+[Productivity Pulse](index.qmd).
