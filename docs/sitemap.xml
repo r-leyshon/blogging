@@ -1,51 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
-    <lastmod>2023-10-08T06:21:38.591Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
-    <lastmod>2023-10-08T06:21:39.157Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
-    <lastmod>2023-10-08T06:21:40.553Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
-    <lastmod>2023-10-08T06:21:41.703Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
-    <lastmod>2023-10-08T06:21:42.359Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</loc>
-    <lastmod>2023-10-08T06:21:43.146Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
-    <lastmod>2023-10-08T06:21:43.642Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/music-reviews/02-zelda-and-chill.html</loc>
-    <lastmod>2023-10-08T06:21:44.393Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
-    <lastmod>2023-10-08T06:21:45.072Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/index.html</loc>
+    <lastmod>2023-10-26T06:23:57.786Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/index.html</loc>
-    <lastmod>2023-10-08T06:21:45.631Z</lastmod>
+    <lastmod>2023-10-26T06:23:56.423Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/music-reviews/02-zelda-and-chill.html</loc>
+    <lastmod>2023-10-26T06:23:55.346Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</loc>
+    <lastmod>2023-10-26T06:23:54.267Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
+    <lastmod>2023-10-26T06:23:52.828Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
+    <lastmod>2023-10-26T06:23:51.430Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
+    <lastmod>2023-10-26T06:23:49.951Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
+    <lastmod>2023-10-26T06:23:50.451Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
+    <lastmod>2023-10-26T06:23:52.430Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
+    <lastmod>2023-10-26T06:23:53.488Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
+    <lastmod>2023-10-26T06:23:54.651Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
+    <lastmod>2023-10-26T06:23:55.941Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</loc>
-    <lastmod>2023-10-08T06:21:46.390Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/index.html</loc>
-    <lastmod>2023-10-08T06:24:10.655Z</lastmod>
+    <lastmod>2023-10-26T06:23:57.162Z</lastmod>
   </url>
 </urlset>
