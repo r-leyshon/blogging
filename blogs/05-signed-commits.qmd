@@ -47,6 +47,7 @@ are on macos {{< fa brands apple >}} with access to the terminal.
 - [ ] Your GitHub username
 - [ ] The Email address associated with your GitHub account
 - [ ] Access to the command line via Command Line Interface (CLI)
+- [ ] A secure password wallet
 
 ## Instructions
 

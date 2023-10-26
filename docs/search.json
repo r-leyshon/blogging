@@ -151,7 +151,7 @@
     "href": "blogs/05-signed-commits.html#what-youll-need",
     "title": "Set Up Signed Commits on GitHub",
     "section": "What you’ll need:",
-    "text": "What you’ll need:\n\nmacos\nYour GitHub username\nThe Email address associated with your GitHub account\nAccess to the command line via Command Line Interface (CLI)"
+    "text": "What you’ll need:\n\nmacos\nYour GitHub username\nThe Email address associated with your GitHub account\nAccess to the command line via Command Line Interface (CLI)\nA secure password wallet"
   },
   {
     "objectID": "blogs/05-signed-commits.html#instructions",
