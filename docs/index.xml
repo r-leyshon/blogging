@@ -10,7 +10,7 @@
 <atom:link href="https://thedatasavvycorner.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Musings, ramblings, generally putting things down in text so I don&#39;t forget them.</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Thu, 26 Oct 2023 05:45:31 GMT</lastBuildDate>
+<lastBuildDate>Thu, 26 Oct 2023 06:19:56 GMT</lastBuildDate>
 <item>
   <title>Set Up Signed Commits on GitHub</title>
   <dc:creator>Rich Leyshon</dc:creator>
@@ -37,7 +37,7 @@ GitHub verification badge.
 </section>
 <section id="the-scenario" class="level2">
 <h2 class="anchored" data-anchor-id="the-scenario">The Scenario</h2>
-<p>You need to set up commit verification on your computer for the first time. Possibly you have changed computer and need to quickly set up once more. You are on macos with access to yout terminal.</p>
+<p>You need to set up commit verification on your computer for the first time. Possibly you have changed computer and need to quickly set up once more. You are on macos <i class="fa-brands fa-apple" aria-label="apple"></i> with access to the terminal.</p>
 </section>
 <section id="what-youll-need" class="level2">
 <h2 class="anchored" data-anchor-id="what-youll-need">What you’ll need:</h2>
@@ -51,32 +51,169 @@ GitHub verification badge.
 <section id="instructions" class="level2">
 <h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
 <ol type="1">
-<li>In terminal, run <code>git config --global commit.gpgsign true</code></li>
+<li>In terminal, run:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">git config <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> commit.gpgsign true</span></code></pre></div>
+</div>
+<ol start="2" type="1">
 <li>Visit <a href="https://gpgtools.org/">GPG suite</a> and download the installer.</li>
 <li>Follow the installation steps and quit the screen that attempts to create a new key</li>
-<li>In terminal, create a key with <code>gpg --full-generate-key</code></li>
+<li>In terminal, create a key with:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">gpg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>full<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>generate<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>key</span></code></pre></div>
+</div>
+<ol start="5" type="1">
 <li>At the prompt, accept the default values for key type, size and persistence</li>
 <li>Ensure you enter your GitHub username (labelled here as real name) and the Email associated with your account correctly</li>
-<li>Enter a passphrase, confirm it and store it in a secure password wallet. You will need it again in the final step of this process.</li>
-<li>Print out the long format of the key details with : <code>gpg --list-secret-keys --keyid-format=long</code></li>
+<li>Enter a passphrase, confirm it and store it in a secure password wallet. You will need it again in the final step of this process</li>
+<li>Print out the long format of the key details with:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">gpg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>secret<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>keys <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>keyid<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">long</span></span></code></pre></div>
+</div>
+<ol start="9" type="1">
 <li>Copy the long form of the key ID from the example output labelled as <code>&lt;COPY THIS BIT ONLY&gt;</code>, do not include the preceeding forward slash:</li>
 </ol>
-<pre><code>$ gpg --list-secret-keys --keyid-format=long
-/Users/hubot/.gnupg/secring.gpg
-------------------------------------
-sec   XXXX/&lt;COPY THIS BIT ONLY&gt; 2023-10-23 
-uid                          your username
-ssb   xxxXXXX/XXXXXXXXXXXXXXXX 2023-10-23
-</code></pre>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">$ gpg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>secret<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>keys <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>keyid<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">long</span></span>
+<span id="cb4-2"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>Users<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>hubot<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>.gnupg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>secring.gpg</span>
+<span id="cb4-3"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">------------------------------------</span></span>
+<span id="cb4-4">sec   XXXX<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/&lt;</span>COPY THIS BIT ONLY<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2023</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span> </span>
+<span id="cb4-5">uid                          your username</span>
+<span id="cb4-6">ssb   xxxXXXX<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>XXXXXXXXXXXXXXXX <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2023</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span></span></code></pre></div>
 <ol start="10" type="1">
-<li>Adjust this command with your copied key ID and run in terminal; <code>git config --global user.signingkey &lt;INSERT YOUR KEY&gt;</code></li>
-<li>Paste your key into the command below and execute in terminal: <code>gpg --armor --export XXXXXXXXXXXXXXXXXXXX</code></li>
+<li>Adjust this command with your copied key ID and run in terminal:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">git config <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> user.signingkey <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>INSERT YOUR KEY ID<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+</div>
+<ol start="11" type="1">
+<li>Paste your key ID into the command below and execute in terminal:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">gpg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>armor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>export <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>INSERT YOUR KEY ID<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+</div>
+<ol start="11" type="1">
 <li>Copy the output, including the <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code> and <code>-----END PGP PUBLIC KEY BLOCK-----</code> sections.</li>
-<li>Go to the GPG Keychain app, it should have detected the key in your clipboard and ask you to import the key to your keychain. Click OK.</li>
-<li>Over to your web brower, go to GitHub -&gt; profile pic -&gt; settings -&gt; SSH and GPG keys</li>
-<li>Add a new key to your account, give it an appropriate title and paste the key from your clipboard.</li>
-<li>GitHub will ask you to authenticate in order to make this change.</li>
-<li>The next time you need to commit, you will be asked to enter the passphrase you saved to your password wallet in order to add the key to your keychain.</li>
+<li>Go to the GPG Keychain app, it should have detected the key in your clipboard and ask you to import the key to your keychain. Click OK</li>
+<li>Over to your web brower, go to GitHub <i class="fa-solid fa-arrow-right"></i> profile pic <i class="fa-solid fa-arrow-right"></i> settings <i class="fa-solid fa-arrow-right"></i> SSH and GPG keys</li>
+<li>Add a new key to your account, give it an appropriate title and paste the key from your clipboard</li>
+<li>GitHub will ask you to authenticate in order to make this change</li>
+<li>The next time you need to commit, you will be asked to enter the passphrase you saved to your password wallet in order to add the key to your keychain</li>
 </ol>
 <p id="fin">
 <i>fin!</i>
@@ -91,7 +228,7 @@ ssb   xxxXXXX/XXXXXXXXXXXXXXXX 2023-10-23
   <category>Authentication</category>
   <category>Verification</category>
   <guid>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</guid>
-  <pubDate>Thu, 26 Oct 2023 05:45:31 GMT</pubDate>
+  <pubDate>Thu, 26 Oct 2023 06:19:56 GMT</pubDate>
   <media:content url="https://thedatasavvycorner.netlify.app/./www/05-signed-commits/verified-badge.png" medium="image" type="image/png" height="63" width="144"/>
 </item>
 <item>

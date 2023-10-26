@@ -23,6 +23,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -39,6 +73,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -191,7 +227,7 @@ GitHub verification badge.
 </section>
 <section id="the-scenario" class="level2">
 <h2 class="anchored" data-anchor-id="the-scenario">The Scenario</h2>
-<p>You need to set up commit verification on your computer for the first time. Possibly you have changed computer and need to quickly set up once more. You are on macos with access to yout terminal.</p>
+<p>You need to set up commit verification on your computer for the first time. Possibly you have changed computer and need to quickly set up once more. You are on macos <i class="fa-brands fa-apple" aria-label="apple"></i> with access to the terminal.</p>
 </section>
 <section id="what-youll-need" class="level2">
 <h2 class="anchored" data-anchor-id="what-youll-need">What you’ll need:</h2>
@@ -205,32 +241,71 @@ GitHub verification badge.
 <section id="instructions" class="level2">
 <h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
 <ol type="1">
-<li>In terminal, run <code>git config --global commit.gpgsign true</code></li>
+<li>In terminal, run:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> commit.gpgsign true</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
 <li>Visit <a href="https://gpgtools.org/">GPG suite</a> and download the installer.</li>
 <li>Follow the installation steps and quit the screen that attempts to create a new key</li>
-<li>In terminal, create a key with <code>gpg --full-generate-key</code></li>
+<li>In terminal, create a key with:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gpg <span class="op">--</span>full<span class="op">-</span>generate<span class="op">-</span>key</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="5" type="1">
 <li>At the prompt, accept the default values for key type, size and persistence</li>
 <li>Ensure you enter your GitHub username (labelled here as real name) and the Email associated with your account correctly</li>
-<li>Enter a passphrase, confirm it and store it in a secure password wallet. You will need it again in the final step of this process.</li>
-<li>Print out the long format of the key details with : <code>gpg --list-secret-keys --keyid-format=long</code></li>
+<li>Enter a passphrase, confirm it and store it in a secure password wallet. You will need it again in the final step of this process</li>
+<li>Print out the long format of the key details with:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gpg <span class="op">--</span><span class="bu">list</span><span class="op">-</span>secret<span class="op">-</span>keys <span class="op">--</span>keyid<span class="op">-</span><span class="bu">format</span><span class="op">=</span><span class="bu">long</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="9" type="1">
 <li>Copy the long form of the key ID from the example output labelled as <code>&lt;COPY THIS BIT ONLY&gt;</code>, do not include the preceeding forward slash:</li>
 </ol>
-<pre><code>$ gpg --list-secret-keys --keyid-format=long
-/Users/hubot/.gnupg/secring.gpg
-------------------------------------
-sec   XXXX/&lt;COPY THIS BIT ONLY&gt; 2023-10-23 
-uid                          your username
-ssb   xxxXXXX/XXXXXXXXXXXXXXXX 2023-10-23
-</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>$ gpg <span class="op">--</span><span class="bu">list</span><span class="op">-</span>secret<span class="op">-</span>keys <span class="op">--</span>keyid<span class="op">-</span><span class="bu">format</span><span class="op">=</span><span class="bu">long</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">/</span>Users<span class="op">/</span>hubot<span class="op">/</span>.gnupg<span class="op">/</span>secring.gpg</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">------------------------------------</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sec   XXXX<span class="op">/&lt;</span>COPY THIS BIT ONLY<span class="op">&gt;</span> <span class="dv">2023</span><span class="op">-</span><span class="dv">10</span><span class="op">-</span><span class="dv">23</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>uid                          your username</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ssb   xxxXXXX<span class="op">/</span>XXXXXXXXXXXXXXXX <span class="dv">2023</span><span class="op">-</span><span class="dv">10</span><span class="op">-</span><span class="dv">23</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol start="10" type="1">
-<li>Adjust this command with your copied key ID and run in terminal; <code>git config --global user.signingkey &lt;INSERT YOUR KEY&gt;</code></li>
-<li>Paste your key into the command below and execute in terminal: <code>gpg --armor --export XXXXXXXXXXXXXXXXXXXX</code></li>
+<li>Adjust this command with your copied key ID and run in terminal:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> user.signingkey <span class="op">&lt;</span>INSERT YOUR KEY ID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="11" type="1">
+<li>Paste your key ID into the command below and execute in terminal:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gpg <span class="op">--</span>armor <span class="op">--</span>export <span class="op">&lt;</span>INSERT YOUR KEY ID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="11" type="1">
 <li>Copy the output, including the <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code> and <code>-----END PGP PUBLIC KEY BLOCK-----</code> sections.</li>
-<li>Go to the GPG Keychain app, it should have detected the key in your clipboard and ask you to import the key to your keychain. Click OK.</li>
-<li>Over to your web brower, go to GitHub -&gt; profile pic -&gt; settings -&gt; SSH and GPG keys</li>
-<li>Add a new key to your account, give it an appropriate title and paste the key from your clipboard.</li>
-<li>GitHub will ask you to authenticate in order to make this change.</li>
-<li>The next time you need to commit, you will be asked to enter the passphrase you saved to your password wallet in order to add the key to your keychain.</li>
+<li>Go to the GPG Keychain app, it should have detected the key in your clipboard and ask you to import the key to your keychain. Click OK</li>
+<li>Over to your web brower, go to GitHub <i class="fa-solid fa-arrow-right"></i> profile pic <i class="fa-solid fa-arrow-right"></i> settings <i class="fa-solid fa-arrow-right"></i> SSH and GPG keys</li>
+<li>Add a new key to your account, give it an appropriate title and paste the key from your clipboard</li>
+<li>GitHub will ask you to authenticate in order to make this change</li>
+<li>The next time you need to commit, you will be asked to enter the passphrase you saved to your password wallet in order to add the key to your keychain</li>
 </ol>
 <p id="fin">
 <i>fin!</i>
