@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2023-10-26">
+<meta name="dcterms.date" content="2023-11-02">
 <meta name="description" content="A quick guide to setting up commit verification using a GPG key.">
 
 <title>The Data Savvy Corner - Set Up Signed Commits on GitHub</title>
@@ -163,6 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-scenario" id="toc-the-scenario" class="nav-link" data-scroll-target="#the-scenario">The Scenario</a></li>
   <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What you’ll need:</a></li>
   <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   </ul>
 </nav>
     </div>
@@ -199,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 26, 2023</p>
+      <p class="date">November 2, 2023</p>
     </div>
   </div>
   
@@ -248,7 +249,8 @@ GitHub verification badge.
 <div class="code-with-filename-file">
 <pre><strong>terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> commit.gpgsign true</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> commit.gpgsign true</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> tag.gpgsign true</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="2" type="1">
 <li>Visit <a href="https://gpgtools.org/">GPG suite</a> and download the installer.</li>
@@ -263,7 +265,7 @@ GitHub verification badge.
 </div>
 <ol start="5" type="1">
 <li>At the prompt, accept the default values for key type, size and persistence</li>
-<li>Ensure you enter your GitHub username (labelled here as real name) and the Email associated with your account correctly</li>
+<li>Ensure you enter your real name, as it appears on GitHub, under your GitHub profile avatar. Use the primary Email associated with your GitHub account.</li>
 <li>Enter a passphrase, confirm it and store it in a secure password wallet. You will need it again in the final step of this process</li>
 <li>Print out the long format of the key details with:</li>
 </ol>
@@ -306,8 +308,71 @@ GitHub verification badge.
 <li>Over to your web brower, go to GitHub <i class="fa-solid fa-arrow-right"></i> profile pic <i class="fa-solid fa-arrow-right"></i> settings <i class="fa-solid fa-arrow-right"></i> SSH and GPG keys</li>
 <li>Add a new key to your account, give it an appropriate title and paste the key from your clipboard</li>
 <li>GitHub will ask you to authenticate in order to make this change</li>
+<li>Now ensure Git knows where to look for your GPG program:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>where gpg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Copy the path to the GPG program.</p>
+<ol start="17" type="1">
+<li>Update the command below with the path in your clipboard:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> gpg.program <span class="st">"&lt;INSERT/PATH/HERE&gt;"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="18" type="1">
+<li>Check that your git config file looks as expected:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> <span class="op">--</span><span class="bu">list</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Example output:</p>
+<pre><code>user.name=&lt;YOUR GITHUB USERNAME&gt;
+user.email=&lt;YOUR PRIMARY GITHUB EMAIL&gt;
+user.signingkey=&lt;YOUR GPG KEY ID&gt;
+commit.gpgsign=true
+gpg.program=&lt;PATH TO YOUR GPG PROGRAM&gt;
+tag.gpgsign=true
+</code></pre>
+<ol start="19" type="1">
 <li>The next time you need to commit, you will be asked to enter the passphrase you saved to your password wallet in order to add the key to your keychain</li>
 </ol>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+gpg: signing failed: Inappropriate ioctl for device
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Add the below to your initialisation file (eg ~/.zshrc or equivalent):</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/.zshrc</strong></pre>
+</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>GPG_TTY<span class="op">=</span>$(tty)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>export GPG_TTY</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Restart your terminal. Try to commit once more. You’ll be asked for the GPG passphrase that you stored in your password wallet.</p>
+</div>
+</div>
+</div>
 <p id="fin">
 <i>fin!</i>
 </p>
