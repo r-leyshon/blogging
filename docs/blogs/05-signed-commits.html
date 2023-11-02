@@ -336,44 +336,6 @@ gpg: signing failed: Inappropriate ioctl for device
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-git asks for your GPG passphrase every time you commit
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>If you are prompted to paste your private passphrase every time you commit and would rather not, one solution is to <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key#telling-git-about-your-ssh-key">use an SSH key</a> to sign the commits.</p>
-<p>You can use a key that you previously generated and registered to your GitHub account. If you have not created one, run through the steps to <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generate an SSH key</a>.</p>
-<p>Once generated, ensure it is <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">registered with your GitHub account</a>.</p>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>terminal</strong></pre>
-</div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span><span class="kw">global</span> gpg.<span class="bu">format</span> ssh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Find the path to your GPG key. on mac, the default location can be found with:</p>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>terminal</strong></pre>
-</div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ls <span class="op">~/</span>.ssh<span class="op">/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Copy the path to the <code>.pub</code> file. Tell git to use this key to sign commits using this key by replacing the path below with the path in your clipboard:</p>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>terminal</strong></pre>
-</div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>$ git config <span class="op">--</span><span class="kw">global</span> user.signingkey <span class="op">/</span>PATH<span class="op">/</span>TO<span class="op">/</span>.SSH<span class="op">/</span>KEY.PUB</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
 <p id="fin">
 <i>fin!</i>
 </p>
