@@ -54,6 +54,7 @@ are on macos {{< fa brands apple >}} with access to the terminal.
 1. In terminal, run:
 ```{.python filename="terminal"}
 git config --global commit.gpgsign true
+git config --global tag.gpgsign true
 ```
 2. Visit [GPG suite](https://gpgtools.org/) and download the installer. 
 3. Follow the installation steps and quit the screen that attempts to create a
@@ -63,8 +64,8 @@ new key
 gpg --full-generate-key
 ```
 5. At the prompt, accept the default values for key type, size and persistence
-6. Ensure you enter your GitHub username (labelled here as real name) and the
-Email associated with your account correctly
+6. Ensure you enter your real name, as it appears on GitHub, under your GitHub
+profile avatar. Use the primary Email associated with your GitHub account. 
 7. Enter a passphrase, confirm it and store it in a secure password wallet. You
 will need it again in the final step of this process
 8. Print out the long format of the key details with:
@@ -99,7 +100,32 @@ clipboard and ask you to import the key to your keychain. Click OK
 14. Add a new key to your account, give it an appropriate title and paste the
 key from your clipboard
 15. GitHub will ask you to authenticate in order to make this change
-16. The next time you need to commit, you will be asked to enter the passphrase
+16. Now ensure Git knows where to look for your GPG program:
+
+```{.python filename="terminal"}
+where gpg
+```
+Copy the path to the GPG program.
+
+17. Update the command below with the path in your clipboard:
+```{.python filename="terminal"}
+git config --global gpg.program "<INSERT/PATH/HERE>"
+```
+18. Check that your git config file looks as expected:
+```{.python filename="terminal"}
+git config --global --list 
+```
+Example output:
+```
+user.name=<YOUR GITHUB USERNAME>
+user.email=<YOUR PRIMARY GITHUB EMAIL>
+user.signingkey=<YOUR GPG KEY ID>
+commit.gpgsign=true
+gpg.program=<PATH TO YOUR GPG PROGRAM>
+tag.gpgsign=true
+
+```
+19. The next time you need to commit, you will be asked to enter the passphrase
 you saved to your password wallet in order to add the key to your keychain
 
 ## Troubleshooting
