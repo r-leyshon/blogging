@@ -24,7 +24,6 @@ As of today's date, Amusing Ourselves to Death (AOtD) scores an average of
 4.15 / 5.00 over 29.5k ratings on
 [goodreads](https://www.goodreads.com/book/show/74034.Amusing_Ourselves_to_Death).
 
-
 ## Summary
 
 AOtD is a challenging read for a short book. It is heaped in cultural criticism
@@ -33,9 +32,13 @@ recommend readilty internalising without thoughtful evaluation. However, much
 of the critique is well-reasoned and although written in the 1980s, is possibly
 of greater relevance today than when first penned.
 
+### On the Author
 
-### On the Authors
-
+Neil Postman was a professor of communication at New York University. Well-known
+for his body of work in examining the study of knowledge-acquisition and
+pedagogy through the lens of societal decline. Postman endeavoured to influence
+public education curricula in the United States during his term as Chairman of
+the University's Department for Culture and Communication.
 
 ## An Overview of the Book
 
