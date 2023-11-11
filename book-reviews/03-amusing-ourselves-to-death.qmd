@@ -54,27 +54,16 @@ characterised by Aldous Huxley's Brave New World. A future where a simpleton
 proletariat has been renderred ineffectual by the pursuit of hedonism at the
 cost of all else.
 
-The book is organised into 2 parts and N chapters.
+The book is organised into 2 parts and 11 chapters.
 
 Part 1 achieves the scale of the apparent decline in literacy, logic and debate
 brought about by movement away from a largely print-based culture to one that
-celebrates moving pictures. The chapters include:
+celebrates moving pictures.
 
-1. a
-2. b
-3. c
-4. d
-5. e
-
-Part 2 exemplifies how this simplification of our public discourse has affected
-more than one might expect. With considerations from every important domain of
-modern culture, including:
-
-6. f
-7. g
-8. h
-9. i
-10. j
+Part 2 argues that aspects of TV as a medium impose limitations on the length
+of exposition and the complexity of discourse that has widely influenced our
+lives. Postman exemplifies how this simplification of our public discourse has
+declined, with considerations from many important domains of modern culture.
 
 ### Summary title
 
@@ -83,8 +72,32 @@ modern culture, including:
 ...
 :::
 
+### Part 1
 
-### chap 1
+#### 1. The Medium Is the Mataphor
+
+#### 2. Media as Epistemology
+
+#### 3. Typographic America
+
+#### 4. The Typographic Mind
+
+#### 5. The Peek-a-Boo World
+
+### Part 2
+
+#### 6. The Age of Show Business
+
+#### 7. "Now... This"
+
+#### 8. Shuffle Off to Bethlehem
+
+#### 9. Reach Out and Elect Someone
+
+#### 10. Teaching as an Amusing Activity
+
+#### 11. The Huxleyan Warning
+
 
 ...
 
