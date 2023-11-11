@@ -1,0 +1,99 @@
+---
+title: "Amusing Ourselves to Death"
+author: "Rich Leyshon"
+date: last-modified
+description: "Reflecting on Neil Postman's criticism of modern culture."
+categories:        
+    - Mathematical Modelling
+    - Computer Science
+image: https://api.ndla.no/image-api/raw/xA3l9jD6.jpg?width=1024&amp;cropStartX=94.1777234636871&amp;cropEndX=8.982192737430104&amp;cropStartY=95.71146229981429&amp;cropEndY=25.15810261601981
+image-alt: "A cartoon depicting people engrossed in TV & mobile phone."
+toc: true
+---
+
+<figure class=center>
+ <img class=shaded_box src=https://api.ndla.no/image-api/raw/xA3l9jD6.jpg?width=1024&amp;cropStartX=94.1777234636871&amp;cropEndX=8.982192737430104&amp;cropStartY=95.71146229981429&amp;cropEndY=25.15810261601981 alt="A cartoon depicting people engrossed in TV & mobile phone." width=400px>
+ <figcaption>Image credit: <https://api.ndla.no/></figcaption>
+</figure>
+
+## Introduction
+
+As of today's date, Amusing Ourselves to Death (AOtD) scores an average of
+4.15 / 5.00 over 29.5k ratings on
+[goodreads](https://www.goodreads.com/book/show/74034.Amusing_Ourselves_to_Death).
+
+
+## Summary
+
+AOtD is a challenging read for a short book. It is heaped in cultural criticism
+and a pessimistic assessment of technological development that I would not
+recommend readilty internalising without thoughtful evaluation. However, much
+of the critique is well-reasoned and although written in the 1980s, is possibly
+of greater relevance today than when first penned.
+
+
+### On the Authors
+
+
+## An Overview of the Book
+
+Postman's critique is that the widespread adoption of television has subversively
+influenced culture, human behaviour and intellect in ways that could not be
+foreseen. Unaware of the broad repercussions of immersing ourselves in TV pop
+culture, the standards for entertainment in this medium of communication have
+permeated through society, from the boardroom to the classroom. 
+
+Postman warns that a culture; seemingly unaware of how trivial and distracted it
+has become; is at risk of losing its moral compass, leading to a state of shallow
+and low-value communication. The main premise of his warning is that rather than
+an Orwellian dystopian future where society is controlled by a despotic
+surveillance state, the dystopia that Postman predicts would be better
+characterised by Aldous Huxley's Brave New World. A future where a simpleton
+proletariat has been renderred ineffectual by the pursuit of hedonism at the
+cost of all else.
+
+The book is organised into 2 parts and N chapters.
+
+Part 1 achieves the scale of the apparent decline in literacy, logic and debate
+brought about by movement away from a largely print-based culture to one that
+celebrates moving pictures. The chapters include:
+
+1. a
+2. b
+3. c
+4. d
+5. e
+
+Part 2 exemplifies how this simplification of our public discourse has affected
+more than one might expect. With considerations from every important domain of
+modern culture, including:
+
+6. f
+7. g
+8. h
+9. i
+10. j
+
+### Summary title
+
+
+:::{.callout-note}
+...
+:::
+
+
+### chap 1
+
+...
+
+## Analysis and Evaluation
+
+...
+
+## Comparisons
+
+...
+
+## Recommendation
+
+...

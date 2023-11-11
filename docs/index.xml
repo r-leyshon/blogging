@@ -9,8 +9,97 @@
 <link>https://thedatasavvycorner.netlify.app/index.html</link>
 <atom:link href="https://thedatasavvycorner.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Musings, ramblings, generally putting things down in text so I don&#39;t forget them.</description>
-<generator>quarto-1.3.433</generator>
-<lastBuildDate>Thu, 02 Nov 2023 20:30:28 GMT</lastBuildDate>
+<generator>quarto-1.3.450</generator>
+<lastBuildDate>Sat, 11 Nov 2023 16:53:30 GMT</lastBuildDate>
+<item>
+  <title>Amusing Ourselves to Death</title>
+  <dc:creator>Rich Leyshon</dc:creator>
+  <link>https://thedatasavvycorner.netlify.app/book-reviews/03-amusing-ourselves-to-death.html</link>
+  <description><![CDATA[ 
+
+
+
+<figure class="center figure">
+<img class="shaded_box figure-img" src="https://thedatasavvycorner.netlify.app/book-reviews/https:/api.ndla.no/image-api/raw/xA3l9jD6.jpg?width=1024&amp;cropStartX=94.1777234636871&amp;cropEndX=8.982192737430104&amp;cropStartY=95.71146229981429&amp;cropEndY=25.15810261601981" alt="A cartoon depicting people engrossed in TV &amp; mobile phone." width="400px">
+<figcaption class="figure-caption">
+Image credit: <a href="https://api.ndla.no/" class="uri">https://api.ndla.no/</a>
+</figcaption>
+</figure>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>As of today’s date, Amusing Ourselves to Death (AOtD) scores an average of 4.15 / 5.00 over 29.5k ratings on <a href="https://www.goodreads.com/book/show/74034.Amusing_Ourselves_to_Death">goodreads</a>.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>AOtD is a challenging read for a short book. It is heaped in cultural criticism and a pessimistic assessment of technological development that I would not recommend readilty internalising without thoughtful evaluation. However, much of the critique is well-reasoned and although written in the 1980s, is possibly of greater relevance today than when first penned.</p>
+<section id="on-the-authors" class="level3">
+<h3 class="anchored" data-anchor-id="on-the-authors">On the Authors</h3>
+</section>
+</section>
+<section id="an-overview-of-the-book" class="level2">
+<h2 class="anchored" data-anchor-id="an-overview-of-the-book">An Overview of the Book</h2>
+<p>Postman’s critique is that the widespread adoption of television has subversively influenced culture, human behaviour and intellect in ways that could not be foreseen. Unaware of the broad repercussions of immersing ourselves in TV pop culture, the standards for entertainment in this medium of communication have permeated through society, from the boardroom to the classroom.</p>
+<p>Postman warns that a culture; seemingly unaware of how trivial and distracted it has become; is at risk of losing its moral compass, leading to a state of shallow and low-value communication. The main premise of his warning is that rather than an Orwellian dystopian future where society is controlled by a despotic surveillance state, the dystopia that Postman predicts would be better characterised by Aldous Huxley’s Brave New World. A future where a simpleton proletariat has been renderred ineffectual by the pursuit of hedonism at the cost of all else.</p>
+<p>The book is organised into 2 parts and N chapters.</p>
+<p>Part 1 achieves the scale of the apparent decline in literacy, logic and debate brought about by movement away from a largely print-based culture to one that celebrates moving pictures. The chapters include:</p>
+<ol type="1">
+<li>a</li>
+<li>b</li>
+<li>c</li>
+<li>d</li>
+<li>e</li>
+</ol>
+<p>Part 2 exemplifies how this simplification of our public discourse has affected more than one might expect. With considerations from every important domain of modern culture, including:</p>
+<ol start="6" type="1">
+<li>f</li>
+<li>g</li>
+<li>h</li>
+<li>i</li>
+<li>j</li>
+</ol>
+<section id="summary-title" class="level3">
+<h3 class="anchored" data-anchor-id="summary-title">Summary title</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>…</p>
+</div>
+</div>
+</section>
+<section id="chap-1" class="level3">
+<h3 class="anchored" data-anchor-id="chap-1">chap 1</h3>
+<p>…</p>
+</section>
+</section>
+<section id="analysis-and-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-and-evaluation">Analysis and Evaluation</h2>
+<p>…</p>
+</section>
+<section id="comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="comparisons">Comparisons</h2>
+<p>…</p>
+</section>
+<section id="recommendation" class="level2">
+<h2 class="anchored" data-anchor-id="recommendation">Recommendation</h2>
+<p>…</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Mathematical Modelling</category>
+  <category>Computer Science</category>
+  <guid>https://thedatasavvycorner.netlify.app/book-reviews/03-amusing-ourselves-to-death.html</guid>
+  <pubDate>Sat, 11 Nov 2023 16:53:30 GMT</pubDate>
+  <media:content url="https://api.ndla.no/image-api/raw/xA3l9jD6.jpg?width=1024&amp;amp;cropStartX=94.1777234636871&amp;amp;cropEndX=8.982192737430104&amp;amp;cropStartY=95.71146229981429&amp;amp;cropEndY=25.15810261601981" medium="image"/>
+</item>
 <item>
   <title>Set Up Signed Commits on GitHub</title>
   <dc:creator>Rich Leyshon</dc:creator>
@@ -313,7 +402,7 @@ font-style: inherit;">=</span>$(tty)</span>
   <category>Authentication</category>
   <category>Verification</category>
   <guid>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</guid>
-  <pubDate>Thu, 02 Nov 2023 20:30:28 GMT</pubDate>
+  <pubDate>Thu, 02 Nov 2023 20:34:46 GMT</pubDate>
   <media:content url="https://thedatasavvycorner.netlify.app/./www/05-signed-commits/verified-badge.png" medium="image" type="image/png" height="63" width="144"/>
 </item>
 <item>
