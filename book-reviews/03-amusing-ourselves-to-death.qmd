@@ -42,11 +42,12 @@ the University's Department for Culture and Communication.
 
 ## An Overview of the Book
 
-Postman's critique is that the widespread adoption of television has subversively
-influenced culture, human behaviour and intellect in ways that could not be
-foreseen. Unaware of the broad repercussions of immersing ourselves in TV pop
-culture, the standards for entertainment in this medium of communication have
-permeated through society, from the boardroom to the classroom. 
+Postman's critique is that the widespread adoption of television has
+subversively influenced culture, human behaviour and intellect in ways that
+could not be foreseen. Unaware of the broad repercussions of immersing
+ourselves in TV pop culture, the standards for entertainment in this medium of
+communication have permeated through society, from the boardroom to the
+classroom. 
 
 Postman warns that a culture; seemingly unaware of how trivial and distracted it
 has become; is at risk of losing its moral compass, leading to a state of shallow
@@ -68,16 +69,44 @@ of exposition and the complexity of discourse that has widely influenced our
 lives. Postman exemplifies how this simplification of our public discourse has
 declined, with considerations from many important domains of modern culture.
 
-### Summary title
-
-
-:::{.callout-note}
-...
-:::
-
 ### Part 1
 
-#### 1. The Medium Is the Mataphor
+The book begins with a treatment of Huxley's warning in a brave new world. A
+future in which civilisation is threatened by an over-supply of information and
+a reduction of the peoples' ability to identify that which has meaning. Postman
+suggests that Western culture had been *en guarde* for signs of Orwellian
+oppression but has not adopted a defence against the possibility that our own
+ignorance may oppress ourselves.
+
+#### 1. The Medium Is the Metaphor
+
+Postman argues that the technological revolution brought about by mass adoption
+of television has unwittingly changed the fabric of our society. Using the
+analogy of the clock, Postman indicates that the mechanism is not merely a
+device used for measuring time, but that it "dissociates time from human events
+and thus nourishes the belief in an independent world of mathematically
+measurable sequences." [@AOtD, p.12]. 
+
+This analogy does not
+help someone who is subject to the belief of quantifiable sequence in understanding
+his point. The thought of a world without clocks is an unimaginable dystopia.
+The positives that the clock have wrought greatly outweigh any possible drawbacks
+that I can conceive of. This may be the point entirely - just as the fish is
+likely unaware that it lives within water, the ability of the human mind to
+conceive of how it has been manipulated when a technology has been fully integrated
+through society may be similarly limited.
+
+Postman goes on to state that the clock has removed the concept of god from the
+meaning of time, so I am lost as to how to meaningfully rationalise his
+argument at times. I come away with the argument that a consequence of reducing the concept of
+time to the machinations of gears removes any sense of reverance or magical
+thought, although some would argue that the internals of an analogue clock
+are a thing of beauty and the trade of the watchmaker an art. Nonetheless
+the reduction of time to a gadget now worn on the risk may have effects beyond
+a greater ability to manage time, possibly influencing our perception of our place in the
+universe. The comparison with television's replacement of print seems to mean
+that there are unintended consequences owing to the adoption of a novel
+technology that are perhaps poorly understood.
 
 #### 2. Media as Epistemology
 
