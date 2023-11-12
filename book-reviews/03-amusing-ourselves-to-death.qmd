@@ -160,17 +160,14 @@ can be selectively deployed to make opposing arguments is of course, not a new o
 
 An excellent point made in Data Feminism on the subject of data visualisation:
 
-"...it makes the viewer believe that they can see everything, all at once, from an imaginary and impossible standpoint. But it’s also a trick because what appears to be everything, and what appears to be neutral, is always ... a partial perspective."
-[@DataFeminism, chapter 3]. 
+"...it makes the viewer believe that they can see everything, all at once, from
+an imaginary and impossible standpoint. But it’s also a trick because what
+appears to be everything, and what appears to be neutral, is always ... a
+partial perspective." [@DataFeminism, chapter 3]. 
 
-It is possible that all of us are guilty of accepting a viewpoint based on the
+It is possible that many of us are guilty of accepting a viewpoint based on the
 convincing support of numbers, without undertaking the necessary due diligence
 of reproducing the analysis and seriously examining the null hypothesis.
-
-
-
-and
-then is able to exemplify how the reverse is true in different contexts. 
 
 #### 3. Typographic America
 
