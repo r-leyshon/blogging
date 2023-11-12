@@ -110,10 +110,10 @@ technology that are perhaps poorly understood.
 
 #### 2. Media as Epistemology
 
-In this chapter, Postman considers the nature of truth and the acquirement of
+In this chapter, Postman considers the nature of truth, the acquirement of
 knowledge and how this has changed with the cultural trend toward visual media.
-The concept that all media are not equal in their ability to convey meaning and
-truth.
+The author posits the concept that all media are not equal in their ability to
+convey meaning and truth.
 
 An interesting juxtaposition is explored - that in certain circumstances, the
 medium of spoken word is thought to be of higher merit than the written, such
@@ -130,18 +130,18 @@ commission produce a written statement that you have passed your examination
 at that. Our written statement would represent the "truth". Our oral agreement
 would be only a rumour." [@AOtD, p.24].
 
-Who could argue with that? Yet despite the passive aggressive comments used in
-the academia, this contrast may be somewhat glazing over the fact that these 
-media are appropriate within their context and purposes. The courtroom favours verbal
-testimony as an unadulterated recount of the past and motive, yet quickly commits
-this testimony to the written word via courtroom stenographers. An unfiltered
+Who could argue with that? Yet despite the passive aggression occasioned in academic
+assessment, the contrast between written and spoken discourse truth value may
+glaze over the context and purposes. The courtroom favours verbal testimony as
+an unadulterated recount of the past and motive, yet quickly commits this
+testimony to the written word via courtroom stenographers. An unfiltered
 account for a thesis would only serve as a draft and would require significant
 editing in order to test that the structure and content of the paper is robust.
 
 Postman goes on to examine truth as a cultural prejudice for certain media. From
 tribal counsel's use of parable through Aristotle's deductive reasoning about
-the physical world. Postman quickly rounds to the modern Western world's adherance
-to the quantifiable.
+the physical world. Postman rounds to the modern world's adherance to the
+quantifiable.
 
 "Many of our psychologists, sociologists, economists... will have numbers to tell
 them the truth or they will have nothing. Can you imagine, for example, a modern
@@ -150,23 +150,24 @@ economist articulating truths about our standard of living by reciting a poem?"
 
 While an entertaining diversion, I wonder if numbers can be considered a medium.
 It occurs to me that numbers are a language that can be expressed in a variety
-of media. An interesting perspective to be explored would have
-been the danger of an over-reliance on statistics as truth. The fact that statistics
-can be selectively deployed to make opposing arguments is of course, not a new one.
+of media. An interesting perspective to be explored would have been the danger
+of an over-reliance on statistics as truth. The fact that statistics can be
+selectively deployed to make opposing arguments is of course, not a new one.
 
 :::{.callout-note}
 "Lies, damned lies, and statistics." *attribution debated*.
 :::
 
-An excellent point made in Data Feminism on the subject of data visualisation:
+The use of numbers to oversimplify, diminish context and misdirect can also be
+a misuse of data visualisation.
 
 "...it makes the viewer believe that they can see everything, all at once, from
 an imaginary and impossible standpoint. But it’s also a trick because what
 appears to be everything, and what appears to be neutral, is always ... a
 partial perspective." [@DataFeminism, chapter 3]. 
 
-It is possible that many of us are guilty of accepting a viewpoint based on the
-convincing support of numbers, without undertaking the necessary due diligence
+Perhaps all of us are guilty of accepting a viewpoint based on the convincing
+support of charts or numbers, without undertaking the necessary due diligence
 of reproducing the analysis and seriously examining the null hypothesis.
 
 #### 3. Typographic America
