@@ -3,6 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/book-reviews/03-amusing-ourselves-to-death.html",
+      "/book-reviews/02-algorithms-to-live-by.html",
       "/blogs/05-signed-commits.html",
       "/music-reviews/02-zelda-and-chill.html",
       "/blogs/01-state-of-pyshiny.html",
@@ -10,16 +11,15 @@
       "/blogs/02-getting-started-pyshiny.html",
       "/blogs/03-quarto-github-actions.html",
       "/music-reviews/01-ghostrunner-ost.html",
-      "/book-reviews/01-deep-work.html",
-      "/book-reviews/02-algorithms-to-live-by.html"
+      "/book-reviews/01-deep-work.html"
     ]
   },
   {
     "listing": "/book-reviews/index.html",
     "items": [
       "/book-reviews/03-amusing-ourselves-to-death.html",
-      "/book-reviews/01-deep-work.html",
-      "/book-reviews/02-algorithms-to-live-by.html"
+      "/book-reviews/02-algorithms-to-live-by.html",
+      "/book-reviews/01-deep-work.html"
     ]
   },
   {
