@@ -160,37 +160,48 @@ def request_to_gdf(url:str, query_params:dict) -> gpd.GeoDataFrame:
     Raises
     ------
     requests.exceptions.RequestException
-        The response was not ok or was ok but returned content with an error -
-        weird ArcGIS quirk.
+        The response was not ok.
     """
     # this approach will only work with geoJSON
     query_params["f"] = "geoJSON"
     # get the response
     response = requests.get(url, params=query_params)
     if response.ok:
+        # good response (hopefully, but be careful for JSONDecodeError)
         content = response.json()
-        if "error" in content.keys():
-            # arcGIS strange approach to serving HTTP errors
-            error = content["error"]
-            raise requests.exceptions.RequestException(
-                f"HTTP Code: {error['code']}, Status: {error['details']}"
-            )
-        else:
-            # good response. This approach will only work for geoJSON response.
-            return (
-                response, # we'll need the response again later for pagination
-                gpd.GeoDataFrame.from_features(
-                    content["features"],
-                    crs=content["crs"]["properties"]["name"]
-                    # safest to get crs from response
-                    ))
+        return (
+            response, # we'll need the response again later for pagination
+            gpd.GeoDataFrame.from_features(
+                content["features"],
+                crs=content["crs"]["properties"]["name"]
+                # safest to get crs from response
+                ))
     else:
         # cases where a traditional bad response may be returned
-        raise requests.exception.RequestException(
+        raise requests.RequestException(
             f"HTTP Code: {response.status_code}, Status: {response.reason}"
         )
 
 ```
+
+Briefly, this function is going to ensure the geoJSON format is asked for, as
+this is the neatest way to bash the response into a GeoDataFrame. It then
+queries ArcGIS API with the endpoint and parameter you specify. It checks if 
+a status code 200 was returned (good response), if not an exception is raised
+with the HTTP code and status. Finally, if no error triggered an exception,
+the ArcGIS response and a GeoDataFrame format of the spatial feature is
+returned.
+
+:::{.callout-caution collapse="true"}
+Be careful when handling the response of ArcGIS API. Depending on the query you
+send, it is possible to return status code 200 responses that seem fine. But
+if the server was unable to make sense of your SQL query, it may result in a
+`JSONDecodeError` or even content with details of your error. It is important
+to handle the various error conditions if you plan to build something more
+robust than this tutorial and to be exacting with your query strings. For this
+reason, I would suggest using the `params` dictionary approach to introducing
+query parameters rather than attempting to manually format the url string.
+:::
 
 3. With that function defined, we can go straight to a tabular data format,
 like below:
@@ -207,5 +218,8 @@ of our efforts.
 gdf.explore()
 
 ```
+
+
+
 
 <p id=fin><i>fin!</i></p>
