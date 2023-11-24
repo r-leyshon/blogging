@@ -1,0 +1,77 @@
+---
+title: "Working with ONS Open Geography Portal"
+author: "Rich Leyshon"
+date: last-modified
+description: "How to ingest data using Python requests & ArcGIS REST API."
+categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+    - Tutorial
+    - ONS Open Geography Portal
+    - REST API
+    - Web data
+
+image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608
+image-alt: "Great Britain-United Kingdom Topographic Map"
+toc: true 
+---
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
+  <figcaption>Wikimedia commons UK Map.</figcaption>
+</figure>
+
+## Introduction
+
+This tutorial is for programmers familiar with Python but perhaps less familiar
+with the Python `requests` package or ArcGIS @ArcGIS. 
+
+## The Scenario
+
+You would like to use python to programattically ingest data from the Office
+for National Statistics (ONS) Open Geography Portal. This tutorial aims to help
+you do this, working with the [2021 LSOA boundaries](https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-2021-boundaries-ew-bfc/explore?location=52.919320%2C-2.395055%2C11.90),
+the essential features and quirks of the ArcGIS REST API will be explored.
+
+## What you'll need:
+
+- [ ] A permissive firewall (ask to whitelist the domain "https://geoportal.statistics.gov.uk/")
+- [ ] Python package manager (eg `pip`)
+- [ ] Python environment manager (eg `venv`, `poetry` etc)
+- [ ] Python requirements:
+
+```{.python filename=requirements.txt eval=false}
+folium
+geopandas
+mapclassify
+matplotlib
+pandas
+requests
+
+```
+
+## Tutorial
+
+### Setting Things Up
+
+1. Create a new directory with a requirements file as shown above.
+2. Create a new virtual environment.
+3. `pip install -r requirements.txt`
+4. Create a file called `get_data.py` or whatever you would like to call it.
+The rest of the tutorial will work with this file.
+5. Add the following lines to the top of `get_data.py` and run them, this 
+ensures that you have the dependencies needed to run the rest of the code:
+
+```{.python filename=get_data.py}
+import requests
+import geopandas as gpd
+import pandas as pd
+
+```
+
+## Troubleshooting
+
+:::{.callout-caution collapse="true"}
+
+### gpg: signing failed: Inappropriate ioctl for device
+
+:::
+
+<p id=fin><i>fin!</i></p>
