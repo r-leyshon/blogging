@@ -106,6 +106,9 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
 
 
@@ -256,11 +259,8 @@ Wikimedia commons UK Map.
 <li>Create a file called <code>get_data.py</code> or whatever you would like to call it. The rest of the tutorial will work with this file.</li>
 <li>Add the following lines to the top of <code>get_data.py</code> and run them, this ensures that you have the dependencies needed to run the rest of the code:</li>
 </ol>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>get_data.py</strong></pre>
-</div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -283,18 +283,299 @@ Wikimedia commons UK Map.
 <p>Now that we have the correct data asset, let’s find the endpoint. This is the url that we will need to send our requests to, in order to receive the data that we need.</p>
 <ol type="1">
 <li>Click on the “View Full Details” button.</li>
-<li>Scroll down and under the menu “I want to…”, expand “View API Resources”</li>
+<li>Scroll down and under the menu “I want to…”, and expand the “View API Resources” menu.</li>
 <li>You will see two urls labelled “GeoService” and “GeoJSON”. Click the copy button to the right of the url.</li>
 <li>Paste the url into your Python script.</li>
 <li>Edit the url string to remove everything to the right of the word ‘query’, including the question mark. Then assign it to a variable called <code>ENDPOINT</code> as below:</li>
 </ol>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>get_data.py</strong></pre>
-</div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ENDPOINT <span class="op">=</span> <span class="st">"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ENDPOINT <span class="op">=</span> <span class="st">"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This <code>ENDPOINT</code> is a url that we can use to flexibly ask for only the data or metadata, that we require.</p>
+</section>
+<section id="requesting-a-single-entry" class="level3">
+<h3 class="anchored" data-anchor-id="requesting-a-single-entry">Requesting a Single Entry</h3>
+<p>Now that we’re set up to make requests, we can use an example that brings back only a small slice of the database. To do this, we will need to specify some query parameters. These parameters will get added to our endpoint url and will be interpreted by ArcGIS to serve us only the data we ask for. In this example, I will ask for a single LSOA boundary only by specifying the LSOA code with an SQL clause. For more detail on the flexibility of ArcGIS API, please consult the documentation <span class="citation" data-cites="ArcGIS"><a href="#ref-ArcGIS" role="doc-biblioref">[1]</a></span>.</p>
+<ol type="1">
+<li>Define the below Python dictionary, noting that the syntax and data formats can be brittle - don’t forget to wrap the LSOA21CD in speech marks:</li>
+</ol>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># requesting a specific LSOA21CD</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"where"</span>: <span class="st">"LSOA21CD = 'W01002029'"</span>, <span class="co"># SQL clauses can go here</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"outSR"</span>: <span class="dv">4326</span>, <span class="co"># CRS that you want</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"f"</span>: <span class="st">"geoJSON"</span>, <span class="co"># response format</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"resultOffset"</span>: <span class="dv">0</span> <span class="co"># parameter used for pagination later</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Now I will define a function that will make the request and handle the response for us. It’s a bit more complicated than the standard approach for other web APIs because of the peculiar way ArcGIS serves HTTP proxy errors (bad requests, service outages etc). Go ahead and define this function:</li>
+</ol>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> request_to_gdf(url:<span class="bu">str</span>, query_params:<span class="bu">dict</span>) <span class="op">-&gt;</span> gpd.GeoDataFrame:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Send a get request to ArcGIS API &amp; Convert to GeoDataFrame.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Only works when asking for features and GeoJSON format.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">    url : str</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">        The url endpoint.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">    query_params : dict</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">        A dictionary of query parameter : value pairs.</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">    requests.response</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">        The response from ArcGIS API server. Useful for paginated requests</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">        later.</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">    gpd.GeoDataFrame</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">        A GeoDataFrame of the requested geometries in the crs specified by the</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">        response metadata.</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">    Raises</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">    ------</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">    requests.exceptions.RequestException</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">        The response was not ok or was ok but returned content with an error -</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">        weird ArcGIS quirk.</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># this approach will only work with geoJSON</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    query_params[<span class="st">"f"</span>] <span class="op">=</span> <span class="st">"geoJSON"</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get the response</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url, params<span class="op">=</span>query_params)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response.ok:</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        content <span class="op">=</span> response.json()</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">"error"</span> <span class="kw">in</span> content.keys():</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>            <span class="co"># arcGIS strange approach to serving HTTP errors</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            error <span class="op">=</span> content[<span class="st">"error"</span>]</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> requests.exceptions.RequestException(</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"HTTP Code: </span><span class="sc">{</span>error[<span class="st">'code'</span>]<span class="sc">}</span><span class="ss">, Status: </span><span class="sc">{</span>error[<span class="st">'details'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>            <span class="co"># good response. This approach will only work for geoJSON response.</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>                response, <span class="co"># we'll need the response again later for pagination</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>                gpd.GeoDataFrame.from_features(</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>                    content[<span class="st">"features"</span>],</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>                    crs<span class="op">=</span>content[<span class="st">"crs"</span>][<span class="st">"properties"</span>][<span class="st">"name"</span>]</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># safest to get crs from response</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>                    ))</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>        <span class="co"># cases where a traditional bad response may be returned</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> requests.exception.RequestException(</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"HTTP Code: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">, Status: </span><span class="sc">{</span>response<span class="sc">.</span>reason<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>With that function defined, we can go straight to a tabular data format, like below:</li>
+</ol>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>_, gdf <span class="op">=</span> request_to_gdf(ENDPOINT, params)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>gdf.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">geometry</th>
+<th data-quarto-table-cell-role="th">LSOA21CD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>POLYGON ((-3.06378 51.58946, -3.06200 51.58922...</td>
+<td>W01002029</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ol start="4" type="1">
+<li>We can use the GeoDataFrame <code>.explore()</code> method to quickly inspect the fruit of our efforts.</li>
+</ol>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gdf.explore()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
+    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
+    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
+    
+            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
+            <style>
+                #map_09925628bcd8b7753e78aca06d7ef31b {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+    
+                    <style>
+                        .foliumtooltip {
+                            
+                        }
+                       .foliumtooltip table{
+                            margin: auto;
+                        }
+                        .foliumtooltip tr{
+                            text-align: left;
+                        }
+                        .foliumtooltip th{
+                            padding: 2px; padding-right: 8px;
+                        }
+                    </style>
+            
+</head>
+<body>
+    
+    
+            <div class=&quot;folium-map&quot; id=&quot;map_09925628bcd8b7753e78aca06d7ef31b&quot; ></div>
+        
+</body>
+<script>
+    
+    
+            var map_09925628bcd8b7753e78aca06d7ef31b = L.map(
+                &quot;map_09925628bcd8b7753e78aca06d7ef31b&quot;,
+                {
+                    center: [51.58564342380075, -3.059092899002125],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 10,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_09925628bcd8b7753e78aca06d7ef31b);
+
+            
+
+        
+    
+            var tile_layer_3a9f3e6027f3cdfd089ce192de601b1a = L.tileLayer(
+                &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            );
+        
+    
+                tile_layer_3a9f3e6027f3cdfd089ce192de601b1a.addTo(map_09925628bcd8b7753e78aca06d7ef31b);
+    
+            map_09925628bcd8b7753e78aca06d7ef31b.fitBounds(
+                [[51.5816234908297, -3.06504088160699], [51.5896633567718, -3.05314491639726]],
+                {}
+            );
+        
+    
+        function geo_json_3db2a1448ce138a4fc8007e193c98984_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {&quot;fillOpacity&quot;: 0.5, &quot;weight&quot;: 2};
+            }
+        }
+        function geo_json_3db2a1448ce138a4fc8007e193c98984_highlighter(feature) {
+            switch(feature.id) {
+                default:
+                    return {&quot;fillOpacity&quot;: 0.75};
+            }
+        }
+        function geo_json_3db2a1448ce138a4fc8007e193c98984_pointToLayer(feature, latlng) {
+            var opts = {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;#3388ff&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;#3388ff&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 2, &quot;stroke&quot;: true, &quot;weight&quot;: 3};
+            
+            let style = geo_json_3db2a1448ce138a4fc8007e193c98984_styler(feature)
+            Object.assign(opts, style)
+            
+            return new L.CircleMarker(latlng, opts)
+        }
+
+        function geo_json_3db2a1448ce138a4fc8007e193c98984_onEachFeature(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if(typeof e.target.setStyle === &quot;function&quot;){
+                        geo_json_3db2a1448ce138a4fc8007e193c98984.resetStyle(e.target);
+                    }
+                },
+                mouseover: function(e) {
+                    if(typeof e.target.setStyle === &quot;function&quot;){
+                        const highlightStyle = geo_json_3db2a1448ce138a4fc8007e193c98984_highlighter(e.target.feature)
+                        e.target.setStyle(highlightStyle);
+                    }
+                },
+            });
+        };
+        var geo_json_3db2a1448ce138a4fc8007e193c98984 = L.geoJson(null, {
+                onEachFeature: geo_json_3db2a1448ce138a4fc8007e193c98984_onEachFeature,
+            
+                style: geo_json_3db2a1448ce138a4fc8007e193c98984_styler,
+                pointToLayer: geo_json_3db2a1448ce138a4fc8007e193c98984_pointToLayer,
+        });
+
+        function geo_json_3db2a1448ce138a4fc8007e193c98984_add (data) {
+            geo_json_3db2a1448ce138a4fc8007e193c98984
+                .addData(data);
+        }
+            geo_json_3db2a1448ce138a4fc8007e193c98984_add({&quot;bbox&quot;: [-3.06504088160699, 51.5816234908297, -3.05314491639726, 51.5896633567718], &quot;features&quot;: [{&quot;bbox&quot;: [-3.06504088160699, 51.5816234908297, -3.05314491639726, 51.5896633567718], &quot;geometry&quot;: {&quot;coordinates&quot;: [[[-3.06377622796268, 51.5894572204719], [-3.06200291936651, 51.5892216717641], [-3.06192042761625, 51.5892346877514], [-3.0616476193587, 51.5893189408702], [-3.06129632225863, 51.5892714328262], [-3.0606347933655, 51.589073085077], [-3.0605333772657, 51.5890350033467], [-3.06039050222315, 51.5889688340659], [-3.06036081125636, 51.5889439578237], [-3.06031493755255, 51.588891047119], [-3.06028368727704, 51.5888265003719], [-3.06026930550768, 51.5887742683371], [-3.06029635515976, 51.5887442810432], [-3.06019320039051, 51.5886078076659], [-3.06000420861508, 51.5885215060858], [-3.05997865266672, 51.5885148697224], [-3.05994509844706, 51.5884748459716], [-3.05990187467012, 51.5884360682803], [-3.0596953085963, 51.5883281374774], [-3.05968029675443, 51.5883025831736], [-3.0596765131446, 51.588291936471], [-3.05967558363075, 51.5882869029992], [-3.0596608623838, 51.5882676476948], [-3.05957336056829, 51.5881983085634], [-3.05956525815314, 51.5881903335672], [-3.0595441424544, 51.5881644223046], [-3.05944272741293, 51.5880999883599], [-3.05936194580139, 51.588018357646], [-3.05933094467749, 51.5879744342612], [-3.05932178689749, 51.5879563724772], [-3.05936875825445, 51.5878825103574], [-3.05920087912275, 51.5876396180732], [-3.05919647803007, 51.5876207069234], [-3.05919132736762, 51.5876168911504], [-3.0591891057199, 51.5876147674224], [-3.05917704064603, 51.587599801641], [-3.05910913015055, 51.5875399631857], [-3.05903639205554, 51.5874509115842], [-3.05902548667329, 51.5874422522662], [-3.05902017454364, 51.5874406832479], [-3.05862073656196, 51.5875589593588], [-3.05857767533785, 51.5875300502098], [-3.05857324766064, 51.587527842882], [-3.05853578252751, 51.5874997997229], [-3.05852585350352, 51.5874943372462], [-3.05846690018666, 51.5874409074634], [-3.05843366953726, 51.5873991466291], [-3.0584203446183, 51.5873686870983], [-3.05836815865996, 51.5873498131271], [-3.05830733801132, 51.5873201030514], [-3.05827556395833, 51.5872960802729], [-3.0582092419209, 51.5872594354366], [-3.05811325602412, 51.5871830702493], [-3.05809285779723, 51.5871486565499], [-3.05809297373597, 51.5871418296472], [-3.05795336875762, 51.5871021587235], [-3.057700361561, 51.5869108648195], [-3.05767925699026, 51.5868949072576], [-3.057667503675, 51.5868860207189], [-3.05721456258871, 51.5871012273297], [-3.05715531184767, 51.5870132852931], [-3.05711496007814, 51.586968018082], [-3.05703413727637, 51.5869102643073], [-3.05703226214388, 51.5869091993863], [-3.05701404159784, 51.5868957920457], [-3.05697367776999, 51.5868564128814], [-3.05694541993388, 51.5868380914954], [-3.05687092479809, 51.5867983170895], [-3.0568471836737, 51.5867716572943], [-3.05678894404428, 51.5867283182397], [-3.05673404138036, 51.5866955589488], [-3.05670843938768, 51.5866847067582], [-3.0566657726033, 51.5866421667366], [-3.05661920046898, 51.5866052538783], [-3.05657479758292, 51.5865801694794], [-3.05654890243841, 51.5865529822121], [-3.05648293084767, 51.5864981746105], [-3.05647864929542, 51.5864937322594], [-3.05642286753991, 51.5864610166553], [-3.05632486409694, 51.586369061311], [-3.05631525959982, 51.5863478047663], [-3.05633417194073, 51.586317368847], [-3.05665658237181, 51.5861576609779], [-3.05674126516022, 51.5861763603368], [-3.05663878915153, 51.5860949579764], [-3.05662269447512, 51.5860809649949], [-3.05648755009554, 51.5859634654752], [-3.05632515318134, 51.5858222651362], [-3.05609841004156, 51.5856251153776], [-3.0560495684255, 51.5855826483985], [-3.05603685627797, 51.585571603179], [-3.05582905989574, 51.5854098277312], [-3.05578514311691, 51.5853832450373], [-3.05568308701431, 51.5853391990777], [-3.05545011372251, 51.5852513653798], [-3.05531499368992, 51.5851983569901], [-3.05515879400018, 51.585137077452], [-3.0550278772893, 51.5850932893039], [-3.05480915958958, 51.585015145953], [-3.05476234717158, 51.584989083325], [-3.0546972718929, 51.5849528522454], [-3.05459988472834, 51.5848060830181], [-3.05440114426258, 51.5848464913826], [-3.05435058893451, 51.5848785688441], [-3.05429464208618, 51.5849140575584], [-3.0542205453099, 51.5849636103689], [-3.05414449159743, 51.5850184230231], [-3.05404762733865, 51.5851470219151], [-3.05400558237841, 51.5852013504441], [-3.05399156737561, 51.5852194599512], [-3.05400055974499, 51.5852281431958], [-3.05392855122494, 51.5852507405073], [-3.0539060221497, 51.585265185451], [-3.05385636351494, 51.585273393332], [-3.05384850693564, 51.5852746919131], [-3.0537763530878, 51.5852753371801], [-3.05371863000799, 51.5852758533619], [-3.05366049127198, 51.5852583890773], [-3.05361678333056, 51.585240795734], [-3.05358750617209, 51.5852230733487], [-3.0535580212179, 51.5851963607351], [-3.05352791286589, 51.5851426774512], [-3.05351265090435, 51.5851068455843], [-3.05351202748924, 51.5850798749221], [-3.05355407280093, 51.5850255465497], [-3.05356808788877, 51.5850074370896], [-3.05361075655913, 51.5849800793618], [-3.05365363301667, 51.58496171184], [-3.05369484680726, 51.5848714225497], [-3.05369400966925, 51.584835209946], [-3.05369339200029, 51.5848084910139], [-3.05369203820225, 51.5847499287239], [-3.05369172936888, 51.5847365692576], [-3.05361791359505, 51.5846652926311], [-3.05351565236768, 51.5846122544113], [-3.05333582485216, 51.584541463979], [-3.05322884562182, 51.5844993507745], [-3.05328678448076, 51.5844382532883], [-3.05326596875503, 51.5844256525947], [-3.05318843397937, 51.5842874052951], [-3.05314553819455, 51.5842109189279], [-3.05314491639726, 51.5841839482375], [-3.05315913772617, 51.5841748290663], [-3.05318779101032, 51.5841655809189], [-3.05321623652921, 51.5841473425398], [-3.05338898710385, 51.5841278143751], [-3.05347515455575, 51.5841090599768], [-3.05353246096005, 51.5840905635296], [-3.05358935171069, 51.5840540866126], [-3.05367240168025, 51.5839004787597], [-3.05377423088475, 51.5839242605363], [-3.05387924255815, 51.5839487834833], [-3.05451505226699, 51.5840972579261], [-3.05474701298876, 51.5841514239137], [-3.05500749148099, 51.5842122490288], [-3.05501278709804, 51.5842134326349], [-3.05547176504985, 51.5843159965845], [-3.05548844931468, 51.5842893924931], [-3.05574463001191, 51.5838808838871], [-3.05576906167161, 51.5838419245016], [-3.05580471601017, 51.5837850731193], [-3.05590253744779, 51.5836291146807], [-3.055931128643, 51.5835835298045], [-3.05594452160745, 51.5835384506604], [-3.05592760154412, 51.5834307003221], [-3.05591928727945, 51.5834256674599], [-3.05591296375542, 51.5834218396489], [-3.0558498363154, 51.5833521422123], [-3.05582409986719, 51.5833237257332], [-3.05580904722938, 51.5832968851123], [-3.0558643320404, 51.5832029296246], [-3.05590367266963, 51.5831360717671], [-3.05604371523386, 51.5828980709496], [-3.05604484159238, 51.5828961572847], [-3.0560590396817, 51.5828720290475], [-3.05608727745569, 51.5828448004832], [-3.05611263355122, 51.5828285425947], [-3.05612713777597, 51.5828192427294], [-3.05612994531988, 51.5828174425787], [-3.05613973001312, 51.5828149001112], [-3.05620168088661, 51.5827988159489], [-3.05643234074861, 51.5827877564112], [-3.05675044052452, 51.5828118796413], [-3.05675156639184, 51.5828029469422], [-3.05675664805544, 51.5827626296173], [-3.05679757957005, 51.5824379016706], [-3.05679923247295, 51.5824247929274], [-3.05662407500986, 51.5823843476037], [-3.05634941189848, 51.5823209244394], [-3.05633498193134, 51.5823210538062], [-3.05630719400154, 51.5823508680773], [-3.05629272972163, 51.5823663917669], [-3.0562638697583, 51.5823666504833], [-3.0556252303299, 51.5822177880874], [-3.05543472632625, 51.582173382816], [-3.05555417692958, 51.5820474234931], [-3.05595619778384, 51.5816234908297], [-3.05617642847359, 51.5817048440671], [-3.0564425706596, 51.5817886986266], [-3.05647911818615, 51.5817957352243], [-3.05648726551321, 51.5817972986812], [-3.05650569152128, 51.581800847081], [-3.05665696967762, 51.5818299457959], [-3.05707105701074, 51.5818909905869], [-3.05724743140512, 51.5819037140597], [-3.05728068233792, 51.5819061132338], [-3.05729899254966, 51.5819058949706], [-3.05741921174538, 51.5819044384187], [-3.05755348764183, 51.5819028196029], [-3.05759305823141, 51.5819051349882], [-3.05767225714123, 51.5819097652013], [-3.05781243504965, 51.5819256452053], [-3.05796730426284, 51.5819520754522], [-3.05813598672205, 51.5819910240026], [-3.05814658404824, 51.5819943007751], [-3.05829724290946, 51.5820408562396], [-3.05835433458213, 51.5820624903676], [-3.05841783305915, 51.5820865576632], [-3.05850263539703, 51.5821262592162], [-3.05852001760209, 51.5821391403566], [-3.05856917742347, 51.5821755707271], [-3.05880367158256, 51.5823493311118], [-3.05924001575196, 51.5826887907987], [-3.05933016966643, 51.5827532163602], [-3.05968854234425, 51.5830093107054], [-3.05974133215261, 51.583047033454], [-3.0599689487653, 51.5832096886708], [-3.06022055395529, 51.5833894856501], [-3.06059904032478, 51.5837308017746], [-3.06068137824781, 51.5838050469451], [-3.06071603129115, 51.5838362943875], [-3.06078287242107, 51.5838965598192], [-3.06079637040708, 51.583908730427], [-3.06092355782593, 51.5840234118447], [-3.06128154347046, 51.5843243168913], [-3.06128802075695, 51.5843297616789], [-3.06159471048346, 51.5845875297224], [-3.06206076714496, 51.5849792354852], [-3.06206853996854, 51.5849857655729], [-3.06210532862273, 51.5850166812651], [-3.06216528902469, 51.5850670806047], [-3.06225237813526, 51.5851402774074], [-3.06232562044762, 51.5852018374083], [-3.06249004481386, 51.5853400189795], [-3.06294167368931, 51.5856965706024], [-3.06299829229378, 51.5857330008274], [-3.06313094974694, 51.5858183593088], [-3.06336478770833, 51.5859688346792], [-3.06347471662104, 51.5860277563118], [-3.06364425131392, 51.5861186368929], [-3.06373933056544, 51.5861695994954], [-3.06388806753903, 51.5862425386634], [-3.06389252069853, 51.5862447203789], [-3.06396242886669, 51.5862790050878], [-3.06397216862715, 51.5862850676693], [-3.06404620668086, 51.5863312024631], [-3.06409578819985, 51.5863727653426], [-3.06410721188615, 51.5863823375699], [-3.06413131039588, 51.5864025227855], [-3.06415463082993, 51.5864289644669], [-3.06420127154825, 51.5864818388221], [-3.06422634300549, 51.5865264465051], [-3.0642450300713, 51.586559700995], [-3.06425904210723, 51.586609758807], [-3.06426815597567, 51.5866422455237], [-3.06427309838707, 51.5867162590298], [-3.06427506610462, 51.5867455911584], [-3.06427289151432, 51.5868115042112], [-3.06427211253115, 51.5868343950002], [-3.06427161473596, 51.5868490303874], [-3.06426182268657, 51.5869095271264], [-3.06425032799593, 51.5869805868662], [-3.06416188895743, 51.5872123723303], [-3.06413437285191, 51.5873547484934], [-3.06408964433906, 51.5875861031398], [-3.06408654743577, 51.5876021260893], [-3.06407534492635, 51.5876600836276], [-3.06407039973799, 51.5877167419537], [-3.06406684400601, 51.5877574449058], [-3.06406537675901, 51.5877743990946], [-3.06406528967019, 51.5878605432835], [-3.06406524834411, 51.587904640446], [-3.06407120229274, 51.587978087311], [-3.0640714671465, 51.5879814029683], [-3.06407247195699, 51.5879938702982], [-3.06407507069436, 51.5880258178961], [-3.064075375297, 51.5880296007785], [-3.06409874345162, 51.5881475140636], [-3.0641345736109, 51.5882665089065], [-3.06418054679849, 51.5883811552889], [-3.06423480689223, 51.5884840821362], [-3.06435600802656, 51.5886709559324], [-3.06436957117514, 51.5886955793725], [-3.06454909029935, 51.5890207624513], [-3.06477847360795, 51.5893405758013], [-3.06504088160699, 51.5896633567718], [-3.06489105770267, 51.5896291156364], [-3.06377622796268, 51.5894572204719]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {&quot;LSOA21CD&quot;: &quot;W01002029&quot;}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+
+        
+    
+    geo_json_3db2a1448ce138a4fc8007e193c98984.bindTooltip(
+    function(layer){
+    let div = L.DomUtil.create('div');
+    
+    let handleObject = feature=>typeof(feature)=='object' ? JSON.stringify(feature) : feature;
+    let fields = [&quot;LSOA21CD&quot;];
+    let aliases = [&quot;LSOA21CD&quot;];
+    let table = '<table>' +
+        String(
+        fields.map(
+        (v,i)=>
+        `<tr>
+            <th>${aliases[i]}</th>
+            
+            <td>${handleObject(layer.feature.properties[v])}</td>
+        </tr>`).join(''))
+    +'</table>';
+    div.innerHTML=table;
+    
+    return div
+    }
+    ,{&quot;className&quot;: &quot;foliumtooltip&quot;, &quot;sticky&quot;: true});
+                     
+    
+                geo_json_3db2a1448ce138a4fc8007e193c98984.addTo(map_09925628bcd8b7753e78aca06d7ef31b);
+</script>
+</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
+</div>
+</div>
 <p id="fin">
 <i>fin!</i>
 </p>

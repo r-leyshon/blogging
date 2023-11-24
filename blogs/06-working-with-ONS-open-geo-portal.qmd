@@ -59,7 +59,7 @@ The rest of the tutorial will work with this file.
 5. Add the following lines to the top of `get_data.py` and run them, this 
 ensures that you have the dependencies needed to run the rest of the code:
 
-```{.python filename=get_data.py}
+```{python filename=get_data.py}
 import requests
 import geopandas as gpd
 import pandas as pd
@@ -89,7 +89,8 @@ url that we will need to send our requests to, in order to receive the data
 that we need.
 
 1. Click on the "View Full Details" button.
-2. Scroll down and under the menu "I want to...", expand "View API Resources"
+2. Scroll down and under the menu "I want to...", and expand the "View API
+Resources" menu.
 3. You will see two urls labelled "GeoService" and "GeoJSON". Click the copy
 button to the right of the url.
 4. Paste the url into your Python script.
@@ -97,7 +98,7 @@ button to the right of the url.
 including the question mark. Then assign it to a variable called `ENDPOINT` as
 below:
 
-```{.python filename=get_data.py}
+```{python filename=get_data.py}
 ENDPOINT = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query"
 
 ```
@@ -105,5 +106,106 @@ ENDPOINT = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/L
 This `ENDPOINT` is a url that we can use to flexibly ask for only the data or
 metadata, that we require.
 
+### Requesting a Single Entry
+
+Now that we're set up to make requests, we can use an example that brings back
+only a small slice of the database. To do this, we will need to specify some
+query parameters. These parameters will get added to our endpoint url and will
+be interpreted by ArcGIS to serve us only the data we ask for. In this example,
+I will ask for a single LSOA boundary only by specifying the LSOA code with an
+SQL clause. For more detail on the flexibility of ArcGIS API, please consult
+the documentation @ArcGIS.
+
+1. Define the below Python dictionary, noting that the syntax and data formats
+can be brittle - don't forget to wrap the LSOA21CD in speech marks:
+
+```{python filename=get_data.py}
+# requesting a specific LSOA21CD
+params = {
+    "where": "LSOA21CD = 'W01002029'", # SQL clauses can go here
+    "outSR": 4326, # CRS that you want
+    "f": "geoJSON", # response format
+    "resultOffset": 0 # parameter used for pagination later
+}
+
+```
+
+2. Now I will define a function that will make the request and handle the
+response for us. It's a bit more complicated than the standard approach for
+other web APIs because of the peculiar way ArcGIS serves HTTP proxy errors (bad
+requests, service outages etc). Go ahead and define this function:
+
+```{python filename=get_data.py}
+def request_to_gdf(url:str, query_params:dict) -> gpd.GeoDataFrame:
+    """Send a get request to ArcGIS API & Convert to GeoDataFrame.
+
+    Only works when asking for features and GeoJSON format.
+
+    Parameters
+    ----------
+    url : str
+        The url endpoint.
+    query_params : dict
+        A dictionary of query parameter : value pairs.
+
+    Returns
+    -------
+    requests.response
+        The response from ArcGIS API server. Useful for paginated requests
+        later.
+    gpd.GeoDataFrame
+        A GeoDataFrame of the requested geometries in the crs specified by the
+        response metadata.
+
+    Raises
+    ------
+    requests.exceptions.RequestException
+        The response was not ok or was ok but returned content with an error -
+        weird ArcGIS quirk.
+    """
+    # this approach will only work with geoJSON
+    query_params["f"] = "geoJSON"
+    # get the response
+    response = requests.get(url, params=query_params)
+    if response.ok:
+        content = response.json()
+        if "error" in content.keys():
+            # arcGIS strange approach to serving HTTP errors
+            error = content["error"]
+            raise requests.exceptions.RequestException(
+                f"HTTP Code: {error['code']}, Status: {error['details']}"
+            )
+        else:
+            # good response. This approach will only work for geoJSON response.
+            return (
+                response, # we'll need the response again later for pagination
+                gpd.GeoDataFrame.from_features(
+                    content["features"],
+                    crs=content["crs"]["properties"]["name"]
+                    # safest to get crs from response
+                    ))
+    else:
+        # cases where a traditional bad response may be returned
+        raise requests.exception.RequestException(
+            f"HTTP Code: {response.status_code}, Status: {response.reason}"
+        )
+
+```
+
+3. With that function defined, we can go straight to a tabular data format,
+like below:
+
+```{python filename=get_data.py}
+_, gdf = request_to_gdf(ENDPOINT, params)
+gdf.head()
+```
+
+4. We can use the GeoDataFrame `.explore()` method to quickly inspect the fruit
+of our efforts.
+
+```{python filename=get_data.py}
+gdf.explore()
+
+```
 
 <p id=fin><i>fin!</i></p>
