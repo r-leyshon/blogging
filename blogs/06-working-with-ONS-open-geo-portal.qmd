@@ -11,7 +11,7 @@ categories:         # delete categories as appropriate. using https://diataxis.f
 
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608
 image-alt: "Great Britain-United Kingdom Topographic Map"
-toc: true 
+toc: false # iframe overlaps 
 ---
 <figure class=center>
   <img class="shaded_box" width=400px src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
@@ -66,12 +66,44 @@ import pandas as pd
 
 ```
 
-## Troubleshooting
+### Finding The Data Asset
 
-:::{.callout-caution collapse="true"}
+One of the tricky parts of working with the GeoPortal is finding the resource
+that you need.
 
-### gpg: signing failed: Inappropriate ioctl for device
+1. Access the ONS Open Geography Portal homepage @ONSGeoPortal.
+2. Using the ribbon menu at the top of the page, navigate to Boundaries -> Census Boundaries -> Lower Super Output Areas -> 2021 Boundaries. 
+3. Once you have clicked on this optiom, a page will open with items related to
+your selection. Click on the item called "Lower Layer Super Output Areas (2021)
+Boundaries EW BFC"
+4. This will bring you to the data asset that you need. It should look like the
+webpage below.
 
-:::
+<div class=centerdiv>
+  <iframe src="https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-2021-boundaries-ew-bfc/explore?location=52.375030%2C-3.328324%2C8.44" title="LSOA 2021 Boundaries for England & Wales"></iframe>
+</div>
+
+### Finding the Endpoint
+Now that we have the correct data asset, let's find the endpoint. This is the
+url that we will need to send our requests to, in order to receive the data
+that we need.
+
+1. Click on the "View Full Details" button.
+2. Scroll down and under the menu "I want to...", expand "View API Resources"
+3. You will see two urls labelled "GeoService" and "GeoJSON". Click the copy
+button to the right of the url.
+4. Paste the url into your Python script.
+5. Edit the url string to remove everything to the right of the word 'query',
+including the question mark. Then assign it to a variable called `ENDPOINT` as
+below:
+
+```{.python filename=get_data.py}
+ENDPOINT = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query"
+
+```
+
+This `ENDPOINT` is a url that we can use to flexibly ask for only the data or
+metadata, that we require.
+
 
 <p id=fin><i>fin!</i></p>

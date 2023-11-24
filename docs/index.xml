@@ -10,7 +10,7 @@
 <atom:link href="https://thedatasavvycorner.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Musings, ramblings, generally putting things down in text so I don&#39;t forget them.</description>
 <generator>quarto-1.3.450</generator>
-<lastBuildDate>Fri, 24 Nov 2023 10:30:12 GMT</lastBuildDate>
+<lastBuildDate>Fri, 24 Nov 2023 10:59:33 GMT</lastBuildDate>
 <item>
   <title>Working with ONS Open Geography Portal</title>
   <dc:creator>Rich Leyshon</dc:creator>
@@ -83,25 +83,40 @@ background-color: null;
 font-style: inherit;">as</span> pd</span></code></pre></div>
 </div>
 </section>
+<section id="finding-the-data-asset" class="level3">
+<h3 class="anchored" data-anchor-id="finding-the-data-asset">Finding The Data Asset</h3>
+<p>One of the tricky parts of working with the GeoPortal is finding the resource that you need.</p>
+<ol type="1">
+<li>Access the ONS Open Geography Portal homepage <span class="citation" data-cites="ONSGeoPortal">[2]</span>.</li>
+<li>Using the ribbon menu at the top of the page, navigate to Boundaries -&gt; Census Boundaries -&gt; Lower Super Output Areas -&gt; 2021 Boundaries.</li>
+<li>Once you have clicked on this optiom, a page will open with items related to your selection. Click on the item called “Lower Layer Super Output Areas (2021) Boundaries EW BFC”</li>
+<li>This will bring you to the data asset that you need. It should look like the webpage below.</li>
+</ol>
+<div class="centerdiv">
+<p><iframe src="https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-2021-boundaries-ew-bfc/explore?location=52.375030%2C-3.328324%2C8.44" title="LSOA 2021 Boundaries for England &amp; Wales"></iframe></p>
+</div>
 </section>
-<section id="troubleshooting" class="level2">
-<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="finding-the-endpoint" class="level3">
+<h3 class="anchored" data-anchor-id="finding-the-endpoint">Finding the Endpoint</h3>
+<p>Now that we have the correct data asset, let’s find the endpoint. This is the url that we will need to send our requests to, in order to receive the data that we need.</p>
+<ol type="1">
+<li>Click on the “View Full Details” button.</li>
+<li>Scroll down and under the menu “I want to…”, expand “View API Resources”</li>
+<li>You will see two urls labelled “GeoService” and “GeoJSON”. Click the copy button to the right of the url.</li>
+<li>Paste the url into your Python script.</li>
+<li>Edit the url string to remove everything to the right of the word ‘query’, including the question mark. Then assign it to a variable called <code>ENDPOINT</code> as below:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>get_data.py</strong></pre>
 </div>
-<div class="callout-title-container flex-fill">
-gpg: signing failed: Inappropriate ioctl for device
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">ENDPOINT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query"</span></span></code></pre></div>
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-</div>
+<p>This <code>ENDPOINT</code> is a url that we can use to flexibly ask for only the data or metadata, that we require.</p>
 <p id="fin">
 <i>fin!</i>
 </p>
@@ -109,10 +124,14 @@ gpg: signing failed: Inappropriate ioctl for device
 
 
 </section>
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body">
 <div id="ref-ArcGIS" class="csl-entry">
 <div class="csl-left-margin">[1] </div><div class="csl-right-inline">ESRI, <span>“<span>ArcGIS REST APIs</span>.”</span> <a href="https://developers.arcgis.com/rest/services-reference/enterprise/query-feature-service-layer-.htm">https://developers.arcgis.com/rest/services-reference/enterprise/query-feature-service-layer-.htm</a></div>
+</div>
+<div id="ref-ONSGeoPortal" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Office for National Statistics, <span>“<span class="nocase">Office for National Statistics Open Geography Portal</span>.”</span> <a href="https://geoportal.statistics.gov.uk/">https://geoportal.statistics.gov.uk/</a></div>
 </div>
 </div></section></div> ]]></description>
   <category>Tutorial</category>
@@ -120,7 +139,7 @@ gpg: signing failed: Inappropriate ioctl for device
   <category>REST API</category>
   <category>Web data</category>
   <guid>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</guid>
-  <pubDate>Fri, 24 Nov 2023 10:30:12 GMT</pubDate>
+  <pubDate>Fri, 24 Nov 2023 10:59:33 GMT</pubDate>
   <media:content url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608" medium="image"/>
 </item>
 <item>
