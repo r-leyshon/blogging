@@ -21,18 +21,18 @@ toc: false # iframe overlaps
 ## Introduction
 
 This tutorial is for programmers familiar with Python but perhaps less familiar
-with the Python `requests` package or ArcGIS @ArcGIS. 
+with the Python `requests` package or ArcGIS REST API @ArcGIS. 
 
 ## The Scenario
 
-You would like to use python to programattically ingest data from the Office
+You would like to use python to programmatically ingest data from the Office
 for National Statistics (ONS) Open Geography Portal. This tutorial aims to help
 you do this, working with the [2021 LSOA boundaries](https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-2021-boundaries-ew-bfc/explore?location=52.919320%2C-2.395055%2C11.90),
 the essential features and quirks of the ArcGIS REST API will be explored.
 
 ## What you'll need:
 
-- [ ] A permissive firewall (ask to whitelist the domain "https://geoportal.statistics.gov.uk/")
+- [ ] A permissive firewall (whitelist the domain "https://geoportal.statistics.gov.uk/" if necessary)
 - [ ] Python package manager (eg `pip`)
 - [ ] Python environment manager (eg `venv`, `poetry` etc)
 - [ ] Python requirements:
@@ -72,8 +72,8 @@ One of the tricky parts of working with the GeoPortal is finding the resource
 that you need.
 
 1. Access the ONS Open Geography Portal homepage @ONSGeoPortal.
-2. Using the ribbon menu at the top of the page, navigate to Boundaries -> Census Boundaries -> Lower Super Output Areas -> 2021 Boundaries. 
-3. Once you have clicked on this optiom, a page will open with items related to
+2. Using the ribbon menu at the top of the page, navigate to Boundaries {{< fa arrow-right >}} Census Boundaries {{< fa arrow-right >}} Lower Super Output Areas {{< fa arrow-right >}} 2021 Boundaries. 
+3. Once you have clicked on this option, a page will open with items related to
 your selection. Click on the item called "Lower Layer Super Output Areas (2021)
 Boundaries EW BFC"
 4. This will bring you to the data asset that you need. It should look like the
@@ -89,7 +89,7 @@ url that we will need to send our requests to, in order to receive the data
 that we need.
 
 1. Click on the "View Full Details" button.
-2. Scroll down and under the menu "I want to...", and expand the "View API
+2. Scroll down, under the menu "I want to...", and expand the "View API
 Resources" menu.
 3. You will see two urls labelled "GeoService" and "GeoJSON". Click the copy
 button to the right of the url.
@@ -131,9 +131,7 @@ params = {
 ```
 
 2. Now I will define a function that will make the request and handle the
-response for us. It's a bit more complicated than the standard approach for
-other web APIs because of the peculiar way ArcGIS serves HTTP proxy errors (bad
-requests, service outages etc). Go ahead and define this function:
+response for us. Go ahead and define this function:
 
 ```{python filename=get_data.py}
 def request_to_gdf(url:str, query_params:dict) -> gpd.GeoDataFrame:
@@ -220,6 +218,156 @@ gdf.explore()
 ```
 
 
+### How Many Records Are There?
+
+1. Update the `params` dictionary by changing the value of `where` to `'1=1'`.
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+
+# parameter to get max allowed data, this will get encoded to "where=1%3D1"
+# https://www.w3schools.com/tags/ref_urlencode.ASP
+params["where"] = "1=1"
+
+```
+
+For more on why to do this, consult the ArcGIS docs @ArcGIS. This is the way to
+state 'where=true', meaning get every record possible while respecting the
+`maxRecordCount`. `maxRecordCount` limits the number of records available for 
+download to 2,000 records in most cases. This is ArcGIS' method of limiting
+service demand while not requiring authentication. It also means we need to
+handle **paginated** responses.
+
+2. It's a good idea to confirm the number of records available within the 
+database. Have a go at reading through the ArcGIS docs @ArcGIS to find the
+parameter responsible for returning counts only. Query the database for the
+number of records and store it as an integer called `n_records`.
+
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+
+# how many LSOA boundaries should we expect in the full data?
+params["returnCountOnly"] = True
+response = requests.get(ENDPOINT, params=params)
+n_records = response.json()["properties"]["count"]
+print(f"There are {n_records} LSOAs in total")
+
+```
+
+
+### Paginated Requests
+
+1. Now we have the number of records, it's important to go back to collecting
+geometries. Please update the `params` dictionary to allow that to happen.
+
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+
+# lets now return to collecting geometries
+del params["returnCountOnly"] #alternatively set to False
+```
+
+
+2. Have a go at requesting the first batch of LSOA boundaries. Count how many
+you get without attempting to paginate.
+
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+
+response, gdf = request_to_gdf(ENDPOINT, params)
+print(f"There are only {len(gdf)} LSOAs on this page.")
+```
+
+3. Visualise the first 100 rows of the GeoDataFrame you created in the previous
+step.
+
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+gdf.head(100).explore()
+```
+
+4. We need a condition to check if there are more pages left in the database.
+See if you can find the target parameter by examining the response properties.
+
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+content = response.json()
+# we need a conditional on whether more pages are available:
+more_pages = content["properties"]["exceededTransferLimit"]
+print(f"It is {more_pages}, that there are more pages of data to ingest...")
+```
+
+5. Now we need to add a new parameter to our `params` dictionary, with the key
+`resultOffset`. We need to send multiple queries to the server, incrementing
+the value of `resultOffset` by the number of records on each page in every
+consecutive request. This may take quite a while, depending on your connection.
+Add the code below to your python script and run it, then make yourself a cup
+of your chosen beverage.
+
+```{python filename=get_data.py}
+offset = len(gdf) # number of records to offset by
+all_lsoas = gdf # we can append our growing gdf of LSOA boundaries to this
+while more_pages:
+    params["resultOffset"] += offset # increment the records to ingest
+    response, gdf = request_to_gdf(ENDPOINT, params)
+    content = response.json()
+    all_lsoas = pd.concat([all_lsoas, gdf])
+    try:
+        more_pages = content["properties"]["exceededTransferLimit"]
+    except KeyError:
+        # rather than exceededTransferLimit = False, it disappears...
+        more_pages = False
+
+all_lsoas = all_lsoas.reset_index(drop=True)
+
+```
+
+Be careful with the `exceededTransferLimit` parameter. Instead of being set to
+False on the last page (as the docs suggest it should) - it actually disappears
+instead. 
+
+6. Check whether the number of records ingested matches the number expected.
+
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+all_done = len(all_lsoas) == n_records
+print(f"Does the row count match the expected number of records? {all_done}")
+
+```
+
+7. Finally, visualise the last 100 records available within the GeoDataFrame.
+
+```{python filename=get_data.py}
+#| code-fold: true
+#| code-summary: "Show the Solution"
+all_lsoas.tail(100).explore()
+
+```
+
+## Conclusion
+
+In this tutorial, we have:
+
+* Demonstrated how to find resources on ONS Open Geography Portal.
+* Found the ArcGIS endpoint url of that resource.
+* Had a brief read through the ArcGIS documentation.
+* Queried the API for a single LSOA code.
+* Discussed a few of the quirks of this API.
+* Retrieved the total number of records available.
+* Used paginated requests to retrieve every record in the database.
+
+A good next step towards a more robust ingestion method would be to consider
+adding a retry strategy to the requests. @ZenRows 
+
+Every web API has its own quirks, which is part of the joy of working with web
+data. I hope this was helpful and all the best with your geospatial data
+project! 
 
 
 <p id=fin><i>fin!</i></p>
