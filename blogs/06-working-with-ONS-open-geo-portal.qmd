@@ -331,7 +331,19 @@ all_lsoas = all_lsoas.reset_index(drop=True)
 
 Be careful with the `exceededTransferLimit` parameter. Instead of being set to
 False on the last page (as the docs suggest it should) - it actually disappears
-instead. 
+instead, hence why I use the `try:...except` clause above. You can attempt to
+set this parameter explicitly, but I find the behaviour is consistent all the
+same.
+
+```{python}
+params["returnExceededLimitFeatures"] = "true"
+# or
+params["returnExceededLimitFeatures"] = True
+# both patterns result in the same behaviour as not setting it - the 
+# ["properties"]["exceededTransferLimit"] key disappears from the final page's
+# response
+
+```
 
 6. Check whether the number of records ingested matches the number expected.
 
