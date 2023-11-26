@@ -20,8 +20,9 @@ toc: false # iframe overlaps
 
 ## Introduction
 
-This tutorial is for programmers familiar with Python but perhaps less familiar
-with the Python `requests` package or ArcGIS REST API @ArcGIS. 
+This tutorial is for programmers familiar with Python and how to create virtual
+environments, but perhaps less familiar with the Python `requests` package or
+ArcGIS REST API @ArcGIS. 
 
 ## The Scenario
 
@@ -72,7 +73,8 @@ One of the tricky parts of working with the GeoPortal is finding the resource
 that you need.
 
 1. Access the ONS Open Geography Portal homepage @ONSGeoPortal.
-2. Using the ribbon menu at the top of the page, navigate to Boundaries {{< fa arrow-right >}} Census Boundaries {{< fa arrow-right >}} Lower Super Output Areas {{< fa arrow-right >}} 2021 Boundaries. 
+2. Using the ribbon menu at the top of the page, navigate to:  
+Boundaries {{< fa arrow-right >}} Census Boundaries {{< fa arrow-right >}} Lower Super Output Areas {{< fa arrow-right >}} 2021 Boundaries. 
 3. Once you have clicked on this option, a page will open with items related to
 your selection. Click on the item called "Lower Layer Super Output Areas (2021)
 Boundaries EW BFC"
@@ -363,7 +365,9 @@ In this tutorial, we have:
 * Used paginated requests to retrieve every record in the database.
 
 A good next step towards a more robust ingestion method would be to consider
-adding a retry strategy to the requests. @ZenRows 
+adding a retry strategy to the requests @ZenRows. For a great overview of
+the essentials of geographic data and tools, check out my colleague's fantastic
+ blog on geospatial need-to-knows @GeoEssentials.
 
 Every web API has its own quirks, which is part of the joy of working with web
 data. I hope this was helpful and all the best with your geospatial data
