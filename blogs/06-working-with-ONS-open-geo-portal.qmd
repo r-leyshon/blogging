@@ -364,6 +364,25 @@ all_lsoas.tail(100).explore()
 
 ```
 
+## Troubleshooting
+
+One tip I have for troubleshooting queries is to open up the web interface for
+the `ENDPOINT`, by pasting it into your web browser. You should get an
+interface like below:
+
+<div class=centerdiv>
+  <iframe src="https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query" title="LSOA 2021 Endpoint Interface"></iframe>
+</div>
+
+By using the fields to test out your query parameters and clicking the "Query
+(GET)" button at the bottom of the page, you can get an indication of whether
+your query is valid. This is a good place to test out more complex SQL
+statements for the `where` parameter:
+
+<div class=centerdiv>
+  <iframe src="https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query?where=FID+BETWEEN+35290+AND+35300&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=true&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=html&token=" title="LSOA 2021 Endpoint Custom Query"></iframe>
+</div>
+
 ## Conclusion
 
 In this tutorial, we have:
