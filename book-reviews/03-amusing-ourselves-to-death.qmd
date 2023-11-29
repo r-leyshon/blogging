@@ -438,6 +438,61 @@ act of uncouth showmanship, rather than a community in the act of worship.
 
 #### 9. Reach Out and Elect Someone
 
+A consistent thread in AotD is the change in political discourse between 1780s
+and 1980s America. Back in chapter 4, The Typographic Mind, Postman introduces
+the Lincoln-Douglas debates @LincolnDouglas in order to make two key points, 
+the first being that the duration (7 hours in one sitting) and complexity of
+the discourse allowed a more nuanced evaluation of the positions of the
+candidates. The second point made was about the proposed capacity of the
+audience to sustain their comprehension of the complex subject matter for such
+an extended duration.
+
+In chapter 9, Postman returns to this example in order to illustrate the decay
+in the public's appetite for meaningful political discourse. Some of his points
+land well, with a stark contrast in recent years with the rise of populism and
+in particular the appalling and often provocative use of language during
+presidential debates appealing to the more base instincts of an audience. Yet
+something troubles me in the contrasting examples employed by Postman in order
+to make his point:
+
+1. How can we say with any certainty that the attendees of the Lincoln-Douglas
+debates had comprehended the content?
+2. What evidence is there that the mental faculties of the Lincoln-Douglas
+debates' audience were representative of the average American?
+
+These two key questions cannot be answered by historical account alone.
+Without testing and surveying the audience immediately on exiting the debates,
+it would be incorrect to draw conclusions that could be generalised to a larger
+population. While it may be that societal and technological change may have
+reduced an average person's attention span, I would not attempt to base my
+argument on anecdotal supposition.
+
+On the subject of comparing political candidates,
+
+"...television makes impossible the determination of whi is better than whom,
+if we mean by "better" such things as more capable in negotiation, more
+imaginative in executive skill, more knowledgeable about international affairs,
+more understanding of the interrelations of economic systems, and so on... For
+on television, the politician does not so much offer the audience an image of
+himself, as offer himself as an image of the audience." [@AOtD, p.155]
+
+I would agree that the limitations in television's format constraints make for
+a poor vehicle for political awareness. We have seen how televised political
+debates become bouts of slogans and savagery. It means a great deal if a person
+is not allowed to take the necessary time to process and formulate a reasoned
+response. The rules of the game are then not in comprehension and logic. The
+most effective path to success would be in securing the audience's appeal while
+simultaneously eroding public confidence in the competition. 
+
+And on the point of how politics has; like many aspects of society; become
+obsessed with matters of image - where should we point the blame for this
+shallow obsession? The fact that Neil Kinnock falling over on Brighton Beach,
+Ed Miliband's infamous bacon butty gurn or the media's flare for capturing
+Theresa May's most unflattering expressions sold more newspapers than any
+analysis of their respective parties' manifestos ever did. In voting for a
+person instead of a party, are we not putting all of our political eggs in one
+basket? 
+
 #### 10. Teaching as an Amusing Activity
 
 #### 11. The Huxleyan Warning
