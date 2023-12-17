@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blogs/06-working-with-ONS-open-geo-portal.html",
       "/book-reviews/03-amusing-ourselves-to-death.html",
       "/book-reviews/02-algorithms-to-live-by.html",
       "/blogs/05-signed-commits.html",
@@ -32,6 +33,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/06-working-with-ONS-open-geo-portal.html",
       "/blogs/05-signed-commits.html",
       "/blogs/01-state-of-pyshiny.html",
       "/blogs/04-starfield-resources.html",

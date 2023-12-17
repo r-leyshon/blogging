@@ -1,3 +1,7 @@
+# quarto things
+.luarc.json
+
+# secret things
 .secrets.toml
 # Byte-compiled / optimized / DLL files
 __pycache__/
