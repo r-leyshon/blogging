@@ -500,10 +500,93 @@ of discounted discourse, it was the topic of education that resonated the most
 with me. I should divulge that I have previously spent nearly ten years in
 teaching high school science within the British education system. 
 
-Firstly, I get the impression that Postman was not a fan of Sesame Street. He
-refers to it throughout the entire chapter and while not wholly critical of its
-potency as an entertaining pastime for pre-schoolers, is highly critical of the
-precedent it sets for presenting television as a medium for education. 
+My initial impression is that Postman is no fan of Sesame Street. As a child of
+the '80s, this is not a strong start. While not wholly critical of the
+Muppets-inspired preschool 'edutainment' show in its potency as an entertaining
+pastime for pre-schoolers, Postman finds the  precedent it sets for presenting
+television as a medium for education disagreeable.
+
+In this chapter, the author sets out what I consider to be the most concerning
+element of his argument against television's command of our culture - its
+ability to displace education with entertainment. This resonates with my 
+experience in education during a technological advancement that must have
+supplanted television's ability to interfere with intellectual advancement -
+the multimedia mobile phone. Postman's technological scepticism in the 1980s
+may have been interpreted as aniquated at the time but in retrospect and to my
+mind this chapter is embued with a prophetic quality. 
+
+"...television has by its power to control the time, attention and cognitive
+habits of our youth gained the power to control their education.
+    This is why I think it accurate to call television a curriculum... whose
+purpose is to influence, teach, train or cultivate the mind and character of 
+youth. Television, of course, does exactly that, and does it relentlessly. In
+so doing, it competes successfully with the school curriculum... it damn near
+obliterates it" [@AOtD, p.169].
+
+The crucial difference between the mobile phone and the traditional television
+that Postman opined in the '80s is that the phone has now become a mobile
+television, among many other things. The need for traditional education to
+compete with this alternative curriculum has introduced a great deal of
+friction in the modern classroom, as if there were not enough already. But for 
+a proportion of the population, the persistent availability of entertainment
+over education has devastating consequences. I know this because I have seen
+it. For many young people, education is rarely an enjoyable undertaking and
+preparing themselves requires discipline and endurance. Adding a constant
+opportunity for distraction to this situation will render a smaller proportion
+of our youth unable to learn anything other than the most shallow of content.
+One may argue that this has always been the case, which I would not refute. My
+position is that the proportion of people who are unable to access the National
+Curriculum has grown as a result of improper technological interference. 
+
+Postman's next point about television's societal influence is yet more
+troubling. As he sets out in previous chapters, television not only presents 
+certain standards for our intercourse, it establishes those norms for our use
+in society. In this context, television not only displaces education, it 
+remodels it. 
+
+On the topic of 'dumbing down' in educational curricula:
+"Mainly, they will have learned that learning is a form of entertainment or,
+more precisely, that anything worth learning can take the form of
+entertainment, and ought to. And they will not rebel if their English teacher 
+asks them to learn the eight parts of speech through the medium of rock music.
+Or if their social studies teacher sings to them the facts about the War of
+1812. Or if their physics comes to them on cookies and T-shirts. Indeed, they
+will expect it and thus will be well-prepared to receive their politics, their
+religion, their news and their commerce in the same delightful way" [@AOtD, p.179].
+
+Curriculum-reform has faced a crisis in recent years - what should
+we teach children who now have the world's information in their pocket?
+Education's response to this development in the early part of the 20th century
+has been to strip the curriculum of content, to focus on the development of
+skills over knowledge. This has been coupled with reprioritisation of skills
+in assessment frameworks. Our newfound ability to outsource accurate recall to
+devices has resulted in doctors that Google your symptoms, mechanics that
+Google engine components and data scientists that Google model parameters - I
+am compelled to disclose this last example, having successfully transitioned
+away from teaching to analysis in more recent years.
+
+How problematic is all this change? Human recollection was never our species'
+strong suit - just ask a legal professional about the fallability of human
+memory. Better to outsource that to the machine, right? It is certainly
+convenient, and as someone who considers themselves a bit of a professional
+Googler, it's undeniable that it is at times a tool for good. But is it a good
+idea to hand over responsibility for knowledge retrieval to the machine, or
+more accurately big corporations? What do we lose when we do this? What are the
+unseen biases and agendas in the content that is shown or censored? How are
+these intrinsic patterns affecting outcomes for people?
+
+The shift from recall to a skills-based educational framework has assumed that
+the value of a human being is in synthesis - the ability to evaluate sources of
+information and to put it to work, composing novel content. As Large Language
+Models begin to reveal their potential in executing these higher-order
+intellectual functions, where do we go next? Technology's advancement has the
+potential to disrupt our estimation of human value and priority. Will lack of
+practice in the creative endeavour reduce our species to manipulators of tools
+produced by the machine, or increase our capacity for creation - freeing us
+from time consuming, lower operations? I don't know, but I can say that we will
+be discovering the answer to these questions in retrospect - realising the
+consequences; good and bad; as we proceed through uncertainty.
+
 
 #### 11. The Huxleyan Warning
 
