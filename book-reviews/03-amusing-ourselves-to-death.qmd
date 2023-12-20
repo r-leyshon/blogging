@@ -585,13 +585,86 @@ practice in the creative endeavour reduce our species to manipulators of tools
 produced by the machine, or increase our capacity for creation - freeing us
 from time consuming, lower operations? I don't know, but I can say that we will
 be discovering the answer to these questions in retrospect - realising the
-consequences; good and bad; as we proceed through uncertainty.
-
+consequences; both desirable and otherwise; as we proceed through uncertainty.
 
 #### 11. The Huxleyan Warning
 
+In the final chapter, Postman reflects upon his argument against technology, 
+examining the nature of American people and their readiness to adopt novel
+technology in spite of the potential disadvantages they may incur. 
 
-...
+"...a population that devoutly believes in the inevitability of progress... all
+Americans are Marxists, for we believe nothing if not that history is moving us
+toward some preordained paradise and that technology is the force behind that 
+movement" [@AOtD, p.183].
+
+There is an interesting reference to Marxism in this statement that I feel does
+not capture a meaningful assessment of the principles underlying communist
+ideology. After all, Marx called for the people to intervene in the direction
+of their future based upon his assessment of the flaws in prevalent capitalist
+societies. This would not presume progress as the default position, although
+Marx did suggest that a system of rules limiting personal gain at the expense
+of others could result in a form of utopia if properly administered. I presume
+Postman's comment to be a provocation of the intended audience, potentially
+born out of frustration at a society undeniably seeking betterment through
+technological innovation. 
+
+"Americans will not shut down any part of their technological apparatus, and to
+suggest that they do so is to make no suggestion at all... Many civilized
+nations limit by law the amount of hours television may operate and thereby
+mitigate the role television plays in public life. But I believe that this is
+not a possibility in America" [@AOtD, p.184].
+
+Frustration to the side, Postman does make an interesting point about the
+directionality in technological innovation. When a novel product has
+non-trival, immediately tangible benefits you may expect it to be readily
+adopted. Once the economies of scale have been applied to said product and the
+reduction in financial cost has removed a significant barrier to access those
+benefits, I would agree that our ability to reverse such widespread adoption is
+extremely limited. Demand and profiteering form an economic valve that maintain
+the product evolution and consequent sales. The fact that the consequences of 
+all this activity may be measured over a lifetime while the benefits may be
+observed within an instant is a dichotomy that the human mind appears poorly
+equipped to deal with. In effect, technology may be our modern-day pandora's
+box, with the complication that largely, we do not wish to put the evils back
+in the box. The implications that this has for generative AI are clear.
+
+Finally, Postman turns his attention to the computer, where he ws both right
+and wrong.
+
+"Although I believe the computer to be a vastly overrated technology, I mention
+it here because, clearly, Americans have accorded it their customary mindless
+inattention; which means they will use it as they are told, without a whimper"
+[@AOtD, p.187].
+
+Here, Postman proves that a person's biases limit their understanding of
+potential. It's obvious from a current perspective that the utility of the
+computer has been proven. In the '80s the position of computers in our society
+may have been debatable, although not to the likes of Bill Gates. People form
+interests around those things that align with their values, developing
+foresight into potential applications as they encounter problems throughout
+their everyday life. This is where he was clearly wrong, but in his subsequent
+statement,
+
+"Until, years from now, when it will be noticed that the massive collection and
+speed-of-light retrieval of data have been of great value to large-scale
+organizations but have solved very little of importance to most people and have
+created at least as many problems for them as they may have solved"
+[@AOtD, p.187].
+
+It is fascinating to observe this foresight from forty years ago. In the age of
+the multinational technology corporation, fortunes have been built upon meeting
+human needs. The wealth and consequent power that this has produced has now
+been accused of interfering; or being exploited to interfere; with democratic
+elections around the world. In recent years this has evolved into a power
+struggle for public influence between big corporations and authorities of
+various territories. Governments have now begun their campaign of control over
+social media platforms, opting to censor and police where they deem it
+necessary - some twenty years after social media's inception. Whether this
+represents censorship or protection of rights is hotly contested. But returning
+to the title of the chapter, it could be that Postman was again, partially
+right and wrong about the relative threats of Orwellian and Huxleyan dystopia.
+What if we allow the worst of both worlds?
 
 ## Analysis and Evaluation
 
