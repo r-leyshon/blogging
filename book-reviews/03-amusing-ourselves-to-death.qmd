@@ -29,17 +29,17 @@ As of today's date, Amusing Ourselves to Death (AOtD) scores an average of
 
 AOtD is a challenging read for a short book. It is heaped in cultural criticism
 and a pessimistic assessment of technological development that I would not
-recommend readilty internalising without thoughtful evaluation. However, much
+recommend readily internalising without thoughtful evaluation. However, much
 of the critique is well-reasoned and although written in the 1980s, is possibly
 of greater relevance today than when first penned.
 
 ### On the Author
 
-Neil Postman was a professor of communication at New York University. Well-known
-for his body of work in examining the study of knowledge-acquisition and
-pedagogy through the lens of societal decline. Postman endeavoured to influence
-public education curricula in the United States during his term as Chairman of
-the University's Department for Culture and Communication.
+Neil Postman was a professor of communication at New York University.
+Well-known for his body of work in examining the study of knowledge-acquisition
+and pedagogy through the lens of societal decline. Postman endeavoured to
+influence public education curricula in the United States during his term as
+Chairman of the University's Department for Culture and Communication.
 
 ## An Overview of the Book
 
@@ -50,11 +50,11 @@ ourselves in TV pop culture, the standards for entertainment in this medium of
 communication have permeated through society, from the boardroom to the
 classroom. 
 
-Postman warns that a culture; seemingly unaware of how trivial and distracted it
-has become; is at risk of losing its moral compass, leading to a state of shallow
-and low-value communication. The main premise of his warning is that rather than
-an Orwellian dystopian future where society is controlled by a despotic
-surveillance state, the dystopia that Postman predicts would be better
+Postman warns that a culture; seemingly unaware of how trivial and distracted
+it has become; is at risk of losing its moral compass, leading to a state of
+shallow and low-value communication. The main premise of his warning is that
+rather than an Orwellian dystopian future where society is controlled by a
+despotic surveillance state, the dystopia that Postman predicts would be better
 characterised by Aldous Huxley's Brave New World. A future where a simpleton
 proletariat has been renderred ineffectual by the pursuit of hedonism at the
 cost of all else.
@@ -89,13 +89,14 @@ and thus nourishes the belief in an independent world of mathematically
 measurable sequences." [@AOtD, p.12]. 
 
 This analogy does not
-help someone who is subject to the belief of quantifiable sequence in understanding
-his point. The thought of a world without clocks is an unimaginable dystopia.
-The positives that the clock have wrought greatly outweigh any possible drawbacks
-that I can conceive of. This may be the point entirely - just as the fish is
-likely unaware that it lives within water, the ability of the human mind to
-conceive of how it has been influenced by a technology that has been fully integrated
-through society may be similarly limited.
+help someone who is subject to the belief of quantifiable sequence in
+understanding his point. The thought of a world without clocks is an
+unimaginable dystopia. The positives that the clock have wrought greatly
+outweigh any possible drawbacks that I can conceive of. This may be the point
+entirely - just as the fish is likely unaware that it lives within water, the
+ability of the human mind to conceive of how it has been influenced by a
+technology that has been fully integrated through society may be similarly
+limited.
 
 Postman goes on to state that the clock has removed the concept of god from the
 meaning of time, so I am lost as to how to meaningfully rationalise his
@@ -104,10 +105,10 @@ time to the machinations of gears removes any sense of reverance or magical
 thought, although some would argue that the internals of an analogue clock
 are a thing of beauty and the trade of the watchmaker an art. Nonetheless
 the reduction of time to a gadget now worn on the wrist may have effects beyond
-a greater ability to manage time, possibly influencing our perception of our place in the
-universe. The comparison with television's replacement of print seems to mean
-that there are unintended consequences owing to the adoption of a novel
-technology that are perhaps poorly understood.
+a greater ability to manage time, possibly influencing our perception of our
+place in the universe. The comparison with television's replacement of print
+seems to mean that there are unintended consequences owing to the adoption of a
+novel technology that are perhaps poorly understood.
 
 #### 2. Media as Epistemology
 
@@ -131,29 +132,30 @@ commission produce a written statement that you have passed your examination
 at that. Our written statement would represent the "truth". Our oral agreement
 would be only a rumour." [@AOtD, p.24].
 
-Who could argue with that? Yet despite the passive aggression occasioned in academic
-assessment, the contrast between written and spoken discourse truth value may
-glaze over the context and purposes. The courtroom favours verbal testimony as
-an unadulterated recount of the past and motive, yet quickly commits this
-testimony to the written word via courtroom stenographers. An unfiltered
-account for a thesis would only serve as a draft and would require significant
-editing in order to test that the structure and content of the paper is robust.
+Who could argue with that? Yet despite the passive aggression occasioned in
+academic assessment, the contrast between written and spoken discourse truth
+value may glaze over the context and purposes. The courtroom favours verbal
+testimony as an unadulterated recount of the past and motive, yet quickly
+commits this testimony to the written word via courtroom stenographers. An
+unfiltered account for a thesis would only serve as a draft and would require
+significant editing in order to test that the structure and content of the
+paper is robust.
 
-Postman goes on to examine truth as a cultural prejudice for certain media. From
-tribal counsel's use of parable through Aristotle's deductive reasoning about
-the physical world. Postman rounds to the modern world's adherance to the
+Postman goes on to examine truth as a cultural prejudice for certain media.
+From tribal counsel's use of parable through Aristotle's deductive reasoning
+about the physical world. Postman rounds to the modern world's adherance to the
 quantifiable.
 
-"Many of our psychologists, sociologists, economists... will have numbers to tell
-them the truth or they will have nothing. Can you imagine, for example, a modern
-economist articulating truths about our standard of living by reciting a poem?"
-[@AOtD, p.26]
+"Many of our psychologists, sociologists, economists... will have numbers to
+tell them the truth or they will have nothing. Can you imagine, for example, a
+modern economist articulating truths about our standard of living by reciting a
+poem?" [@AOtD, p.26]
 
-While an entertaining diversion, I wonder if numbers can be considered a medium.
-It occurs to me that numbers are a language that can be expressed in a variety
-of media. An interesting perspective to be explored would have been the danger
-of an over-reliance on statistics as truth. The fact that statistics can be
-selectively deployed to make opposing arguments is of course, not a new one.
+While an entertaining diversion, I wonder if numbers can be considered a
+medium. It occurs to me that numbers are a language that can be expressed in a
+variety of media. An interesting perspective to be explored would have been the
+danger of an over-reliance on statistics as truth. The fact that statistics can
+be selectively deployed to make opposing arguments is of course, not a new one.
 
 :::{.callout-note}
 "Lies, damned lies, and statistics." *attribution debated*.
@@ -174,30 +176,31 @@ of reproducing the analysis and seriously examining the null hypothesis.
 #### 3. Typographic America
 
 The author uses this chapter to familiarise the reader with an abridged history
-of literacy from 17<sup>th</sup> century England and the United States to the modern day. Thanks
-primarily to the efforts of the churches, literacy among the general populace
-was understood to have been significantly higher than in the modern day populace. But with a decline in the relevance
-of the printed word, literacy rates have steadily declined over the previous century.
+of literacy from 17<sup>th</sup> century England and the United States to the
+modern day. Thanks primarily to the efforts of the churches, literacy among the
+general populace was understood to have been significantly higher than in the
+modern day populace. But with a decline in the relevance of the printed word,
+literacy rates have steadily declined over the previous century.
 
 17<sup>th</sup>
 century people were conditioned to spend long hours of leisure time focussed
-upon reading a single book. This mental fortitude affected their ability and predeliction
-for other feats of mental endurance. Debating halls were common across the country and
-accounts of debates extending long into the evenings were said to be common. The contrast
-between these discussions and the modern approach to televised debates must be striking.
-It is here that I have little to argue with Postman's position. It is undoubtedly true
-that television is a poor medium for long format discourse. In general, if a
-topic cannot be reduced to chunks of ten second soundbites, it generally makes
-for poor television.
+upon reading a single book. This mental fortitude affected their ability and
+predeliction for other feats of mental endurance. Debating halls were common
+across the country and accounts of debates extending long into the evenings
+were said to be common. The contrast between these discussions and the modern
+approach to televised debates must be striking. It is here that I have little
+to argue with Postman's position. It is undoubtedly true that television is a
+poor medium for long format discourse. In general, if a topic cannot be reduced
+to chunks of ten second soundbites, it generally makes for poor television.
 
 While television is an enjoyable entertainment device, the demands of its
 format aim to keep the viewer perpetually stimulated and do not imbue its
 audience with mental fortitude. Postman's position is that this lack of mental
 preparation against boredom leaves us struggling to achieve focus in many other
 contexts. These known limitations of television have given rise to the podcast
-format in recent years, where a type of long format debate has returned to public
-fora. Although whether this format will remain consistent in its aversion of
-advertisment as it grows remains to be seen. 
+format in recent years, where a type of long format debate has returned to
+public fora. Although whether this format will remain consistent in its
+aversion of advertisment as it grows remains to be seen. 
 
 #### 4. The Typographic Mind
 
@@ -287,8 +290,7 @@ subject to.
  "Twenty years ago, the question, does television shape culture or merely
  reflect it? held considerable interest for many scholars and social critics.
  The question has largely disappeared as television has gradually *become* our
- culture. This means, among other things, that we rarely talk about television..."
- [@AOtD, p.91].
+ culture." [@AOtD, p.91].
 
 As fish may be largely unaware of the water around them, we are immersed in TV
 culture and are generally oblivious to how this has mediated our thoughts. One
@@ -347,7 +349,8 @@ formats that it is nearly inescapable.
 #### 7. "Now... This"
 
 "For on television, nearly every half hour is a discrete event, separated in
-content, context and emotional texture from what precedes and follows it." [@AOtD, p.116]
+content, context and emotional texture from what precedes and follows it."
+[@AOtD, p.116]
 
 Postman applies this in what he refers to in its most embarassing form to the
 news of the day shows. Highlighting that the bite-sized updates my be broadly
@@ -356,8 +359,8 @@ emotion, in short - to entertain. Accompanied by attractive presenters,
 stirring music and interspersed with engaging commercials, Postman rightly
 points out that the viewer understands that even the most horrific article on
 the human impact of war should not upset the rest of their day. Quickly, the 
-viewer's palate will be cleansed in preparation for the next article in what has
-become a form of cultural voyeurism.
+viewer's palate will be cleansed in preparation for the next article in what
+has become a form of cultural voyeurism.
 
 Postman's point about the fragmented context of a TV schedule may be applied at
 a finer scale in related visual formats. Many studies have investigated
@@ -552,7 +555,8 @@ asks them to learn the eight parts of speech through the medium of rock music.
 Or if their social studies teacher sings to them the facts about the War of
 1812. Or if their physics comes to them on cookies and T-shirts. Indeed, they
 will expect it and thus will be well-prepared to receive their politics, their
-religion, their news and their commerce in the same delightful way" [@AOtD, p.179].
+religion, their news and their commerce in the same delightful way"
+[@AOtD, p.179].
 
 Curriculum-reform has faced a crisis in recent years - what should
 we teach children who now have the world's information in their pocket?
@@ -665,10 +669,6 @@ if they are not mutually exclusive and what if technology enables the worst of
 both worlds?
 
 ## Analysis and Evaluation
-
-...
-
-## Comparisons
 
 ...
 
