@@ -19,19 +19,17 @@ toc-depth: 4
  <figcaption>Image credit: <https://api.ndla.no/></figcaption>
 </figure>
 
-## Introduction
+## Summary
 
 As of today's date, Amusing Ourselves to Death (AOtD) scores an average of
 4.15 / 5.00 over 29.5k ratings on
 [goodreads](https://www.goodreads.com/book/show/74034.Amusing_Ourselves_to_Death).
 
-## Summary
-
 AOtD is a challenging read for a short book. It is heaped in cultural criticism
-and a pessimistic assessment of technological development that I would not
-recommend readily internalising without thoughtful evaluation. However, much
-of the critique is well-reasoned and although written in the 1980s, is possibly
-of greater relevance today than when first penned.
+and a pessimistic assessment of technological development. I would not
+recommend readily internalising the content without thoughtful evaluation.
+However, much of the critique is well-reasoned and although written in the
+1980s, is possibly of greater relevance today than when first penned.
 
 ### On the Author
 
@@ -45,39 +43,35 @@ Chairman of the University's Department for Culture and Communication.
 
 Postman's critique is that the widespread adoption of television has
 subversively influenced culture, human behaviour and intellect in ways that
-could not be foreseen. Unaware of the broad repercussions of immersing
-ourselves in TV pop culture, the standards for entertainment in this medium of
-communication have permeated through society, from the boardroom to the
-classroom. 
+could not be foreseen at the technology's inception. Unaware of the broad
+repercussions of immersing ourselves in TV pop culture, the standards for
+entertainment in this medium of communication have permeated through society,
+from the boardroom to the classroom. 
 
-Postman warns that a culture; seemingly unaware of how trivial and distracted
-it has become; is at risk of losing its moral compass, leading to a state of
-shallow and low-value communication. The main premise of his warning is that
-rather than an Orwellian dystopian future where society is controlled by a
-despotic surveillance state, the dystopia that Postman predicts would be better
-characterised by Aldous Huxley's Brave New World. A future where a simpleton
-proletariat has been renderred ineffectual by the pursuit of hedonism at the
-cost of all else.
+Postman warns that American culture; seemingly unaware of how trivial and
+distracted it has become; is at risk of losing its moral compass. The main
+premise of his warning is that rather than an Orwellian dystopian future where
+society is controlled by a despotic surveillance state, a more realistic
+outcome would be characterised by Aldous Huxley's Brave New World
+@BraveNewWorld. A future where a simpleton proletariat has been renderred
+ineffectual by the pursuit of hedonism at the cost of all else.
 
-The book is organised into 2 parts and 11 chapters.
-
-Part 1 achieves the scale of the apparent decline in literacy, logic and debate
-brought about by movement away from a largely print-based culture to one that
-celebrates moving pictures.
-
-Part 2 argues that aspects of TV as a medium impose limitations on the length
-of exposition and the complexity of discourse that has widely influenced our
-lives. Postman exemplifies how this simplification of our public discourse has
-declined, with considerations from many important domains of modern culture.
+The book is organised into 2 parts and 11 chapters. Part 1 establishes the scale
+of the apparent decline in literacy, logic and debate brought about by the
+decline of a largely print-based culture. Part 2 argues that aspects of TV as a
+medium impose limitations on the length of exposition and complexity of
+language that have widely influenced our lives. Postman exemplifies how this
+simplification of our public discourse has declined, with considerations from
+many domains.
 
 ### Part 1
 
-The book begins with a treatment of Huxley's warning in a brave new world. A
+The book begins with a treatment of Huxley's warning in Brave New World. A
 future in which civilisation is threatened by an over-supply of information and
 a reduction of the peoples' ability to identify that which has meaning. Postman
 suggests that Western culture had been *en guarde* for signs of Orwellian
-oppression but has not adopted a defence against the possibility that our own
-ignorance may oppress ourselves.
+oppression but has not adopted a defence against the possibility that we may be
+oppressed by our own ignorance.
 
 #### 1. The Medium Is the Metaphor
 
@@ -88,10 +82,9 @@ device used for measuring time, but that it "dissociates time from human events
 and thus nourishes the belief in an independent world of mathematically
 measurable sequences." [@AOtD, p.12]. 
 
-This analogy does not
-help someone who is subject to the belief of quantifiable sequence in
-understanding his point. The thought of a world without clocks is an
-unimaginable dystopia. The positives that the clock have wrought greatly
+This analogy does not help someone who is subject to the belief of quantifiable
+sequence in understanding his point. The thought of a world without clocks is
+an unimaginable dystopia. The positives that the clock have wrought greatly
 outweigh any possible drawbacks that I can conceive of. This may be the point
 entirely - just as the fish is likely unaware that it lives within water, the
 ability of the human mind to conceive of how it has been influenced by a
@@ -99,16 +92,20 @@ technology that has been fully integrated through society may be similarly
 limited.
 
 Postman goes on to state that the clock has removed the concept of god from the
-meaning of time, so I am lost as to how to meaningfully rationalise his
-analogy. My takeaway is that a consequence of reducing the concept of
-time to the machinations of gears removes any sense of reverance or magical
-thought, although some would argue that the internals of an analogue clock
-are a thing of beauty and the trade of the watchmaker an art. Nonetheless
-the reduction of time to a gadget now worn on the wrist may have effects beyond
-a greater ability to manage time, possibly influencing our perception of our
-place in the universe. The comparison with television's replacement of print
-seems to mean that there are unintended consequences owing to the adoption of a
-novel technology that are perhaps poorly understood.
+meaning of time. Unable to place a god as the cause of time, I am lost as to
+how to meaningfully rationalise his analogy. I surmise that Postman's point is
+that as a consequence of reducing the concept of time to the machinations of
+gears, removes any sense of reverance or magical thought. Although some would
+argue that the internals of an analogue clock are a thing of beauty and the
+trade of the watchmaker an art. Nonetheless, the reduction of time to a gadget
+now worn on the wrist may have effects beyond a greater ability to manage time,
+possibly influencing our perception of our place in the universe. The
+comparison with television's replacement of print seems to mean that there are
+unintended consequences owing to the adoption of a novel technology that are
+perhaps poorly understood. In my opinion, this is a weak analogy, lacking in
+consequence. I don't believe it helps the reader orient to Postman's main
+point. The negative consequences of the clock; whatever they may be; must now
+be broadly accepted as part of human existence. 
 
 #### 2. Media as Epistemology
 
@@ -121,10 +118,10 @@ An interesting juxtaposition is explored - that in certain circumstances, the
 medium of spoken word is thought to be of higher merit than the written, such
 as in most modern courtrooms where verbal rather than written testimony is
 required. However, Postman is able to draw on his experience in academia to
-illustrate that the reverse is true in the assessment of a final year thesis,
+illustrate that the reverse is true in the assessment of a thesis,
 where a candidate had attempted to cite ephemereal evidence; a conversation
 or interview with an academic. In this example the result had been a witty
-retort from the review panel that:
+retort from the review panel,
 
 "...we are sure you would prefer that this
 commission produce a written statement that you have passed your examination
@@ -132,18 +129,17 @@ commission produce a written statement that you have passed your examination
 at that. Our written statement would represent the "truth". Our oral agreement
 would be only a rumour." [@AOtD, p.24].
 
-Who could argue with that? Yet despite the passive aggression occasioned in
-academic assessment, the contrast between written and spoken discourse truth
-value may glaze over the context and purposes. The courtroom favours verbal
+Who could argue with that? The contrast between written assessment and courtroom testimony's truth
+value glazes over the context and purposes of these discourse formats. The courtroom favours verbal
 testimony as an unadulterated recount of the past and motive, yet quickly
-commits this testimony to the written word via courtroom stenographers. An
+commits this testimony to the written word via courtroom stenographers. A raw,
 unfiltered account for a thesis would only serve as a draft and would require
 significant editing in order to test that the structure and content of the
 paper is robust.
 
 Postman goes on to examine truth as a cultural prejudice for certain media.
 From tribal counsel's use of parable through Aristotle's deductive reasoning
-about the physical world. Postman rounds to the modern world's adherance to the
+about the physical world, Postman finally rounds to the modern world's adherance to the
 quantifiable.
 
 "Many of our psychologists, sociologists, economists... will have numbers to
@@ -151,9 +147,9 @@ tell them the truth or they will have nothing. Can you imagine, for example, a
 modern economist articulating truths about our standard of living by reciting a
 poem?" [@AOtD, p.26]
 
-While an entertaining diversion, I wonder if numbers can be considered a
+I wonder if numbers can be considered a
 medium. It occurs to me that numbers are a language that can be expressed in a
-variety of media. An interesting perspective to be explored would have been the
+variety of media. Postman could have explored instead the
 danger of an over-reliance on statistics as truth. The fact that statistics can
 be selectively deployed to make opposing arguments is of course, not a new one.
 
@@ -162,16 +158,20 @@ be selectively deployed to make opposing arguments is of course, not a new one.
 :::
 
 The use of numbers to oversimplify, diminish context and misdirect can also be
-a misuse of data visualisation.
+a misuse of data visualisation. On the nature of bias in the chart,
 
 "...it makes the viewer believe that they can see everything, all at once, from
 an imaginary and impossible standpoint. But it’s also a trick because what
 appears to be everything, and what appears to be neutral, is always ... a
 partial perspective." [@DataFeminism, chapter 3]. 
 
-Perhaps all of us are guilty of accepting a viewpoint based on the convincing
+All of us must be guilty of accepting a viewpoint based on the convincing
 support of charts or numbers, without undertaking the necessary due diligence
-of reproducing the analysis and seriously examining the null hypothesis.
+of reproducing the analysis and seriously examining the assumptions and
+potential underlying biases. The complexity of society and the volume of
+analysis we generate make it impossible not to do so. The presumption is that 
+those people charged with the responsibility of evidence-based policy design
+are undertaking their due diligence on behalf of us all. 
 
 #### 3. Typographic America
 
