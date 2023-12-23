@@ -53,8 +53,8 @@ distracted it has become; is at risk of losing its moral compass. The main
 premise of his warning is that rather than an Orwellian dystopian future where
 society is controlled by a despotic surveillance state, a more realistic
 outcome would be characterised by Aldous Huxley's Brave New World
-@BraveNewWorld. A future where a simpleton proletariat has been renderred
-ineffectual by the pursuit of hedonism at the cost of all else.
+@BraveNewWorld. A future where a simpleton proletariat has been rendered
+ineffective by the pursuit of hedonism at the cost of all else.
 
 The book is organised into 2 parts and 11 chapters. Part 1 establishes the
 scale of the apparent decline in literacy, logic and debate brought about by
@@ -84,7 +84,7 @@ measurable sequences." [@AOtD, p.12].
 
 This analogy does not help someone who is subject to the belief of quantifiable
 sequence in understanding his point. The thought of a world without clocks is
-an unimaginable dystopia. The positives that the clock have wrought greatly
+an unimaginable dystopia. The positives that the clock has wrought greatly
 outweigh any possible drawbacks that I can conceive of. This may be the point
 entirely - just as the fish is likely unaware that it lives within water, the
 ability of the human mind to conceive of how it has been influenced by a
@@ -95,7 +95,7 @@ Postman goes on to state that the clock has removed the concept of god from the
 meaning of time. Unable to place a god as the cause of time, I am lost as to
 how to meaningfully rationalise his analogy. I surmise that Postman's point is
 that as a consequence of reducing the concept of time to the machinations of
-gears, removes any sense of reverance or magical thought. Although some would
+gears, removes any sense of reverence or magical thought. Although some would
 argue that the internals of an analogue clock are a thing of beauty and the
 trade of the watchmaker an art. Nonetheless, the reduction of time to a gadget
 now worn on the wrist may have effects beyond a greater ability to manage time,
@@ -109,7 +109,7 @@ be broadly accepted as part of human existence.
 
 #### 2. Media as Epistemology
 
-In this chapter, Postman considers the nature of truth, the acquirement of
+In this chapter, Postman considers the nature of truth, the acquisition of
 knowledge and how this has changed with the cultural trend toward visual media.
 The author posits the concept that all media are not equal in their ability to
 convey meaning and truth.
@@ -119,9 +119,9 @@ medium of spoken word is thought to be of higher merit than the written, such
 as in most modern courtrooms where verbal rather than written testimony is
 required. However, Postman is able to draw on his experience in academia to
 illustrate that the reverse is true in the assessment of a thesis,
-where a candidate had attempted to cite ephemereal evidence; a conversation
-or interview with an academic. In this example the result had been a witty
-retort from the review panel,
+where a candidate had attempted to cite ephemeral evidence; a conversation or
+interview with an academic. In this example the result had been a witty retort
+from the review panel,
 
 "...we are sure you would prefer that this
 commission produce a written statement that you have passed your examination
@@ -138,9 +138,9 @@ thesis would only serve as a draft and would require significant editing in
 order to test that the structure and content of the paper is robust.
 
 Postman goes on to examine truth as a cultural prejudice for certain media.
-From tribal counsel's use of parable through Aristotle's deductive reasoning
+From tribal counsel's use of parables through Aristotle's deductive reasoning
 about the physical world, Postman finally rounds to the modern world's
-adherance to the quantifiable.
+adherence to the quantifiable.
 
 "Many of our psychologists, sociologists, economists... will have numbers to
 tell them the truth or they will have nothing. Can you imagine, for example, a
@@ -185,14 +185,14 @@ century.
 
 17<sup>th</sup> century people were conditioned to spend long hours of leisure
 time focussed upon reading a single book. This mental fortitude affected their
-ability and predeliction for other feats of mental endurance. Debating halls
+ability and predilection for other feats of mental endurance. Debating halls
 were common across the country and accounts of debates extending long into the
 evenings were said to be common. The contrast between these discussions and the
 modern approach to televised debates must be striking. It is here that I have
 little to argue with Postman's position. It is undoubtedly true that television
-does nothing to prepare viewers for bouts of prolonged conentration. If a topic
-cannot be reduced to chunks of ten second soundbites, it generally makes for
-poor television.
+does nothing to prepare viewers for bouts of prolonged concentration. If a
+topic cannot be reduced to chunks of ten second sound bites, it generally makes
+for poor television.
 
 While television is an enjoyable entertainment device, the demands of its
 format aim to keep the viewer perpetually stimulated and do not imbue its
@@ -231,17 +231,17 @@ arguments, their knowledge as codified in the printed word." [@AOtD, p.70].
 Recalling any of the notable icons of the twentieth century would entail
 instantly recalling their image rather than the content of their words or
 actions. Political campaigns have been won and lost at the hands of
-advertisment budgets, party political broadcasts and impactful slogans. It
+advertisement budgets, party political broadcasts and impactful slogans. It
 appears that we are in the midst of fast food politics, a generation of the
 slogan-oriented, averse to analysis of manifesto.
 
 #### 5. The Peek-a-Boo World
 
 Here, the author establishes the "information-action ratio", a concept that
-considers the relevance of a communication to person receiving it.
+considers the relevance of a communication to the person receiving it.
 
- "...how often does it occur that information provided you on morning radio or
- television, or in the morning newspaper, causes you to alter your plans for
+ "...how often does it occur that information provided to you on morning radio
+ or television, or in the morning newspaper, causes you to alter your plans for
  the day, or to take some action you would not otherwise have taken, or
  provides insight into some problem you are required to solve?" [@AOtD, p.78]
 
@@ -298,7 +298,7 @@ of media are to dominate the future. I would argue that the addictive
 properties of the mobile phone tend to be those that ape features of
 television, albeit a television that can follow you out of your living room,
 accompany you on your dog walk and keep you enthralled on your drive to work.
-It seems that the human predeliction for entertainment can subjugate notions of
+It seems that the human predilection for entertainment can subjugate notions of
 personal safety and consideration for others. 
 
 ### Part 2
@@ -307,7 +307,7 @@ personal safety and consideration for others.
 
 This chapter best represents the core of Postman's criticism. He elaborates on
 how entertainment has become 'baked-in' to television's format, even in the
-more sober pragramming. As the author puts it, "...entertainment is the
+more sober programming. As the author puts it, "...entertainment is the
 supra-ideology of all discourse on television" [@AOtD, p.102]. Postman argues
 that this exaltation of entertainment has gone on to influence the wider
 culture.
@@ -352,7 +352,7 @@ formats that it is nearly inescapable.
 content, context and emotional texture from what precedes and follows it."
 [@AOtD, p.116]
 
-Postman applies this in what he refers to in its most embarassing form to the
+Postman applies this in what he refers to in its most embarrassing form to the
 news of the day shows. Updates may be broadly
 grouped as 'politics' or 'sport' but are scheduled to stimulate attention and
 emotion, in short - to entertain. Accompanied by attractive presenters,
@@ -402,11 +402,11 @@ religion and how the norms of the television medium have influenced the content
 provided by religious programming. When AOtD was written in the 1980s,
 Postman observed that the most viewed religious content at the time had become
 focussed on dealing with the extremes of the human condition. Commercials
-showing people wracked with guilt or in desparate conditions and turning to the
+showing people wracked with guilt or in desperate conditions and turning to the
 church for solace. Postman's observation that extreme emotions translate to
 higher ratings was astute, predicting the trend for American TV evangelicals,
-of which the most viral have now become immortalised in memes rather than the
-by rapture that they tend to call for.
+of which the most viral have now become immortalised in memes rather than by
+the rapture that they tend to call for.
 
 <div class="tenor-gif-embed center" data-postid="21109768" data-share-method="host" data-aspect-ratio="1.77778" data-width="50%">
     <a href="https://tenor.com/view/ken-copeland-kenneth-copeland-lil-kc-covid19-covid19preacher-gif-21109768">Ken Copeland Kenneth Copeland GIF</a>
@@ -419,11 +419,11 @@ Which brings me to Postman's next concern about religious show business - the
 unavoidable celebrity that the clerics attract. Coupled with the monetisation
 of modern religious viewing, a malaise of spiritual bankruptcy has been
 accepted in this most visible element of the modern church. Celebrity pastors
-become extremely wealthy while serving explosive rhetoric, using advertisment
-campaigns designed to prey upon misery, insecurity and vulnerability. It is
-undoubtable that at its worst, modern religious programming in the United
-States has become a caricature, a ridiculous spectacle of extremes. I note that
-the sort of viewing that I am selectively referring to here may not reflect all
+become extremely wealthy while serving explosive rhetoric, using advertisement
+campaigns designed to prey upon misery, insecurity and vulnerability.
+Undoubtedly, at its worst, modern religious programming in the United States
+has become a caricature, a ridiculous spectacle of extremes. I note that the
+sort of viewing that I am selectively referring to here may not reflect all
 shows of this nature. In stark contrast, the BBC's Songs of Praise could not be
 characterised as extreme in any way - largely due to the BBC's public
 broadcasting purpose, it is not subject to the format pressures that
@@ -458,7 +458,7 @@ debates had comprehended the content?
 2. What evidence is there that the mental faculties of the Lincoln-Douglas
 debates' audience were representative of the average American?
 
-These two key questions cannot be answered by historical account alone.
+These two key questions cannot be answered by historical accounts alone.
 Without testing and surveying the audience immediately on exiting the debates,
 it would be incorrect to draw conclusions that could be generalised to a larger
 population. While it may be that societal and technological change may have
@@ -495,13 +495,13 @@ basket?
 
 Of all the different domains of society that Postman explores through his lens
 of discounted discourse, it was the topic of education that resonated the most
-with me. I should divulge that I have previously spent nearly ten years in
+with me. I should divulge that I have previously spent nearly ten years
 teaching high school science within the British education system. 
 
 My initial impression is that Postman is no fan of Sesame Street. As a child of
 the '80s, this is not a strong start. While not wholly critical of the
 Muppets-inspired preschool 'edutainment' show in its potency as an entertaining
-pastime for pre-schoolers, Postman finds the  precedent it sets for presenting
+pastime for preschoolers, Postman finds the  precedent it sets for presenting
 television as a medium for education disagreeable.
 
 In this chapter, the author sets out what I consider to be the most concerning
@@ -510,12 +510,12 @@ ability to displace education with entertainment. This resonates with my
 experience in education during a period of technological advancement that must
 have supplanted television's ability to interfere with intellectual
 advancement - the multimedia mobile phone. Postman's technological scepticism
-in the 1980s may have been interpreted as aniquated at the time but to my mind
-this chapter is embued with a prophetic quality. 
+in the 1980s may have been interpreted as antiquated at the time but to my mind
+this chapter is imbued with a prophetic quality. 
 
 "...television has by its power to control the time, attention and cognitive
 habits of our youth gained the power to control their education. This is why I
-think it accurate to call television a curriculum... whose purpose is to
+think it is accurate to call television a curriculum... whose purpose is to
 influence, teach, train or cultivate the mind and character of  youth.
 Television, of course, does exactly that, and does it relentlessly. In so
 doing, it competes successfully with the school curriculum... it damn near
@@ -565,7 +565,7 @@ am compelled to disclose this last example, having successfully transitioned
 away from teaching to analysis in more recent years.
 
 How problematic is all this change? Human recollection was never our species'
-strong suit - just ask a legal professional about the fallability of human
+strong suit - just ask a legal professional about the fallibility of human
 memory. Better to outsource that to the machine, right? It is certainly
 convenient, and as someone who considers themselves a bit of a professional
 Googler, it's undeniable that it is at times a tool for good. But is it a good
@@ -614,12 +614,12 @@ mitigate the role television plays in public life. But I believe that this is
 not a possibility in America" [@AOtD, p.184].
 
 Postman makes an interesting point about directionality in technological
-innovation. When a novel product has non-trival, immediate and tangible
+innovation. When a novel product has non-trivial, immediate and tangible
 benefits you may expect it to be readily adopted. Once the economies of scale
 have been applied to said product and the reduction in financial cost has
 removed the significant barrier to accessing those benefits, I agree that our
 ability to reverse such widespread adoption is limited. Demand and profiteering
-form an economic valve that maintain the product evolution and consequent
+form an economic valve that maintains the product evolution and consequent
 sales. The fact that the consequences of all this activity may be measured over
 a lifetime while the benefits may be observed within an instant is a dichotomy
 that the human mind appears poorly equipped to deal with. Technology may be our
@@ -696,10 +696,10 @@ mothers?
 To undertake an assessment of the full impact of Edison's filament lamp on
 society would have been impossible at that time. It would have required an
 evaluation of innovations that had yet to exist and processes that were yet to
-be understood. This would include a multitide of missing jigsaw pieces, such as
+be understood. This would include a multitude of missing jigsaw pieces, such as
 a national-scale power grid (that would only come to be some half a century
 after Edison perfected his initial design), an awareness of the greenhouse
-effect and how electricity generated by fossil fuels contibuted to this
+effect and how electricity generated by fossil fuels contribute to this
 (legitimacy still argued in some circles), the study of human circadian rhythm
 and how this would be disrupted by the invention, an evaluation of the impact
 of light pollution and so on. At the same time, the case for the technology
@@ -715,7 +715,7 @@ and safe disposal of semiconductors.
 The effort described above may have delayed the mass rollout of the lightbulb
 by half a century or more. Time therein where the world literally sits in the
 dark, awaiting the bureaucracy to arrive at a decision. Preparing the world for
-a transformational technology may be considered an intractible problem. The
+a transformational technology may be considered an intractable problem. The
 Collingridge dilemma states that until a technology has been embedded in a
 society, there is not enough information to provide an informed assessment of
 its risk, and then as a consequence of the widespread adoption, an inability to
@@ -726,7 +726,7 @@ current evidence of risk would be a vast improvement over a system accelerated
 by profit and disregard for all else. Political lobbying, the reproducibility
 crisis in many fields of research and our chronic inability to identify and
 prosecute fraudulent behaviour have resulted in an economy where the cost of
-hindering technological progress outweigh the consequences to its
+hindering technological progress outweighs the consequences to its
 proliferation. To put it bluntly, we have a prenatal societal capacity to defer
 gratification.
 
@@ -760,9 +760,9 @@ history, the role of the sceptic may be more vital than ever. It is not enough
 to sway opinion by preaching calamity or pigeonholing criticism as antiquated
 techno-scepticism. Finding effective modes of discourse to help promulgate AI
 awareness is the route to ethically achieve the integration of this latest
-transformative technology. The only means to navigating this milestone must be
+transformative technology. The only means to navigate this milestone must be
 to deepen our understanding of the technology and each other. To this end I
-would encourage the use open source AI tools, to discuss the implications,
+would encourage the use of open source AI tools, to discuss the implications,
 benefits, limitations, biases and drawbacks. Educate yourself on the direction
 of the research and to attempt to stay abreast of the news in the sector, while
-avoiding the tabloid sensationalism. 
+avoiding tabloid sensationalism. 
