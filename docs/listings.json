@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blogs/07-schedule-deploy-shinyapps.html",
       "/book-reviews/03-amusing-ourselves-to-death.html",
       "/blogs/06-working-with-ONS-open-geo-portal.html",
       "/blogs/05-signed-commits.html",
@@ -33,6 +34,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/07-schedule-deploy-shinyapps.html",
       "/blogs/06-working-with-ONS-open-geo-portal.html",
       "/blogs/05-signed-commits.html",
       "/blogs/04-starfield-resources.html",

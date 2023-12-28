@@ -1,0 +1,35 @@
+---
+title: "Scheduled Deployment to Shinyapps.io"
+author: "Rich Leyshon"
+date: last-modified
+description: "How to ingest data using Python requests & ArcGIS REST API."
+categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+    - How-to
+    - Python Shiny
+    - CI/CD
+    - GitHub
+image: https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Prague_astronomical_clock_%286365120743%29.jpg/800px-Prague_astronomical_clock_%286365120743%29.jpg?20150530221207
+image-alt: "Prague astronomical clock"
+toc: true
+---
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Prague_astronomical_clock_%286365120743%29.jpg/800px-Prague_astronomical_clock_%286365120743%29.jpg?20150530221207"></img>
+  <figcaption style="text-align:center;">[Wikimedia commons](https://commons.wikimedia.org/wiki/File:Prague_astronomical_clock_(6365120743).jpg): [Creative Commons](https://creativecommons.org/licenses/by/2.0/deed.en)</figcaption>
+</figure>
+
+## Introduction
+
+
+## The Scenario
+
+
+## What you'll need:
+
+- [ ] A permissive firewall (whitelist the domain "https://geoportal.statistics.gov.uk/" if necessary)
+- [ ] Python package manager (eg `pip`)
+- [ ] Python environment manager (eg `venv`, `poetry` etc)
+- [ ] Python requirements:
+
+
+
+<p id=fin><i>fin!</i></p>
