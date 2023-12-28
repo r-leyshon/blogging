@@ -64,6 +64,52 @@ rsconnect-python
 
 ## Developing the application
 
-## Automating the Deployment
+The steps in this guide result in a
+[minimal application](https://richleysh84.shinyapps.io/scheduled-deployment/)
+that reports the time that it was deployed to shinyapps.io.
+
+### Configuring the Development Environment
+
+1. Create a new repository or; if you would rather skip the application
+development; [clone this repository](https://github.com/r-leyshon/automate-shinyapps-deploy)
+and proceed to the [deployment stage](#deploying-the-application).
+2. Clone the repository into your local development environment.
+3. Create a clean virtual environment with python 3.11. At the time of writing,
+this is the most current version of python available to shinyapps.io servers.
+4. Activate the environment.
+5. Install the requirements.txt dependencies.
+
+### Prepare the Data
+
+The job prepares the database on which the application will depend. In this
+trivial example, we simply save the current time as a formatted string to a
+text file. This simple artifact will later be read into a shiny app to present
+as the time of deployment.
+
+1. Create a python file called `save_time.py`.
+2. Paste the following content into `save_time.py` and hit save:
+
+```{.python filename=save_time.py eval=false}
+from datetime import datetime
+nw = datetime.now()
+nw = datetime.strftime(nw, "%Y-%m-%d %H:%M:%S")
+with open("saved_time.txt", "w") as f:
+    f.write(nw)
+    f.close()
+print(f"Saved time is {nw}")
+
+```
+3. Run `python3 save_time.py` in the terminal. A `saved_time.txt` file should
+appear in the project root.
+
+### Present the Data
+
+An application is needed to present the data to your user, allowing them to 
+query, visualise and interact with the data in ways that you specify. In this
+example, the app will simply read in the date string created in the section
+[Prepare the Data](#prepare-the-data) and present it to the user as the time of
+deployment.
+
+## Deploying the Application
 
 <p id=fin><i>fin!</i></p>

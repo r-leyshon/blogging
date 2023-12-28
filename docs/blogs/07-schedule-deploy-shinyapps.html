@@ -178,8 +178,13 @@ div.csl-indent {
   <li><a href="#the-scenario" id="toc-the-scenario" class="nav-link" data-scroll-target="#the-scenario">The Scenario</a></li>
   <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What you’ll need:</a></li>
   </ul></li>
-  <li><a href="#developing-the-application" id="toc-developing-the-application" class="nav-link" data-scroll-target="#developing-the-application">Developing the application</a></li>
-  <li><a href="#automating-the-deployment" id="toc-automating-the-deployment" class="nav-link" data-scroll-target="#automating-the-deployment">Automating the Deployment</a></li>
+  <li><a href="#developing-the-application" id="toc-developing-the-application" class="nav-link" data-scroll-target="#developing-the-application">Developing the application</a>
+  <ul class="collapse">
+  <li><a href="#configuring-the-development-environment" id="toc-configuring-the-development-environment" class="nav-link" data-scroll-target="#configuring-the-development-environment">Configuring the Development Environment</a></li>
+  <li><a href="#prepare-the-data" id="toc-prepare-the-data" class="nav-link" data-scroll-target="#prepare-the-data">Prepare the Data</a></li>
+  <li><a href="#present-the-data" id="toc-present-the-data" class="nav-link" data-scroll-target="#present-the-data">Present the Data</a></li>
+  </ul></li>
+  <li><a href="#deploying-the-application" id="toc-deploying-the-application" class="nav-link" data-scroll-target="#deploying-the-application">Deploying the Application</a></li>
   </ul>
 </nav>
     </div>
@@ -277,9 +282,47 @@ Caution
 </section>
 <section id="developing-the-application" class="level2">
 <h2 class="anchored" data-anchor-id="developing-the-application">Developing the application</h2>
+<p>The steps in this guide result in a <a href="https://richleysh84.shinyapps.io/scheduled-deployment/">minimal application</a> that reports the time that it was deployed to shinyapps.io.</p>
+<section id="configuring-the-development-environment" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-the-development-environment">Configuring the Development Environment</h3>
+<ol type="1">
+<li>Create a new repository or; if you would rather skip the application development; <a href="https://github.com/r-leyshon/automate-shinyapps-deploy">clone this repository</a> and proceed to the <a href="#deploying-the-application">deployment stage</a>.</li>
+<li>Clone the repository into your local development environment.</li>
+<li>Create a clean virtual environment with python 3.11. At the time of writing, this is the most current version of python available to shinyapps.io servers.</li>
+<li>Activate the environment.</li>
+<li>Install the requirements.txt dependencies.</li>
+</ol>
 </section>
-<section id="automating-the-deployment" class="level2">
-<h2 class="anchored" data-anchor-id="automating-the-deployment">Automating the Deployment</h2>
+<section id="prepare-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-the-data">Prepare the Data</h3>
+<p>The job prepares the database on which the application will depend. In this trivial example, we simply save the current time as a formatted string to a text file. This simple artifact will later be read into a shiny app to present as the time of deployment.</p>
+<ol type="1">
+<li>Create a python file called <code>save_time.py</code>.</li>
+<li>Paste the following content into <code>save_time.py</code> and hit save:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>save_time.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" data-eval="false"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>nw <span class="op">=</span> datetime.now()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>nw <span class="op">=</span> datetime.strftime(nw, <span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st"> %H:%M:%S"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"saved_time.txt"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    f.write(nw)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    f.close()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Saved time is </span><span class="sc">{</span>nw<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Run <code>python3 save_time.py</code> in the terminal. A <code>saved_time.txt</code> file should appear in the project root.</li>
+</ol>
+</section>
+<section id="present-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="present-the-data">Present the Data</h3>
+<p>An application is needed to present the data to your user, allowing them to query, visualise and interact with the data in ways that you specify. In this example, the app will simply read in the date string created in the section <a href="#prepare-the-data">Prepare the Data</a> and present it to the user as the time of deployment.</p>
+</section>
+</section>
+<section id="deploying-the-application" class="level2">
+<h2 class="anchored" data-anchor-id="deploying-the-application">Deploying the Application</h2>
 <p id="fin">
 <i>fin!</i>
 </p>
