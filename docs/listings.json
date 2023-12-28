@@ -4,15 +4,15 @@
     "items": [
       "/book-reviews/03-amusing-ourselves-to-death.html",
       "/blogs/06-working-with-ONS-open-geo-portal.html",
-      "/book-reviews/02-algorithms-to-live-by.html",
       "/blogs/05-signed-commits.html",
       "/music-reviews/02-zelda-and-chill.html",
-      "/blogs/01-state-of-pyshiny.html",
+      "/book-reviews/02-algorithms-to-live-by.html",
       "/blogs/04-starfield-resources.html",
-      "/blogs/02-getting-started-pyshiny.html",
       "/blogs/03-quarto-github-actions.html",
       "/music-reviews/01-ghostrunner-ost.html",
-      "/book-reviews/01-deep-work.html"
+      "/book-reviews/01-deep-work.html",
+      "/blogs/01-state-of-pyshiny.html",
+      "/blogs/02-getting-started-pyshiny.html"
     ]
   },
   {
@@ -35,10 +35,10 @@
     "items": [
       "/blogs/06-working-with-ONS-open-geo-portal.html",
       "/blogs/05-signed-commits.html",
-      "/blogs/01-state-of-pyshiny.html",
       "/blogs/04-starfield-resources.html",
-      "/blogs/02-getting-started-pyshiny.html",
-      "/blogs/03-quarto-github-actions.html"
+      "/blogs/03-quarto-github-actions.html",
+      "/blogs/01-state-of-pyshiny.html",
+      "/blogs/02-getting-started-pyshiny.html"
     ]
   }
 ]

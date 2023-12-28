@@ -2,7 +2,7 @@
 title: "Amusing Ourselves to Death"
 subtitle: "Public Discourse in the Age of Show Business"
 author: "Rich Leyshon"
-date: last-modified
+date: December 23 2023
 description: "Reflecting on Neil Postman's criticism of modern culture."
 categories:        
     - Non-fiction

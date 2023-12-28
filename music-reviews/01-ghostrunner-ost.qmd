@@ -2,7 +2,7 @@
 title: "Ghostrunner"
 subtitle: "Original Soundtrack"
 author: "Rich Leyshon"
-date: last-modified
+date: September 5 2023
 description: "A review of the soundtrack to the 2020 hit video game
 Ghostrunner, composed by Daniel Deluxe."
 categories:
