@@ -17,3 +17,18 @@ build from this directory, instead of root.
 gitignores will blanket ignore a docs folder.
 * Quarto deletes any markdown file with the extension `.MD` on render, but not
 files with the extension `.md`.
+
+## Secrets
+
+In order to render the music-reviews, you will need to configure an application
+with the [Spotify Developer API](https://developer.spotify.com/dashboard/) and
+retrieve a valid client ID and secret. Store these in a gitignored 
+`.secrets.toml` file in
+the project root as below:
+
+```
+[spotify]
+client_id = "<INSERT_CLIENT_ID>"
+client_secret = "<INSERT_CLIENT_SECRET>"
+
+```
