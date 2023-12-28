@@ -23,7 +23,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -119,9 +172,14 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#intended-audience" id="toc-intended-audience" class="nav-link" data-scroll-target="#intended-audience">Intended Audience</a></li>
   <li><a href="#the-scenario" id="toc-the-scenario" class="nav-link" data-scroll-target="#the-scenario">The Scenario</a></li>
   <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What you’ll need:</a></li>
+  </ul></li>
+  <li><a href="#developing-the-application" id="toc-developing-the-application" class="nav-link" data-scroll-target="#developing-the-application">Developing the application</a></li>
+  <li><a href="#automating-the-deployment" id="toc-automating-the-deployment" class="nav-link" data-scroll-target="#automating-the-deployment">Automating the Deployment</a></li>
   </ul>
 </nav>
     </div>
@@ -176,26 +234,71 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This guide will walk you through the process of using GitHub Actions to schedule the update of a python shiny application and subsequent publication to the shinyapps.io <span class="citation" data-cites="ShinyAppsIO"><a href="#ref-ShinyAppsIO" role="doc-biblioref">[1]</a></span> service. The example used in this article is trivial and the <a href="https://github.com/r-leyshon/automate-shinyapps-deploy">source code can be inspected here</a>. This guide intends to help the casual developer keep their application data up-to-date.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The tooling used in this article may not suit all requirements. GitHub Actions and Shinyapps.io all provide free tier services, allowing for equitable access. These services are ideal for prototyping purposes but come with limitations that may render them unsuitable for your purposes. For more information on the features of these services, please consult the Shinyapps.io features <span class="citation" data-cites="ShinyAppsIOFeatures"><a href="#ref-ShinyAppsIOFeatures" role="doc-biblioref">[2]</a></span> and the GitHub Actions documentation <span class="citation" data-cites="GitHubActions"><a href="#ref-GitHubActions" role="doc-biblioref">[3]</a></span>.</p>
+</div>
+</div>
+<section id="intended-audience" class="level3">
+<h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
+<p>An experienced python and git practitioner, able to create and manage a virtual environment but less familiar with the shinyapps.io service or GitHub Actions.</p>
 </section>
-<section id="the-scenario" class="level2">
-<h2 class="anchored" data-anchor-id="the-scenario">The Scenario</h2>
+<section id="the-scenario" class="level3">
+<h3 class="anchored" data-anchor-id="the-scenario">The Scenario</h3>
+<p>You have or are considering building a dynamic application, presenting the latest view of some data to your users. You would like to automate the data retrieval and application publication processes.</p>
 </section>
-<section id="what-youll-need" class="level2">
-<h2 class="anchored" data-anchor-id="what-youll-need">What you’ll need:</h2>
+<section id="what-youll-need" class="level3">
+<h3 class="anchored" data-anchor-id="what-youll-need">What you’ll need:</h3>
 <ul class="task-list">
-<li><input type="checkbox">A permissive firewall (whitelist the domain “https://geoportal.statistics.gov.uk/” if necessary)</li>
+<li><input type="checkbox">A GitHub account</li>
+<li><input type="checkbox">A shinyapps.io account</li>
+<li><input type="checkbox">A permissive firewall</li>
 <li><input type="checkbox">Python package manager (eg <code>pip</code>)</li>
 <li><input type="checkbox">Python environment manager (eg <code>venv</code>, <code>poetry</code> etc)</li>
 <li><input type="checkbox">Python requirements:</li>
 </ul>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>requirements.txt</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" data-eval="false"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>shiny</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>rsconnect<span class="op">-</span>python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="developing-the-application" class="level2">
+<h2 class="anchored" data-anchor-id="developing-the-application">Developing the application</h2>
+</section>
+<section id="automating-the-deployment" class="level2">
+<h2 class="anchored" data-anchor-id="automating-the-deployment">Automating the Deployment</h2>
 <p id="fin">
 <i>fin!</i>
 </p>
 
 
+
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-ShinyAppsIO" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Posit, <span>“<span class="nocase">shinyapps.io</span>.”</span> <a href="{https://www.shinyapps.io/}">{https://www.shinyapps.io/}</a></div>
+</div>
+<div id="ref-ShinyAppsIOFeatures" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Posit, <span>“<span class="nocase">shinyapps.io</span>.”</span> <a href="{https://www.shinyapps.io/#features}">{https://www.shinyapps.io/#features}</a></div>
+</div>
+<div id="ref-GitHubActions" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">GitHub, <span>“<span>GitHub Actions Documentation</span>.”</span> <a href="{https://docs.github.com/en/actions}">{https://docs.github.com/en/actions}</a></div>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -19,17 +19,51 @@ toc: true
 
 ## Introduction
 
+This guide will walk you through the process of using GitHub Actions to
+schedule the update of a python shiny application and subsequent publication to
+the shinyapps.io @ShinyAppsIO service. The example used in this
+article is trivial and the [source code can be inspected here](https://github.com/r-leyshon/automate-shinyapps-deploy). This guide intends to help the casual developer
+keep their application data up-to-date. 
 
-## The Scenario
+:::{.callout-caution}
 
+The tooling used in this article may not suit all requirements. GitHub Actions
+and Shinyapps.io all provide free tier services, allowing for equitable access.
+These services are ideal for prototyping purposes but come with limitations
+that may render them unsuitable for your purposes. For more information on the
+features of these services, please consult the Shinyapps.io features
+@ShinyAppsIOFeatures and the GitHub Actions documentation @GitHubActions.
 
-## What you'll need:
+:::
 
-- [ ] A permissive firewall (whitelist the domain "https://geoportal.statistics.gov.uk/" if necessary)
+### Intended Audience
+
+An experienced python and git practitioner, able to create and manage a virtual
+environment but less familiar with the shinyapps.io service or GitHub Actions.
+
+### The Scenario
+
+You have or are considering building a dynamic application, presenting the
+latest view of some data to your users. You would like to automate the data
+retrieval and application publication processes.
+
+### What you'll need:
+
+- [ ] A GitHub account
+- [ ] A shinyapps.io account
+- [ ] A permissive firewall
 - [ ] Python package manager (eg `pip`)
 - [ ] Python environment manager (eg `venv`, `poetry` etc)
 - [ ] Python requirements:
 
+```{.python filename=requirements.txt eval=false}
+shiny
+rsconnect-python
 
+```
+
+## Developing the application
+
+## Automating the Deployment
 
 <p id=fin><i>fin!</i></p>
