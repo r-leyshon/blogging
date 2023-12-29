@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2023-12-28">
+<meta name="dcterms.date" content="2023-12-29">
 <meta name="description" content="How to ingest data using Python requests &amp; ArcGIS REST API.">
 
 <title>The Data Savvy Corner - Scheduled Deployment to Shinyapps.io</title>
@@ -178,13 +178,13 @@ div.csl-indent {
   <li><a href="#the-scenario" id="toc-the-scenario" class="nav-link" data-scroll-target="#the-scenario">The Scenario</a></li>
   <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What you’ll need:</a></li>
   </ul></li>
-  <li><a href="#developing-the-application" id="toc-developing-the-application" class="nav-link" data-scroll-target="#developing-the-application">Developing the application</a>
+  <li><a href="#develop-the-application" id="toc-develop-the-application" class="nav-link" data-scroll-target="#develop-the-application">Develop the application</a>
   <ul class="collapse">
-  <li><a href="#configuring-the-development-environment" id="toc-configuring-the-development-environment" class="nav-link" data-scroll-target="#configuring-the-development-environment">Configuring the Development Environment</a></li>
+  <li><a href="#configure-the-development-environment" id="toc-configure-the-development-environment" class="nav-link" data-scroll-target="#configure-the-development-environment">Configure the Development Environment</a></li>
   <li><a href="#prepare-the-data" id="toc-prepare-the-data" class="nav-link" data-scroll-target="#prepare-the-data">Prepare the Data</a></li>
   <li><a href="#present-the-data" id="toc-present-the-data" class="nav-link" data-scroll-target="#present-the-data">Present the Data</a></li>
   </ul></li>
-  <li><a href="#deploying-the-application" id="toc-deploying-the-application" class="nav-link" data-scroll-target="#deploying-the-application">Deploying the Application</a></li>
+  <li><a href="#deploy-the-application" id="toc-deploy-the-application" class="nav-link" data-scroll-target="#deploy-the-application">Deploy the Application</a></li>
   </ul>
 </nav>
     </div>
@@ -221,7 +221,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 28, 2023</p>
+      <p class="date">December 29, 2023</p>
     </div>
   </div>
   
@@ -269,6 +269,7 @@ Caution
 <li><input type="checkbox">A permissive firewall</li>
 <li><input type="checkbox">Python package manager (eg <code>pip</code>)</li>
 <li><input type="checkbox">Python environment manager (eg <code>venv</code>, <code>poetry</code> etc)</li>
+<li><input type="checkbox">Access to a command line interface (CLI) such as terminal / Bash.</li>
 <li><input type="checkbox">Python requirements:</li>
 </ul>
 <div class="code-with-filename">
@@ -280,11 +281,11 @@ Caution
 </div>
 </section>
 </section>
-<section id="developing-the-application" class="level2">
-<h2 class="anchored" data-anchor-id="developing-the-application">Developing the application</h2>
+<section id="develop-the-application" class="level2">
+<h2 class="anchored" data-anchor-id="develop-the-application">Develop the application</h2>
 <p>The steps in this guide result in a <a href="https://richleysh84.shinyapps.io/scheduled-deployment/">minimal application</a> that reports the time that it was deployed to shinyapps.io.</p>
-<section id="configuring-the-development-environment" class="level3">
-<h3 class="anchored" data-anchor-id="configuring-the-development-environment">Configuring the Development Environment</h3>
+<section id="configure-the-development-environment" class="level3">
+<h3 class="anchored" data-anchor-id="configure-the-development-environment">Configure the Development Environment</h3>
 <ol type="1">
 <li>Create a new repository or; if you would rather skip the application development; <a href="https://github.com/r-leyshon/automate-shinyapps-deploy">clone this repository</a> and proceed to the <a href="#deploying-the-application">deployment stage</a>.</li>
 <li>Clone the repository into your local development environment.</li>
@@ -295,7 +296,7 @@ Caution
 </section>
 <section id="prepare-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="prepare-the-data">Prepare the Data</h3>
-<p>The job prepares the database on which the application will depend. In this trivial example, we simply save the current time as a formatted string to a text file. This simple artifact will later be read into a shiny app to present as the time of deployment.</p>
+<p>This job prepares the database on which the application will depend. In this trivial example, we simply save the current time as a formatted string to a text file. This simple artifact will later be read into a shiny app to present as the time of deployment.</p>
 <ol type="1">
 <li>Create a python file called <code>save_time.py</code>.</li>
 <li>Paste the following content into <code>save_time.py</code> and hit save:</li>
@@ -318,11 +319,42 @@ Caution
 </section>
 <section id="present-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="present-the-data">Present the Data</h3>
-<p>An application is needed to present the data to your user, allowing them to query, visualise and interact with the data in ways that you specify. In this example, the app will simply read in the date string created in the section <a href="#prepare-the-data">Prepare the Data</a> and present it to the user as the time of deployment.</p>
+<p>An application is needed to present the data to your user. In this example, the app will simply read in the date string created in the section <a href="#prepare-the-data">Prepare the Data</a>, format the datestring in a sentence and present it within the user interface.</p>
+<ol type="1">
+<li>Create a python file called <code>app.py</code>.</li>
+<li>Paste the following into <code>app.py</code>:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>save_time.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-eval="false"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny <span class="im">import</span> App, render, ui</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># get the saved time</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"saved_time.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    nw <span class="op">=</span> f.readlines()[<span class="dv">0</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    f.close()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>app_ui <span class="op">=</span> ui.page_fluid(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    ui.h2(<span class="st">"Testing Deploy Schedule."</span>),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ui.output_text(<span class="st">"txt"</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> server(<span class="bu">input</span>, output, session):</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">@output</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">@render.text</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> txt():</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Deployed at </span><span class="sc">{</span>nw<span class="sc">}</span><span class="ss">."</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> App(app_ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li><p>Test the application locally by running it. This can be done from the CLI with the command <code>python -m shiny run ./app.py</code>.</p></li>
+<li><p>If the application successfully launches, you should see a localhost url printed. Command and click on this or paste into your browser to confirm that the application deployed successfully. You should see the a sentence <code>Deployed at &lt;SOME_DATETIME_INSERTED_HERE&gt;</code>.</p></li>
+</ol>
 </section>
 </section>
-<section id="deploying-the-application" class="level2">
-<h2 class="anchored" data-anchor-id="deploying-the-application">Deploying the Application</h2>
+<section id="deploy-the-application" class="level2">
+<h2 class="anchored" data-anchor-id="deploy-the-application">Deploy the Application</h2>
 <p id="fin">
 <i>fin!</i>
 </p>

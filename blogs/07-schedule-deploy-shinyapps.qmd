@@ -54,6 +54,7 @@ retrieval and application publication processes.
 - [ ] A permissive firewall
 - [ ] Python package manager (eg `pip`)
 - [ ] Python environment manager (eg `venv`, `poetry` etc)
+- [ ] Access to a command line interface (CLI) such as terminal / Bash.
 - [ ] Python requirements:
 
 ```{.python filename=requirements.txt eval=false}
@@ -62,13 +63,13 @@ rsconnect-python
 
 ```
 
-## Developing the application
+## Develop the application
 
 The steps in this guide result in a
 [minimal application](https://richleysh84.shinyapps.io/scheduled-deployment/)
 that reports the time that it was deployed to shinyapps.io.
 
-### Configuring the Development Environment
+### Configure the Development Environment
 
 1. Create a new repository or; if you would rather skip the application
 development; [clone this repository](https://github.com/r-leyshon/automate-shinyapps-deploy)
@@ -81,7 +82,7 @@ this is the most current version of python available to shinyapps.io servers.
 
 ### Prepare the Data
 
-The job prepares the database on which the application will depend. In this
+This job prepares the database on which the application will depend. In this
 trivial example, we simply save the current time as a formatted string to a
 text file. This simple artifact will later be read into a shiny app to present
 as the time of deployment.
@@ -104,12 +105,44 @@ appear in the project root.
 
 ### Present the Data
 
-An application is needed to present the data to your user, allowing them to 
-query, visualise and interact with the data in ways that you specify. In this
-example, the app will simply read in the date string created in the section
-[Prepare the Data](#prepare-the-data) and present it to the user as the time of
-deployment.
+An application is needed to present the data to your user. In this example, the
+app will simply read in the date string created in the section
+[Prepare the Data](#prepare-the-data), format the datestring in a sentence and
+present it within the user interface.
 
-## Deploying the Application
+1. Create a python file called `app.py`.
+2. Paste the following into `app.py`:
+
+```{.python filename=save_time.py eval=false}
+from shiny import App, render, ui
+# get the saved time
+with open("saved_time.txt", "r") as f:
+    nw = f.readlines()[0]
+    f.close()
+
+app_ui = ui.page_fluid(
+    ui.h2("Testing Deploy Schedule."),
+    ui.output_text("txt"),
+)
+
+def server(input, output, session):
+    @output
+    @render.text
+    def txt():
+        return f"Deployed at {nw}."
+
+app = App(app_ui, server)
+
+```
+3. Test the application locally by running it. This can be done from the CLI
+with the command `python -m shiny run ./app.py`.
+
+4. If the application successfully launches, you should see a localhost url
+printed. Command and click on this or paste into your browser to confirm that
+the application deployed successfully. You should see the a sentence
+`Deployed at <SOME_DATETIME_INSERTED_HERE>`.
+
+## Deploy the Application
+
 
 <p id=fin><i>fin!</i></p>
