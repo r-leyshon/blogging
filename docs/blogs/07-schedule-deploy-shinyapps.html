@@ -313,7 +313,7 @@ Caution
 <pre class="mermaid mermaid-js">flowchart LR
     B(Job: Install dependencies)
     B ==&gt; C(Job: Run save_time.py)
-    C --&gt;|write datetime.now| D[saved_time.txt]
+    C --&gt; D[saved_time.txt]
  
 </pre>
 </div>
@@ -356,10 +356,10 @@ Caution
 <pre class="mermaid mermaid-js">flowchart LR
     B(Job: Install dependencies)
     B ==&gt; C(Job: Run save_time.py)
-    C --&gt;|write datetime.now| D[saved_time.txt]
+    C --&gt; D[saved_time.txt]
 
     G{{app.py}}
-    D -.-&gt;|python -m shiny run app.py| G  
+    D -.-&gt; G  
 </pre>
 </div>
 </div>
@@ -418,12 +418,12 @@ Caution
 <pre class="mermaid mermaid-js">flowchart LR
     B(Job: Install dependencies)
     B ==&gt; C(Job: Run save_time.py)
-    C --&gt;|write datetime.now| D[saved_time.txt]
+    C --&gt; D[saved_time.txt]
     C ==&gt; E(Job: Configure rsconnect)
     H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-&gt; E
     E ==&gt; F(Job: Deploy to rsconnect)
     F ==&gt; G{{shinyapps.io: serve app.py}}
-    D -.-&gt;|python -m shiny run app.py| G  
+    D -.-&gt; G  
 
 </pre>
 </div>
@@ -559,15 +559,15 @@ These values will be encrypted and masked if you try to print them in workflow l
 <div>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    A[update.yml] ==&gt;|Saturday 00:00| B(Job: Install dependencies)
+    A[update.yml] ==&gt; B(Job: Install dependencies)
     B ==&gt; C(Job: Run save_time.py)
-    C --&gt;|write datetime.now| D[saved_time.txt]
+    C --&gt; D[saved_time.txt]
     C ==&gt; E(Job: Configure rsconnect)
     H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-&gt; E
     E ==&gt; F(Job: Deploy to rsconnect)
     K([APP_ID]) -.-&gt; F
     F ==&gt; G{{shinyapps.io: serve app.py}}
-    D -.-&gt;|python -m shiny run app.py| G    
+    D -.-&gt; G    
 </pre>
 </div>
 </div>

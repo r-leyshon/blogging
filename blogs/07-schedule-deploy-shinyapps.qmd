@@ -90,9 +90,9 @@ this is the most current version of python available to shinyapps.io servers.
 flowchart LR
     B(Job: Install dependencies)
     B ==> C(Job: Run save_time.py)
-    C -->|write datetime.now| D[saved_time.txt]
+    C --> D[saved_time.txt]
  
-```
+```  
 
 This job prepares the database on which the application will depend. In this
 trivial example, we simply save the current time as a formatted string to a
@@ -125,10 +125,10 @@ python3 save_time.py
 flowchart LR
     B(Job: Install dependencies)
     B ==> C(Job: Run save_time.py)
-    C -->|write datetime.now| D[saved_time.txt]
+    C --> D[saved_time.txt]
 
     G{{app.py}}
-    D -.->|python -m shiny run app.py| G  
+    D -.-> G  
 ```
 
 An application is needed to present the data to your user. In this example, the
@@ -180,12 +180,12 @@ the application deployed successfully. You should see the sentence
 flowchart LR
     B(Job: Install dependencies)
     B ==> C(Job: Run save_time.py)
-    C -->|write datetime.now| D[saved_time.txt]
+    C --> D[saved_time.txt]
     C ==> E(Job: Configure rsconnect)
     H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-> E
     E ==> F(Job: Deploy to rsconnect)
     F ==> G{{shinyapps.io: serve app.py}}
-    D -.->|python -m shiny run app.py| G  
+    D -.-> G  
 
 ```
 
@@ -344,15 +344,15 @@ The full workflow is visualised in the process diagram below.
 
 ```{mermaid}
 flowchart LR
-    A[update.yml] ==>|Saturday 00:00| B(Job: Install dependencies)
+    A[update.yml] ==> B(Job: Install dependencies)
     B ==> C(Job: Run save_time.py)
-    C -->|write datetime.now| D[saved_time.txt]
+    C --> D[saved_time.txt]
     C ==> E(Job: Configure rsconnect)
     H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-> E
     E ==> F(Job: Deploy to rsconnect)
     K([APP_ID]) -.-> F
     F ==> G{{shinyapps.io: serve app.py}}
-    D -.->|python -m shiny run app.py| G    
+    D -.-> G    
 ```
 
 This workflow can be adapted to serve a real business need. For example, a
