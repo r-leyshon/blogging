@@ -11,6 +11,10 @@ categories:         # delete categories as appropriate. using https://diataxis.f
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Prague_astronomical_clock_%286365120743%29.jpg/800px-Prague_astronomical_clock_%286365120743%29.jpg?20150530221207
 image-alt: "Prague astronomical clock"
 toc: true
+format:
+  html:
+    mermaid:
+      theme: forest
 ---
 <figure class=center>
   <img class="shaded_box" width=400px src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Prague_astronomical_clock_%286365120743%29.jpg/800px-Prague_astronomical_clock_%286365120743%29.jpg?20150530221207"></img>
@@ -47,7 +51,7 @@ You have or are considering building a dynamic application, presenting the
 latest view of some data to your users. You would like to automate the data
 retrieval and application publication processes.
 
-### What you'll need:
+### What You'll Need:
 
 - [ ] A GitHub account
 - [ ] A shinyapps.io account
@@ -63,7 +67,7 @@ rsconnect-python
 
 ```
 
-## Develop the application
+## Develop the Application
 
 The steps in this guide result in a
 [minimal application](https://richleysh84.shinyapps.io/scheduled-deployment/)
@@ -81,6 +85,14 @@ this is the most current version of python available to shinyapps.io servers.
 5. Install the requirements.txt dependencies.
 
 ### Prepare the Data
+
+```{mermaid}
+flowchart LR
+    B(Job: Install dependencies)
+    B ==> C(Job: Run save_time.py)
+    C -->|write datetime.now| D[saved_time.txt]
+ 
+```
 
 This job prepares the database on which the application will depend. In this
 trivial example, we simply save the current time as a formatted string to a
@@ -100,10 +112,24 @@ with open("saved_time.txt", "w") as f:
 print(f"Saved time is {nw}")
 
 ```
-3. Run `python3 save_time.py` in the terminal. A `saved_time.txt` file should
-appear in the project root.
+3. Run the script from the terminal. A `saved_time.txt` file should appear in
+the project root:
+
+```{.zsh filename=CLI eval=false}
+python3 save_time.py
+```
 
 ### Present the Data
+
+```{mermaid}
+flowchart LR
+    B(Job: Install dependencies)
+    B ==> C(Job: Run save_time.py)
+    C -->|write datetime.now| D[saved_time.txt]
+
+    G{{app.py}}
+    D -.->|python -m shiny run app.py| G  
+```
 
 An application is needed to present the data to your user. In this example, the
 app will simply read in the date string created in the section
@@ -135,14 +161,206 @@ app = App(app_ui, server)
 
 ```
 3. Test the application locally by running it. This can be done from the CLI
-with the command `python -m shiny run ./app.py`.
+with the command:
+
+```{.zsh filename=CLI eval=false}
+python -m shiny run ./app.py
+```
 
 4. If the application successfully launches, you should see a localhost url
 printed. Command and click on this or paste into your browser to confirm that
-the application deployed successfully. You should see the a sentence
+the application deployed successfully. You should see the sentence
 `Deployed at <SOME_DATETIME_INSERTED_HERE>`.
 
 ## Deploy the Application
 
+### Local Deploy
+
+```{mermaid}
+flowchart LR
+    B(Job: Install dependencies)
+    B ==> C(Job: Run save_time.py)
+    C -->|write datetime.now| D[saved_time.txt]
+    C ==> E(Job: Configure rsconnect)
+    H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-> E
+    E ==> F(Job: Deploy to rsconnect)
+    F ==> G{{shinyapps.io: serve app.py}}
+    D -.->|python -m shiny run app.py| G  
+
+```
+
+The first stage of deployment should be to manually upload the application to
+your shinyapps.io account. It is required to do this manually in the first
+instance, as it will allow you to retrieve an app ID for the app deployment.
+This will ensure that when you use GitHub Actions to do the same, complications
+overwriting the application data are avoided. For more information on deploying
+to shinyapps.io, consult the python shiny cloud hosting documentation
+@ShinyCloudHosting, the shinyapps.io documentation @ShinyAppsDocsDeploy and the
+Rsconnect-python documentation @RSConnectDocs. It is also advisable to manually
+deploy in the first instance in order to confirm that your app runs on
+shinyapps.io servers. With a simple app like this one, it should be a
+straightforward matter, but with a larger, more complex app, debugging problems
+on a remote server can be quite time consuming.
+
+1. Follow the shinyapps.io deployment documentation @ShinyAppsDocsDeploy to
+retrieve your username, token and secret. Store these somewhere secure.
+2. Take precautions not to accidentally commit these credentials to your
+repository. I recommend both gitignoring the file that you stored them and
+using detect-secrets @DetectSecrets if you are familiar with pre-commit hooks.
+3. Configure an rsconnect server with the following command in your CLI,
+replacing the account, token and secret with your credentials:
+```{.zsh filename=CLI eval=False}
+rsconnect add --account <YOUR_USERNAME> --name rsconnect-server --token <YOUR_TOKEN> --secret <YOUR_SECRET>
+```  
+
+Note that you can give the server any name you wish, here I have used the
+imaginative name `rsconnect-server`. You must refer to this server name in
+`<YOUR_SERVER_NAME>` in the next step. If successful, you should see output in
+the CLI like below:
+
+```{.zsh eval=false}
+Checking shinyapps.io credential...              [OK]
+Updated shinyapps.io credential "<YOUR_SERVER_NAME>".
+```
+4. Now use the configured rsconnect server to deploy your local app to the
+cloud, run the below command in the CLI, inserting the name of the server you
+configured in the previous step and an appropriate application title. Avoid
+using spaces in the application title as I have found this causes issues when
+deploying with certain versions of `rsconnect-python`:
+
+```{.zsh filename=CLI eval=False}
+rsconnect deploy shiny ./ --name <YOUR_SERVER_NAME>  --title <ENTER_AN_APP_TITLE>
+```
+A successful deployment will confirm in the CLI like below:
+
+```{.zsh eval=false}
+Application successfully deployed to <YOUR_APP_URL>
+        [OK]
+Saving deployed information...  [OK]
+Verifying deployed content...   [OK]
+```
+5. The previous step creates a metadata directory called `rsconnect-python`. I
+suggest adding this lint to your `.gitignore` file.
+6. The hosted application should launch in your default browser on successful 
+deployment. If not, then visit the url printed in the terminal output and check
+everything is working as expected. 
+
+### Remote Deploy
+
+Now that the application has been successfuly deployed, the application ID can
+be retrieved and used in a GitHub Action workflow to schedule the application
+deployment. This stage will involve configuring environment variables and
+secrets in our GitHub repository. The guidance for configuring this is correct
+at the time of writing but be advised that GitHub frequently update their user
+interface.
+
+#### Configure the Repository Environment
+
+1. Retrieve the application ID. You can find this either in your shinyapps.io 
+dashboard or by copying the value from the json file saved in the
+`rsconnect-python/` following a successful deployment.
+2. Navigate to the GitHub repository in your browser.
+3. Access the environment variables under `Settings` -> `Secrets and variables`
+-> `Actions` -> `Variables`.
+4. Save an environment variable called `SHINYAPPS_USERNAME` with your
+shinyapps.io username. Ensure that the values are correct and authenticate when
+prompted by GitHub to save the variable.
+5. Now click on the `Secrets` tab and repeat this process for the three
+required secrets:
+    * `APP_ID`
+    * `SHINYAPPS_TOKEN`
+    * `SHINYAPPS_SECRET`  
+
+    These values will be encrypted and masked if you try to print them in
+    workflow logs. Consult the GitHub Actions Security Documentation
+    @GitHubActionsSecurity for more on features and best practice.
+
+#### Set Up the Workflow
+
+In this section, a script is created that will execute the job of updating the
+app and deploying to shinyapps.io. It will grab the secrets and variables 
+that created in the [previous stage](#configure-the-repository-environment). 
+
+1. Create the following directory to store the workflow script:
+```{.zsh filename=CLI eval=false}
+mkdir -p .github/workflows
+
+```
+2. In that folder, create a YAML file that will contain the necessary logic to
+update and deploy the app.
+```{.zsh filename=CLI eval=false}
+touch .github/workflows/update.yml
+
+```
+3. Update the YAML file with the content below, note that I have included notes
+in the file to help understand the purpose of each step, but feel free to
+remove them if needed:
+
+```{.YAML filename=update.yml eval=false}
+name: Update Application
+on:
+  schedule:
+    - cron: '0 0 * * 6' # at midnight every Saturday, see https://crontab.guru/
+jobs:
+  build:
+    runs-on: ubuntu-latest # this os tends to be quick & flexible
+    steps:
+      - uses: actions/checkout@v3 # premade action that allows your action to access your code
+      - uses: actions/setup-python@v3 # premade action that will install & configure python
+        with:
+          python-version: 3.11 # this needs to be a version compatible with shinyapps.io servers
+      - name: Install dependencies 
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Update saved time # create the little saved_time.txt artifact
+        run: |
+          python3 save_time.py
+      - name: Configure rsconnect # set up an rsconnect server. Relies on repo vars & secrets
+        run: |
+          rsconnect add --account ${{ vars.SHINYAPPS_USERNAME }} --name rsconnect-server --token ${{ secrets.SHINYAPPS_TOKEN }} --secret ${{ secrets.SHINYAPPS_SECRET }}
+      - name: Deploy to rsconnect # app-id parameter allows reliable overwriting of app content without creating duplicates.
+        run: |
+          rsconnect deploy shiny --app-id ${{ secrets.APP_ID }} ./ --name rsconnect-server  --title scheduled-deployment
+
+```
+4. Once everything has been done, add and commit all the changes and push them
+to your remote. The next time your cronjob triggers, navigate to your
+repository in your browser and inspect the workflow logs under `Actions` ->
+`All workflows`.
+
+## Tips & Troubleshooting
+
+* To see a list of your configured rsconnect servers, use the `rsconnect list`
+command in the CLI.
+* To remove a server, use `rsconnect remove --name <SERVER_NAME>` in the CLI.
+* If you encounter an error when deploying your app in step 4 that states
+"not found", try deleting the folder called `rsconnect-python` if it exists and
+run the deploy command once more.
+
+## Conclusion
+
+The full workflow is visualised in the process diagram below.
+
+```{mermaid}
+flowchart LR
+    A[update.yml] ==>|Saturday 00:00| B(Job: Install dependencies)
+    B ==> C(Job: Run save_time.py)
+    C -->|write datetime.now| D[saved_time.txt]
+    C ==> E(Job: Configure rsconnect)
+    H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-> E
+    E ==> F(Job: Deploy to rsconnect)
+    K([APP_ID]) -.-> F
+    F ==> G{{shinyapps.io: serve app.py}}
+    D -.->|python -m shiny run app.py| G    
+```
+
+This workflow can be adapted to serve a real business need. For example, a
+similar workflow is used to produce a basic ['bounty board' app](https://richleysh84.shinyapps.io/org-bounty-board/) to help colleagues extract GitHub issues and PRs. [Code available here](https://github.com/r-leyshon/org-issue-tool).
+
+The workflow file can also be improved upon to take advantage of the new
+GitHub Actions cacheing feature @GitHubActionsCacheing. This will make
+subsequent runs faster still as dependencies and configuration can be saved
+between runs. 
 
 <p id=fin><i>fin!</i></p>
