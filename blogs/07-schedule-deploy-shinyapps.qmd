@@ -23,7 +23,7 @@ format:
 
 ## Introduction
 
-This guide will walks the reader through automated application update and
+This guide walks the reader through automated application update and
 deployment, a process known as scheduled deployment. GitHub Actions will be
 used to update application data and publish to shinyapps.io @ShinyAppsIO for
 cloud hosting. This guide intends to help the casual developer keep their
@@ -143,7 +143,7 @@ flowchart LR
 
 An application is needed to present the data to your user. In this example, the
 app will simply read the date string created in the previous step, format the
-datestring in a sentence and present it within the user interface.
+date string in a sentence and present it within the user interface.
 
 1. Create a python file called `app.py`.
 2. Paste the following into `app.py`:
@@ -269,11 +269,11 @@ flowchart LR
     D -.-> G    
 ```
 
-Now that the app has been successfuly deployed, the app ID can be retrieved and
-used in a GitHub Action workflow to schedule this deployment. This stage will
-involve configuring environment variables and secrets in our GitHub repository.
-The guidance for configuring this is correct at the time of writing but be
-advised that GitHub frequently update their user interface and CI/CD
+Now that the app has been successfully deployed, the app ID can be retrieved
+and used in a GitHub Action workflow to schedule this deployment. This stage
+will involve configuring environment variables and secrets in our GitHub
+repository. The guidance for configuring this is correct at the time of writing
+but be advised that GitHub frequently update their user interface and CI/CD
 functionality.
 
 #### Configure the Repository Environment
@@ -350,14 +350,14 @@ jobs:
 
 ```
 4. Once everything has been done, add and commit all the changes and push them
-to the remote. The next time the cronjob triggers, navigate to the repository
+to the remote. The next time the cron job triggers, navigate to the repository
 in a browser and inspect the workflow logs under `Actions`
 {{< fa arrow-right >}} `All workflows`.
 5. If the Action executed successfully, you will see the topmost build log will
 present a blue checkmark. Click on the link to see the details.
-6. Click on the the `build` label to expose the steps in the workflow. By
-clicking on these stages the logs can be expanded. Check the time of deployment
-under the `Update saved time` step.
+6. Click on the `build` label to expose the steps in the workflow. By clicking
+on the steps the logs can be expanded. Check the time of deployment under the
+`Update saved time` step.
 7. Click on the `Deploy to rsconnect` step. The final line should state that
 the application was successfully deployed to a URL. Click on the link to launch
 the app and confirm that the time of deployment matches that reported in the
@@ -379,7 +379,7 @@ traffic, you may experience delays of half an hour or more.
 
 ## Conclusion
 
-In this guide, we have produced a to python shiny application and used GitHub
+In this guide, we have produced a python shiny application and used GitHub
 Actions to schedule its deployment to the shinyapps hosting service.
 
 This workflow can be adapted to serve a real business need. For example, a
@@ -387,7 +387,7 @@ similar workflow can be used to produce a basic ['bounty board' app](https://ric
 and PRs ([Code available here](https://github.com/r-leyshon/org-issue-tool)).
 
 The workflow can also be improved to take advantage of the new GitHub Actions
-cacheing feature @GitHubActionsCacheing. This will make subsequent runs faster
+caching feature @GitHubActionsCacheing. This will make subsequent runs faster
 as dependencies and configuration can be stored between runs. 
 
 Get some action!

@@ -251,7 +251,7 @@ div.csl-indent {
 </figure>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This guide will walks the reader through automated application update and deployment, a process known as scheduled deployment. GitHub Actions will be used to update application data and publish to shinyapps.io <span class="citation" data-cites="ShinyAppsIO"><a href="#ref-ShinyAppsIO" role="doc-biblioref">[1]</a></span> for cloud hosting. This guide intends to help the casual developer keep their application data up-to-date.</p>
+<p>This guide walks the reader through automated application update and deployment, a process known as scheduled deployment. GitHub Actions will be used to update application data and publish to shinyapps.io <span class="citation" data-cites="ShinyAppsIO"><a href="#ref-ShinyAppsIO" role="doc-biblioref">[1]</a></span> for cloud hosting. This guide intends to help the casual developer keep their application data up-to-date.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -382,7 +382,7 @@ A Note on the Tools
 </div>
 </div>
 </div>
-<p>An application is needed to present the data to your user. In this example, the app will simply read the date string created in the previous step, format the datestring in a sentence and present it within the user interface.</p>
+<p>An application is needed to present the data to your user. In this example, the app will simply read the date string created in the previous step, format the date string in a sentence and present it within the user interface.</p>
 <ol type="1">
 <li>Create a python file called <code>app.py</code>.</li>
 <li>Paste the following into <code>app.py</code>:</li>
@@ -516,7 +516,7 @@ Caution
 </div>
 </div>
 </div>
-<p>Now that the app has been successfuly deployed, the app ID can be retrieved and used in a GitHub Action workflow to schedule this deployment. This stage will involve configuring environment variables and secrets in our GitHub repository. The guidance for configuring this is correct at the time of writing but be advised that GitHub frequently update their user interface and CI/CD functionality.</p>
+<p>Now that the app has been successfully deployed, the app ID can be retrieved and used in a GitHub Action workflow to schedule this deployment. This stage will involve configuring environment variables and secrets in our GitHub repository. The guidance for configuring this is correct at the time of writing but be advised that GitHub frequently update their user interface and CI/CD functionality.</p>
 <section id="configure-the-repository-environment" class="level4">
 <h4 class="anchored" data-anchor-id="configure-the-repository-environment">Configure the Repository Environment</h4>
 <ol type="1">
@@ -588,9 +588,9 @@ These values will be encrypted and masked if you try to print them in workflow l
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>          rsconnect deploy shiny --app-id ${{ secrets.APP_ID }} ./ --name rsconnect-server  --title scheduled-deployment</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="4" type="1">
-<li>Once everything has been done, add and commit all the changes and push them to the remote. The next time the cronjob triggers, navigate to the repository in a browser and inspect the workflow logs under <code>Actions</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>All workflows</code>.</li>
+<li>Once everything has been done, add and commit all the changes and push them to the remote. The next time the cron job triggers, navigate to the repository in a browser and inspect the workflow logs under <code>Actions</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>All workflows</code>.</li>
 <li>If the Action executed successfully, you will see the topmost build log will present a blue checkmark. Click on the link to see the details.</li>
-<li>Click on the the <code>build</code> label to expose the steps in the workflow. By clicking on these stages the logs can be expanded. Check the time of deployment under the <code>Update saved time</code> step.</li>
+<li>Click on the <code>build</code> label to expose the steps in the workflow. By clicking on the steps the logs can be expanded. Check the time of deployment under the <code>Update saved time</code> step.</li>
 <li>Click on the <code>Deploy to rsconnect</code> step. The final line should state that the application was successfully deployed to a URL. Click on the link to launch the app and confirm that the time of deployment matches that reported in the <code>Update saved time</code> log.</li>
 </ol>
 </section>
@@ -607,9 +607,9 @@ These values will be encrypted and masked if you try to print them in workflow l
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>In this guide, we have produced a to python shiny application and used GitHub Actions to schedule its deployment to the shinyapps hosting service.</p>
+<p>In this guide, we have produced a python shiny application and used GitHub Actions to schedule its deployment to the shinyapps hosting service.</p>
 <p>This workflow can be adapted to serve a real business need. For example, a similar workflow can be used to produce a basic <a href="https://richleysh84.shinyapps.io/org-bounty-board/">‘bounty board’ app</a> to help colleagues in an organisation extract GitHub issues and PRs (<a href="https://github.com/r-leyshon/org-issue-tool">Code available here</a>).</p>
-<p>The workflow can also be improved to take advantage of the new GitHub Actions cacheing feature <span class="citation" data-cites="GitHubActionsCacheing"><a href="#ref-GitHubActionsCacheing" role="doc-biblioref">[9]</a></span>. This will make subsequent runs faster as dependencies and configuration can be stored between runs.</p>
+<p>The workflow can also be improved to take advantage of the new GitHub Actions caching feature <span class="citation" data-cites="GitHubActionsCacheing"><a href="#ref-GitHubActionsCacheing" role="doc-biblioref">[9]</a></span>. This will make subsequent runs faster as dependencies and configuration can be stored between runs.</p>
 <p>Get some action!</p>
 <div class="tenor-gif-embed center" data-postid="24199060" data-share-method="host" data-aspect-ratio="1.50235" data-width="66%">
 <a href="https://tenor.com/view/action-man-gif-24199060">Action Man GIF</a>from <a href="https://tenor.com/search/action-gifs">Action GIFs</a>
