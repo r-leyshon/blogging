@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2023-12-30">
+<meta name="dcterms.date" content="2023-12-31">
 <meta name="description" content="How to ingest data using Python requests &amp; ArcGIS REST API.">
 
 <title>The Data Savvy Corner - Scheduled Deployment to Shinyapps.io</title>
@@ -92,6 +92,8 @@ div.csl-indent {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -231,7 +233,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 30, 2023</p>
+      <p class="date">December 31, 2023</p>
     </div>
   </div>
   
@@ -249,18 +251,21 @@ div.csl-indent {
 </figure>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This guide will walk you through the process of using GitHub Actions to schedule the update of a python shiny application and subsequent publication to the shinyapps.io <span class="citation" data-cites="ShinyAppsIO"><a href="#ref-ShinyAppsIO" role="doc-biblioref">[1]</a></span> service. The example used in this article is trivial and the <a href="https://github.com/r-leyshon/automate-shinyapps-deploy">source code can be inspected here</a>. This guide intends to help the casual developer keep their application data up-to-date.</p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
+<p>This guide will walks the reader through automated application update and deployment, a process known as scheduled deployment. GitHub Actions will be used to update application data and publish to shinyapps.io <span class="citation" data-cites="ShinyAppsIO"><a href="#ref-ShinyAppsIO" role="doc-biblioref">[1]</a></span> for cloud hosting. This guide intends to help the casual developer keep their application data up-to-date.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Caution
+A Note on the Tools
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The tooling used in this article may not suit all requirements. GitHub Actions and Shinyapps.io all provide free tier services, allowing for equitable access. These services are ideal for prototyping purposes but come with limitations that may render them unsuitable for your purposes. For more information on the features of these services, please consult the Shinyapps.io features <span class="citation" data-cites="ShinyAppsIOFeatures"><a href="#ref-ShinyAppsIOFeatures" role="doc-biblioref">[2]</a></span> and the GitHub Actions documentation <span class="citation" data-cites="GitHubActions"><a href="#ref-GitHubActions" role="doc-biblioref">[3]</a></span>.</p>
+<p>The tooling used in this article may not suit all requirements. GitHub Actions and Shinyapps.io all provide free tier services, allowing for equitable access. These services are ideal for prototyping but come with limitations that may render them unsuitable for your purposes. For more information on these services and their various paid plans, please consult the Shinyapps.io features <span class="citation" data-cites="ShinyAppsIOFeatures"><a href="#ref-ShinyAppsIOFeatures" role="doc-biblioref">[2]</a></span> and the GitHub Actions documentation <span class="citation" data-cites="GitHubActions"><a href="#ref-GitHubActions" role="doc-biblioref">[3]</a></span>. This is not a product endorsement. Note that other cloud compute services provide alternative solutions to those presented in this article.</p>
+</div>
 </div>
 </div>
 <section id="intended-audience" class="level3">
@@ -269,7 +274,7 @@ Caution
 </section>
 <section id="the-scenario" class="level3">
 <h3 class="anchored" data-anchor-id="the-scenario">The Scenario</h3>
-<p>You have or are considering building a dynamic application, presenting the latest view of some data to your users. You would like to automate the data retrieval and application publication processes.</p>
+<p>You are considering building a dynamic application, presenting the latest view of some data to your users. You would like to automate the data retrieval and application publication processes.</p>
 </section>
 <section id="what-youll-need" class="level3">
 <h3 class="anchored" data-anchor-id="what-youll-need">What You’ll Need:</h3>
@@ -296,12 +301,24 @@ Caution
 <p>The steps in this guide result in a <a href="https://richleysh84.shinyapps.io/scheduled-deployment/">minimal application</a> that reports the time that it was deployed to shinyapps.io.</p>
 <section id="configure-the-development-environment" class="level3">
 <h3 class="anchored" data-anchor-id="configure-the-development-environment">Configure the Development Environment</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(Job: Install dependencies)
+ 
+</pre>
+</div>
+</div>
+</div>
+</div>
 <ol type="1">
 <li>Create a new repository or; if you would rather skip the application development; <a href="https://github.com/r-leyshon/automate-shinyapps-deploy">clone this repository</a> and proceed to the <a href="#deploying-the-application">deployment stage</a>.</li>
 <li>Clone the repository into your local development environment.</li>
 <li>Create a clean virtual environment with python 3.11. At the time of writing, this is the most current version of python available to shinyapps.io servers.</li>
 <li>Activate the environment.</li>
-<li>Install the requirements.txt dependencies.</li>
+<li>Install the python dependencies in <code>requirements.txt</code>.</li>
 </ol>
 </section>
 <section id="prepare-the-data" class="level3">
@@ -365,7 +382,7 @@ Caution
 </div>
 </div>
 </div>
-<p>An application is needed to present the data to your user. In this example, the app will simply read in the date string created in the section <a href="#prepare-the-data">Prepare the Data</a>, format the datestring in a sentence and present it within the user interface.</p>
+<p>An application is needed to present the data to your user. In this example, the app will simply read the date string created in the previous step, format the datestring in a sentence and present it within the user interface.</p>
 <ol type="1">
 <li>Create a python file called <code>app.py</code>.</li>
 <li>Paste the following into <code>app.py</code>:</li>
@@ -403,7 +420,7 @@ Caution
 <div class="sourceCode" id="cb5" data-eval="false"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> shiny run ./app.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="4" type="1">
-<li>If the application successfully launches, you should see a localhost url printed. Command and click on this or paste into your browser to confirm that the application deployed successfully. You should see the sentence <code>Deployed at &lt;SOME_DATETIME_INSERTED_HERE&gt;</code>.</li>
+<li>If the application successfully launches, you should see a localhost URL printed. Command and click on this or paste it into your browser to confirm that the application successfully launches. The app should present the sentence <code>Deployed at &lt;SOME_DATETIME_INSERTED_HERE&gt;</code>.</li>
 </ol>
 </section>
 </section>
@@ -430,10 +447,24 @@ Caution
 </div>
 </div>
 </div>
-<p>The first stage of deployment should be to manually upload the application to your shinyapps.io account. It is required to do this manually in the first instance, as it will allow you to retrieve an app ID for the app deployment. This will ensure that when you use GitHub Actions to do the same, complications overwriting the application data are avoided. For more information on deploying to shinyapps.io, consult the python shiny cloud hosting documentation <span class="citation" data-cites="ShinyCloudHosting"><a href="#ref-ShinyCloudHosting" role="doc-biblioref">[4]</a></span>, the shinyapps.io documentation <span class="citation" data-cites="ShinyAppsDocsDeploy"><a href="#ref-ShinyAppsDocsDeploy" role="doc-biblioref">[5]</a></span> and the Rsconnect-python documentation <span class="citation" data-cites="RSConnectDocs"><a href="#ref-RSConnectDocs" role="doc-biblioref">[6]</a></span>. It is also advisable to manually deploy in the first instance in order to confirm that your app runs on shinyapps.io servers. With a simple app like this one, it should be a straightforward matter, but with a larger, more complex app, debugging problems on a remote server can be quite time consuming.</p>
+<p>The first stage of deployment should be to manually upload the application to your shinyapps.io account. It is required to do this manually in the first instance, as it will allow you to retrieve an app ID for the deployment. This will ensure that when you use GitHub Actions to do the same, complications overwriting the application data are avoided. For more information on deploying to shinyapps.io, consult the python shiny cloud hosting documentation <span class="citation" data-cites="ShinyCloudHosting"><a href="#ref-ShinyCloudHosting" role="doc-biblioref">[4]</a></span>, the shinyapps.io documentation <span class="citation" data-cites="ShinyAppsDocsDeploy"><a href="#ref-ShinyAppsDocsDeploy" role="doc-biblioref">[5]</a></span> and the Rsconnect-python documentation <span class="citation" data-cites="RSConnectDocs"><a href="#ref-RSConnectDocs" role="doc-biblioref">[6]</a></span>.</p>
 <ol type="1">
 <li>Follow the shinyapps.io deployment documentation <span class="citation" data-cites="ShinyAppsDocsDeploy"><a href="#ref-ShinyAppsDocsDeploy" role="doc-biblioref">[5]</a></span> to retrieve your username, token and secret. Store these somewhere secure.</li>
-<li>Take precautions not to accidentally commit these credentials to your repository. I recommend both gitignoring the file that you stored them and using detect-secrets <span class="citation" data-cites="DetectSecrets"><a href="#ref-DetectSecrets" role="doc-biblioref">[7]</a></span> if you are familiar with pre-commit hooks.</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Take precautions not to accidentally commit these credentials to your repository. I recommend both gitignoring the file that you stored them and using detect-secrets <span class="citation" data-cites="DetectSecrets"><a href="#ref-DetectSecrets" role="doc-biblioref">[7]</a></span> if you are familiar with pre-commit hooks.</p>
+</div>
+</div>
+<ol start="2" type="1">
 <li>Configure an rsconnect server with the following command in your CLI, replacing the account, token and secret with your credentials:</li>
 </ol>
 <div class="code-with-filename">
@@ -445,7 +476,7 @@ Caution
 <p>Note that you can give the server any name you wish, here I have used the imaginative name <code>rsconnect-server</code>. You must refer to this server name in <code>&lt;YOUR_SERVER_NAME&gt;</code> in the next step. If successful, you should see output in the CLI like below:</p>
 <div class="sourceCode" id="cb7" data-eval="false"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Checking</span> shinyapps.io credential...              <span class="pp">[</span><span class="st">OK</span><span class="pp">]</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Updated</span> shinyapps.io credential <span class="st">"&lt;YOUR_SERVER_NAME&gt;"</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="4" type="1">
+<ol start="3" type="1">
 <li>Now use the configured rsconnect server to deploy your local app to the cloud, run the below command in the CLI, inserting the name of the server you configured in the previous step and an appropriate application title. Avoid using spaces in the application title as I have found this causes issues when deploying with certain versions of <code>rsconnect-python</code>:</li>
 </ol>
 <div class="code-with-filename">
@@ -459,21 +490,40 @@ Caution
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        <span class="ex">[OK]</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Saving</span> deployed information...  <span class="pp">[</span><span class="st">OK</span><span class="pp">]</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Verifying</span> deployed content...   <span class="pp">[</span><span class="st">OK</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="5" type="1">
-<li>The previous step creates a metadata directory called <code>rsconnect-python</code>. I suggest adding this lint to your <code>.gitignore</code> file.</li>
-<li>The hosted application should launch in your default browser on successful deployment. If not, then visit the url printed in the terminal output and check everything is working as expected.</li>
+<ol start="4" type="1">
+<li>The previous step creates a metadata directory called <code>rsconnect-python</code>. Add this to your <code>.gitignore</code> file.</li>
+<li>The hosted application should launch in your default browser on successful deployment. If not, then visit the URL printed in the terminal output and check everything is working as expected.</li>
 </ol>
 </section>
 <section id="remote-deploy" class="level3">
 <h3 class="anchored" data-anchor-id="remote-deploy">Remote Deploy</h3>
-<p>Now that the application has been successfuly deployed, the application ID can be retrieved and used in a GitHub Action workflow to schedule the application deployment. This stage will involve configuring environment variables and secrets in our GitHub repository. The guidance for configuring this is correct at the time of writing but be advised that GitHub frequently update their user interface.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A[update.yml] ==&gt; B(Job: Install dependencies)
+    B ==&gt; C(Job: Run save_time.py)
+    C --&gt; D[saved_time.txt]
+    C ==&gt; E(Job: Configure rsconnect)
+    H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-&gt; E
+    E ==&gt; F(Job: Deploy to rsconnect)
+    K([APP_ID]) -.-&gt; F
+    F ==&gt; G{{shinyapps.io: serve app.py}}
+    D -.-&gt; G    
+</pre>
+</div>
+</div>
+</div>
+</div>
+<p>Now that the app has been successfuly deployed, the app ID can be retrieved and used in a GitHub Action workflow to schedule this deployment. This stage will involve configuring environment variables and secrets in our GitHub repository. The guidance for configuring this is correct at the time of writing but be advised that GitHub frequently update their user interface and CI/CD functionality.</p>
 <section id="configure-the-repository-environment" class="level4">
 <h4 class="anchored" data-anchor-id="configure-the-repository-environment">Configure the Repository Environment</h4>
 <ol type="1">
-<li>Retrieve the application ID. You can find this either in your shinyapps.io dashboard or by copying the value from the json file saved in the <code>rsconnect-python/</code> following a successful deployment.</li>
+<li>Retrieve the application ID. You can find this either in your shinyapps.io dashboard or by copying the value from the json file saved in the <code>rsconnect-python</code> directory, following a successful <a href="#local-deploy">local deployment</a>.</li>
 <li>Navigate to the GitHub repository in your browser.</li>
-<li>Access the environment variables under <code>Settings</code> -&gt; <code>Secrets and variables</code> -&gt; <code>Actions</code> -&gt; <code>Variables</code>.</li>
-<li>Save an environment variable called <code>SHINYAPPS_USERNAME</code> with your shinyapps.io username. Ensure that the values are correct and authenticate when prompted by GitHub to save the variable.</li>
+<li>Access the environment variables menu under <code>Settings</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>Secrets and variables</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>Actions</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>Variables</code>.</li>
+<li>Save an environment variable called <code>SHINYAPPS_USERNAME</code> with your shinyapps.io username. Ensure that the values are correct and authenticate when prompted by GitHub to save the variable. 2 factor authentication may be required so have your phone to hand.</li>
 <li>Now click on the <code>Secrets</code> tab and repeat this process for the three required secrets:
 <ul>
 <li><code>APP_ID</code></li>
@@ -485,7 +535,7 @@ These values will be encrypted and masked if you try to print them in workflow l
 </section>
 <section id="set-up-the-workflow" class="level4">
 <h4 class="anchored" data-anchor-id="set-up-the-workflow">Set Up the Workflow</h4>
-<p>In this section, a script is created that will execute the job of updating the app and deploying to shinyapps.io. It will grab the secrets and variables that created in the <a href="#configure-the-repository-environment">previous stage</a>.</p>
+<p>In this section, a script is created that will execute the job of updating the app and deploying to shinyapps.io. It will grab the secrets and variables created in the <a href="#configure-the-repository-environment">previous stage</a>.</p>
 <ol type="1">
 <li>Create the following directory to store the workflow script:</li>
 </ol>
@@ -505,7 +555,7 @@ These values will be encrypted and masked if you try to print them in workflow l
 <div class="sourceCode" id="cb11" data-eval="false"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> .github/workflows/update.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="3" type="1">
-<li>Update the YAML file with the content below, note that I have included notes in the file to help understand the purpose of each step, but feel free to remove them if needed:</li>
+<li>Update the YAML file with the content below, note that I have included notes in the file to help understand the purpose of each step, but feel free to remove them if preferred:</li>
 </ol>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -538,7 +588,10 @@ These values will be encrypted and masked if you try to print them in workflow l
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>          rsconnect deploy shiny --app-id ${{ secrets.APP_ID }} ./ --name rsconnect-server  --title scheduled-deployment</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="4" type="1">
-<li>Once everything has been done, add and commit all the changes and push them to your remote. The next time your cronjob triggers, navigate to your repository in your browser and inspect the workflow logs under <code>Actions</code> -&gt; <code>All workflows</code>.</li>
+<li>Once everything has been done, add and commit all the changes and push them to the remote. The next time the cronjob triggers, navigate to the repository in a browser and inspect the workflow logs under <code>Actions</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>All workflows</code>.</li>
+<li>If the Action executed successfully, you will see the topmost build log will present a blue checkmark. Click on the link to see the details.</li>
+<li>Click on the the <code>build</code> label to expose the steps in the workflow. By clicking on these stages the logs can be expanded. Check the time of deployment under the <code>Update saved time</code> step.</li>
+<li>Click on the <code>Deploy to rsconnect</code> step. The final line should state that the application was successfully deployed to a URL. Click on the link to launch the app and confirm that the time of deployment matches that reported in the <code>Update saved time</code> log.</li>
 </ol>
 </section>
 </section>
@@ -548,33 +601,20 @@ These values will be encrypted and masked if you try to print them in workflow l
 <ul>
 <li>To see a list of your configured rsconnect servers, use the <code>rsconnect list</code> command in the CLI.</li>
 <li>To remove a server, use <code>rsconnect remove --name &lt;SERVER_NAME&gt;</code> in the CLI.</li>
-<li>If you encounter an error when deploying your app in step 4 that states “not found”, try deleting the folder called <code>rsconnect-python</code> if it exists and run the deploy command once more.</li>
+<li>If you encounter an error when deploying your app that states “not found”, try deleting the folder called <code>rsconnect-python</code> if it exists and run the deploy command once more.</li>
+<li>Once you have used GitHub Actions to schedule the deployment, you may notice that the time of execution does not precisely match the time specified in the workflow file. GitHub will initiate the job at the time specified, but will queue the job until a runner is available to execute it. At periods of heavy traffic, you may experience delays of half an hour or more.</li>
 </ul>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>The full workflow is visualised in the process diagram below.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-    A[update.yml] ==&gt; B(Job: Install dependencies)
-    B ==&gt; C(Job: Run save_time.py)
-    C --&gt; D[saved_time.txt]
-    C ==&gt; E(Job: Configure rsconnect)
-    H([SHINYAPPS_USERNAME\nSHINYAPPS_TOKEN\nSHINYAPPS_SECRET]) -.-&gt; E
-    E ==&gt; F(Job: Deploy to rsconnect)
-    K([APP_ID]) -.-&gt; F
-    F ==&gt; G{{shinyapps.io: serve app.py}}
-    D -.-&gt; G    
-</pre>
+<p>In this guide, we have produced a to python shiny application and used GitHub Actions to schedule its deployment to the shinyapps hosting service.</p>
+<p>This workflow can be adapted to serve a real business need. For example, a similar workflow can be used to produce a basic <a href="https://richleysh84.shinyapps.io/org-bounty-board/">‘bounty board’ app</a> to help colleagues in an organisation extract GitHub issues and PRs (<a href="https://github.com/r-leyshon/org-issue-tool">Code available here</a>).</p>
+<p>The workflow can also be improved to take advantage of the new GitHub Actions cacheing feature <span class="citation" data-cites="GitHubActionsCacheing"><a href="#ref-GitHubActionsCacheing" role="doc-biblioref">[9]</a></span>. This will make subsequent runs faster as dependencies and configuration can be stored between runs.</p>
+<p>Get some action!</p>
+<div class="tenor-gif-embed center" data-postid="24199060" data-share-method="host" data-aspect-ratio="1.50235" data-width="100%">
+<a href="https://tenor.com/view/action-man-gif-24199060">Action Man GIF</a>from <a href="https://tenor.com/search/action-gifs">Action GIFs</a>
 </div>
-</div>
-</div>
-</div>
-<p>This workflow can be adapted to serve a real business need. For example, a similar workflow is used to produce a basic <a href="https://richleysh84.shinyapps.io/org-bounty-board/">‘bounty board’ app</a> to help colleagues extract GitHub issues and PRs. <a href="https://github.com/r-leyshon/org-issue-tool">Code available here</a>.</p>
-<p>The workflow file can also be improved upon to take advantage of the new GitHub Actions cacheing feature <span class="citation" data-cites="GitHubActionsCacheing"><a href="#ref-GitHubActionsCacheing" role="doc-biblioref">[9]</a></span>. This will make subsequent runs faster still as dependencies and configuration can be saved between runs.</p>
+<script type="text/javascript" async="" src="https://tenor.com/embed.js"></script>
 <p id="fin">
 <i>fin!</i>
 </p>
