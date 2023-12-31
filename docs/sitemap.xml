@@ -2,62 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thedatasavvycorner.netlify.app/index.html</loc>
-    <lastmod>2023-12-23T18:25:26.438Z</lastmod>
+    <lastmod>2023-12-31T08:30:10.132Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/index.html</loc>
-    <lastmod>2023-12-23T18:25:24.965Z</lastmod>
+    <lastmod>2023-12-31T08:30:08.721Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/03-amusing-ourselves-to-death.html</loc>
-    <lastmod>2023-12-23T18:25:23.726Z</lastmod>
+    <lastmod>2023-12-31T08:30:07.547Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
-    <lastmod>2023-12-23T18:25:21.171Z</lastmod>
+    <lastmod>2023-12-31T08:30:05.155Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
-    <lastmod>2023-12-23T18:25:19.941Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
-    <lastmod>2023-12-23T18:25:18.823Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</loc>
-    <lastmod>2023-12-23T18:25:16.806Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
-    <lastmod>2023-12-23T18:25:13.818Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
-    <lastmod>2023-12-23T18:25:14.336Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
-    <lastmod>2023-12-23T18:25:17.788Z</lastmod>
+    <lastmod>2023-12-31T08:30:03.905Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
-    <lastmod>2023-12-23T18:25:19.260Z</lastmod>
+    <lastmod>2023-12-31T08:30:02.533Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
+    <lastmod>2023-12-31T08:30:01.056Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
+    <lastmod>2023-12-31T08:29:57.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
+    <lastmod>2023-12-31T08:29:57.161Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</loc>
+    <lastmod>2023-12-31T08:29:59.960Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
+    <lastmod>2023-12-31T08:30:02.078Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/07-schedule-deploy-shinyapps.html</loc>
+    <lastmod>2023-12-31T08:30:03.282Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</loc>
-    <lastmod>2023-12-23T18:25:20.764Z</lastmod>
+    <lastmod>2023-12-31T08:30:04.761Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/02-zelda-and-chill.html</loc>
-    <lastmod>2023-12-23T18:25:21.886Z</lastmod>
+    <lastmod>2023-12-31T08:30:05.863Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
-    <lastmod>2023-12-23T18:25:24.386Z</lastmod>
+    <lastmod>2023-12-31T08:30:08.168Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</loc>
-    <lastmod>2023-12-23T18:25:25.733Z</lastmod>
+    <lastmod>2023-12-31T08:30:09.447Z</lastmod>
   </url>
 </urlset>

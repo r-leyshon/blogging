@@ -1,7 +1,7 @@
 ---
 title: "Set Up Signed Commits on GitHub"
 author: "Rich Leyshon"
-date: last-modified
+date: November 2 2023
 description: "A quick guide to setting up commit verification using a GPG key."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - How-to

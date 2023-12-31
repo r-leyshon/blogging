@@ -1,7 +1,7 @@
 ---
 title: "How to Automate Quarto Builds with GitHub Actions"
 author: "Rich Leyshon"
-date: last-modified
+date: September 10 2023
 description: "Setting up a website with Quarto? Want to automate the website
 build and publication with GitHub Actions? Could you use a quick guide? I've
 got your back."

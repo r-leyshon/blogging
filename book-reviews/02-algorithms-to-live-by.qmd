@@ -2,7 +2,7 @@
 title: "Algorithms to Live By"
 subtitle: "The Computer Science of Human Decisions"
 author: "Rich Leyshon"
-date: last-modified
+date: September 30 2023
 description: "Thoughts on Brian Christian & Tom Griffiths treatment of applied computer science."
 categories:        
     - Mathematical Modelling

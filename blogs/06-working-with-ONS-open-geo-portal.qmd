@@ -1,8 +1,8 @@
 ---
 title: "Getting Data from ONS Open Geography Portal"
 author: "Rich Leyshon"
-date: last-modified
-description: "How to ingest data using Python requests & ArcGIS REST API."
+date: December 15 2023
+description: "Ingesting data using Python requests & ArcGIS REST API."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Tutorial
     - ONS Open Geography Portal
