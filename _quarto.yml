@@ -18,7 +18,7 @@ website:
   navbar:
     style: floating
     title: "The Data Savvy Corner"
-    contents:
+    left:
       - icon: rss
         href: index.xml
       - blogs/index.qmd
