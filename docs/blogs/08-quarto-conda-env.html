@@ -182,6 +182,9 @@ div.csl-indent {
   </ul></li>
   <li><a href="#configuring-quarto-with-conda-env" id="toc-configuring-quarto-with-conda-env" class="nav-link" data-scroll-target="#configuring-quarto-with-conda-env">Configuring Quarto with Conda Env</a>
   <ul class="collapse">
+  <li><a href="#project-structure" id="toc-project-structure" class="nav-link" data-scroll-target="#project-structure">Project Structure</a></li>
+  <li><a href="#configure-the-environment" id="toc-configure-the-environment" class="nav-link" data-scroll-target="#configure-the-environment">Configure the Environment</a></li>
+  <li><a href="#configure-the-quarto-project" id="toc-configure-the-quarto-project" class="nav-link" data-scroll-target="#configure-the-quarto-project">Configure the Quarto Project</a></li>
   <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
@@ -243,9 +246,8 @@ Creative commons license, created by <a href="https://pixexid.com/profile/cjxrsx
 <li><a href="https://quarto.org/docs/projects/virtual-environments.html#using-conda" target="_blank">Quarto Documentation: Using Conda</a></li>
 <li><a href="https://quarto.org/docs/computations/python.html#kernel-selection" target="_blank">Quarto Documentation: Using Python</a></li>
 <li><a href="https://github.com/Anaconda-Platform/nb_conda_kernels#use-with-nbconvert-voila-papermill" target="_blank">nb_conda_kernels readme</a></li>
-<li><a href="https://github.com/quarto-dev/quarto-cli/discussions/1214?sort=top" target="_blank">Quarto Dev GitHub discussion #1214</a></li>
 </ul>
-<p>It is presumed that you will be working within a git repository at times. This may not be the case and ignoring steps specifying git instructions should not affect your ability to successfully render the quarto documents.</p>
+<p>It is presumed that you will be working within a git repository at times. If this is not the case, ignoring steps specifying git instructions should not affect your ability to successfully render the quarto documents.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -258,13 +260,13 @@ A Note on the Purpose
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The purpose of this article is not to explore reasons for using conda enviroments or to compare the pros and cons of the many different options for managing python virtual environments. This article aims to help the reader configure quarto documents to run with a specified conda environment. It aims to remain minimal, opting to link to sources of further information where discussion may complement the content.</p>
+<p>The purpose of this article is not to explore reasons for using conda enviroments or to compare the pros and cons of the many different options for managing python virtual environments. It aims to help the reader configure quarto documents to run with a specified conda environment while remaining minimal, opting to link to sources of further information where discussion may complement the content.</p>
 </div>
 </div>
 </div>
 <section id="intended-audience" class="level3">
 <h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
-<p>Python practitioners familiar with conda environment management <span class="citation" data-cites="CondaDocsEnvMgmt"><a href="#ref-CondaDocsEnvMgmt" role="doc-biblioref">[1]</a></span> who are less familiar in working with quarto documents <span class="citation" data-cites="HelloQuarto"><a href="#ref-HelloQuarto" role="doc-biblioref">[2]</a></span>.</p>
+<p>Python practitioners familiar with conda environment management <span class="citation" data-cites="CondaDocsEnvMgmt"><a href="#ref-CondaDocsEnvMgmt" role="doc-biblioref">[1]</a></span> who are less familiar working with quarto documents <span class="citation" data-cites="HelloQuarto"><a href="#ref-HelloQuarto" role="doc-biblioref">[2]</a></span>.</p>
 </section>
 <section id="the-scenario" class="level3">
 <h3 class="anchored" data-anchor-id="the-scenario">The Scenario</h3>
@@ -295,12 +297,14 @@ A Note on the Purpose
 </section>
 <section id="configuring-quarto-with-conda-env" class="level2">
 <h2 class="anchored" data-anchor-id="configuring-quarto-with-conda-env">Configuring Quarto with Conda Env</h2>
+<section id="project-structure" class="level3">
+<h3 class="anchored" data-anchor-id="project-structure">Project Structure</h3>
 <ol type="1">
 <li>Create a new project folder. Open a terminal and change directory to the new project.</li>
 <li>Save the requirements to a <code>requirements.txt</code> file.</li>
 <li>Create a new quarto document in the project root. In VS Code, use<br>
 <code>File</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>New File...</code> <i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> <code>Quarto Document</code>.</li>
-<li>Write the following content to a python code chunk in the file and save as <code>penguins.qmd</code></li>
+<li>Write the following content to a python code chunk in the quarto file and save as <code>penguins.qmd</code></li>
 </ol>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -309,6 +313,9 @@ A Note on the Purpose
 <div class="sourceCode" id="cb2" data-eval="False"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> penguins.load_penguins().dropna()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="configure-the-environment" class="level3">
+<h3 class="anchored" data-anchor-id="configure-the-environment">Configure the Environment</h3>
 <ol start="5" type="1">
 <li>Create a new conda environment with the <code>-p</code> flag and give it a suitably descriptive name <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Ensure that the environment is built with python 3.11 <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
 </ol>
@@ -345,8 +352,11 @@ A Note on the Purpose
 </div>
 <div class="sourceCode" id="cb6" data-eval="False"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">SOME_ENV_NAME/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="configure-the-quarto-project" class="level3">
+<h3 class="anchored" data-anchor-id="configure-the-quarto-project">Configure the Quarto Project</h3>
 <ol start="9" type="1">
-<li>Create a <code>_quarto.yml</code> configuration file in the project root. In this file, we will specify that the <code>quarto render</code> command should render any qmd files and ignore any qmd or md files found within your local environment. Add the following content:</li>
+<li>Create a <code>_quarto.yml</code> configuration file in the project root. In this file, we will specify that the <code>quarto render</code> command should render any qmd files and ignore any files found within your local environment. Add the following content:</li>
 </ol>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -369,7 +379,7 @@ A Note on the Purpose
 <div class="sourceCode" id="cb8" data-eval="False"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install nb_conda_kernels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="11" type="1">
-<li>Copy the path returned from the command</li>
+<li>Copy the path returned from the below command</li>
 </ol>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -406,7 +416,7 @@ A Note on the Purpose
 </div>
 <ol start="15" type="1">
 <li>Copy the name (not the path) for the environment that you created with the format <code>conda-env-&lt;YOUR_ENV_NAME&gt;-py</code>.</li>
-<li>Open <code>penguins.qmd</code>. Adjust the YAML fron matter so that it contains the following:</li>
+<li>Open <code>penguins.qmd</code>. Adjust the YAML header so that it contains the following:</li>
 </ol>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -419,7 +429,7 @@ A Note on the Purpose
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">display_name</span><span class="kw">:</span><span class="at"> </span><span class="st">"&lt;YOUR_ENV_NAME&gt;"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="17" type="1">
-<li>When you render your document, you should see terminal output confirming that the target environment was activated. eg:</li>
+<li>You should now be able to render the quarto project, confirming that the target environment was activated in the CLI output. eg:</li>
 </ol>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -428,19 +438,20 @@ A Note on the Purpose
 <div class="sourceCode" id="cb14" data-eval="False"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <pre><code>Starting &lt;YOUR_ENV_NAME&gt; kernel...Done</code></pre>
+</section>
 <section id="tips" class="level3">
 <h3 class="anchored" data-anchor-id="tips">Tips</h3>
 <ul>
 <li>When encountering issues with quarto render, it can be informative to examine the output of <code>quarto check</code> or <code>quarto check jupyter</code> in the CLI.</li>
-<li>As there are many steps to configuring conda, it may be a good idea to create a dedicated quarto-conda environment for all of your quarto projects. Quarto attempts to select an appropriate kernel based upon the content of the first executable python code chunk in your quarto document - usually this chunk would contain the import statements. This would likely result in an overloaded conda environment in time.</li>
-<li>The approach set out in this how-to would likely be a good fit for a website built with quarto, where the configuration steps can be performed once in a parent website environment, and then specific, minimal environments created for each article requiring a python environment.</li>
-<li>Alternatively, it may be advisable to consider using <code>venv</code> or <code>poetry</code> to manage python environments <span class="citation" data-cites="DO4DSPKGLayer"><a href="#ref-DO4DSPKGLayer" role="doc-biblioref">[3]</a></span>.</li>
+<li>As there are many steps to configuring conda, it may be a good idea to create a dedicated conda environment for all of your quarto projects. Quarto attempts to select an appropriate kernel based upon the content of the first executable python code chunk in your quarto document. Usually, this chunk would contain the import statements. However, over time this would likely result in package conflicts over time.</li>
+<li>The approach set out in this how-to would be a good fit for a website built with quarto, where the configuration steps can be performed only once in a parent website environment, and then specific, minimal environments created for each article requiring a python environment.</li>
+<li>Alternatively, consider using <code>venv</code> or <code>poetry</code> to manage python environments <span class="citation" data-cites="DO4DSPKGLayer"><a href="#ref-DO4DSPKGLayer" role="doc-biblioref">[3]</a></span> for quarto projects.</li>
 </ul>
 </section>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>This article has walked the reader through setting up a basic quarto project, creating a conda environment, and finally configuring a quarto document to render with a specified environment. For more help with quarto, consult the quarto-cli GitHub repository <span class="citation" data-cites="QuartoCLI"><a href="#ref-QuartoCLI" role="doc-biblioref">[4]</a></span> and the RStudio Community <span class="citation" data-cites="PositCommunity"><a href="#ref-PositCommunity" role="doc-biblioref">[5]</a></span> (soon to rebrand to the Posit Community).</p>
+<p>This article has walked the reader through setting up a basic quarto project, creating a conda environment, and configuring a quarto document to render with a specified environment. For more help with quarto, consult the quarto-cli GitHub repository <span class="citation" data-cites="QuartoCLI"><a href="#ref-QuartoCLI" role="doc-biblioref">[4]</a></span> and the RStudio Community <span class="citation" data-cites="PositCommunity"><a href="#ref-PositCommunity" role="doc-biblioref">[5]</a></span> (soon to rebrand to the Posit Community).</p>
 <p id="fin">
 <i>fin!</i>
 </p>
@@ -469,8 +480,8 @@ A Note on the Purpose
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>When creating conda environments, the use of generic names such as <code>env</code> will result in conda prepending the environment name with numbers to avoid conflicts. I suggest using more descriptive environment names in order to avoid this.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><code>nb_conda_kernels</code> (a package required in step 10) does not currently work with python 3.12 or newer.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>When creating conda environments, the use of generic names such as <code>env</code> will result in conda prepending the environment name with numbers to avoid conflicts. Use descriptive environment names in order to avoid this, eg <code>penguins-env</code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><code>nb_conda_kernels</code> (a package required in <a href="#configure-the-quarto-project">a later step</a>) does not currently work with python 3.12 or newer.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
