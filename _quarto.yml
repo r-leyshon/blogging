@@ -7,27 +7,38 @@ project:
 execute:
   freeze: auto
 website:
+  title: "The Data Savvy Corner"
   favicon: /./www/favicon.ico
   site-url: "https://thedatasavvycorner.netlify.app/"
   description: "Musings, ramblings, generally putting things down in text so I don't forget them."
   search: false
-  title: "The Data Savvy Corner"
   twitter-card:
     site: "@Rich_L1984"
   open-graph: true
   navbar:
-    left:
+    style: floating
+    title: "The Data Savvy Corner"
+    contents:
       - icon: rss
         href: index.xml
       - blogs/index.qmd
       - music-reviews/index.qmd
       - book-reviews/index.qmd
+    tools:
+      - icon: twitter
+        href: https://twitter.com/Rich_L1984
+      - icon: github
+        href: https://github.com/r-leyshon
+      - icon: linkedin
+        href: https://www.linkedin.com/in/richard-leyshon-316121163/
 format:
   html:
     include-in-header:
       - text: |
           <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
-    theme: cosmo
+    theme: 
+      light: cosmo
+      dark: superhero
     css: /www/styles.css
     toc: true
 bibliography: ./bibliography/references.bib
