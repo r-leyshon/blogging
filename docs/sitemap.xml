@@ -2,66 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
-    <lastmod>2024-01-06T07:06:51.701Z</lastmod>
+    <lastmod>2024-01-06T10:55:33.910Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</loc>
-    <lastmod>2024-01-06T07:06:50.617Z</lastmod>
+    <lastmod>2024-01-06T10:55:32.806Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/index.html</loc>
-    <lastmod>2024-01-06T07:06:49.143Z</lastmod>
+    <lastmod>2024-01-06T10:55:31.305Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</loc>
-    <lastmod>2024-01-06T07:06:46.837Z</lastmod>
+    <lastmod>2024-01-06T10:55:28.995Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
-    <lastmod>2024-01-06T07:06:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</loc>
-    <lastmod>2024-01-06T07:06:43.754Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
-    <lastmod>2024-01-06T07:06:41.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
-    <lastmod>2024-01-06T07:06:40.084Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
-    <lastmod>2024-01-06T07:06:39.047Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
-    <lastmod>2024-01-06T07:06:40.763Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
-    <lastmod>2024-01-06T07:06:41.701Z</lastmod>
+    <lastmod>2024-01-06T10:55:27.624Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/07-schedule-deploy-shinyapps.html</loc>
-    <lastmod>2024-01-06T07:06:44.515Z</lastmod>
+    <lastmod>2024-01-06T10:55:26.015Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
+    <lastmod>2024-01-06T10:55:23.084Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
+    <lastmod>2024-01-06T10:55:22.171Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
+    <lastmod>2024-01-06T10:55:20.181Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
+    <lastmod>2024-01-06T10:55:21.512Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
+    <lastmod>2024-01-06T10:55:22.646Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</loc>
+    <lastmod>2024-01-06T10:55:25.246Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/08-quarto-conda-env.html</loc>
+    <lastmod>2024-01-06T10:55:26.571Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
-    <lastmod>2024-01-06T07:06:46.067Z</lastmod>
+    <lastmod>2024-01-06T10:55:28.236Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/03-amusing-ourselves-to-death.html</loc>
-    <lastmod>2024-01-06T07:06:48.588Z</lastmod>
+    <lastmod>2024-01-06T10:55:30.754Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/index.html</loc>
-    <lastmod>2024-01-06T07:06:49.832Z</lastmod>
+    <lastmod>2024-01-06T10:55:32.013Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/02-zelda-and-chill.html</loc>
-    <lastmod>2024-01-06T07:06:51.314Z</lastmod>
+    <lastmod>2024-01-06T10:55:33.514Z</lastmod>
   </url>
 </urlset>

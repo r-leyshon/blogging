@@ -1,0 +1,198 @@
+---
+title: "Conda Environments for Quarto Documents"
+author: "Rich Leyshon"
+date: January 06 2024
+description: "How to specify a specific Conda environment when rendering quarto documents."
+categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+    - How-to
+    - Quarto
+    - Conda Environments
+image: https://images.pixexid.com/this-3d-abstract-composition-showcases-a-futuristic-cityscape-made-of-neon-light-3gph8k0n.jpeg?h=700&amp;q=70
+image-alt: "This 3D abstract composition showcases a futuristic cityscape made of neon lights and geometric shapes, perfect for a cyberpunk-inspired desktop wallpaper. Creative commons license, created by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+toc: true
+---
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://images.pixexid.com/this-3d-abstract-composition-showcases-a-futuristic-cityscape-made-of-neon-light-3gph8k0n.jpeg?h=700&amp;q=70"></img>
+  <figcaption style="text-align:center;">Creative commons license, created by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
+</figure>
+
+## Introduction
+
+This article sets out minimal instructions on rendering quarto documents that
+rely on specified conda virtual environments. This article collates information
+from:
+
+- <a href="https://quarto.org/docs/projects/virtual-environments.html#using-conda" target="_blank">Quarto Documentation: Using Conda</a>
+- <a href="https://quarto.org/docs/computations/python.html#kernel-selection" target="_blank">Quarto Documentation: Using Python</a>
+- <a href="https://github.com/Anaconda-Platform/nb_conda_kernels#use-with-nbconvert-voila-papermill" target="_blank">nb_conda_kernels readme</a>
+- <a href="https://github.com/quarto-dev/quarto-cli/discussions/1214?sort=top" target="_blank">Quarto Dev GitHub discussion #1214</a>
+
+It is presumed that you will be working within a git repository at times. This
+may not be the case and ignoring steps specifying git instructions should not
+affect your ability to successfully render the quarto documents.
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose
+
+The purpose of this article is not to explore reasons for using conda
+enviroments or to compare the pros and cons of the many different options for
+managing python virtual environments. This article aims to help the reader
+configure quarto documents to run with a specified conda environment. It aims
+to remain minimal, opting to link to sources of further information where
+discussion may complement the content.
+
+:::
+
+### Intended Audience
+
+Python practitioners familiar with conda environment management
+@CondaDocsEnvMgmt who are less familiar in working with quarto documents
+@HelloQuarto.
+
+### The Scenario
+
+You are writing a quarto document that contains python code. You would like to
+use conda to manage your python dependencies. You are encountering problems in 
+having quarto select the appropriate conda environment.
+
+### What You'll Need:
+
+- [ ] Conda or miniconda
+- [ ] Quarto
+- [ ] Text editor eg VS Code
+- [ ] Python package manager (eg `pip`)
+- [ ] Access to a command line interface (CLI) such as terminal / Bash.
+- [ ] `requirements.txt`:
+
+```{.python filename=requirements.txt eval=false}
+nbclient
+nbformat
+palmerpenguins
+
+```
+- [ ] git (optional)
+
+## Configuring Quarto with Conda Env
+
+1. Create a new project folder. Open a terminal and change directory to the new
+project.
+2. Save the requirements to a `requirements.txt` file.
+3. Create a new quarto document in the project root. In VS Code, use  
+`File` {{< fa arrow-right >}} `New File...` {{< fa arrow-right >}}
+`Quarto Document`.
+4. Write the following content to a python code chunk in the file and save as
+`penguins.qmd`
+```{.python filename="penguins.qmd" eval=False}
+df = penguins.load_penguins().dropna()
+df.head()
+```
+5. Create a new conda environment with the `-p` flag and give it a suitably
+descriptive name [^1]. Ensure that the environment is built with python 3.11
+[^2].
+```{.zsh filename=CLI eval=False}
+conda create -p SOME_ENV_NAME python=3.11 -y
+```
+6. Activate the environment.
+```{.zsh filename=CLI eval=False}
+conda activate ./SOME_ENV_NAME
+```
+7. Install the requirements file.
+```{.zsh filename=CLI eval=False}
+pip install -r requirements.txt
+```
+8. Add a `.gitignore` file and include the name of the local environment
+directory created in step 4.
+```{.zsh filename=.gitignore eval=False}
+SOME_ENV_NAME/
+```
+9. Create a `_quarto.yml` configuration file in the project root. In this file,
+we will specify that the `quarto render` command should render any qmd files
+and ignore any qmd or md files found within your local environment.
+Add the
+following content:
+```{.yaml filename="_quarto.yaml" eval=False}
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "!/./SOME_ENV_NAME/"
+
+```
+10. Use conda to install the `nb_conda_kernels` package. This is used to manage
+python jupyter kernels for notebooks.
+```{.zsh filename=CLI eval=False}
+conda install nb_conda_kernels
+```
+11. Copy the path returned from the command
+```{.zsh filename=CLI eval=False}
+jupyter --config-dir
+```
+12. Create a `jupyter_config.json` in the jupyter config directory:
+```{.zsh filename=CLI eval=False}
+touch <INSERT_YOUR_CONFIG_DIR>/jupyter_config.json
+```
+13. Write the below content to this file and save.
+```{.zsh filename=CLI eval=False}
+echo -e "{\n  "CondaKernelSpecManager": {\n    "kernelspec_path": "--user"\n  }\n}" >> <INSERT_YOUR_CONFIG_DIR>/jupyter_config.json
+```
+14. Run the below command to return a list of available kernels:
+```{.zsh filename=CLI eval=False}
+python -m nb_conda_kernels list
+```
+15. Copy the name (not the path) for the environment that you created with the
+format `conda-env-<YOUR_ENV_NAME>-py`.
+16. Open `penguins.qmd`. Adjust the YAML fron matter so that it contains the
+following:
+```{.yaml filename=penguins.qmd eval=False}
+jupyter: 
+  kernelspec:
+    name: "conda-env-<YOUR_ENV_NAME>-py"
+    language: "python"
+    display_name: "<YOUR_ENV_NAME>"
+
+```
+17. When you render your document, you should see terminal output confirming
+that the target environment was activated. eg:
+```{.zsh filename=CLI eval=False}
+quarto render
+```
+
+```
+Starting <YOUR_ENV_NAME> kernel...Done
+```
+
+[^1]: When creating conda environments, the use of generic names such as `env`
+will result in conda prepending the environment name with numbers to avoid
+conflicts. I suggest using more descriptive environment names in order to avoid
+this.
+[^2]: `nb_conda_kernels` (a package required in step 10) does not currently
+work with python 3.12 or newer.
+
+### Tips
+
+* When encountering issues with quarto render, it can be informative to examine
+the output of `quarto check` or `quarto check jupyter` in the CLI.
+* As there are many steps to configuring conda, it may be a good idea to create
+a dedicated quarto-conda environment for all of your quarto projects. Quarto
+attempts to select an appropriate kernel based upon the content of the first
+executable python code chunk in your quarto document - usually this chunk would
+contain the import statements. This would likely result in an overloaded conda
+environment in time.
+* The approach set out in this how-to would likely be a good fit for a website
+built with quarto, where the configuration steps can be performed once in a 
+parent website environment, and then specific, minimal environments created for
+each article requiring a python environment.
+* Alternatively, it may be advisable to consider using `venv` or `poetry` to
+manage python environments @DO4DSPKGLayer.
+
+## Conclusion
+
+This article has walked the reader through setting up a basic quarto project,
+creating a conda environment, and finally configuring a quarto document to
+render with a specified environment. For more help with quarto, consult the 
+quarto-cli GitHub repository @QuartoCLI and the RStudio Community
+@PositCommunity (soon to rebrand to the Posit Community).
+
+<p id=fin><i>fin!</i></p>

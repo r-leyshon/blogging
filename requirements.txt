@@ -2,5 +2,7 @@ folium
 geopandas
 mapclassify
 matplotlib
+nbclient
+nbformat
 pandas
 requests
