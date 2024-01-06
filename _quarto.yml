@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "!/./blogging-env/"
 execute:
   freeze: auto
 website:
