@@ -8,7 +8,7 @@ execute:
   freeze: auto
 website:
   title: "The Data Savvy Corner"
-  favicon: /./www/favicon.ico
+  favicon: /./favicon.ico
   site-url: "https://thedatasavvycorner.netlify.app/"
   description: "Musings, ramblings, generally putting things down in text so I don't forget them."
   search: false
