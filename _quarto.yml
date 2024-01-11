@@ -25,7 +25,7 @@ website:
       - music-reviews/index.qmd
       - book-reviews/index.qmd
     tools:
-      - icon: twitter
+      - icon: twitter-x
         href: https://twitter.com/Rich_L1984
       - icon: github
         href: https://github.com/r-leyshon
