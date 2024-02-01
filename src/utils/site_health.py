@@ -26,11 +26,11 @@ def create_sub_listings(output_dir:str="docs") -> None:
     with open(here(f"{output_dir}/listings.json"), "r") as f:
         listings = json.load(f)
         f.close()
-    for i, d in enumerate(listings):
+    for d in listings:
         # filter out the index listing
         sub_ind = d["listing"]
         if sub_ind == "/index.html":
-            _ = listings.pop(i)
+            pass
         else:
             # make valid paths for all listings that remain
             pth_str = f"{output_dir}{sub_ind}"
