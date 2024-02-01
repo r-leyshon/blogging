@@ -12,18 +12,18 @@ image-alt: Album cover art
 toc: true
 ---
 
-## Introduction
+## Swinging to Serenity
 
 Donkey Kong Country was a seminal moment for the SNES. I recall when a
 childhood friend of mine had received it as an Easter present. The graphics
-were mind blowing, the 2 player couch coop highly addictive, and the audio
+were mind blowing, the 2 player couch co-op highly addictive, and the audio
 certainly made an impression that lasted longer than I had realised. At the
 time I recall I hadn't made the transition to the 16-bit generation, and in
 comparison to my decidedly lacklustre Master System, this looked like the
 future of video gaming.
 
 Thirty years later, I asked Alexa to play some soothing dog music for the
-daschsunds while I did the school run - like most dachsunds, they're the
+dachshunds while I did the school run - like most dachshunds, they're the
 anxious type. As I returned to start work, my nostalgia radar was piqued as a
 beautiful reimagining of Aquatic Ambience sweetly serenaded the pups. That was
 my serendipitous introduction to this little melancholy gem.
@@ -38,6 +38,18 @@ my serendipitous introduction to this little melancholy gem.
 For a formal description of the audio feature categories presented here, please
 consult the
 <a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.
+
+As the album is so short, we see some very tight distributions here and no
+surprises this time, apart from a middling danceability (ballet perhaps?). All
+tracks are very high in instrumentalness and acousticness. The album is very
+low in speechiness as you'd expect. Energy is low throughout. Even where the
+source material is decidedly spritely, it is played here in a soft and
+ponderous tempo. A slightly broader distribution in valence and danceability
+can be observed.
+
+Put this album on when you need to pick through failing code. It will encourage
+alpha brain waves and keep you from switching context to something less
+problematic.
 
 ```{r, width="300px", fig.align="center"}
 #| warning: false
@@ -71,19 +83,6 @@ left of the horizontal axis but you would also expect it to have a peak to the
 right of the axis in the instrumentalness feature.
 :::
 
-As the album is so short, we see some very tight distributions here and no
-surprises this time, apart from a middling danceability (ballet perhaps?). All
-tracks are very high in instrumentalness and acousticness. The album is very
-low in speechiness as you'd expect. Energy is low throughout. Even where the
-source material is decidedly spritely, it is played here in a soft and
-ponderous tempo. A slightly broader distribution in valence and danceability
-can be observed.
-
-Put this album on when you need to pick through failing code. It will encourage
-alpha brain waves and keep you from switching context to something less
-problematic.
-
-
 ## The Tracks
 
 Below are the mean audio feature values for each track. The last row (green)
@@ -112,12 +111,12 @@ a relative toe tapper.
 
 **Island Swing**
 
-Starts with a gorgeous, plaintiff melody, turning to the distinctive
+The album starts with a gorgeous, plaintiff melody, turning to the distinctive
 saloon-inspired hook that clearly identifies the original game. This track
 pauses for new material at points so much that I felt it must be a medley.
 However on  reprising the original audio, it does pay a faithful tribute to the
 original. It finishes as sweetly as it started and sets the scene well for
-whats to be expected.
+what's to be expected.
 
 **Forest Frenzy**
 
@@ -127,37 +126,37 @@ What remains is a lullaby.
 
 **Aquatic Ambience**
 
-This track absolutely steals the show. In all fairness the original was genius,
-but this is such an exquisite rendition. The movements are played very freely,
-softening the tighter tempo of the original. This is the track not to miss.
+This track absolutely steals the show. The original was genius, but this is
+such an exquisite rendition. The movements are played very freely, softening
+the tighter tempo of the original. This is the track not to miss.
 
 **Simian Segue**
 
 This is the track from the level select map. The valence rises a fair bit here,
 which is very understandable considering this must be the most recognisable
-hook from the game. It's still a bit playful, even when softly played with
-some powerful major chord shifts making this a decidedly cheery affair.
+hook from the game. It's still a bit playful, even when played so gently. Some
+powerful major chord shifts making this a decidedly cheery affair.
 
 <img src="https://www.gameuidatabase.com/uploads/Donkey-Kong-Country08242023-102816-26133.jpg" style="display: block; width: 50%; margin-left:auto;margin-right:auto;" alt="Donkey Kong Country level select https://www.gameuidatabase.com/">
 
 **Gang-Plank Galleon**
 
-Ah, I have no recollection of this track. It must be owing to the fact that
-this was the music for the final boss of the game. I was clearly not good
-enough to make it this far as a kid. The song begins as its title would suggest
-with a decidedly swashbuckling theme. This soon recedes, handing the limelight
-to a beautiful melancholy solo that sounds like a distinct song. Once more,
-reprising the original, its clear that this is a pretty faithful reprise of the
-soundtrack that came with the game.
+I have no recollection of this track. It must be owing to the fact that this
+was the music for the final boss of the game. I was clearly not good enough to
+make it this far as a kid. The song begins as its title would suggest with a
+decidedly swashbuckling theme. This soon recedes, handing the limelight to a
+beautiful melancholy solo that sounds like a distinct song. Once more,
+reprising the original, it's clear that this is a pretty faithful reprise of
+the soundtrack that came with the game.
 
 ## Overall
 
-Whether or not 1990s Nintendo is your thing, what a beautiful effort from the
+Whether or not 1990's Nintendo is your thing, what a beautiful effort from the
 artist. I'd recommend listening to their other albums in a similar vein. But
-this one is my favourite. I am likely biased due to some formative connection
-to the source material. But whether serenity is your goal, or maybe you just
-need to get a baby off to sleep, this little album is the right tool for the
-job.
+this one is my favourite, though I am likely biased due to some formative
+connection to the source material. But whether serenity is your goal, or maybe
+you just need to get a baby off to sleep, this little album is the right tool
+for the job.
 
 For more music to encourage your work efforts, check out
 [Productivity Pulse](index.qmd).
