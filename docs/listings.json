@@ -8,22 +8,11 @@
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/book-reviews/index.html",
     "items": [
-      "/music-reviews/03-dk-county-piano.html",
-      "/blogs/08-quarto-conda-env.html",
-      "/blogs/07-schedule-deploy-shinyapps.html",
       "/book-reviews/03-amusing-ourselves-to-death.html",
-      "/blogs/06-working-with-ONS-open-geo-portal.html",
-      "/blogs/05-signed-commits.html",
-      "/music-reviews/02-zelda-and-chill.html",
       "/book-reviews/02-algorithms-to-live-by.html",
-      "/blogs/04-starfield-resources.html",
-      "/blogs/03-quarto-github-actions.html",
-      "/music-reviews/01-ghostrunner-ost.html",
-      "/book-reviews/01-deep-work.html",
-      "/blogs/01-state-of-pyshiny.html",
-      "/blogs/02-getting-started-pyshiny.html"
+      "/book-reviews/01-deep-work.html"
     ]
   },
   {
@@ -40,11 +29,22 @@
     ]
   },
   {
-    "listing": "/book-reviews/index.html",
+    "listing": "/index.html",
     "items": [
+      "/music-reviews/03-dk-county-piano.html",
+      "/blogs/08-quarto-conda-env.html",
+      "/blogs/07-schedule-deploy-shinyapps.html",
       "/book-reviews/03-amusing-ourselves-to-death.html",
+      "/blogs/06-working-with-ONS-open-geo-portal.html",
+      "/blogs/05-signed-commits.html",
+      "/music-reviews/02-zelda-and-chill.html",
       "/book-reviews/02-algorithms-to-live-by.html",
-      "/book-reviews/01-deep-work.html"
+      "/blogs/04-starfield-resources.html",
+      "/blogs/03-quarto-github-actions.html",
+      "/music-reviews/01-ghostrunner-ost.html",
+      "/book-reviews/01-deep-work.html",
+      "/blogs/01-state-of-pyshiny.html",
+      "/blogs/02-getting-started-pyshiny.html"
     ]
   }
 ]
