@@ -35,7 +35,8 @@ format:
   html:
     include-in-header:
       - text: |
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809"
+              crossorigin="anonymous"></script>
     theme: 
       light: cosmo
       dark: superhero

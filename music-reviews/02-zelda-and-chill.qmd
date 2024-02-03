@@ -2,8 +2,7 @@
 title: "Zelda & Chill"
 author: "Rich Leyshon"
 date: October 8 2023
-description: "A Lofi Homage to Nintendo's Zelda Series, Composed by Mikel &
-GameChops"
+description: "A Lofi Homage to Nintendo's Zelda Series, Composed by Mikel & GameChops"
 categories:
 - Electronic
 - Lofi
