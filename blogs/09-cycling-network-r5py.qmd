@@ -1,0 +1,77 @@
+---
+title: "Analyse a Cycling Network with r<sup>5</sup>py"
+author: "Rich Leyshon"
+date: "February 03 2024"
+description: "Using r<sup>5</sup>py to analyse coverage in the public Boris Bike network."
+categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+    - Tutorial
+    - Transport Modelling
+image: "https://images.pixexid.com/a-dynamic-image-of-a-cyclist-her-face-focused-and-determined-captured-mid-peda-cpglmien.jpeg?h=699&amp;q=70"
+image-alt: "A dynamic image of a cyclist, her face focused and determined, captured mid-pedal against the backdrop of a bustling city by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+toc: true
+---
+
+<figure class=center>
+  <img class="shaded_box" width="400px" src="https://images.pixexid.com/a-dynamic-image-of-a-cyclist-her-face-focused-and-determined-captured-mid-peda-cpglmien.jpeg?h=699&amp;q=70"></img>
+  <figcaption style="text-align:center;">Creative commons license, created by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
+</figure>
+
+## Introduction
+
+[r<sup>5</sup>py is a relatively new transport modelling package](https://r5py.readthedocs.io/en/stable/)
+available on PyPI. It provides convenient wrappers to
+[Conveyal's r<sup>5</sup> Java library](https://github.com/conveyal/r5), a
+performant routing engine originating from the ubiquitous Open Trip Planner
+(OTP). Whereas r<sup>5</sup>py may not be as feature-rich as OTP, its unique
+strength is in the production of origin:destination matrices at scale. This is
+important if the intention is to produce stable statistics based on routing
+algorithms, where the idiosyncracies of local transport service availability
+means that departure times can have a significant impact upon overall journey
+duration.
+
+In summary, r<sup>5</sup>py achieves stable statistics by calculating travel
+times over multiple journeys within a time window, returning insightful
+summaries such as the median duration required to travel from point A to B.
+
+:::{.callout-caution collapse="true"}
+
+### A Note on the Purpose
+
+The purpose of this tutorial is to familiarise the reader with r<sup>5</sup>py
+and how it integrates with the python geospatial ecosystem of packages. This
+article is not to be used to attempt to infer service quality outcomes or to
+inform policy decisions. Limitations of this analysis and suggested
+improvements will be discussed throughout.
+
+:::
+
+### Intended Audience
+
+Python practitioners familiar with conda environment management
+
+### The Scenario
+
+You are writing a quarto document that contains python code. You would like to
+
+### What You'll Need:
+
+- [ ] Conda or miniconda
+
+```{.python filename=requirements.txt eval=false}
+nbclient
+
+```
+- [ ] git (optional)
+
+## Main
+
+
+### Tips
+
+* When encountering issues with quarto render, it can be informative to examine
+
+## Conclusion
+
+This article has walked the reader through setting up a basic quarto project,
+
+<p id=fin><i>fin!</i></p>
