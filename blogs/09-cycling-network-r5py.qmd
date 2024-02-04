@@ -2,13 +2,18 @@
 title: "Analyse a Cycling Network with r<sup>5</sup>py"
 author: "Rich Leyshon"
 date: "February 03 2024"
-description: "Using r<sup>5</sup>py to analyse coverage in the public Boris Bike network."
+description: "Using r<sup>5</sup>py to analyse service coverage in the London's Boris Bike network."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Tutorial
     - Transport Modelling
 image: "https://images.pixexid.com/a-dynamic-image-of-a-cyclist-her-face-focused-and-determined-captured-mid-peda-cpglmien.jpeg?h=699&amp;q=70"
 image-alt: "A dynamic image of a cyclist, her face focused and determined, captured mid-pedal against the backdrop of a bustling city by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
 toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-cycling-env-py"
+    language: "python"
+    display_name: "blog-cycling-env"
 ---
 
 <figure class=center>
