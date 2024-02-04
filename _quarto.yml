@@ -4,6 +4,7 @@ project:
   render:
     - "*.qmd"
     - "!/./blogging-env/"
+    - "!/./environments/" # article-specific environments
 execute:
   freeze: auto
 website:

@@ -2,6 +2,8 @@
 .vscode
 # conda env
 blogging-env/
+# article-specific conda-envs
+environments/**/*-env/
 # quarto things
 .luarc.json
 
