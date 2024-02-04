@@ -97,8 +97,93 @@ It is required to configure a Java Virtual Machine for this tutorial. The
 transport routing depends on this. Please consult the r<sup>5</sup>py
 installation documentation @r5pyInstallation for guidance.
 
-## Main
+## London Cycle Station Service Coverage
 
+Start by loading the required packages.
+
+```{python}
+import datetime
+import os
+import subprocess
+import tempfile 
+
+import contextily as ctx
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import pandas as pd
+import pydeck as pdk
+import pyproj
+from pyprojroot import here
+import r5py
+import requests
+from sklearn import preprocessing
+from shapely.geometry import Polygon
+
+```
+
+### Ingesting Data
+
+Firstly, we must acquire information about the transport network. There are
+a few sources of this, but we shall use [BBBikes](https://extract.bbbike.org/)
+website to ingest London-specific extracts. The required data should be in
+protocolbuffer (.pbf) format.
+
+#### Exercise 1
+
+Find the appropriate url that points to the london.osm.pbf file. Ingest the
+data and store at an appropriate location.
+
+::: {.panel-tabset}
+
+##### Hint
+
+::: {.callout-tip collapse="true"}
+## Click to expand hint
+Either using python requests or subprocess with the `curl` command, request
+the url of the pbf file and output it to a data folder.
+
+:::
+
+##### Solution
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show Solution"
+
+# tmp = tempfile.TemporaryDirectory()
+# subprocess.run(
+#     [
+#         "curl",
+#         "https://download.bbbike.org/osm/bbbike/London/London.osm.pbf",
+#         "-o",
+#         os.path.join(tmp.name, "london.osm.pbf"),
+#     ]
+# )
+# temp write to file to avoid repeat ingests
+
+if not os.path.exists(here("data/london.osm.pbf")):
+  subprocess.run(
+      [
+          "curl",
+          "https://download.bbbike.org/osm/bbbike/London/London.osm.pbf",
+          "-o",
+          here("data/london.osm.pbf"),
+      ]
+  )
+
+```
+
+:::
+
+
+
+
+
+```{python}
+# Tidy up
+# tmp.cleanup()
+
+```
 
 ### Tips
 
