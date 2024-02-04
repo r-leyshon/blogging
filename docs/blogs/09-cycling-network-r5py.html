@@ -57,7 +57,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -288,6 +308,7 @@ A Note on the Purpose
 </section>
 <section id="getting-started" class="level3">
 <h3 class="anchored" data-anchor-id="getting-started">Getting Started</h3>
+<p>It is required to configure a Java Virtual Machine for this tutorial. The transport routing depends on this. Please consult the r<sup>5</sup>py installation documentation <span class="citation" data-cites="r5pyInstallation"><a href="#ref-r5pyInstallation" role="doc-biblioref">[1]</a></span> for guidance.</p>
 </section>
 </section>
 <section id="main" class="level2">
@@ -307,9 +328,14 @@ A Note on the Purpose
 </p>
 
 
+
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-r5pyInstallation" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><span>“<span class="nocase">r5py Installation documentation</span>.”</span> <a href="{https://r5py.readthedocs.io/en/stable/user-guide/installation/installation.html}">{https://r5py.readthedocs.io/en/stable/user-guide/installation/installation.html}</a></div>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

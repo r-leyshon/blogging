@@ -93,6 +93,9 @@ scikit-learn
 ```
 ### Getting Started
 
+It is required to configure a Java Virtual Machine for this tutorial. The
+transport routing depends on this. Please consult the r<sup>5</sup>py
+installation documentation @r5pyInstallation for guidance.
 
 ## Main
 

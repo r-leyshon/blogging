@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - ads.txt 
   output-dir: docs
   render:
     - "*.qmd"
@@ -34,10 +36,6 @@ website:
         href: https://www.linkedin.com/in/richard-leyshon-316121163/
 format:
   html:
-    include-in-header:
-      - text: |
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809"
-              crossorigin="anonymous"></script>
     theme: 
       light: cosmo
       dark: superhero
@@ -46,3 +44,7 @@ format:
 bibliography: ./bibliography/references.bib
 biblio-title: ""
 csl: ./bibliography/ieee.csl
+adsense:
+  publisher-id: ca-pub-6658778373981809
+filters:
+- adsense
