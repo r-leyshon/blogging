@@ -6,6 +6,9 @@ description: "Using r<sup>5</sup>py to analyse service coverage in the London's 
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Tutorial
     - Transport Modelling
+    - REST API
+    - Web data
+    - Geospatial
 image: "https://images.pixexid.com/a-dynamic-image-of-a-cyclist-her-face-focused-and-determined-captured-mid-peda-cpglmien.jpeg?h=699&amp;q=70"
 image-alt: "A dynamic image of a cyclist, her face focused and determined, captured mid-pedal against the backdrop of a bustling city by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
 toc: true
@@ -42,31 +45,54 @@ summaries such as the median duration required to travel from point A to B.
 
 ### A Note on the Purpose
 
-The purpose of this tutorial is to familiarise the reader with r<sup>5</sup>py
-and how it integrates with the python geospatial ecosystem of packages. This
-article is not to be used to attempt to infer service quality outcomes or to
-inform policy decisions. Limitations of this analysis and suggested
-improvements will be discussed throughout.
+This tutorial aims to familiarise the reader with r<sup>5</sup>py and how it
+integrates with the python geospatial ecosystem of packages. This article is
+not to be used to attempt to infer service quality outcomes or to inform policy
+decisions. Limitations of this analysis and suggested improvements will be
+discussed throughout.
 
 :::
 
 ### Intended Audience
 
-Python practitioners familiar with conda environment management
+Experienced python practitioners familiar with the typical python GIS stack, eg
+geopandas, shapely, fiona and folium. Familiarity with r<sup>5</sup>py and
+routing operations is not required.
 
-### The Scenario
+### Outcomes
 
-You are writing a quarto document that contains python code. You would like to
+* Ingest London bike charging station locations.
+* Visualise charging stations in an interactive hex map.
+* Create a naive point plane of destinations.
+* Check that the point plane is large enough to accommodate station locations.
+* Calculate origin:destination travel time matrix, by cycling modality and 
+with a maximum journey time of 30 minutes.
+* Engineer features to help analyse the cycling network accessibility.
+* Visualise the cycling network coverage and the most remote points within that
+area.
 
 ### What You'll Need:
 
 - [ ] Conda or miniconda
+- [ ] pip package manager
+- [ ] Ability to install Java Development Kit
+- [ ] Ability to request from Transport for London api
+- [ ] Tutorial compatible with macos. `subprocess` calls may require adaptation
+for other operating systems.
 
 ```{.python filename=requirements.txt eval=false}
-nbclient
+contextily
+geopandas
+matplotlib
+pydeck
+pyprojroot
+r5py
+requests
+scikit-learn
 
 ```
-- [ ] git (optional)
+### Getting Started
+
 
 ## Main
 
