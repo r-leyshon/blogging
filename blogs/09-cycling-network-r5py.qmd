@@ -387,6 +387,9 @@ epsg:4326 projection. The geodataframe requires a `geometry` column and an `id`
 column equal to the index of the dataframe (required for r<sup>5</sup>py
 origin:destination matrix calculation).
 
+Once you are happy with the function, use it to produce an example geodataframe
+and `explore()` a folium map of the point grid.
+
 ::: {.panel-tabset}
 
 ##### Hint
@@ -524,9 +527,9 @@ create_point_grid(
 ### Tips
 
 * The packages used in this tutorial expect the sequence of coordinates to be
-x,y - long, lat. If you select an alternative method for mapping visuals,
-remember to check that this is consistent. If you are getting empty interactive
-map visuals, pan out and check that an incorrect coordinate specification has
+long, lat. If you select an alternative method for mapping visuals, remember to
+check that this is consistent. If you are getting empty interactive map
+visuals, pan out and check that an incorrect coordinate specification has
 resulted in your points being rendered off the East coast of Africa.
 
 ## Conclusion
