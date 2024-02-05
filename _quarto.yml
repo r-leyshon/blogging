@@ -2,6 +2,7 @@ project:
   type: website
   resources:
     - ads.txt 
+    - /.outputs/*
   output-dir: docs
   render:
     - "*.qmd"

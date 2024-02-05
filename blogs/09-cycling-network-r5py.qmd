@@ -71,6 +71,8 @@ with a maximum journey time of 30 minutes.
 * Visualise the cycling network coverage and the most remote points within that
 area.
 
+<iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 100%;" title="Interactive map of London cycle station location density"></iframe>
+
 ### What You'll Need:
 
 - [ ] Conda or miniconda
@@ -148,9 +150,6 @@ the url of the pbf file and output the response to a data folder.
 ##### Solution
 
 ```{python}
-#| code-fold: true
-#| code-summary: "Show Solution"
-
 osm_pth = here("data/london.osm.pbf")
 
 # tmp = tempfile.TemporaryDirectory()
@@ -220,36 +219,130 @@ ensuring you pass values in the order of longitude, latitude.
 
 ```{python}
 
-ENDPOINT = "https://api.tfl.gov.uk/BikePoint/"
-resp = requests.get(ENDPOINT)
-if resp.ok:
-    content = resp.json()
+stations_pth = here("data/stations.pkl")
+
+if not os.path.exists(stations_pth):
+  ENDPOINT = "https://api.tfl.gov.uk/BikePoint/"
+  resp = requests.get(ENDPOINT)
+  if resp.ok:
+      content = resp.json()
+  else:
+      raise requests.exceptions.HTTPError(
+          f"{resp.status_code}: {resp.reason}"
+      )
+
+  needed_keys = ["id", "commonName", "lat", "lon"]
+  all_stations = list()
+  for i in content:
+      node_dict = dict()
+      for k, v in i.items():
+          if k in needed_keys:
+              node_dict[k] = v
+      all_stations.append(node_dict)
+
+  stations = pd.DataFrame(all_stations)
+  station_gdf = gpd.GeoDataFrame(
+      stations,
+      geometry=gpd.points_from_xy(stations["lon"], stations["lat"]),
+      crs=4326,
+  )
+  station_gdf.to_pickle(stations_pth)
 else:
-    raise requests.exceptions.HTTPError(
-        f"{resp.status_code}: {resp.reason}"
-    )
+  stations = pd.read_pickle(stations_pth)
+  station_gdf = gpd.GeoDataFrame(stations, crs=4326)
 
-needed_keys = ["id", "commonName", "lat", "lon"]
-all_stations = list()
-for i in content:
-    node_dict = dict()
-    for k, v in i.items():
-        if k in needed_keys:
-            node_dict[k] = v
-    all_stations.append(node_dict)
-
-stations = pd.DataFrame(all_stations)
-stations_gdf = gpd.GeoDataFrame(
-    stations,
-    geometry=gpd.points_from_xy(stations["lon"], stations["lat"]),
-    crs=4326,
-)
-stations_gdf.head()
+station_gdf.head()
 
 ```
 
 :::
 
+That's all the external data needed for this tutorial. Let's now examine the
+station locations. 
+
+### Visualise the Station Density
+
+As the stations are densely located in and around central London, a standard
+matplotlib point map would suffer from overplotting. A better way is to present
+some aggregeated statistic on a map, such as density. 
+
+#### Exercise 3
+
+Plot the density of cycle station locations on a map. The solution will use
+[pydeck](https://deckgl.readthedocs.io/en/latest/index.html), but any
+visualisation library that can handle geospatial data would be fine.
+
+::: {.panel-tabset}
+
+##### Hint
+
+::: {.callout-tip collapse="true"}
+## Click to expand hint
+
+1. Create a pydeck hexagon layer based on the `station_gdf`. The hexagon layer
+should be configured as below:
+* extruded
+* position from lon and lat columns
+* elevation scale is 100
+* elevation range from 0 through 100
+* coverage is 1
+* radius of hexagons is 250 metres
+
+2. Create a pydeck view state object to control the initial position of the
+camera. Configure this as you see fit.
+3. (Optional) Add a custom tooltip, clarifying that the hexagon elevation is
+equal to the count of stations within that area. You may wish to consult the
+[deck.gl](https://deck.gl/docs) documentation to help implement this.
+4. Create a pydeck deck with the hexagon layer, custom view state, tooltip and
+a map style of your choosing.
+
+:::
+
+##### Solution
+
+```{python}
+# pydeck visuals - concentration of charging stations by r250m hex
+layer = pdk.Layer(
+    "HexagonLayer",
+    station_gdf,
+    pickable=True,
+    extruded=True,
+    get_position=["lon", "lat"],
+    auto_highlight=True,
+    elevation_scale=100,
+    elevation_range=[0, 100],
+    coverage=1,
+    radius=250,  # in metres, default is 1km
+    colorRange=[
+        [255, 255, 178, 130],
+        [254, 217, 118, 130],
+        [254, 178, 76, 130],
+        [253, 141, 60, 130],
+        [240, 59, 32, 130],
+        [189, 0, 38, 130],
+    ], # optionally added rgba values to spec transparency
+)
+view_state = pdk.ViewState(
+    longitude=-0.110,
+    latitude=51.518,
+    zoom=11,
+    min_zoom=5,
+    max_zoom=15,
+    pitch=40.5,
+    bearing=-27.36,
+)
+tooltip = {"html": "<b>n Stations:</b> {elevationValue}"}
+r = pdk.Deck(
+    layers=[layer],
+    initial_view_state=view_state,
+    tooltip=tooltip, # prettier than default tooltip
+    map_style=pdk.map_styles.LIGHT,
+)
+r
+
+```
+
+:::
 
 ```{python}
 # Tidy up
