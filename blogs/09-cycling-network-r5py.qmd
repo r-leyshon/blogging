@@ -507,7 +507,8 @@ def create_point_grid(bbox_list: list, stepsize: int) -> gpd.GeoDataFrame:
     gdf = gpd.GeoDataFrame(df, crs=4326)
     return gdf
 
-create_point_grid(bbox_list=[-0.5917,51.2086,0.367,51.7575], stepsize=5000).explore(min_zoom=9)
+create_point_grid(
+  bbox_list=[-0.5917,51.2086,0.367,51.7575], stepsize=5000).explore(min_zoom=9)
 
 ```
 
