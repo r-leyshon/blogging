@@ -138,12 +138,8 @@ protocolbuffer (.pbf) format.
 Find the appropriate url that points to the london.osm.pbf file. Ingest the
 data and store at an appropriate location.
 
-::: {.panel-tabset}
-
-##### Hint
-
 ::: {.callout-tip collapse="true"}
-## Click to expand hint
+##### Click to expand hint
 Either using python requests or subprocess with the `curl` command, request
 the url of the pbf file and output the response to a data folder.
 
@@ -179,8 +175,6 @@ if not os.path.exists(osm_pth):
 
 ```
 
-:::
-
 ### Ingest the Bike Charging Station Locations
 
 #### Exercise 2
@@ -195,12 +189,8 @@ name, latitude and longitude for each available station.
 reference system.
 * Inspect the head of the geodataframe.
 
-::: {.panel-tabset}
-
-##### Hint
-
 ::: {.callout-tip collapse="true"}
-## Click to expand hint
+##### Click to expand hint
 
 1. Using the resuests package, send a get request to the endpoint.
 2. Store the required fields in a list: "id", "commonName", "lat", "lon".
@@ -261,8 +251,6 @@ station_gdf.head()
 
 ```
 
-:::
-
 That's all the external data needed for this tutorial. Let's now examine the
 station locations. 
 
@@ -278,12 +266,8 @@ Plot the density of cycle station locations on a map. The solution will use
 [pydeck](https://deckgl.readthedocs.io/en/latest/index.html), but any
 visualisation library that can handle geospatial data would be fine.
 
-::: {.panel-tabset}
-
-##### Hint
-
 ::: {.callout-tip collapse="true"}
-## Click to expand hint
+##### Click to expand hint
 
 1. Create a pydeck hexagon layer based on the `station_gdf`. The hexagon layer
 should be configured as below:
@@ -351,8 +335,6 @@ r
 
 ```
 
-:::
-
 ### Generate Destination Locations
 
 We can use the bike stations as journey origins. To compute travel times, we
@@ -389,10 +371,6 @@ origin:destination matrix calculation).
 
 Once you are happy with the function, use it to produce an example geodataframe
 and `explore()` a folium map of the point grid.
-
-::: {.panel-tabset}
-
-##### Hint
 
 ::: {.callout-tip collapse="true"}
 ## Click to expand hint
@@ -515,8 +493,116 @@ create_point_grid(
 
 ```
 
+### Check Destination Locations
+
+Before we go ahead with the transport modelling, it is important to check that
+the point plane is large enough to contain a 30 minute journey from any of the
+stations. 30 minutes is the current charging interval for the pay as you ride
+options @SantanderCycleFees. Note that making the point plane larger means
+more origin:destination travel times to calculate, so there is a compromise to
+be met. Using too small a grid will introduce edge effects @EdgeEffects and
+therefore limit the validity of the study.
+
+#### Exercise 5
+
+##### Part 1
+
+1. Create a point plane with a bounding box of your choosing. Use a stepsize of
+1000 metres.
+2. Get the boundary polygon of this point plane. This is the study area.
+3. Buffer the bike station locations. This buffered area should represent
+the reachable area from within a 30 minute ride of any station and a presumed
+average urban cycle speed of 18 kilometres per hour (an opinionated speed
+based on a sample of one overweight, middle-aged man's Strava data). Save the
+geometry as a Polygon object.
+4. Check that the study area completely contains the buffered stations.
+
+##### Part 2
+
+Create a diagnostic plot displaying the station locations, buffered station
+polygon and study area polgon together on one map.
+
+
+::: {.callout-tip collapse="true"}
+##### Click to expand hint
+
+Part 1
+
+1. Create a point plane of your choosing. Use the `total_bounds` attribute to
+extract values for minx, miny, maxx, maxy.
+2. Use `shapely.geometry.Polygon` to convert the 4 values above into a
+rectangular bounding box. 
+3. Re-project the stations geodataframe to a planar crs. Buffer this
+geodataframe by an appropriate value in metres, convert back to epsg:4326 and
+store the unary union.
+4. Check that the study area polygon completely contains the buffered station
+polygon by using an appropriately named GeoDataFrame method.
+
+Part 2
+
+1. Plot the stations gdf using marker values "o", an alpha of 0.5, markersize
+of 10 and red color. Store in a variable called `ax`.
+2. Plot the study area boundary polygon, ensuring the `ax` value from the
+previous step is used. Use an alpha of 0.2.
+3. Add a plot of the buffered stations to the same axes, ensuring a color "red"
+and an alpha of 0.2.
+4. Use contextily to add a basemap to the axes, selecting an appropriate crs
+value and tile provider.
+5. Use matplotlib.pyplot to show the plot.
+
 :::
 
+##### Solution
+
+Part 1
+
+```{python filename="Part 1"}
+#| code-fold: true
+#| code-summary: "Show the code"
+ 
+point_plane = create_point_grid(
+    [-0.4, 51.35, 0.15, 51.65], stepsize=1000
+)
+# Get a boundary polygon for the study area
+minx, miny, maxx, maxy = point_plane.total_bounds
+bbox_polygon = gpd.GeoSeries(
+    [Polygon([(minx, miny), (minx, maxy), (maxx, maxy), (maxx, miny)])]
+)
+# buffer the stations by presumed urban cycle speed of 18 kph
+station_buffer = gpd.GeoSeries(
+    Polygon(
+      station_gdf.to_crs(27700).buffer(9000).to_crs(4326).geometry.unary_union
+      )
+)
+cond = bbox_polygon.contains(station_buffer)[0]
+print(
+  f"Point grid contains buffered stations? {cond}")
+
+```
+
+Part 2
+
+```{python filename="Part 2"}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+ax = station_gdf.plot(marker="o", color="red", alpha=0.5, markersize=10)
+# plot the bounding box of the point plane boundary in blue
+bbox_polygon.plot(ax=ax, alpha=0.2, edgecolor="black")
+# plot the buffered potential travel region around the stations
+# in light red
+station_buffer.plot(ax=ax, alpha=0.2, color="red")
+ctx.add_basemap(
+    ax, crs=station_gdf.crs.to_string(), source=ctx.providers.CartoDB.Positron
+)
+plt.show()
+
+```
+
+
+***
+
+For after the feature engineering section
 
 ```{python}
 # Tidy up
@@ -539,14 +625,9 @@ resulted in your points being rendered off the East coast of Africa.
 
 Some txt
 
-::: {.panel-tabset}
-
-##### Hint
-
 ::: {.callout-tip collapse="true"}
 ## Click to expand hint
 Some hint
-
 :::
 
 ##### Solution
@@ -559,6 +640,5 @@ Some hint
 
 ```
 
-:::
 
 <p id=fin><i>fin!</i></p>
