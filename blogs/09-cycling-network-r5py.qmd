@@ -121,11 +121,12 @@ from shapely.geometry import Polygon
 
 ```
 
-### Ingesting Data
+### Ingest the Street Network Data
 
 Firstly, we must acquire information about the transport network. There are
-a few sources of this, but we shall use [BBBikes](https://extract.bbbike.org/)
-website to ingest London-specific extracts. The required data should be in
+a few sources of this, but we shall use the
+[BBBikes](https://download.bbbike.org/osm/bbbike/) website to ingest
+London-specific open street map extracts. The required data should be in
 protocolbuffer (.pbf) format.
 
 #### Exercise 1
@@ -140,7 +141,7 @@ data and store at an appropriate location.
 ::: {.callout-tip collapse="true"}
 ## Click to expand hint
 Either using python requests or subprocess with the `curl` command, request
-the url of the pbf file and output it to a data folder.
+the url of the pbf file and output the response to a data folder.
 
 :::
 
@@ -149,6 +150,8 @@ the url of the pbf file and output it to a data folder.
 ```{python}
 #| code-fold: true
 #| code-summary: "Show Solution"
+
+osm_pth = here("data/london.osm.pbf")
 
 # tmp = tempfile.TemporaryDirectory()
 # subprocess.run(
@@ -161,13 +164,13 @@ the url of the pbf file and output it to a data folder.
 # )
 # temp write to file to avoid repeat ingests
 
-if not os.path.exists(here("data/london.osm.pbf")):
+if not os.path.exists(osm_pth):
   subprocess.run(
       [
           "curl",
           "https://download.bbbike.org/osm/bbbike/London/London.osm.pbf",
           "-o",
-          here("data/london.osm.pbf"),
+          osm_pth,
       ]
   )
 
@@ -175,8 +178,77 @@ if not os.path.exists(here("data/london.osm.pbf")):
 
 :::
 
+### Ingest the Bike Charging Station Locations
 
+#### Exercise 2
 
+To get data about the bike charging stations in London, we will query
+[Transport for London's BikePoint API](https://api.tfl.gov.uk/).
+
+* Explore the site and find the correct endpoint to query. 
+* The tutorial requires the following fields: station ID, the human-readable
+name, latitude and longitude for each available station.
+* Store the data in a geopandas geodataframe with the appropriate coordinate
+reference system.
+* Inspect the head of the geodataframe.
+
+::: {.panel-tabset}
+
+##### Hint
+
+::: {.callout-tip collapse="true"}
+## Click to expand hint
+
+1. Using the resuests package, send a get request to the endpoint.
+2. Store the required fields in a list: "id", "commonName", "lat", "lon".
+3. Check that the response returned HTTP status 200. If True, get the content
+in JSON format.
+4. Create an empty list to store the station data.
+5. Iterate through the content dictionaries. If a key is present within the
+required fields, store the key and value within a temporary dictionary.
+6. Append the dictionary of required fields and their values to the list of
+stations.
+7. Convert the list of dictionaries to a pandas dataframe. Then convert this
+to a geopandas geodataframe, using the coordinate reference system "EPSG:4326".
+As we have lat and lon in seperate columns, use geopandas `points_from_xy()`,
+ensuring you pass values in the order of longitude, latitude.
+8. Print out the head of the stations gdf.
+
+:::
+
+##### Solution
+
+```{python}
+
+ENDPOINT = "https://api.tfl.gov.uk/BikePoint/"
+resp = requests.get(ENDPOINT)
+if resp.ok:
+    content = resp.json()
+else:
+    raise requests.exceptions.HTTPError(
+        f"{resp.status_code}: {resp.reason}"
+    )
+
+needed_keys = ["id", "commonName", "lat", "lon"]
+all_stations = list()
+for i in content:
+    node_dict = dict()
+    for k, v in i.items():
+        if k in needed_keys:
+            node_dict[k] = v
+    all_stations.append(node_dict)
+
+stations = pd.DataFrame(all_stations)
+stations_gdf = gpd.GeoDataFrame(
+    stations,
+    geometry=gpd.points_from_xy(stations["lon"], stations["lat"]),
+    crs=4326,
+)
+stations_gdf.head()
+
+```
+
+:::
 
 
 ```{python}
