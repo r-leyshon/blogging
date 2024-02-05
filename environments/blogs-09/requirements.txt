@@ -1,5 +1,7 @@
 contextily
 geopandas
+folium
+mapclassify
 matplotlib
 pydeck
 pyprojroot

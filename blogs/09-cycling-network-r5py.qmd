@@ -1,5 +1,5 @@
 ---
-title: "Analyse a Cycling Network with r<sup>5</sup>py"
+title: "Cycling Network Routing with r<sup>5</sup>py"
 author: "Rich Leyshon"
 date: "February 03 2024"
 description: "Using r<sup>5</sup>py to analyse service coverage in the London's Boris Bike network."
@@ -55,9 +55,9 @@ discussed throughout.
 
 ### Intended Audience
 
-Experienced python practitioners familiar with the typical python GIS stack, eg
-geopandas, shapely, fiona and folium. Familiarity with r<sup>5</sup>py and
-routing operations is not required.
+Experienced python practitioners familiar a robust working knowledge of the
+typical python GIS stack, eg geopandas, shapely, fiona and folium. Familiarity
+with r<sup>5</sup>py and routing operations is not required.
 
 ### Outcomes
 
@@ -85,6 +85,8 @@ for other operating systems.
 ```{.python filename=requirements.txt eval=false}
 contextily
 geopandas
+folium
+mapclassify
 matplotlib
 pydeck
 pyprojroot
@@ -119,7 +121,7 @@ from pyprojroot import here
 import r5py
 import requests
 from sklearn import preprocessing
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, Point
 
 ```
 
@@ -150,8 +152,10 @@ the url of the pbf file and output the response to a data folder.
 ##### Solution
 
 ```{python}
-osm_pth = here("data/london.osm.pbf")
+#| code-fold: true
+#| code-summary: "Show the code"
 
+osm_pth = here("data/london.osm.pbf")
 # tmp = tempfile.TemporaryDirectory()
 # subprocess.run(
 #     [
@@ -218,6 +222,8 @@ ensuring you pass values in the order of longitude, latitude.
 ##### Solution
 
 ```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
 
 stations_pth = here("data/stations.pkl")
 
@@ -301,6 +307,9 @@ a map style of your choosing.
 ##### Solution
 
 ```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
 # pydeck visuals - concentration of charging stations by r250m hex
 layer = pdk.Layer(
     "HexagonLayer",
@@ -344,6 +353,167 @@ r
 
 :::
 
+### Generate Destination Locations
+
+We can use the bike stations as journey origins. To compute travel times, we
+need to generate destination locations. This tutorial uses a simple approach
+to generating equally spaced points within a user-defined bounding box. 
+
+:::{.callout-caution}
+#### Limitation
+
+Generating a point plane is a fast way to get a travel time matrix. However,
+this is naive to locations that the riders would prefer to start or finish
+their journeys. A more robust approach would be to use locations of retail or
+residential features. The European Commission's Global Human Settlement Layer
+@GHSL data would provide centroids to every populated grid cell down to a
+10m<sup>2</sup> resolution.
+:::
+
+#### Exercise 4
+
+Write a function called `create_point_grid()` that will take the following
+parameters:
+
+* `bbox_list` expecting a [bounding box](https://boundingbox.klokantech.com/)
+list in [xmin, ymin, xmax, ymax] format with epsg:4326 longitude & latitude
+values.
+* `stepsize` expecting a positive integer, specifying the spacing of the grid
+points in metres.
+
+`create_point_grid()` should return a geopandas geodataframe of equally spaced
+point locations - the point grid. The grid point locations should be in
+epsg:4326 projection. The geodataframe requires a `geometry` column and an `id`
+column equal to the index of the dataframe (required for r<sup>5</sup>py
+origin:destination matrix calculation).
+
+::: {.panel-tabset}
+
+##### Hint
+
+::: {.callout-tip collapse="true"}
+## Click to expand hint
+
+Note that epsg:4326 is a geodetic projection, unsuitable for measuring distance
+between points in the point plane. Ensure that the crs is re-projected to an
+appropriate planar crs for distance calculation.
+
+1. Store the South-West and North-East coordinates as `shapely.geometry.Point`
+objects.
+2. Use `pyproj.Transformer.from_crs()` to create 2 transformers, one from
+geodetic to planar, and the other back from planar to geodetic.
+3. Use the transformers to convert the SW and NE points from geodetic to
+planar.
+4. Use nested loops to iterate over the area between the corner points.
+Store the point location as a `shapely.geometry.Point` object, using a
+transformer to convert back to epsg:4326. Append the point to a list of grid
+points.
+5. Increment the x and y values by the provided `stepsize` and continue to
+append points in this fashion until xmin has reached the xmax value, likewise
+until ymin has met the ymax value.
+6. Create a pandas dataframe with the geometry column using the appended point
+locations and an `id` column that uses the `range()` function to generate a
+unique integer value for each row. 
+7. Use the defined function with a sample bounding box and explore the
+resulting geodataframe with an interactive folium map.
+
+:::
+
+##### Solution
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+def create_point_grid(bbox_list: list, stepsize: int) -> gpd.GeoDataFrame:
+    """Create a metric point plane for a given bounding box.
+
+    Return a geodataframe of evenly spaced points for a specified bounding box.
+    Distance between points is controlled by stepsize in metres.  As
+    an intermediate step requires transformation to epsg:27700, the calculation
+    of points is suitable for GB only.
+
+    Parameters
+    ----------
+    bbox_list : list
+        A list in xmin, ymin, xmax, ymax order. Expected to be in epsg:4326.
+        Use https://boundingbox.klokantech.com/ or similar to export a bbox.
+    stepsize : int
+        Spacing of grid points in metres. Must be larger than zero.
+
+    Returns
+    -------
+    gpd.GeoDataFrame
+        GeoDataFrame in epsg:4326 of the point locations.
+
+    Raises
+    ------
+    TypeError
+        bbox_list is not type list.
+        Coordinates in bbox_list are not type float.
+        step_size is not type int.
+    ValueError
+        bbox_list is not length 4.
+        xmin is greater than or equal to xmax.
+        ymin is greater than or equal to ymax.
+        step_size is not a positive integer.
+
+    """
+    # defensive checks
+    if not isinstance(bbox_list, list):
+        raise TypeError(f"bbox_list expects a list. Found {type(bbox_list)}")
+    if not len(bbox_list) == 4:
+        raise ValueError(f"bbox_list expects 4 values. Found {len(bbox_list)}")
+    for coord in bbox_list:
+        if not isinstance(coord, float):
+            raise TypeError(
+                f"Coords must be float. Found {coord}: {type(coord)}"
+            )
+    # check points are ordered correctly
+    xmin, ymin, xmax, ymax = bbox_list
+    if xmin >= xmax:
+        raise ValueError(
+            "bbox_list value at pos 0 should be smaller than value at pos 2."
+        )
+    if ymin >= ymax:
+        raise ValueError(
+            "bbox_list value at pos 1 should be smaller than value at pos 3."
+        )
+    if not isinstance(stepsize, int):
+        raise TypeError(f"stepsize expects int. Found {type(stepsize)}")
+    if stepsize <= 0:
+        raise ValueError("stepsize must be a positive integer.")
+
+    # Set up crs transformers. Need a planar crs for work in metres - use BNG
+    planar_transformer = pyproj.Transformer.from_crs(4326, 27700)
+    geodetic_transformer = pyproj.Transformer.from_crs(27700, 4326)
+    # bbox corners
+    sw = Point((xmin, ymin))
+    ne = Point((xmax, ymax))
+    # Project corners to planar
+    planar_sw = planar_transformer.transform(sw.x, sw.y)
+    planar_ne = planar_transformer.transform(ne.x, ne.y)
+    # Iterate over metric plane
+    points = []
+    x = planar_sw[0]
+    while x < planar_ne[0]:
+        y = planar_sw[1]
+        while y < planar_ne[1]:
+            p = Point(geodetic_transformer.transform(x, y))
+            points.append(p)
+            y += stepsize
+        x += stepsize
+    df = pd.DataFrame({"geometry": points, "id": range(0, len(points))})
+    gdf = gpd.GeoDataFrame(df, crs=4326)
+    return gdf
+
+create_point_grid(bbox_list=[-0.5917,51.2086,0.367,51.7575], stepsize=5000).explore(min_zoom=9)
+
+```
+
+:::
+
+
 ```{python}
 # Tidy up
 # tmp.cleanup()
@@ -352,10 +522,39 @@ r
 
 ### Tips
 
-* When encountering issues with quarto render, it can be informative to examine
+* The packages used in this tutorial expect the sequence of coordinates to be
+x,y - long, lat. If you select an alternative method for mapping visuals,
+remember to check that this is consistent. If you are getting empty interactive
+map visuals, pan out and check that an incorrect coordinate specification has
+resulted in your points being rendered off the East coast of Africa.
 
 ## Conclusion
 
-This article has walked the reader through setting up a basic quarto project,
+
+#### Exercise Example
+
+Some txt
+
+::: {.panel-tabset}
+
+##### Hint
+
+::: {.callout-tip collapse="true"}
+## Click to expand hint
+Some hint
+
+:::
+
+##### Solution
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Some solution
+
+```
+
+:::
 
 <p id=fin><i>fin!</i></p>
