@@ -19,10 +19,7 @@ jupyter:
     display_name: "blog-cycling-env"
 ---
 
-<figure class=center>
-  <img class="shaded_box" width="400px" src="https://images.pixexid.com/a-dynamic-image-of-a-cyclist-her-face-focused-and-determined-captured-mid-peda-cpglmien.jpeg?h=699&amp;q=70"></img>
-  <figcaption style="text-align:center;">Creative commons license, created by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
-</figure>
+<iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 80%;" title="Interactive map of London cycle station location density"></iframe>
 
 ## Introduction
 
@@ -70,8 +67,6 @@ with a maximum journey time of 30 minutes.
 * Engineer features to help analyse the cycling network accessibility.
 * Visualise the cycling network coverage and the most remote points within that
 area.
-
-<iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 100%;" title="Interactive map of London cycle station location density"></iframe>
 
 ### What You'll Need:
 
