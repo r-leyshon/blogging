@@ -19,7 +19,8 @@ jupyter:
     display_name: "blog-cycling-env"
 ---
 
-<iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 80%;" title="Interactive map of London cycle station location density"></iframe>
+<iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 80%; height: 5%;" title="Interactive map of London cycle station location density"></iframe>
+<br/>
 
 ## Introduction
 
@@ -308,12 +309,14 @@ layer = pdk.Layer(
         [253, 141, 60, 130],
         [240, 59, 32, 130],
         [189, 0, 38, 130],
-    ], # optionally added rgba values to spec transparency
+    ], # optionally added rgba values to allow transparency
 )
 view_state = pdk.ViewState(
-    longitude=-0.110,
-    latitude=51.518,
-    zoom=11,
+    # longitude=-0.140,# value for iframe
+    longitude=-0.070,# value for code chunk
+    latitude=51.535, 
+    # zoom=10, # value for iframe
+    zoom=10.5, # value for code chunk
     min_zoom=5,
     max_zoom=15,
     pitch=40.5,
