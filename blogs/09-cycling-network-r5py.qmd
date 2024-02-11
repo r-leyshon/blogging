@@ -19,7 +19,7 @@ jupyter:
     display_name: "blog-cycling-env"
 ---
 
-<iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 80%; height: 5%;" title="Interactive map of London cycle station location density"></iframe>
+<iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 80%; height: 300px;" title="Interactive map of London cycle station location density"></iframe>
 <br/>
 
 ## Introduction
@@ -55,7 +55,8 @@ discussed throughout.
 
 Experienced python practitioners familiar a robust working knowledge of the
 typical python GIS stack, eg geopandas, shapely, fiona and folium. Familiarity
-with r<sup>5</sup>py and routing operations is not required.
+with r<sup>5</sup>py and routing operations is not required. Familiarity with
+coordinate reference systems (CRS) is required.
 
 ### Outcomes
 
@@ -106,9 +107,12 @@ import datetime
 import os
 import subprocess
 import tempfile 
+from typing import Union
 
 import contextily as ctx
+import folium
 import geopandas as gpd
+from haversine import haversine, Unit
 import matplotlib.pyplot as plt
 import pandas as pd
 import pydeck as pdk
@@ -117,7 +121,7 @@ from pyprojroot import here
 import r5py
 import requests
 from sklearn import preprocessing
-from shapely.geometry import Polygon, Point
+from shapely.geometry import LineString, Point, Polygon
 
 ```
 
@@ -333,7 +337,7 @@ r
 
 ```
 
-### Generate Destination Locations
+### Generate the Destination Locations
 
 We can use the bike stations as journey origins. To compute travel times, we
 need to generate destination locations. This tutorial uses a simple approach
@@ -491,7 +495,7 @@ create_point_grid(
 
 ```
 
-### Check Destination Locations
+### Check the Study Area Size
 
 Before we go ahead with the transport modelling, it is important to check that
 the point plane is large enough to contain a 30 minute journey from any of the
@@ -597,14 +601,402 @@ plt.show()
 
 ```
 
+With a study area adequately encompassing the proposed reachable area, proceed
+to the transport routing.
 
-***
+#### Can the Transport Network reach the Point Plane?
 
-For after the feature engineering section
+As we have created a point plane naive to the transport network, it is
+important to check that the points are reachable by bike. Any point falling
+within an inaccesible portion of the transport network will report a null
+travel time. r<sup>5</sup>py comes with a utility function that helps to 'snap'
+unreachable locations to the nearest feature of the travel network.
+
+#### Exercise 6
+
+##### Part 1
+
+Using the [r<sup>5</sup>py quickstart documentation](https://r5py.readthedocs.io/en/stable/user-guide/user-manual/quickstart.html), instantiate a `transport_network`
+object, passing `osm_pth` as its single argument.
+
+##### Part 2
+
+1. Now using the [r<sup>5</sup>py advanced use section](https://r5py.readthedocs.io/en/stable/user-guide/user-manual/advanced-use.html), create a new column in the
+`point_plane` gdf called `snapped_geometry`.
+2. Use the correct method of the `transport_network` to adjust the existing
+geometry column.
+3. Use a maximum search radius of 500 metres and specify the bicycle modality.
+Inspect the resulting geodataframe. 
+
+##### Part 3
+
+Now that we have a point plane with a routable geography, we can check to
+ensure that the maximum search radius was observed.
+1. Calculate the haversine distance in metres between the original `geometry`
+and the `snapped_geometry` coordinates.
+2. Assign the result to `point_plane["snap_dist_m"]`.
+3. Inspect the distribution of the `snap_dist_m` column. Confirm that there are
+no values above the maximum search radius value.
+
+::: {.callout-tip collapse="true"}
+##### Click to expand hint
+
+Part 1
+
+1. r<sup>5</sup>py is imported as r5py. You can inspect the available classes
+by using the `dir()` function.
+
+Part 2
+
+1. Use `dir()` on the `transport_network` object instantiated in part 1 to find
+the appropriate method for snapping the coordinates to the nearest network
+feature.
+2. Specify the `radius` argument with an appropriate value.
+3. For the `street_mode` argument, select the appropriate r<sup>5</sup>py
+transport mode. To find this value, use `dir(r5py.TransportMode)`.
+
+Part 3
+
+1. the `haversine` function is imported. Unfortunately, it expects coordinates
+to be in a latitude, longitude order. 
+2. Apply a `lambda` function across every row in the `point_plane`
+GeoDataFrame. You will need to specify `axis=1` to achieve this.
+3. Within the lambda function, calculate the haversine distance in metres
+between the original coordinates and the `snapped_geometry` coordinates. Assign
+the output to the correctly named column.
+4. Inspect the distribution of the haversine distances in whichever way you
+feel. Can you confirm that no coordinate was adjusted beyond the maximum search
+radius used when you instantiated the `snapped_geometry` column?
+
+:::
+
+##### Solution
+
+##### Part 1
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+transport_network = r5py.TransportNetwork(osm_pth)
+```
+
+##### Part 2
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+point_plane["snapped_geometry"] = transport_network.snap_to_network(
+    point_plane["geometry"],
+    radius=500,
+    street_mode=r5py.TransportMode.BICYCLE,
+)
+point_plane.head()
+```
+
+##### Part 3
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# reverse the lonlat to latlon
+point_plane["snap_dist_m"] = point_plane.apply(
+    lambda row:haversine(
+        (row["geometry"].y, row["geometry"].x),
+        (row["snapped_geometry"].y, row["snapped_geometry"].x),
+        unit=Unit.METERS), axis=1)
+
+point_plane["snap_dist_m"].plot.hist(
+    bins=100,
+    title="Distribution of coordinate snap distance in point plane (m)"
+    )
+```
+
+Here we can confirm that the distribution of the haversine distances is
+strongly right-skewed. There appear to be no values greater than 450 metres.
+
+```{python}
+point_plane["snap_dist_m"].describe()
+
+```
+
+In describing the column we can observe the actual maximum haversine distance
+of 492 metres. Note the differences in the mean and median are attributable to
+the strong skew in the distance distribution.
+
+Visualise
+
+```{python}
+point_plane["lines"] = point_plane.apply(
+    lambda row: LineString([row["geometry"], row["snapped_geometry"]]),
+    axis=1
+)
+
+```
+
+```{python}
+# retrieve the top 100 rows where coordinates where adjusted by the greatest distance.
+largest_snaps = point_plane.sort_values(by="snap_dist_m", ascending=False).head(100)
+# plot these on a folium map. Add a marker layer with red icons showing the locations of the original point plane geometry.
+z_start = 9
+overview_map = largest_snaps.explore(
+    marker_type="marker",
+    marker_kwds={
+        "icon": folium.map.Icon(color="red", icon="ban", prefix="fa"),
+    },
+    map_kwds={
+        "center": {"lat": 51.550, "lng": -0.070}
+    },
+    zoom_start=z_start,
+)
+# now add another layer to the same folium map, adding the snapped geometry with a green marker.
+overview_map = largest_snaps.set_geometry("snapped_geometry").explore(
+    m=overview_map,
+    marker_type="marker",
+    marker_kwds={
+        "icon": folium.map.Icon(color="green", icon="bicycle", prefix="fa"),
+    }
+)
+# add the third and final layer to the map - the lines connecting the geometries to their snapped equivalents.
+overview_map = largest_snaps.set_geometry("lines").explore(
+    m=overview_map,
+    zoom_start=z_start
+)
+# show the map
+overview_map
+
+```
+
+### Calculate the Travel Time Matrix
+
+Now that we have everything we need to carry out the transport routing, we can clean up our environment and make one final adjustment to the point plane - ensure the snapped geometries are set as the geometry column. You can remove the snapped distance and original geometry column.
+
+```{python}
+del overview_map, largest_snaps, z_start
+
+```
+
+```{python}
+point_plane.drop(columns=["geometry", "lines", "snap_dist_m"], axis=1, inplace=True)
+point_plane.rename(columns={"snapped_geometry": "geometry"}, inplace=True)
+point_plane.set_geometry("geometry", inplace=True)
+point_plane
+
+```
+
+Compute the travel times from the station locations to the adjusted point plane. Use a sensible departure datetime and ensure bicycle modality is used for the transport mode. Finally, limit the maximum jourey time to 30 minutes. This step can be quite expensive, depending on the size of your point plane.
+
+```{python}
+travel_time_matrix = r5py.TravelTimeMatrixComputer(
+    transport_network,
+    origins=station_gdf,
+    destinations=point_plane,
+    transport_modes=[r5py.TransportMode.BICYCLE],
+    departure=datetime.datetime(2023, 1, 22, 8, 0, 0),  # 8am on a Monday
+    departure_time_window=datetime.timedelta(minutes=10),  # depart every 10 minutes
+    snap_to_network=False,
+    # doesn't work for all points, TODO: snap to nearest vertex in road
+    # network where auto snapping failed. TODO: Report haversine distance
+    # to snapped location.
+    max_time=datetime.timedelta(minutes=30),  # journeys <= 30 mins
+).compute_travel_times()
+
+travel_time_matrix
+
+```
+
+Don't be put off by NaN in the `travel_time` column. These are point in the point plane that were not reachable from any bike station. 
+
+## Feature Engineering
+
+Next we will need to calculate some informative features:
+
+* The median travel time for every point in the point plane.
+* The number of bike stations that can reach each point in the point plane. Ensure that this column is formatted as "int16".
+* A column that returns a list of the point plane geometry for each row, in `[long, lat]` order. This is the format that pydeck expects.
+* The minmax scaled number of stations serving each point in the point plane.
+* The inverted median travel time as a decimal.
+
+```{python}
+def get_median_tts_for_all_stations(
+    tt_matrix: pd.DataFrame, pp: gpd.GeoDataFrame
+) -> gpd.GeoDataFrame:
+    """Join travel times & medians to point geometries.
+
+    Station locations are presumed to be origins. Points in the point plane are
+    presumed to be destinations. Station geometry is dropped.
+
+    Parameters
+    ----------
+    tt_matrix : pd.DataFrame
+        Matrix of travel times where `from_id` are stations and `to_id` are
+        points in the point plane.
+    pp : gpd.GeoDataFrame
+        Locations in the point plane.
+
+    Returns
+    -------
+    gpd.GeoDataFrame
+        Point plane locations with median travel times from stations and number of stations serving each point. A number of features are added to assist in mapping.
+
+    """
+    # TODO: Defensive checks & Unit tests
+    # get median travel time from all stations:
+    med_tts = tt_matrix.groupby("to_id")["travel_time"].median()
+    # get number of stations serving each point in the grid
+    tt_dropna = tt_matrix.dropna()
+    n_stations = tt_dropna.groupby("to_id")["from_id"].count()
+    df = pp.join(med_tts).join(n_stations)
+    df = df.rename(
+        columns={"travel_time": "median_tt", "from_id": "n_stations_serving"}
+    )
+    # need integer for n_stations_serving but there are NaNs
+    bool_ind = df["n_stations_serving"].isna()
+    df.loc[bool_ind, "n_stations_serving"] = 0.0
+    df["n_stations_serving"] = df["n_stations_serving"].astype("int16")
+    # feature engineering for pydeck
+    x = df["n_stations_serving"].values.reshape(-1, 1)
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(x)
+    df["n_stations_norm"] = pd.Series(x_scaled.flatten())
+    out_gdf = gpd.GeoDataFrame(df, crs=4326)
+    out_gdf["listed_geom"] = [[c.x, c.y] for c in out_gdf["geometry"]]
+    out_gdf["inverted_med_tt"] = (
+        max(out_gdf["median_tt"].dropna()) - out_gdf["median_tt"]
+    ) * 0.1
+
+    return out_gdf
+
+```
+
+
+
+```{python}
+med_tts = get_median_tts_for_all_stations(
+    tt_matrix=travel_time_matrix, pp=point_plane
+)
+med_tts.dropna()
+
+
+```
+
+
+As this final GeoDataFrame is all that is required for the remaining tutorial, go ahead and tidy up the environment. 
 
 ```{python}
 # Tidy up
 # tmp.cleanup()
+del station_gdf, travel_time_matrix, point_plane
+
+```
+
+
+### Visualise travel times.
+
+```{python}
+
+def make_scatter_deck(
+    gdf: gpd.GeoDataFrame, radius="(n_stations_norm * 25) + 20", start_lon: float=-0.005, start_lat: float=51.518, start_zoom: Union[int, float]=10,
+) -> pdk.Deck:
+    """Render a scatterPlotLayer of travel time & number of stations serving.
+
+    Intended for use with output of ./src/tt-london-bikes.py ->
+    ./data/interim/median_travel_times.pkl.
+
+    Parameters
+    ----------
+    gdf : gpd.GeoDataFrame
+        Table of grid locations and travel time from station locations.
+    radius : str, optional
+        A valid pydeck get_radius expression, by default
+        "(n_stations_norm * 25) + 20"
+    start_lon: float, optional
+        The starting view longitude, by default -0.110.
+    start_lat: float, optional
+        The starting view latitude, by default 51.518.
+    start_zoom: Union[int, float], optional
+        The starting view zoom, by default 10.
+
+    Returns
+    -------
+    pdk.Deck
+        A rendered interactive map.
+
+    """
+    # some basic defensive checks
+    if not isinstance(gdf, gpd.GeoDataFrame):
+        raise TypeError(f"gdf expected gpd.GeoDataFrame, found {type(gdf)}")
+    expected_cols = [
+        "n_stations_serving",
+        "listed_geom",
+        "inverted_med_tt",
+        "median_tt",
+    ]
+    coldiff = sorted(list(set(expected_cols).difference(gdf.columns)))
+    if coldiff:
+        raise AttributeError(f"Required column names are absent: {coldiff}")
+    gdf = gdf.rename(columns={"n_stations_serving": "n_stats"})
+    # create deck layers
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        gdf,
+        pickable=True,
+        opacity=0.2,
+        stroked=True,
+        filled=True,
+        radius_scale=6,
+        radius_min_pixels=1,
+        radius_max_pixels=100,
+        line_width_min_pixels=1,
+        get_position="listed_geom",
+        get_radius=radius,
+        get_fill_color="[255,(inverted_med_tt * 255), (median_tt * 255)]",
+        get_line_color="[0,0,0,0]",
+    )
+    # Set the viewport location
+    view_state = pdk.ViewState(
+        longitude=start_lon,
+        latitude=start_lat,
+        zoom=start_zoom,
+        min_zoom=5,
+        max_zoom=15,
+        pitch=40.5,
+        bearing=-27.36,
+    )
+
+    tooltip = {
+        "text": "Stations serving: {n_stats}\nMdn travel time: {median_tt}"
+    }
+    # Render
+    r = pdk.Deck(
+        layers=[layer], initial_view_state=view_state, tooltip=tooltip
+    )
+    return r
+
+
+```
+
+Visualise the travel time from stations to the point plane. Map size of the points to the normalized number of stations serving each point multipled by 25 (too large a number here causes significant overplotting). Colour should be mapped to median travel time. As the r,g,b,a values can be controlled seperately, feel free to experiment with combinations using `median_tt` and `inverted_med_tt`.
+
+```{python}
+r = make_scatter_deck(med_tts)
+r
+
+```
+
+Lastly, we can identify those points within the thirty minute reachable area from the bike station network that are the most remote. Let's visualise the 20 most remote locations. These would represent candidate locations for increasing the coverage of the boris bike network within the thirty minute reachable zone. Once more, please note that the point grid is naive to locations where people live or would like to travel to and from.
+
+```{python}
+n_isolated = (
+    med_tts.dropna()
+    .sort_values(["median_tt", "n_stations_serving"], ascending=[False, False])
+    .head(20)
+)
+r = make_scatter_deck(n_isolated, radius=50, start_zoom=9.5)
+
+r
+
 
 ```
 
