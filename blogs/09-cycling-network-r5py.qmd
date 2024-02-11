@@ -82,16 +82,19 @@ for other operating systems.
 ```{.python filename=requirements.txt eval=false}
 contextily
 geopandas
+haversine
 folium
 mapclassify
 matplotlib
 pydeck
+pyproj
 pyprojroot
 r5py
 requests
 scikit-learn
 
 ```
+
 ### Getting Started
 
 It is required to configure a Java Virtual Machine for this tutorial. The
@@ -725,22 +728,97 @@ In describing the column we can observe the actual maximum haversine distance
 of 492 metres. Note the differences in the mean and median are attributable to
 the strong skew in the distance distribution.
 
-Visualise
+The spatial adjustment caused by the snapping can be visualised. This is useful
+for sanity-checking and edge-case investigation. 
+
+#### Exercise 7
+
+##### Part 1
+
+1. Create a deep copy of the `point_plane` geodataframe and assign to a new
+object called `largest_snaps`.
+2. Retrieve the rows with the largest 100 `snap_dist_m` values. Visualising the
+points is expensive, so we will only display a subset.
+3. Apply a lambda function over `largest_snaps`, creating a `LineString`
+between each `geometry` and `snapped_geometry` value. This will be used to draw
+a line between each point on a map.
+4. Assign the output to `largest_snaps["lines"]`.
+5. Inspect the head of the resultant geodataframe.
+
+##### Part 2
+
+1. Plot largest_snaps on a folium map. Add a marker layer with red icons
+showing the locations of the original point plane geometry.
+2. Add a second marker layer to the same folium map, adding the snapped
+geometry with a green marker.
+3. Add the final layer to the map - the lines connecting the geometries to
+their snapped equivalents.
+4. Show the map.
+
+
+::: {.callout-tip collapse="true"}
+##### Click to expand hint
+
+Part 1
+
+1. Sort ascending the `largest_snaps` geodataframe by `snap_dist_m`. Take the
+top 100 records only.
+2. `LineString` takes 2 arguments, a start and end point geometry.
+3. Apply the `LineString` logic over each row in the geodataframe, ensuring the
+`axis` argument is set to 1.
+4. For each row, pass the `geometry` column value to `LineString` as the first
+argument, and the `snapped_geometry` value as the second.
+5. Assign the returned value to an appropriate;y named column.
+
+Part 2
+
+This exercise will exploit the kwargs available through the
+`GeoDataFrame.explore()` method. Alternatively, the map can be built from
+scratch using the `folium` library.
+
+1. Call explore on `largest_snaps`, specifying a "marker" `marker_type`. Use
+the `marker_kwds` parameter to pass a dictionary specifying which font-awesome
+icon to use for the geometry points. Assign the map to `imap`.
+2. Set the geometry to the `snapped_geometry` column and repeat the above
+process, this time specifying green markers for the points. Ensure the `m`
+parameter is set to `imap` in order to add this to the same map object.
+3. Lastly, set the geometry to the `lines` column and explore, again setting
+`m=imap` to add the line geometries to the interactive map. Specify an
+appropriate zoom level.
+4. Show the map and explore the adjusted geometries.
+
+:::
+
+##### Solution
+
+##### Part 1
 
 ```{python}
-point_plane["lines"] = point_plane.apply(
+#| code-fold: true
+#| code-summary: "Show the code"
+
+largest_snaps = point_plane.copy(deep=True)
+# retrieve the top 100 rows where coordinates adjusted by the greatest dist.
+largest_snaps = largest_snaps.sort_values(
+    by="snap_dist_m", ascending=False).head(100)
+# create the LineString geometry
+largest_snaps["lines"] = largest_snaps.apply(
     lambda row: LineString([row["geometry"], row["snapped_geometry"]]),
     axis=1
 )
+largest_snaps.head()
 
 ```
 
+##### Part 2
+
 ```{python}
-# retrieve the top 100 rows where coordinates where adjusted by the greatest distance.
-largest_snaps = point_plane.sort_values(by="snap_dist_m", ascending=False).head(100)
-# plot these on a folium map. Add a marker layer with red icons showing the locations of the original point plane geometry.
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# layer 1
 z_start = 9
-overview_map = largest_snaps.explore(
+imap = largest_snaps.explore(
     marker_type="marker",
     marker_kwds={
         "icon": folium.map.Icon(color="red", icon="ban", prefix="fa"),
@@ -750,22 +828,20 @@ overview_map = largest_snaps.explore(
     },
     zoom_start=z_start,
 )
-# now add another layer to the same folium map, adding the snapped geometry with a green marker.
-overview_map = largest_snaps.set_geometry("snapped_geometry").explore(
-    m=overview_map,
+# layer 2
+imap = largest_snaps.set_geometry("snapped_geometry").explore(
+    m=imap,
     marker_type="marker",
     marker_kwds={
         "icon": folium.map.Icon(color="green", icon="bicycle", prefix="fa"),
     }
 )
-# add the third and final layer to the map - the lines connecting the geometries to their snapped equivalents.
-overview_map = largest_snaps.set_geometry("lines").explore(
-    m=overview_map,
+# layer 3
+imap = largest_snaps.set_geometry("lines").explore(
+    m=imap,
     zoom_start=z_start
 )
-# show the map
-overview_map
-
+imap
 ```
 
 ### Calculate the Travel Time Matrix
@@ -773,12 +849,7 @@ overview_map
 Now that we have everything we need to carry out the transport routing, we can clean up our environment and make one final adjustment to the point plane - ensure the snapped geometries are set as the geometry column. You can remove the snapped distance and original geometry column.
 
 ```{python}
-del overview_map, largest_snaps, z_start
-
-```
-
-```{python}
-point_plane.drop(columns=["geometry", "lines", "snap_dist_m"], axis=1, inplace=True)
+point_plane.drop(columns=["geometry"], axis=1, inplace=True)
 point_plane.rename(columns={"snapped_geometry": "geometry"}, inplace=True)
 point_plane.set_geometry("geometry", inplace=True)
 point_plane
@@ -882,13 +953,14 @@ med_tts.dropna()
 ```
 
 
-As this final GeoDataFrame is all that is required for the remaining tutorial, go ahead and tidy up the environment. 
+As this final GeoDataFrame is all that is required for the remaining tutorial,
+go ahead and tidy up the environment. 
 
 ```{python}
 # Tidy up
 # tmp.cleanup()
-del station_gdf, travel_time_matrix, point_plane
-
+del [station_gdf, travel_time_matrix, point_plane, transport_network, imap,
+largest_snaps, z_start]
 ```
 
 
