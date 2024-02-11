@@ -849,7 +849,7 @@ imap
 Now that we have everything we need to carry out the transport routing, we can clean up our environment and make one final adjustment to the point plane - ensure the snapped geometries are set as the geometry column. You can remove the snapped distance and original geometry column.
 
 ```{python}
-point_plane.drop(columns=["geometry"], axis=1, inplace=True)
+point_plane.drop(columns=["geometry", "snap_dist_m"], axis=1, inplace=True)
 point_plane.rename(columns={"snapped_geometry": "geometry"}, inplace=True)
 point_plane.set_geometry("geometry", inplace=True)
 point_plane
