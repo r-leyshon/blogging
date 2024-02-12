@@ -99,14 +99,23 @@ scikit-learn
 
 It is required to configure a Java Virtual Machine for this tutorial. The
 transport routing depends on this. Please consult the r<sup>5</sup>py
-installation documentation @r5pyInstallation for guidance.
+installation documentation @r5pyInstallation for guidance. In order to check
+that you have a compatible Java environment, run
+`r5py.TransportNetwork(osm_pth)` after [exercise 1](#exercise-1). For
+reference, I have used OpenJDK to manage my Java instance:
+
+```
+openjdk 11.0.19 2023-04-18 LTS
+OpenJDK Runtime Environment Corretto-11.0.19.7.1 (build 11.0.19+7-LTS)
+OpenJDK 64-Bit Server VM Corretto-11.0.19.7.1 (build 11.0.19+7-LTS, mixed mode)
+```
 
 ## London Cycle Station Service Coverage
 
 Start by loading the required packages.
 
 ```{python}
-import datetime
+from datetime import datetime, timedelta
 import os
 import subprocess
 import tempfile 
@@ -683,6 +692,9 @@ radius used when you instantiated the `snapped_geometry` column?
 transport_network = r5py.TransportNetwork(osm_pth)
 ```
 
+This may seem like a small step, but if this passed, then you have correctly
+configured your Java Virtual Machine. 
+
 ##### Part 2
 
 ```{python}
@@ -844,9 +856,12 @@ imap = largest_snaps.set_geometry("lines").explore(
 imap
 ```
 
-### Calculate the Travel Time Matrix
+## Compute the Travel Time Matrix
 
-Now that we have everything we need to carry out the transport routing, we can clean up our environment and make one final adjustment to the point plane - ensure the snapped geometries are set as the geometry column. You can remove the snapped distance and original geometry column.
+Now that we have everything we need to carry out the transport routing, we need
+one final adjustment to the point plane - ensure that the snapped geometries
+are set as the geometry column. You can remove the snapped distance and
+original geometry column.
 
 ```{python}
 point_plane.drop(columns=["geometry", "snap_dist_m"], axis=1, inplace=True)
@@ -856,32 +871,57 @@ point_plane
 
 ```
 
-Compute the travel times from the station locations to the adjusted point plane. Use a sensible departure datetime and ensure bicycle modality is used for the transport mode. Finally, limit the maximum jourey time to 30 minutes. This step can be quite expensive, depending on the size of your point plane.
+Now we use r<sup>5</sup>py to compute the travel times from the station
+locations to the adjusted point plane.
+
+Some notes on the parameters:
+
+* `transport_modes` takes a list of modes. For simplicity, only `BICYCLE` is
+used, though combining with `WALK` would allow routing through portions of the
+travel network tagged as pedestrian-only.
+* `departure_time` takes a datetime that signifies the first trip start time
+and date. This should ideally match the date that you ingested the osm file, as
+the osm files will best represent the real-world state of the transport
+network.
+* `departure_time_window` creates a time window to carry out routing
+operations. The first journey occurs at 8am, as specified by `departure`. Then
+r<sup>5</sup>py processes a journey at every minute until the
+`departure_time_window` is met. By default, r<sup>5</sup>py returns the median
+travel time across these journeys. This feature provides stable statistics,
+particularly when working with bus or train timetable data.
+* The points can be snapped during the computation job, by specifying
+`snap_to_network=True`. As we have already specified how to do this, we can set
+this to False.
+* `max_time` takes a timedelta object. Here we specify that the journeys should
+take no longer than 30 minutes, as this is the current hire charge period for
+the bikes. 
+* The `compute_travel_times` method returns a pandas DataFrame of median
+travel times for every origin, destination combination.
+
+This step can be expensive, depending on the size of your point plane. Don't be
+alarmed by NaN in the `travel_time` column. These are points in the point plane
+that were not reachable from any bike station. 
 
 ```{python}
+dept_time = datetime.now().replace(hour=8, minute=0, second=0, microsecond=0)
+
 travel_time_matrix = r5py.TravelTimeMatrixComputer(
     transport_network,
     origins=station_gdf,
     destinations=point_plane,
     transport_modes=[r5py.TransportMode.BICYCLE],
-    departure=datetime.datetime(2023, 1, 22, 8, 0, 0),  # 8am on a Monday
-    departure_time_window=datetime.timedelta(minutes=10),  # depart every 10 minutes
+    departure=dept_time,
+    departure_time_window=timedelta(minutes=10),
     snap_to_network=False,
-    # doesn't work for all points, TODO: snap to nearest vertex in road
-    # network where auto snapping failed. TODO: Report haversine distance
-    # to snapped location.
-    max_time=datetime.timedelta(minutes=30),  # journeys <= 30 mins
+    max_time=timedelta(minutes=30),
 ).compute_travel_times()
 
-travel_time_matrix
-
+travel_time_matrix.dropna().head()
 ```
-
-Don't be put off by NaN in the `travel_time` column. These are point in the point plane that were not reachable from any bike station. 
 
 ## Feature Engineering
 
-Next we will need to calculate some informative features:
+Now we will need to calculate some informative features:
 
 * The median travel time for every point in the point plane.
 * The number of bike stations that can reach each point in the point plane. Ensure that this column is formatted as "int16".
