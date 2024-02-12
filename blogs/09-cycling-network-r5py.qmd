@@ -97,7 +97,7 @@ scikit-learn
 
 ```
 
-### Getting Started
+### Configuring Java
 
 It is required to configure a Java Virtual Machine for this tutorial. The
 transport routing depends on this. Please consult the r<sup>5</sup>py
@@ -139,7 +139,7 @@ from shapely.geometry import LineString, Point, Polygon
 
 ```
 
-### Ingest the Street Network Data
+### Street Network Data
 
 Firstly, we must acquire information about the transport network. There are
 a few sources of this, but we shall use the
@@ -153,13 +153,13 @@ Find the appropriate url that points to the london.osm.pbf file. Ingest the
 data and store at an appropriate location.
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 Either using python requests or subprocess with the `curl` command, request
 the url of the pbf file and output the response to a data folder.
 
 :::
 
-##### Solution
+#### Solution
 
 ```{python}
 #| code-fold: true
@@ -180,7 +180,7 @@ subprocess.run(
 
 ```
 
-### Ingest the Bike Charging Station Locations
+### Bike Charging Station Locations
 
 #### Exercise 2
 
@@ -195,7 +195,7 @@ reference system.
 * Inspect the head of the geodataframe.
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 
 1. Using the requests package, send a get request to the endpoint.
 2. Store the required fields in a list: "id", "commonName", "lat", "lon".
@@ -214,7 +214,7 @@ ensuring you pass values in the order of longitude, latitude.
 
 :::
 
-##### Solution
+#### Solution
 
 ```{python}
 #| code-fold: true
@@ -251,7 +251,7 @@ station_gdf.head()
 That's all the external data needed for this tutorial. Let's now examine the
 station locations. 
 
-### Visualise the Station Density
+### Station Density
 
 As the stations are densely located in and around central London, a standard
 matplotlib point map would suffer from overplotting. A better way is to present
@@ -264,7 +264,7 @@ Plot the density of cycle station locations on a map. The solution will use
 visualisation library that can handle geospatial data would be fine.
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 
 1. Create a pydeck hexagon layer based on the `station_gdf`. The hexagon layer
 should be configured as below:
@@ -285,7 +285,7 @@ a map style of your choosing.
 
 :::
 
-##### Solution
+#### Solution
 
 ```{python}
 #| code-fold: true
@@ -334,7 +334,7 @@ r
 
 ```
 
-### Generate the Destination Locations
+### Generate Destinations
 
 We can use the bike stations as journey origins. To compute travel times, we
 need to generate destination locations. This tutorial uses a simple approach
@@ -372,7 +372,7 @@ Once you are happy with the function, use it to produce an example geodataframe
 and `explore()` a folium map of the point grid.
 
 ::: {.callout-tip collapse="true"}
-## Click to expand hint
+#### Click to expand hint
 
 Note that epsg:4326 is a geodetic projection, unsuitable for measuring distance
 between points in the point plane. Ensure that the crs is re-projected to an
@@ -399,7 +399,7 @@ resulting geodataframe with an interactive folium map.
 
 :::
 
-##### Solution
+#### Solution
 
 ```{python}
 #| code-fold: true
@@ -492,7 +492,7 @@ create_point_grid(
 
 ```
 
-### Check the Study Area Size
+### Study Area Size
 
 Before we go ahead with the transport modelling, it is important to check that
 the point plane is large enough to contain a 30 minute journey from any of the
@@ -504,7 +504,7 @@ therefore limit the validity of the study.
 
 #### Exercise 5
 
-##### Part 1
+#### Part 1
 
 1. Create a point plane with a bounding box of your choosing. Use a stepsize of
 1000 metres.
@@ -516,14 +516,14 @@ based on a sample of one overweight, middle-aged man's Strava data). Save the
 geometry as a Polygon object.
 4. Check that the study area completely contains the buffered stations.
 
-##### Part 2
+#### Part 2
 
 Create a diagnostic plot displaying the station locations, buffered station
 polygon and study area polygon together on one map.
 
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 
 Part 1
 
@@ -551,7 +551,7 @@ value and tile provider.
 
 :::
 
-##### Solution
+#### Solution
 
 Part 1
 
@@ -601,7 +601,7 @@ plt.show()
 With a study area adequately encompassing the proposed reachable area, proceed
 to the transport routing.
 
-#### Can the Transport Network reach the Point Plane?
+### Routability
 
 As we have created a point plane naive to the transport network, it is
 important to check that the points are reachable by bike. Any point falling
@@ -611,12 +611,12 @@ unreachable locations to the nearest feature of the travel network.
 
 #### Exercise 6
 
-##### Part 1
+#### Part 1
 
 Using the [r<sup>5</sup>py quickstart documentation](https://r5py.readthedocs.io/en/stable/user-guide/user-manual/quickstart.html), instantiate a `transport_network`
 object, passing `osm_pth` as its single argument.
 
-##### Part 2
+#### Part 2
 
 1. Now using the [r<sup>5</sup>py advanced use section](https://r5py.readthedocs.io/en/stable/user-guide/user-manual/advanced-use.html), create a new column in the
 `point_plane` gdf called `snapped_geometry`.
@@ -625,7 +625,7 @@ geometry column.
 3. Use a maximum search radius of 500 metres and specify the bicycle modality.
 Inspect the resulting geodataframe. 
 
-##### Part 3
+#### Part 3
 
 Now that we have a point plane with a routable geography, we can check to
 ensure that the maximum search radius was observed.
@@ -636,7 +636,7 @@ and the `snapped_geometry` coordinates.
 no values above the maximum search radius value.
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 
 Part 1
 
@@ -667,9 +667,9 @@ radius used when you instantiated the `snapped_geometry` column?
 
 :::
 
-##### Solution
+#### Solution
 
-##### Part 1
+#### Part 1
 
 ```{python}
 #| code-fold: true
@@ -680,7 +680,7 @@ transport_network = r5py.TransportNetwork(osm_pth)
 This may seem like a small step, but if this passed, then you have correctly
 configured your Java Virtual Machine. 
 
-##### Part 2
+#### Part 2
 
 ```{python}
 #| code-fold: true
@@ -694,7 +694,7 @@ point_plane["snapped_geometry"] = transport_network.snap_to_network(
 point_plane.head()
 ```
 
-##### Part 3
+#### Part 3
 
 ```{python}
 #| code-fold: true
@@ -730,7 +730,7 @@ for sanity-checking and edge-case investigation.
 
 #### Exercise 7
 
-##### Part 1
+#### Part 1
 
 1. Create a deep copy of the `point_plane` geodataframe and assign to a new
 object called `largest_snaps`.
@@ -742,7 +742,7 @@ a line between each point on a map.
 4. Assign the output to `largest_snaps["lines"]`.
 5. Inspect the head of the resultant geodataframe.
 
-##### Part 2
+#### Part 2
 
 1. Plot largest_snaps on a folium map. Add a marker layer with red icons
 showing the locations of the original point plane geometry.
@@ -754,7 +754,7 @@ their snapped equivalents.
 
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 
 Part 1
 
@@ -786,9 +786,9 @@ appropriate zoom level.
 
 :::
 
-##### Solution
+#### Solution
 
-##### Part 1
+#### Part 1
 
 ```{python}
 #| code-fold: true
@@ -807,7 +807,7 @@ largest_snaps.head()
 
 ```
 
-##### Part 2
+#### Part 2
 
 ```{python}
 #| code-fold: true
@@ -841,7 +841,7 @@ imap = largest_snaps.set_geometry("lines").explore(
 imap
 ```
 
-## Compute the Travel Time Matrix
+## Travel Times
 
 Now that we have everything we need to carry out the transport routing, we need
 one final adjustment to the point plane - ensure that the snapped geometries
@@ -855,6 +855,8 @@ point_plane.set_geometry("geometry", inplace=True)
 point_plane
 
 ```
+
+### Compute the Travel Time Matrix
 
 Now we use r<sup>5</sup>py to compute the travel times from the station
 locations to the adjusted point plane.
@@ -904,7 +906,7 @@ travel_time_matrix = r5py.TravelTimeMatrixComputer(
 travel_time_matrix.dropna().head()
 ```
 
-## Feature Engineering
+### Feature Engineering
 
 In order to produce some informative visuals, the travel time matrix will need
 some summarisation and feature engineering.
@@ -923,7 +925,7 @@ inverted_med_tt        float64
 listed_geom             object
 ```
 
-##### Part 1
+#### Part 1
 
 1. Calculate the median travel time for every point in the point plane across
 the stations, call the column `median_tt`.
@@ -932,7 +934,7 @@ plane. Ensure that this column is formatted as "int16" and is called
 `n_stations_serving`.
 3. Join the medians and number of stations to `point_plane` on `to_id`.
 
-##### Part 2
+#### Part 2
 
 1. The minmax scaled number of stations serving each point in the point plane.
 Assign this to `med_tts["n_stations_norm"]`.
@@ -943,7 +945,7 @@ order. This is the geometry format expected by pydeck. Assign this to
 `med_tts["listed_geom"]`.
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 
 Part 1
 
@@ -974,7 +976,7 @@ values from the maximum value in that column.
 values as a long,lat list. Assign to `listed_geom`.
 :::
 
-##### Solution
+#### Solution
 
 ```{python}
 #| code-fold: true
@@ -1045,7 +1047,7 @@ del [station_gdf, travel_time_matrix, point_plane, transport_network, imap,
 largest_snaps, z_start]
 ```
 
-## Visualise Median Travel Time
+### Visualise Travel Time
 
 #### Exercise 9
 
@@ -1161,7 +1163,7 @@ more, please note that the point grid is naive to locations where people live
 or would like to travel to and from.
 
 ::: {.callout-tip collapse="true"}
-##### Click to expand hint
+#### Click to expand hint
 
 1. Sort descending the `med_tt` dataframe on `median_tt` and
 `n_stations_serving`.
@@ -1183,7 +1185,7 @@ r
 
 ```
 
-### Tips
+## Tips
 
 * Most of the packages used in this tutorial expect the sequence of coordinates
 to be long, lat. If you select an alternative method for mapping visuals,
