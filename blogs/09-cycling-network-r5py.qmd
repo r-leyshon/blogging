@@ -921,26 +921,72 @@ travel_time_matrix.dropna().head()
 
 ## Feature Engineering
 
-Now we will need to calculate some informative features:
+In order to produce some informative visuals, the travel time matrix will need
+some summarisation and feature engineering.
 
-* The median travel time for every point in the point plane.
-* The number of bike stations that can reach each point in the point plane. Ensure that this column is formatted as "int16".
-* A column that returns a list of the point plane geometry for each row, in `[long, lat]` order. This is the format that pydeck expects.
-* The minmax scaled number of stations serving each point in the point plane.
-* The inverted median travel time as a decimal.
+#### Exercise 8
+
+Produce a table called `med_tts` with the following spec:
+
+```
+id                       int64
+geometry              geometry
+median_tt              float64
+n_stations_serving       int16
+n_stations_norm        float64
+inverted_med_tt        float64
+listed_geom             object
+```
+
+##### Part 1
+
+1. Calculate the median travel time for every point in the point plane across the stations, call the column `median_tt`.
+2. Calculate the number of bike stations that can reach each point in the point plane. Ensure that this column is formatted as "int16" and is called `n_stations_serving`.
+3. Join the medians and number of stations to `point_plane` on `to_id`.
+
+##### Part 2
+
+1. The minmax scaled number of stations serving each point in the point plane.
+Assign this to `med_tts["n_stations_norm"]`.
+2. The inverted and scaled median travel time, assigned to `med_tts["inverted_med_tt"]`.
+3. Create a column with a list of the coordinate for each row, in `[long, lat]` order. This is the geometry format expected by pydeck. Assign this to `med_tts["listed_geom"]`.
+
+::: {.callout-tip collapse="true"}
+##### Click to expand hint
+
+Part 1
+
+1. To create the median travel times across bike stations, group by the `to_id` column and calculate the `median`.
+2. To get the number of stations reaching each point, group by the `to_id` column and count the number of `from_id` values.
+3. Join the above grouped dataframes to the point plane dataframe, using the `to_id` column as the search key. Ensure the columns are named as specified in the exercise.
+4. Cast `n_stations_serving` to int16. First, ensure that NaNs get encoded as 0. To do this, create a boolean mask where that column is na and assign the column values that meet that boolean index to 0. Then casting to int will be possible.
+
+Part 2
+
+1. Instantiate a `min_max_scaler` using an appropriate class from `sklearn`.
+2. Reshape the values of `n_stations_serving` into a 2D numpy array, containing enough rows for each value.
+3. Using the `min_max_scaler`, transform the numpy array.
+4. Flatten the output of `min_max_scaler` and assign to a column called `n_stations_norm`.
+5. Create a new column `inverted_med_tt`, which subtracts all `median_tt` values from the maximum value in that column.
+6. Scale `inverted_med_tt` by repeating steps 2 through 4 for this column.
+7. Use a list comprehension to extract each of the `geometry` coordinate
+values as a long,lat list. Assign to `listed_geom`.
+:::
+
+##### Solution
 
 ```{python}
-def get_median_tts_for_all_stations(
-    tt_matrix: pd.DataFrame, pp: gpd.GeoDataFrame
-) -> gpd.GeoDataFrame:
-    """Join travel times & medians to point geometries.
+#| code-fold: true
+#| code-summary: "Show the code"
 
-    Station locations are presumed to be origins. Points in the point plane are
-    presumed to be destinations. Station geometry is dropped.
+def get_median_tts_for_all_stations(
+    tt: pd.DataFrame, pp: gpd.GeoDataFrame
+) -> gpd.GeoDataFrame:
+    """Join travel times point geometries & calculate medians.
 
     Parameters
     ----------
-    tt_matrix : pd.DataFrame
+    tt : pd.DataFrame
         Matrix of travel times where `from_id` are stations and `to_id` are
         points in the point plane.
     pp : gpd.GeoDataFrame
@@ -949,13 +995,14 @@ def get_median_tts_for_all_stations(
     Returns
     -------
     gpd.GeoDataFrame
-        Point plane locations with median travel times from stations and number of stations serving each point. A number of features are added to assist in mapping.
+        Point plane locations with median travel times from stations and number of stations serving each point.
 
     """
+    #----- Part 1 -----
     # get median travel time from all stations:
-    med_tts = tt_matrix.groupby("to_id")["travel_time"].median()
+    med_tts = tt.groupby("to_id")["travel_time"].median()
     # get number of stations serving each point in the grid
-    tt_dropna = tt_matrix.dropna()
+    tt_dropna = tt.dropna()
     n_stations = tt_dropna.groupby("to_id")["from_id"].count()
     df = pp.join(med_tts).join(n_stations)
     df = df.rename(
@@ -965,9 +1012,9 @@ def get_median_tts_for_all_stations(
     bool_ind = df["n_stations_serving"].isna()
     df.loc[bool_ind, "n_stations_serving"] = 0.0
     df["n_stations_serving"] = df["n_stations_serving"].astype("int16")
-    # feature engineering for pydeck
-    x = df["n_stations_serving"].values.reshape(-1, 1)
+    #----- Part 2 -----
     min_max_scaler = preprocessing.MinMaxScaler()
+    x = df["n_stations_serving"].values.reshape(-1, 1)
     x_scaled = min_max_scaler.fit_transform(x)
     df["n_stations_norm"] = pd.Series(x_scaled.flatten())
     max_tt = max(df["median_tt"].dropna())
@@ -980,17 +1027,9 @@ def get_median_tts_for_all_stations(
 
     return out_gdf
 
-```
 
-
-
-```{python}
-med_tts = get_median_tts_for_all_stations(
-    tt_matrix=travel_time_matrix, pp=point_plane
-)
-med_tts.dropna()
-
-
+med_tts = get_median_tts_for_all_stations(travel_time_matrix, point_plane)
+med_tts.dropna().head()
 ```
 
 
@@ -1004,8 +1043,7 @@ del [station_gdf, travel_time_matrix, point_plane, transport_network, imap,
 largest_snaps, z_start]
 ```
 
-
-### Visualise travel times.
+## Visualise Median Travel Time
 
 ```{python}
 
@@ -1112,11 +1150,12 @@ r
 
 ### Tips
 
-* The packages used in this tutorial expect the sequence of coordinates to be
+* Most of the packages used in this tutorial expect the sequence of coordinates to be
 long, lat. If you select an alternative method for mapping visuals, remember to
 check that this is consistent. If you are getting empty interactive map
 visuals, pan out and check that an incorrect coordinate specification has
 resulted in your points being rendered off the East coast of Africa.
+* The exception to the above rule is `haversine`, which expects lat, long.
 
 ## Conclusion
 
