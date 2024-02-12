@@ -3,12 +3,14 @@ title: "Cycling Network Routing with r<sup>5</sup>py"
 author: "Rich Leyshon"
 date: "February 03 2024"
 description: "Using r<sup>5</sup>py to analyse service coverage in the London's Boris Bike network."
-categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
+categories:
     - Tutorial
     - Transport Modelling
     - REST API
     - Web data
     - Geospatial
+    - r5py
+    - pydeck
 image: "https://images.pixexid.com/a-dynamic-image-of-a-cyclist-her-face-focused-and-determined-captured-mid-peda-cpglmien.jpeg?h=699&amp;q=70"
 image-alt: "A dynamic image of a cyclist, her face focused and determined, captured mid-pedal against the backdrop of a bustling city by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
 toc: true
@@ -31,7 +33,7 @@ performant routing engine originating from the ubiquitous Open Trip Planner
 (OTP). Whereas r<sup>5</sup>py may not be as feature-rich as OTP, its unique
 strength is in the production of origin:destination matrices at scale. This is
 important if the intention is to produce stable statistics based on routing
-algorithms, where the idiosyncracies of local transport service availability
+algorithms, where the idiosyncrasies of local transport service availability
 means that departure times can have a significant impact upon overall journey
 duration.
 
@@ -142,8 +144,8 @@ from shapely.geometry import LineString, Point, Polygon
 Firstly, we must acquire information about the transport network. There are
 a few sources of this, but we shall use the
 [BBBikes](https://download.bbbike.org/osm/bbbike/) website to ingest
-London-specific open street map extracts. The required data should be in
-protocolbuffer (.pbf) format.
+London-specific OpenStreetMap extracts. The required data should be in
+protocol buffer (.pbf) format.
 
 #### Exercise 1
 
@@ -163,27 +165,18 @@ the url of the pbf file and output the response to a data folder.
 #| code-fold: true
 #| code-summary: "Show the code"
 
-osm_pth = here("data/london.osm.pbf")
-# tmp = tempfile.TemporaryDirectory()
-# subprocess.run(
-#     [
-#         "curl",
-#         "https://download.bbbike.org/osm/bbbike/London/London.osm.pbf",
-#         "-o",
-#         os.path.join(tmp.name, "london.osm.pbf"),
-#     ]
-# )
-# temp write to file to avoid repeat ingests
-
-if not os.path.exists(osm_pth):
-  subprocess.run(
-      [
-          "curl",
-          "https://download.bbbike.org/osm/bbbike/London/London.osm.pbf",
-          "-o",
-          osm_pth,
-      ]
-  )
+# As the osm files are large, I will use a tmp directory, though feel free to
+# store the data wherever you like.
+tmp = tempfile.TemporaryDirectory()
+osm_pth = os.path.join(tmp.name, "london.osm.pbf")
+subprocess.run(
+    [
+        "curl",
+        "https://download.bbbike.org/osm/bbbike/London/London.osm.pbf",
+        "-o",
+        osm_pth,
+    ]
+)
 
 ```
 
@@ -204,7 +197,7 @@ reference system.
 ::: {.callout-tip collapse="true"}
 ##### Click to expand hint
 
-1. Using the resuests package, send a get request to the endpoint.
+1. Using the requests package, send a get request to the endpoint.
 2. Store the required fields in a list: "id", "commonName", "lat", "lon".
 3. Check that the response returned HTTP status 200. If True, get the content
 in JSON format.
@@ -215,7 +208,7 @@ required fields, store the key and value within a temporary dictionary.
 stations.
 7. Convert the list of dictionaries to a pandas dataframe. Then convert this
 to a geopandas geodataframe, using the coordinate reference system "EPSG:4326".
-As we have lat and lon in seperate columns, use geopandas `points_from_xy()`,
+As we have lat and lon in separate columns, use geopandas `points_from_xy()`,
 ensuring you pass values in the order of longitude, latitude.
 8. Print out the head of the stations gdf.
 
@@ -227,40 +220,32 @@ ensuring you pass values in the order of longitude, latitude.
 #| code-fold: true
 #| code-summary: "Show the code"
 
-stations_pth = here("data/stations.pkl")
-
-if not os.path.exists(stations_pth):
-  ENDPOINT = "https://api.tfl.gov.uk/BikePoint/"
-  resp = requests.get(ENDPOINT)
-  if resp.ok:
-      content = resp.json()
-  else:
-      raise requests.exceptions.HTTPError(
-          f"{resp.status_code}: {resp.reason}"
-      )
-
-  needed_keys = ["id", "commonName", "lat", "lon"]
-  all_stations = list()
-  for i in content:
-      node_dict = dict()
-      for k, v in i.items():
-          if k in needed_keys:
-              node_dict[k] = v
-      all_stations.append(node_dict)
-
-  stations = pd.DataFrame(all_stations)
-  station_gdf = gpd.GeoDataFrame(
-      stations,
-      geometry=gpd.points_from_xy(stations["lon"], stations["lat"]),
-      crs=4326,
-  )
-  station_gdf.to_pickle(stations_pth)
+ENDPOINT = "https://api.tfl.gov.uk/BikePoint/"
+resp = requests.get(ENDPOINT)
+if resp.ok:
+    content = resp.json()
 else:
-  stations = pd.read_pickle(stations_pth)
-  station_gdf = gpd.GeoDataFrame(stations, crs=4326)
+    raise requests.exceptions.HTTPError(
+        f"{resp.status_code}: {resp.reason}"
+    )
+
+needed_keys = ["id", "commonName", "lat", "lon"]
+all_stations = list()
+for i in content:
+    node_dict = dict()
+    for k, v in i.items():
+        if k in needed_keys:
+            node_dict[k] = v
+    all_stations.append(node_dict)
+
+stations = pd.DataFrame(all_stations)
+station_gdf = gpd.GeoDataFrame(
+    stations,
+    geometry=gpd.points_from_xy(stations["lon"], stations["lat"]),
+    crs=4326,
+)
 
 station_gdf.head()
-
 ```
 
 That's all the external data needed for this tutorial. Let's now examine the
@@ -270,7 +255,7 @@ station locations.
 
 As the stations are densely located in and around central London, a standard
 matplotlib point map would suffer from overplotting. A better way is to present
-some aggregeated statistic on a map, such as density. 
+some aggregated value on a map, such as density. 
 
 #### Exercise 3
 
@@ -534,7 +519,7 @@ geometry as a Polygon object.
 ##### Part 2
 
 Create a diagnostic plot displaying the station locations, buffered station
-polygon and study area polgon together on one map.
+polygon and study area polygon together on one map.
 
 
 ::: {.callout-tip collapse="true"}
@@ -555,11 +540,11 @@ polygon by using an appropriately named GeoDataFrame method.
 Part 2
 
 1. Plot the stations gdf using marker values "o", an alpha of 0.5, markersize
-of 10 and red color. Store in a variable called `ax`.
+of 10 and red colour. Store in a variable called `ax`.
 2. Plot the study area boundary polygon, ensuring the `ax` value from the
 previous step is used. Use an alpha of 0.2.
-3. Add a plot of the buffered stations to the same axes, ensuring a color "red"
-and an alpha of 0.2.
+3. Add a plot of the buffered stations to the same axes, ensuring a colour
+"red" and an alpha of 0.2.
 4. Use contextily to add a basemap to the axes, selecting an appropriate crs
 value and tile provider.
 5. Use matplotlib.pyplot to show the plot.
@@ -620,7 +605,7 @@ to the transport routing.
 
 As we have created a point plane naive to the transport network, it is
 important to check that the points are reachable by bike. Any point falling
-within an inaccesible portion of the transport network will report a null
+within an inaccessible portion of the transport network will report a null
 travel time. r<sup>5</sup>py comes with a utility function that helps to 'snap'
 unreachable locations to the nearest feature of the travel network.
 
@@ -669,7 +654,7 @@ transport mode. To find this value, use `dir(r5py.TransportMode)`.
 
 Part 3
 
-1. the `haversine` function is imported. Unfortunately, it expects coordinates
+1. The `haversine` function is imported. Unfortunately, it expects coordinates
 to be in a latitude, longitude order. 
 2. Apply a `lambda` function across every row in the `point_plane`
 GeoDataFrame. You will need to specify `axis=1` to achieve this.
@@ -1055,17 +1040,31 @@ go ahead and tidy up the environment.
 
 ```{python}
 # Tidy up
-# tmp.cleanup()
+tmp.cleanup() # only needed if tmp director used
 del [station_gdf, travel_time_matrix, point_plane, transport_network, imap,
 largest_snaps, z_start]
 ```
 
 ## Visualise Median Travel Time
 
+#### Exercise 9
+
+Using the [pydeck scatterplot layer docs](https://deckgl.readthedocs.io/en/latest/gallery/scatterplot_layer.html),
+write a function that will take the `med_tts` GeoDataFrame and plot an
+interactive map. Use the features available in `med_tts` to customise the point
+radius and colour. Use the function to render an interactive map.
+
 ```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
 
 def make_scatter_deck(
-    gdf: gpd.GeoDataFrame, radius="(n_stations_norm * 20) + 20", start_lon: float=-0.005, start_lat: float=51.518, start_zoom: Union[int, float]=10,
+    gdf: gpd.GeoDataFrame,
+    radius="(n_stations_norm * 20) + 20",
+    start_lon: float=-0.005,
+    start_lat: float=51.518,
+    start_zoom: Union[int, float]=10,
 ) -> pdk.Deck:
     """Render a scatterPlotLayer of travel time & number of stations serving.
 
@@ -1132,7 +1131,6 @@ def make_scatter_deck(
         pitch=40.5,
         bearing=-27.36,
     )
-
     tooltip = {
         "text": "Stations serving: {n_stats}\nMdn travel time: {median_tt}"
     }
@@ -1142,19 +1140,39 @@ def make_scatter_deck(
     )
     return r
 
-```
 
-Visualise the travel time from stations to the point plane. Map size of the points to the normalized number of stations serving each point multipled by 25 (too large a number here causes significant overplotting). Colour should be mapped to median travel time. As the r,g,b,a values can be controlled seperately, feel free to experiment with combinations using `median_tt` and `inverted_med_tt`.
-
-```{python}
 r = make_scatter_deck(med_tts)
 r
-
 ```
 
-Lastly, we can identify those points within the thirty minute reachable area from the bike station network that are the most remote. Let's visualise the 20 most remote locations. These would represent candidate locations for increasing the coverage of the boris bike network within the thirty minute reachable zone. Once more, please note that the point grid is naive to locations where people live or would like to travel to and from.
+Take some time to study the map. Pan in and out by scrolling. The angle of the
+map can be adjusted by shift + clicking and dragging the mouse left to right.
+Find the point with the greatest number of stations serving. Look for any
+curious patterns in the median travel time. Take a look at the Greenwich
+peninsula.
+
+#### Exercise 10
+
+Lastly, we can identify those points within the thirty minute reachable area
+from the bike station network that are the most remote. Let's visualise the 20
+most remote locations. These would represent candidate locations for increasing
+the coverage of the bike network within the thirty minute reachable zone. Once
+more, please note that the point grid is naive to locations where people live
+or would like to travel to and from.
+
+::: {.callout-tip collapse="true"}
+##### Click to expand hint
+
+1. Sort descending the `med_tt` dataframe on `median_tt` and
+`n_stations_serving`.
+2. Take the top 20 records.
+3. Pass this dataframe to the function you wrote in [exercise 9](#exercise-9).
+:::
 
 ```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
 n_isolated = (
     med_tts.dropna()
     .sort_values(["median_tt", "n_stations_serving"], ascending=[False, False])
@@ -1167,34 +1185,38 @@ r
 
 ### Tips
 
-* Most of the packages used in this tutorial expect the sequence of coordinates to be
-long, lat. If you select an alternative method for mapping visuals, remember to
-check that this is consistent. If you are getting empty interactive map
-visuals, pan out and check that an incorrect coordinate specification has
+* Most of the packages used in this tutorial expect the sequence of coordinates
+to be long, lat. If you select an alternative method for mapping visuals,
+remember to check that this is consistent. If you are getting empty interactive
+map visuals, pan out and check that an incorrect coordinate specification has
 resulted in your points being rendered off the East coast of Africa.
 * The exception to the above rule is `haversine`, which expects lat, long.
 
 ## Conclusion
 
+If you made it this far, well done! This tutorial has got you up and running
+with the r<sup>5</sup>py package. You have used several libraries in the
+python GIS stack to execute an analysis of bike station locations in London:
 
-#### Exercise Example
+* Station locations were ingested with TfL's api.
+* OpenStreetMap data was ingested from the BBBikes download service.
+* A point plane of your size was generated.
+* The coverage of the point plane was inspected.
+* The point plane features were adjusted to the underlying transport network.
+* Median travel times from bike stations to the point plane were calculated.
+* Travel times were summarised and features engineered for presentation in 
+informative `pydeck` maps.
 
-Some txt
+Next steps for this work would be to explore how potential station locations
+could be informed by locations where people would wish to commute, such as
+retail, businesses, tourist attractions and residential areas. OpenStreetMap
+files are a rich source of location data, which can be extracted with libraries
+such as [pyosmium](https://osmcode.org/pyosmium/). 
 
-::: {.callout-tip collapse="true"}
-## Click to expand hint
-Some hint
-:::
-
-##### Solution
-
-```{python}
-#| code-fold: true
-#| code-summary: "Show the code"
-
-# Some solution
-
-```
-
+Service optimisation is an interesting area of operational research. This
+analysis does not consider local demand on the stations and their capacity to
+meet that demand. This sort of problem is known as the capacitated facility
+location problem and can provide operational efficiencies while improving
+service quality for the customer.
 
 <p id=fin><i>fin!</i></p>
