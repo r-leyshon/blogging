@@ -952,7 +952,6 @@ def get_median_tts_for_all_stations(
         Point plane locations with median travel times from stations and number of stations serving each point. A number of features are added to assist in mapping.
 
     """
-    # TODO: Defensive checks & Unit tests
     # get median travel time from all stations:
     med_tts = tt_matrix.groupby("to_id")["travel_time"].median()
     # get number of stations serving each point in the grid
@@ -971,11 +970,13 @@ def get_median_tts_for_all_stations(
     min_max_scaler = preprocessing.MinMaxScaler()
     x_scaled = min_max_scaler.fit_transform(x)
     df["n_stations_norm"] = pd.Series(x_scaled.flatten())
+    max_tt = max(df["median_tt"].dropna())
+    df["inverted_med_tt"] = (max_tt - df["median_tt"])
+    x = df["inverted_med_tt"].values.reshape(-1, 1)
+    x_scaled = min_max_scaler.fit_transform(x)
+    df["inverted_med_tt"] = pd.Series(x_scaled.flatten())
     out_gdf = gpd.GeoDataFrame(df, crs=4326)
     out_gdf["listed_geom"] = [[c.x, c.y] for c in out_gdf["geometry"]]
-    out_gdf["inverted_med_tt"] = (
-        max(out_gdf["median_tt"].dropna()) - out_gdf["median_tt"]
-    ) * 0.1
 
     return out_gdf
 
@@ -1009,7 +1010,7 @@ largest_snaps, z_start]
 ```{python}
 
 def make_scatter_deck(
-    gdf: gpd.GeoDataFrame, radius="(n_stations_norm * 25) + 20", start_lon: float=-0.005, start_lat: float=51.518, start_zoom: Union[int, float]=10,
+    gdf: gpd.GeoDataFrame, radius="(n_stations_norm * 20) + 20", start_lon: float=-0.005, start_lat: float=51.518, start_zoom: Union[int, float]=10,
 ) -> pdk.Deck:
     """Render a scatterPlotLayer of travel time & number of stations serving.
 
@@ -1063,8 +1064,8 @@ def make_scatter_deck(
         line_width_min_pixels=1,
         get_position="listed_geom",
         get_radius=radius,
-        get_fill_color="[255,(inverted_med_tt * 255), (median_tt * 255)]",
-        get_line_color="[0,0,0,0]",
+        get_fill_color="[255,(median_tt * 255), (inverted_med_tt * 255)]",
+        get_line_color="[255,(median_tt * 255), (inverted_med_tt * 255)]",
     )
     # Set the viewport location
     view_state = pdk.ViewState(
@@ -1086,7 +1087,6 @@ def make_scatter_deck(
     )
     return r
 
-
 ```
 
 Visualise the travel time from stations to the point plane. Map size of the points to the normalized number of stations serving each point multipled by 25 (too large a number here causes significant overplotting). Colour should be mapped to median travel time. As the r,g,b,a values can be controlled seperately, feel free to experiment with combinations using `median_tt` and `inverted_med_tt`.
@@ -1106,9 +1106,7 @@ n_isolated = (
     .head(20)
 )
 r = make_scatter_deck(n_isolated, radius=50, start_zoom=9.5)
-
 r
-
 
 ```
 
