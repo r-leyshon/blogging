@@ -158,7 +158,6 @@ the url of the pbf file and output the response to a data folder.
 #### Solution
 
 ```{python}
-#| echo: false
 #| code-fold: true
 #| code-summary: "Show the code"
 
