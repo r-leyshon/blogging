@@ -1,8 +1,8 @@
 ---
-title: "Cycling Network Routing with r<sup>5</sup>py"
+title: "Bicycle Network Modelling with r<sup>5</sup>py"
 author: "Rich Leyshon"
-date: "February 03 2024"
-description: "Using r<sup>5</sup>py to analyse service coverage in the London's Boris Bike network."
+date: "February 13 2024"
+description: "Analysing service coverage in London's Santander Bike network."
 categories:
     - Tutorial
     - Transport Modelling
@@ -37,35 +37,33 @@ algorithms, where the idiosyncrasies of local transport service availability
 means that departure times can have a significant impact upon overall journey
 duration.
 
-In summary, r<sup>5</sup>py achieves stable statistics by calculating travel
-times over multiple journeys within a time window, returning insightful
-summaries such as the median duration required to travel from point A to B.
+r<sup>5</sup>py achieves stable statistics by calculating travel times over
+multiple journeys within a time window, returning summaries such as the median
+travel time from point A to B.
 
-:::{.callout-caution collapse="true"}
+:::{.callout-caution}
 
 ### A Note on the Purpose
 
 This tutorial aims to familiarise the reader with r<sup>5</sup>py and how it
 integrates with the python geospatial ecosystem of packages. This article is
-not to be used to attempt to infer service quality outcomes or to inform policy
-decisions. Limitations of this analysis and suggested improvements will be
-discussed throughout.
-
+not to be used to attempt to infer service quality outcomes. Limitations of
+this analysis and suggested improvements will be discussed throughout.
 :::
 
 ### Intended Audience
 
-Experienced python practitioners familiar a robust working knowledge of the
-typical python GIS stack, eg geopandas, shapely, fiona and folium. Familiarity
-with r<sup>5</sup>py and routing operations is not required. Familiarity with
-coordinate reference systems (CRS) is required.
+Experienced python practitioners with a robust working knowledge of the typical
+python GIS stack, eg `geopandas`, `shapely` and `folium` and coordinate
+reference systems (CRS). Familiarity with r<sup>5</sup>py is not assumed. 
 
 ### Outcomes
 
 * Ingest London bike charging station locations.
 * Visualise charging stations in an interactive hex map.
-* Create a naive point plane of destinations.
+* Generate a naive point plane of destinations.
 * Check that the point plane is large enough to accommodate station locations.
+* Adjust point plane locations to ensure routability.
 * Calculate origin:destination travel time matrix, by cycling modality and 
 with a maximum journey time of 30 minutes.
 * Engineer features to help analyse the cycling network accessibility.
@@ -90,7 +88,6 @@ mapclassify
 matplotlib
 pydeck
 pyproj
-pyprojroot
 r5py
 requests
 scikit-learn
@@ -131,7 +128,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pydeck as pdk
 import pyproj
-from pyprojroot import here
 import r5py
 import requests
 from sklearn import preprocessing
@@ -162,6 +158,7 @@ the url of the pbf file and output the response to a data folder.
 #### Solution
 
 ```{python}
+#| echo: false
 #| code-fold: true
 #| code-summary: "Show the code"
 
@@ -190,7 +187,7 @@ To get data about the bike charging stations in London, we will query
 * Explore the site and find the correct endpoint to query. 
 * The tutorial requires the following fields: station ID, the human-readable
 name, latitude and longitude for each available station.
-* Store the data in a geopandas geodataframe with the appropriate coordinate
+* Store the data in a `geopandas` geodataframe with the appropriate coordinate
 reference system.
 * Inspect the head of the geodataframe.
 
@@ -207,8 +204,8 @@ required fields, store the key and value within a temporary dictionary.
 6. Append the dictionary of required fields and their values to the list of
 stations.
 7. Convert the list of dictionaries to a pandas dataframe. Then convert this
-to a geopandas geodataframe, using the coordinate reference system "EPSG:4326".
-As we have lat and lon in separate columns, use geopandas `points_from_xy()`,
+to a `geopandas` geodataframe, using the coordinate reference system "EPSG:4326".
+As we have lat and lon in separate columns, use `geopandas` `points_from_xy()`,
 ensuring you pass values in the order of longitude, latitude.
 8. Print out the head of the stations gdf.
 
@@ -280,8 +277,8 @@ camera. Configure this as you see fit.
 3. (Optional) Add a custom tooltip, clarifying that the hexagon elevation is
 equal to the count of stations within that area. You may wish to consult the
 [deck.gl](https://deck.gl/docs) documentation to help implement this.
-4. Create a pydeck deck with the hexagon layer, custom view state, tooltip and
-a map style of your choosing.
+4. Create a deck with the hexagon layer, custom view state, tooltip and a map
+style of your choosing.
 
 :::
 
@@ -362,14 +359,14 @@ values.
 * `stepsize` expecting a positive integer, specifying the spacing of the grid
 points in metres.
 
-`create_point_grid()` should return a geopandas geodataframe of equally spaced
-point locations - the point grid. The grid point locations should be in
+`create_point_grid()` should return a `geopandas` geodataframe of equally
+spaced point locations - the point grid. The grid point locations should be in
 epsg:4326 projection. The geodataframe requires a `geometry` column and an `id`
 column equal to the index of the dataframe (required for r<sup>5</sup>py
 origin:destination matrix calculation).
 
 Once you are happy with the function, use it to produce an example geodataframe
-and `explore()` a folium map of the point grid.
+and `explore()` a `folium` map of the point grid.
 
 ::: {.callout-tip collapse="true"}
 #### Click to expand hint
@@ -385,17 +382,17 @@ geodetic to planar, and the other back from planar to geodetic.
 3. Use the transformers to convert the SW and NE points from geodetic to
 planar.
 4. Use nested loops to iterate over the area between the corner points.
-Store the point location as a `shapely.geometry.Point` object, using a
-transformer to convert back to epsg:4326. Append the point to a list of grid
-points.
+Store the point location as a `shapely.geometry.Point` object. Append the point
+to a list of grid points.
 5. Increment the x and y values by the provided `stepsize` and continue to
-append points in this fashion until xmin has reached the xmax value, likewise
-until ymin has met the ymax value.
-6. Create a pandas dataframe with the geometry column using the appended point
+append points in this fashion until xmin has reached the xmax value and ymin
+has met the ymax value.
+6. Ensure the stored coordinates are converted back to epsg:4326.
+7. Create a pandas dataframe with the geometry column using the appended point
 locations and an `id` column that uses the `range()` function to generate a
 unique integer value for each row. 
-7. Use the defined function with a sample bounding box and explore the
-resulting geodataframe with an interactive folium map.
+8. Use the defined function with a sample bounding box and explore the
+resulting geodataframe with an interactive `folium` map.
 
 :::
 
@@ -497,22 +494,25 @@ create_point_grid(
 Before we go ahead with the transport modelling, it is important to check that
 the point plane is large enough to contain a 30 minute journey from any of the
 stations. 30 minutes is the current charging interval for the pay as you ride
-options @SantanderCycleFees. Note that making the point plane larger means
-more origin:destination travel times to calculate, so there is a compromise to
-be met. Using too small a grid will introduce edge effects @EdgeEffects and
-therefore limit the validity of the study.
+options @SantanderCycleFees. Note that making the point plane larger or the
+step size smaller means more travel times to calculate, so there is a
+compromise to be met. Using too small a grid will introduce edge effects
+@EdgeEffects and therefore limit the validity of the study.
 
 #### Exercise 5
 
+Check that the point plane study area is large enough to accommodate an
+estimation of reachable area from the station locations.
+
 #### Part 1
 
-1. Create a point plane with a bounding box of your choosing. Use a stepsize of
-1000 metres.
+1. Create a `point_plane` object with `create_point_grid()` that has a bounding
+box of your choosing. Use a stepsize of 1000 metres. 
 2. Get the boundary polygon of this point plane. This is the study area.
 3. Buffer the bike station locations. This buffered area should represent
 the reachable area from within a 30 minute ride of any station and a presumed
 average urban cycle speed of 18 kilometres per hour (an opinionated speed
-based on a sample of one overweight, middle-aged man's Strava data). Save the
+based on a sample of one overweight, middle-aged man's Strava data). Store the
 geometry as a Polygon object.
 4. Check that the study area completely contains the buffered stations.
 
@@ -526,6 +526,10 @@ polygon and study area polygon together on one map.
 #### Click to expand hint
 
 Part 1
+
+For this exercise, you may find the
+[Klokantech bounding box tool](https://boundingbox.klokantech.com/) useful.
+Ensure that the output is formatted as csv.
 
 1. Create a point plane of your choosing. Use the `total_bounds` attribute to
 extract values for minx, miny, maxx, maxy.
@@ -545,9 +549,9 @@ of 10 and red colour. Store in a variable called `ax`.
 previous step is used. Use an alpha of 0.2.
 3. Add a plot of the buffered stations to the same axes, ensuring a colour
 "red" and an alpha of 0.2.
-4. Use contextily to add a basemap to the axes, selecting an appropriate crs
+4. Use `contextily` to add a basemap to the axes, selecting an appropriate crs
 value and tile provider.
-5. Use matplotlib.pyplot to show the plot.
+5. Use `matplotlib.pyplot` to show the plot.
 
 :::
 
@@ -629,6 +633,7 @@ Inspect the resulting geodataframe.
 
 Now that we have a point plane with a routable geography, we can check to
 ensure that the maximum search radius was observed.
+
 1. Calculate the haversine distance in metres between the original `geometry`
 and the `snapped_geometry` coordinates.
 2. Assign the result to `point_plane["snap_dist_m"]`.
@@ -744,9 +749,9 @@ a line between each point on a map.
 
 #### Part 2
 
-1. Plot largest_snaps on a folium map. Add a marker layer with red icons
+1. Plot `largest_snaps` on a `folium` map. Add a marker layer with red icons
 showing the locations of the original point plane geometry.
-2. Add a second marker layer to the same folium map, adding the snapped
+2. Add a second marker layer to the same `folium` map, adding the snapped
 geometry with a green marker.
 3. Add the final layer to the map - the lines connecting the geometries to
 their snapped equivalents.
@@ -760,12 +765,12 @@ Part 1
 
 1. Sort ascending the `largest_snaps` geodataframe by `snap_dist_m`. Take the
 top 100 records only.
-2. `LineString` takes 2 arguments, a start and end point geometry.
+2. `LineString` takes 2 arguments, a start and end point coordinate.
 3. Apply the `LineString` logic over each row in the geodataframe, ensuring the
 `axis` argument is set to 1.
 4. For each row, pass the `geometry` column value to `LineString` as the first
 argument, and the `snapped_geometry` value as the second.
-5. Assign the returned value to an appropriate;y named column.
+5. Assign the returned value to an appropriately named column.
 
 Part 2
 
@@ -843,17 +848,16 @@ imap
 
 ## Travel Times
 
-Now that we have everything we need to carry out the transport routing, we need
-one final adjustment to the point plane - ensure that the snapped geometries
-are set as the geometry column. You can remove the snapped distance and
-original geometry column.
+Now that we have everything we need to carry out the transport routing, there
+is one final adjustment to the point plane - ensure that the snapped geometries
+are set as the geometry column. The snapped distance and original geometry
+column can be removed.
 
 ```{python}
 point_plane.drop(columns=["geometry", "snap_dist_m"], axis=1, inplace=True)
 point_plane.rename(columns={"snapped_geometry": "geometry"}, inplace=True)
 point_plane.set_geometry("geometry", inplace=True)
-point_plane
-
+point_plane.head()
 ```
 
 ### Compute the Travel Time Matrix
@@ -866,7 +870,7 @@ Some notes on the parameters:
 * `transport_modes` takes a list of modes. For simplicity, only `BICYCLE` is
 used, though combining with `WALK` would allow routing through portions of the
 travel network tagged as pedestrian-only.
-* `departure_time` takes a datetime that signifies the first trip start time
+* `departure_time` takes a `datetime` that signifies the first trip start time
 and date. This should ideally match the date that you ingested the osm file, as
 the osm files will best represent the real-world state of the transport
 network.
@@ -936,10 +940,10 @@ plane. Ensure that this column is formatted as "int16" and is called
 
 #### Part 2
 
-1. The minmax scaled number of stations serving each point in the point plane.
-Assign this to `med_tts["n_stations_norm"]`.
-2. The inverted and scaled median travel time, assigned to
-`med_tts["inverted_med_tt"]`.
+1. Use a minmax scaler to scale the number of stations serving each point in
+the point plane. Assign this to `med_tts["n_stations_norm"]`.
+2. Calculate inverteded values for the median travel time. Use the same scaling
+as the previous step and assign to `med_tts["inverted_med_tt"]`.
 3. Create a column with a list of the coordinate for each row, in `[long, lat]`
 order. This is the geometry format expected by pydeck. Assign this to 
 `med_tts["listed_geom"]`.
@@ -1042,7 +1046,7 @@ go ahead and tidy up the environment.
 
 ```{python}
 # Tidy up
-tmp.cleanup() # only needed if tmp director used
+tmp.cleanup() # only needed if tmp directory used
 del [station_gdf, travel_time_matrix, point_plane, transport_network, imap,
 largest_snaps, z_start]
 ```
@@ -1151,7 +1155,8 @@ Take some time to study the map. Pan in and out by scrolling. The angle of the
 map can be adjusted by shift + clicking and dragging the mouse left to right.
 Find the point with the greatest number of stations serving. Look for any
 curious patterns in the median travel time. Take a look at the Greenwich
-peninsula.
+peninsula, where the River Thames appears to limit accessibility from the
+North.
 
 #### Exercise 10
 
@@ -1190,7 +1195,7 @@ r
 * Most of the packages used in this tutorial expect the sequence of coordinates
 to be long, lat. If you select an alternative method for mapping visuals,
 remember to check that this is consistent. If you are getting empty interactive
-map visuals, pan out and check that an incorrect coordinate specification has
+map visuals, pan out and check if an incorrect coordinate specification has
 resulted in your points being rendered off the East coast of Africa.
 * The exception to the above rule is `haversine`, which expects lat, long.
 
@@ -1210,10 +1215,10 @@ python GIS stack to execute an analysis of bike station locations in London:
 informative `pydeck` maps.
 
 Next steps for this work would be to explore how potential station locations
-could be informed by locations where people would wish to commute, such as
-retail, businesses, tourist attractions and residential areas. OpenStreetMap
-files are a rich source of location data, which can be extracted with libraries
-such as [pyosmium](https://osmcode.org/pyosmium/). 
+could be informed by places where people would wish to commute, such as retail,
+businesses, tourist attractions and residential areas. OpenStreetMap files are
+a rich source of location data, which can be extracted with libraries such as
+[pyosmium](https://osmcode.org/pyosmium/). 
 
 Service optimisation is an interesting area of operational research. This
 analysis does not consider local demand on the stations and their capacity to
