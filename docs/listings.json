@@ -18,6 +18,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/09-cycling-network-r5py.html",
       "/blogs/08-quarto-conda-env.html",
       "/blogs/07-schedule-deploy-shinyapps.html",
       "/blogs/06-working-with-ONS-open-geo-portal.html",
@@ -31,6 +32,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blogs/09-cycling-network-r5py.html",
       "/music-reviews/03-dk-county-piano.html",
       "/blogs/08-quarto-conda-env.html",
       "/blogs/07-schedule-deploy-shinyapps.html",
