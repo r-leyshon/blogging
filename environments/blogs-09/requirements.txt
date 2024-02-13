@@ -1,10 +1,12 @@
 contextily
 geopandas
+haversine
 folium
 mapclassify
 matplotlib
+pandas
 pydeck
-pyprojroot
+pyproj
 r5py
 requests
 scikit-learn
