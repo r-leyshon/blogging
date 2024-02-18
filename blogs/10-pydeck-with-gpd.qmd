@@ -25,60 +25,132 @@ jupyter:
 
 ## Introduction
 
-brief intro
+Pydeck is a python client for pydeck.gl, a powerful geospatial visualisation
+library. It's a relatively new library and integrating it with the existing
+python geospatial ecosystem is currently a little tricky. This article
+demonstrates how to build pydeck ScatterplotLayer and GeoJsonLayer from
+geopandas GeoDataFrames.
 
-sources
-
-- <a href="https://quarto.org/docs/projects/virtual-environments.html#using-conda" target="_blank">Quarto Documentation: Using Conda</a>
+- <a href="https://deckgl.readthedocs.io/en/latest/" target="_blank">Pydeck documentation</a>
+- <a href="https://deck.gl/#/" target="_blank">Deck.gl documentation</a>
 
 :::{.callout collapse="true"}
 
 ### A Note on the Purpose
 
-note on versions at time of writing
+The content of this article was written using pydeck 0.8.0. Future releases may
+alter the package behaviour.
 :::
 
 ### Intended Audience
 
-Python practitioners familiar with conda environment management
-@CondaDocsEnvMgmt who are less familiar working with quarto documents
-@HelloQuarto.
+Python practitioners familiar with virtual environments, `requests` and
+geospatial analysis with `geopandas`.
 
 ### The Scenario
 
-You are writing a quarto document that contains python code. You would like to
-use conda to manage your python dependencies. You are encountering problems in 
-having quarto select the appropriate conda environment.
+You have a geopandas GeoDataFrame with point or polygon geometries. You are
+attempting to build a pydeck visualisation but end up with empty basemap tiles.
 
 ### What You'll Need:
 
-- [ ] Conda or miniconda
-- [ ] Quarto
-- [ ] Text editor eg VS Code
+- [ ] Preferred python environment manager (eg `conda`)
 - [ ] Python package manager (eg `pip`)
-- [ ] Access to a command line interface (CLI) such as terminal / Bash.
 - [ ] `requirements.txt`:
 
 ```{.python filename=requirements.txt eval=false}
-nbclient
-nbformat
-palmerpenguins
+geopandas
+pandas
+pydeck
+requests
 
 ```
+## Prepare Environment
 
-## Configuring Quarto with Conda Env
+1. Create a virtual environment.
+2. Install the required dependencies.
+3. Activate the virtual environment.
+4. Create a python script and import the dependencies.
 
-### Project Structure
+```{python}
+import geopandas as gpd
+import pydeck as pdk
+import requests
+```
 
-1. 
+## Build a `ScatterplotLayer`
 
-### Configure the Environment
+### Ingest Data
 
-5. 
+For the point data, I will ingest all Welsh lower super output area 2021 population-weighted centroids from [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/79fa1c80981b4e4eb218bbce1afc304b_0/explore).
 
-### Configure the Quarto Project
+For more on working with ONS Open Geography Portal, see [Getting Data from ONS Open Geography Portal](/./blogs/06-working-with-ONS-open-geo-portal.qmd).
 
-9. 
+```{python}
+ENDPOINT = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LLSOA_Dec_2021_PWC_for_England_and_Wales_2022/FeatureServer/0/query"
+PARAMS = {
+    "where": "LSOA21CD like 'W%'",
+    "f": "geoJSON", 
+    "outFields": "*",
+    "outSR": 4326, # CRS that you want
+}
+resp = requests.get(ENDPOINT, params=PARAMS)
+if resp.ok:
+    content = resp.json()
+else:
+    raise requests.RequestException(f"HTTP {resp.status_code} : {resp.reason}")
+
+centroids = gpd.GeoDataFrame.from_features(
+    features=content["features"], crs=content["crs"]["properties"]["name"])
+centroids.head()
+```
+
+The geometry column is not in a format that pydeck will accept. Adding a column
+with a list of long,lat values for each coordinate will do the trick.
+
+```{python}
+centroids["pydeck_geometry"] = [[c.x, c.y] for c in centroids["geometry"]]
+centroids.head()
+```
+
+### Pydeck Visualisation
+
+With the correct geometry format, the scatterplot is trivial.
+
+```{python}
+layer = pdk.Layer(
+    "ScatterplotLayer",
+    centroids,
+    pickable=True,
+    stroked=True,
+    filled=True,
+    line_width_min_pixels=1,
+    get_position="pydeck_geometry",
+    get_fill_color=[255, 140, 0],
+    get_line_color=[255, 140, 0],
+    radius_min_pixels=3,
+    opacity=0.1,
+)
+# Set the viewport location
+view_state = pdk.ViewState(
+    longitude=-3.64,
+    latitude=52.42,
+    zoom=6.5,
+    max_zoom=15,
+    pitch=0,
+    bearing=0,
+)
+tooltip = {
+    "text": "LSOA21CD: {LSOA21CD}"
+}
+# Render
+r = pdk.Deck(
+    layers=[layer], initial_view_state=view_state, tooltip=tooltip
+)
+r
+```
+
+## Build a `GeoJsonLayer`
 
 
 ### Tips
