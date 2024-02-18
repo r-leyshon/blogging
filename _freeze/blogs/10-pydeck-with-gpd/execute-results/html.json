@@ -1,0 +1,12 @@
+{
+  "hash": "e43d381d93dc6ed0c594f52e88f0d0bf",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: Getting Pydeck to Play Ball with GeoPandas.\nauthor: Rich Leyshon\ndate: February 18 2024\ndescription: Building Pydeck Maps from GeoPandas GeoDataFrames.\ncategories:\n  - How To\n  - Geospatial\n  - pydeck\n  - geopandas\nimage: 'https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70'\nimage-alt: 'A lake with mountains in the background by [Prompart](https://pixexid.com/profile/@prompart)'\ntoc: true\n---\n\n<figure class=center>\n  <img class=\"shaded_box\" width=400px src=\"https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70\"></img>\n  <figcaption style=\"text-align:center;\">Creative commons license by [Prompart](https://pixexid.com/profile/@prompart)</figcaption>\n</figure>\n\n## Introduction\n\nbrief intro\n\nsources\n\n- <a href=\"https://quarto.org/docs/projects/virtual-environments.html#using-conda\" target=\"_blank\">Quarto Documentation: Using Conda</a>\n\n:::{.callout collapse=\"true\"}\n\n### A Note on the Purpose\n\nnote on versions at time of writing\n:::\n\n### Intended Audience\n\nPython practitioners familiar with conda environment management\n@CondaDocsEnvMgmt who are less familiar working with quarto documents\n@HelloQuarto.\n\n### The Scenario\n\nYou are writing a quarto document that contains python code. You would like to\nuse conda to manage your python dependencies. You are encountering problems in \nhaving quarto select the appropriate conda environment.\n\n### What You'll Need:\n\n- [ ] Conda or miniconda\n- [ ] Quarto\n- [ ] Text editor eg VS Code\n- [ ] Python package manager (eg `pip`)\n- [ ] Access to a command line interface (CLI) such as terminal / Bash.\n- [ ] `requirements.txt`:\n\n```{.python filename=requirements.txt eval=false}\nnbclient\nnbformat\npalmerpenguins\n\n```\n\n## Configuring Quarto with Conda Env\n\n### Project Structure\n\n1. \n\n### Configure the Environment\n\n5. \n\n### Configure the Quarto Project\n\n9. \n\n\n### Tips\n\n* \n\n## Conclusion\n\nThis article has walked the reader through . For more help with ...\n\n<p id=fin><i>fin!</i></p>\n\n",
+    "supporting": [
+      "10-pydeck-with-gpd_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

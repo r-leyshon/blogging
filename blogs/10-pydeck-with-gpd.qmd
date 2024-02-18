@@ -1,0 +1,92 @@
+---
+title: "Getting Pydeck to Play Ball with GeoPandas."
+author: "Rich Leyshon"
+date: "February 18 2024"
+description: "Building Pydeck Maps from GeoPandas GeoDataFrames."
+categories:
+    - How To
+    - Geospatial
+    - pydeck
+    - geopandas
+image: "https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70"
+image-alt: "A lake with mountains in the background by [Prompart](https://pixexid.com/profile/@prompart)"
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-cycling-env-py"
+    language: "python"
+    display_name: "blog-cycling-env"
+---
+
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70"></img>
+  <figcaption style="text-align:center;">Creative commons license by [Prompart](https://pixexid.com/profile/@prompart)</figcaption>
+</figure>
+
+## Introduction
+
+brief intro
+
+sources
+
+- <a href="https://quarto.org/docs/projects/virtual-environments.html#using-conda" target="_blank">Quarto Documentation: Using Conda</a>
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose
+
+note on versions at time of writing
+:::
+
+### Intended Audience
+
+Python practitioners familiar with conda environment management
+@CondaDocsEnvMgmt who are less familiar working with quarto documents
+@HelloQuarto.
+
+### The Scenario
+
+You are writing a quarto document that contains python code. You would like to
+use conda to manage your python dependencies. You are encountering problems in 
+having quarto select the appropriate conda environment.
+
+### What You'll Need:
+
+- [ ] Conda or miniconda
+- [ ] Quarto
+- [ ] Text editor eg VS Code
+- [ ] Python package manager (eg `pip`)
+- [ ] Access to a command line interface (CLI) such as terminal / Bash.
+- [ ] `requirements.txt`:
+
+```{.python filename=requirements.txt eval=false}
+nbclient
+nbformat
+palmerpenguins
+
+```
+
+## Configuring Quarto with Conda Env
+
+### Project Structure
+
+1. 
+
+### Configure the Environment
+
+5. 
+
+### Configure the Quarto Project
+
+9. 
+
+
+### Tips
+
+* 
+
+## Conclusion
+
+This article has walked the reader through . For more help with ...
+
+<p id=fin><i>fin!</i></p>
