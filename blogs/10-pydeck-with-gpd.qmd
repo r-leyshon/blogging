@@ -127,6 +127,11 @@ centroids.head()
 
 With the correct geometry format, the scatterplot is trivial.
 
+:::{.callout-tip}
+Control the map by click and dragging the map with your mouse. Hold shift +
+click and drag to yaw or pitch the map. Scroll in and out to alter the zoom.
+:::
+
 ```{python}
 scatter = pdk.Layer(
     "ScatterplotLayer",
@@ -211,14 +216,15 @@ string as a dictionary.
 ```{python}
 # format data for use in pydeck
 json_out = json.loads(polygons.to_json())
-json_out.keys()
+# inspect the first authority
+json_out["features"][0]
 ```
 
 ### Pydeck Visualisation
 
 This format can now be passed to pydeck. One 'gotcha' to be aware of, when
-using attributes in the json to control elevation or colour, the dictionary
-keys must be referenced, eg `"properties.area_norm"`.
+using attributes in the json to control elevation or colour, the json
+properties must be explicitly referenced, eg `"properties.area_norm"`.
 
 In contrast, when using json attributes in the tooltip, you can refer to them
 directly, eg `"area_norm"`.
@@ -261,7 +267,7 @@ r
 
 ## Tips
 
-* `pydeck` does not raise when layer data is not formatted correctly. This
+* `pydeck` does not raise when layer data are not formatted correctly. This
 can result in some lengthy render times only to discover you have an empty map.
 To combat this, work with the head or some small sample of your data until you
 have your map working.
