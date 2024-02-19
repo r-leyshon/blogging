@@ -12,6 +12,11 @@ categories:         # delete categories as appropriate. using https://diataxis.f
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608
 image-alt: "Great Britain-United Kingdom Topographic Map"
 toc: false # iframe overlaps 
+jupyter: 
+  kernelspec:
+    name: "conda-env-cycling-env-py"
+    language: "python"
+    display_name: "blog-cycling-env"
 ---
 <figure class=center>
   <img class="shaded_box" width=400px src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
@@ -86,7 +91,7 @@ Boundaries EW BFC"
 webpage below.
 
 <div class=centerdiv>
-  <iframe src="https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-2021-boundaries-ew-bfc/explore?location=52.375030%2C-3.328324%2C8.44" title="LSOA 2021 Boundaries for England & Wales"></iframe>
+  <iframe src="https://geoportal.statistics.gov.uk/datasets/bb427d36197443959de8a1462c8f1c55_0/explore" title="LSOA 2021 Boundaries for England & Wales"></iframe>
 </div>
 
 ### Finding the Endpoint

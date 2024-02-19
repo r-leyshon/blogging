@@ -1,0 +1,285 @@
+---
+title: "Getting Pydeck to Play Nicely with GeoPandas."
+author: "Rich Leyshon"
+date: "February 18 2024"
+description: "Building Pydeck Maps from GeoPandas GeoDataFrames."
+categories:
+    - How To
+    - Geospatial
+    - pydeck
+    - geopandas
+image: "https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70"
+image-alt: "A lake with mountains in the background by [Prompart](https://pixexid.com/profile/@prompart)"
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-cycling-env-py"
+    language: "python"
+    display_name: "blog-cycling-env"
+---
+
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70"></img>
+  <figcaption style="text-align:center;">Creative commons license by [Prompart](https://pixexid.com/profile/@prompart)</figcaption>
+</figure>
+
+## Introduction
+
+Pydeck is a python client for pydeck.gl, a powerful geospatial visualisation
+library. It's a relatively new library and integrating it with the existing
+python geospatial ecosystem is currently a little tricky. This article
+demonstrates how to build pydeck ScatterplotLayer and GeoJsonLayer from
+geopandas GeoDataFrames.
+
+- <a href="https://deckgl.readthedocs.io/en/latest/" target="_blank">Pydeck documentation</a>
+- <a href="https://deck.gl/#/" target="_blank">Deck.gl documentation</a>
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose
+
+The content of this article was written using pydeck 0.8.0. Future releases may
+alter the package behaviour.
+:::
+
+### Intended Audience
+
+Python practitioners familiar with virtual environments, `requests` and
+geospatial analysis with `geopandas`.
+
+### The Scenario
+
+You have a geopandas GeoDataFrame with point or polygon geometries. You are
+attempting to build a pydeck visualisation but end up with empty basemap tiles.
+
+### What You'll Need:
+
+- [ ] Preferred python environment manager (eg `conda`)
+- [ ] Python package manager (eg `pip`)
+- [ ] `requirements.txt`:
+
+```{.python filename=requirements.txt eval=false}
+geopandas
+pandas
+pydeck
+requests
+
+```
+## Prepare Environment
+
+1. Create a virtual environment.
+2. Install the required dependencies.
+3. Activate the virtual environment.
+4. Create a python script and import the dependencies.
+
+```{python}
+import json
+
+import geopandas as gpd
+import numpy as np
+import pandas as pd
+import pydeck as pdk
+import requests
+from sklearn import preprocessing
+```
+
+## Build a `ScatterplotLayer`
+
+### Ingest Data
+
+For the point data, I will ingest all Welsh lower super output area 2021
+population-weighted centroids from
+[ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/79fa1c80981b4e4eb218bbce1afc304b_0/explore).
+
+For more on working with ONS Open Geography Portal, see
+[Getting Data from ONS Open Geography Portal](/./blogs/06-working-with-ONS-open-geo-portal.qmd).
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+ENDPOINT = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LLSOA_Dec_2021_PWC_for_England_and_Wales_2022/FeatureServer/0/query"
+PARAMS = {
+    "where": "LSOA21CD like 'W%'",
+    "f": "geoJSON", 
+    "outFields": "*",
+    "outSR": 4326,
+}
+resp = requests.get(ENDPOINT, params=PARAMS)
+if resp.ok:
+    content = resp.json()
+else:
+    raise requests.RequestException(f"HTTP {resp.status_code} : {resp.reason}")
+
+centroids = gpd.GeoDataFrame.from_features(
+    features=content["features"], crs=content["crs"]["properties"]["name"])
+centroids.head()
+```
+
+The geometry column is not in a format that pydeck will accept. Adding a column
+with a list of long,lat values for each coordinate will do the trick.
+
+```{python}
+centroids["pydeck_geometry"] = [[c.x, c.y] for c in centroids["geometry"]]
+centroids.head()
+```
+
+### Pydeck Visualisation
+
+With the correct geometry format, the scatterplot is trivial.
+
+:::{.callout-tip}
+Control the map by click and dragging the map with your mouse. Hold shift +
+click and drag to yaw or pitch the map. Scroll in and out to alter the zoom.
+:::
+
+```{python}
+scatter = pdk.Layer(
+    "ScatterplotLayer",
+    centroids,
+    pickable=True,
+    stroked=True,
+    filled=True,
+    line_width_min_pixels=1,
+    get_position="pydeck_geometry",
+    get_fill_color=[255, 140, 0],
+    get_line_color=[255, 140, 0],
+    radius_min_pixels=3,
+    opacity=0.1,
+)
+# Set the viewport location
+view_state = pdk.ViewState(
+    longitude=-2.84,
+    latitude=52.42,
+    zoom=6.5,
+    max_zoom=15,
+    pitch=0,
+    bearing=0,
+)
+tooltip = {
+    "text": "LSOA21CD: {LSOA21CD}"
+}
+# Render
+r = pdk.Deck(
+    layers=scatter, initial_view_state=view_state, tooltip=tooltip
+)
+r
+```
+
+```{python}
+#| echo: false
+# tidy up
+del resp, content, centroids, scatter, r
+
+```
+
+## Build a `GeoJsonLayer`
+
+GeoJsonLayer is what tends to be used for presenting polygons with pydeck maps.
+The pydeck docs [GeoJsonLayer example](https://deckgl.readthedocs.io/en/latest/gallery/geojson_layer.html)
+uses geoJSON data hosted on GitHub. But with a little effort, a Geopandas
+GeoDataFrame can be coerced to the necessary format.
+
+### Ingest Data
+
+To demonstrate working with polygons, the Welsh super generalised 2023 local
+authority district boundaries will be ingested from
+[ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/2e9f5c259fec4e1c9951ecb974253c66_0/explore?location=55.223511%2C-3.317025%2C6.81).
+
+As elevation and polygon colour will be controlled by features of the data,
+sklearn.prepeocessing is used to scale the "Shape__Area" column.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+ENDPOINT="https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_December_2023_Boundaries_UK_BSC/FeatureServer/0/query"
+PARAMS["where"] = "LAD23CD like 'W%'"
+resp = requests.get(ENDPOINT, params=PARAMS)
+if resp.ok:
+    content = resp.json()
+else:
+    raise requests.RequestException(f"HTTP {resp.status_code} : {resp.reason}")
+
+polygons = gpd.GeoDataFrame.from_features(
+    features=content["features"], crs=content["crs"]["properties"]["name"])
+# feature engineering for pydeck viz
+min_max_scaler = preprocessing.MinMaxScaler()
+x = polygons["Shape__Area"].values.reshape(-1, 1)
+x_scaled = min_max_scaler.fit_transform(x)
+polygons["area_norm"] = pd.Series(x_scaled.flatten())
+polygons.head()
+```
+
+In order to pass the content of this GeoDataFrame to pydeck, use the `to_json`
+method to format as a geoJSON string. Then use `json.loads()` to format that
+string as a dictionary.
+
+```{python}
+# format data for use in pydeck
+json_out = json.loads(polygons.to_json())
+# inspect the first authority
+json_out["features"][0]["properties"]
+```
+
+### Pydeck Visualisation
+
+This format can now be passed to pydeck. One 'gotcha' to be aware of, when
+using attributes in the json to control elevation or colour, the json
+properties must be explicitly referenced, eg `"properties.area_norm"`.
+
+In contrast, when using json attributes in the tooltip, you can refer to them
+directly, eg `"area_norm"`.
+
+```{python}
+r = "100"
+g = "(1 - properties.area_norm) * 255"
+b = "properties.area_norm * 255"
+fill = f"[{r},{g},{b}]"
+geojson = pdk.Layer(
+        "GeoJsonLayer",
+        json_out,
+        pickable=True,
+        opacity=1,
+        stroked=True,
+        filled=True,
+        extruded=True,
+        wireframe=True,
+        auto_highlight=True,
+        get_elevation="properties.area_norm * 200",
+        elevation_scale=100,
+        get_fill_color=fill,
+    )
+tooltip = {"text": "{LAD23NM}\n{LAD23CD}"}
+view_state = pdk.ViewState(
+    longitude=-2.84,
+    latitude=52.42,
+    zoom=6.5,
+    max_zoom=15,
+    pitch=100,
+    bearing=33,
+)
+r = pdk.Deck(
+    layers=geojson,
+    initial_view_state=view_state,
+    tooltip=tooltip,
+)
+r
+```
+
+## Tips
+
+* `pydeck` does not raise when layer data are not formatted correctly. This
+can result in some lengthy render times only to discover you have an empty map.
+To combat this, work with the head or some small sample of your data until you
+have your map working.
+
+## Conclusion
+
+This article has recorded the state of play between `pydeck` and `geopandas` at
+the time of writing. Specifically, formatting:
+
+* geometry columns for pydeck `ScatterplotLayer`
+* a GeoDataFrame for use with pydeck `GeoJsonLayer`.
+
+I hope it saves someone some time bashing geopandas about.
+
+<p id=fin><i>fin!</i></p>
