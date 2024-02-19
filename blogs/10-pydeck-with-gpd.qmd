@@ -217,7 +217,7 @@ string as a dictionary.
 # format data for use in pydeck
 json_out = json.loads(polygons.to_json())
 # inspect the first authority
-json_out["features"][0]
+json_out["features"][0]["properties"]
 ```
 
 ### Pydeck Visualisation
