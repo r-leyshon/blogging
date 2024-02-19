@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-02-18">
 <meta name="description" content="Building Pydeck Maps from GeoPandas GeoDataFrames.">
 
-<title>The Data Savvy Corner - Getting Pydeck to Play Ball with GeoPandas.</title>
+<title>The Data Savvy Corner - Getting Pydeck to Play Nicely with GeoPandas.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,12 +97,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../www/styles.css">
-<meta property="og:title" content="The Data Savvy Corner - Getting Pydeck to Play Ball with GeoPandas.">
+<meta property="og:title" content="The Data Savvy Corner - Getting Pydeck to Play Nicely with GeoPandas.">
 <meta property="og:description" content="Building Pydeck Maps from GeoPandas GeoDataFrames.">
 <meta property="og:image" content="https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;amp;q=70">
 <meta property="og:site_name" content="The Data Savvy Corner">
 <meta property="og:image:alt" content="A lake with mountains in the background by [Prompart](https://pixexid.com/profile/@prompart)">
-<meta name="twitter:title" content="The Data Savvy Corner - Getting Pydeck to Play Ball with GeoPandas.">
+<meta name="twitter:title" content="The Data Savvy Corner - Getting Pydeck to Play Nicely with GeoPandas.">
 <meta name="twitter:description" content="Building Pydeck Maps from GeoPandas GeoDataFrames.">
 <meta name="twitter:image" content="https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;amp;q=70">
 <meta name="twitter:site" content="@Rich_L1984">
@@ -178,8 +178,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#build-a-geojsonlayer" id="toc-build-a-geojsonlayer" class="nav-link" data-scroll-target="#build-a-geojsonlayer">Build a <code>GeoJsonLayer</code></a>
   <ul class="collapse">
   <li><a href="#ingest-data-1" id="toc-ingest-data-1" class="nav-link" data-scroll-target="#ingest-data-1">Ingest Data</a></li>
-  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  <li><a href="#pydeck-visualisation-1" id="toc-pydeck-visualisation-1" class="nav-link" data-scroll-target="#pydeck-visualisation-1">Pydeck Visualisation</a></li>
   </ul></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
@@ -189,7 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Getting Pydeck to Play Ball with GeoPandas.</h1>
+<h1 class="title">Getting Pydeck to Play Nicely with GeoPandas.</h1>
   <div class="quarto-categories">
     <div class="quarto-category">How To</div>
     <div class="quarto-category">Geospatial</div>
@@ -292,7 +293,7 @@ A Note on the Purpose
 <li>Activate the virtual environment.</li>
 <li>Create a python script and import the dependencies.</li>
 </ol>
-<div id="7f3f4cab" class="cell" data-execution_count="1">
+<div id="1aeb2868" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
@@ -309,7 +310,9 @@ A Note on the Purpose
 <h3 class="anchored" data-anchor-id="ingest-data">Ingest Data</h3>
 <p>For the point data, I will ingest all Welsh lower super output area 2021 population-weighted centroids from <a href="https://geoportal.statistics.gov.uk/datasets/79fa1c80981b4e4eb218bbce1afc304b_0/explore">ONS Open Geography Portal</a>.</p>
 <p>For more on working with ONS Open Geography Portal, see <a href="../blogs/06-working-with-ONS-open-geo-portal.html">Getting Data from ONS Open Geography Portal</a>.</p>
-<div id="8c24ce39" class="cell" data-execution_count="2">
+<div id="1135a7b4" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ENDPOINT <span class="op">=</span> <span class="st">"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LLSOA_Dec_2021_PWC_for_England_and_Wales_2022/FeatureServer/0/query"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>PARAMS <span class="op">=</span> {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"where"</span>: <span class="st">"LSOA21CD like 'W%'"</span>,</span>
@@ -326,7 +329,8 @@ A Note on the Purpose
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>centroids <span class="op">=</span> gpd.GeoDataFrame.from_features(</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    features<span class="op">=</span>content[<span class="st">"features"</span>], crs<span class="op">=</span>content[<span class="st">"crs"</span>][<span class="st">"properties"</span>][<span class="st">"name"</span>])</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>centroids.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -383,10 +387,10 @@ A Note on the Purpose
 </div>
 </div>
 <p>The geometry column is not in a format that pydeck will accept. Adding a column with a list of long,lat values for each coordinate will do the trick.</p>
-<div id="edb70927" class="cell" data-execution_count="3">
+<div id="b232604d" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>centroids[<span class="st">"pydeck_geometry"</span>] <span class="op">=</span> [[c.x, c.y] <span class="cf">for</span> c <span class="kw">in</span> centroids[<span class="st">"geometry"</span>]]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>centroids.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -452,7 +456,7 @@ A Note on the Purpose
 <section id="pydeck-visualisation" class="level3">
 <h3 class="anchored" data-anchor-id="pydeck-visualisation">Pydeck Visualisation</h3>
 <p>With the correct geometry format, the scatterplot is trivial.</p>
-<div id="b1b2f97e" class="cell" data-execution_count="4">
+<div id="899dbf69" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> pdk.Layer(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ScatterplotLayer"</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    centroids,</span>
@@ -483,7 +487,7 @@ A Note on the Purpose
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    layers<span class="op">=</span>scatter, initial_view_state<span class="op">=</span>view_state, tooltip<span class="op">=</span>tooltip</span>
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="4">
 
         <iframe width="100%" height="500" frameborder="0" srcdoc="<!DOCTYPE html>
 <html>
@@ -31216,7 +31220,7 @@ A Note on the Purpose
         0
       ],
       &quot;getPosition&quot;: &quot;@@=pydeck_geometry&quot;,
-      &quot;id&quot;: &quot;f4feabd2-9463-438e-88ca-11c17120eabb&quot;,
+      &quot;id&quot;: &quot;d51bcf27-5500-4b13-b5a8-d0bd094d1277&quot;,
       &quot;lineWidthMinPixels&quot;: 1,
       &quot;opacity&quot;: 0.1,
       &quot;pickable&quot;: true,
@@ -31257,8 +31261,11 @@ A Note on the Purpose
 <p>GeoJsonLayer is what tends to be used for presenting polygons with pydeck maps. The pydeck docs <a href="https://deckgl.readthedocs.io/en/latest/gallery/geojson_layer.html">GeoJsonLayer example</a> uses geoJSON data hosted on GitHub. But with a little effort, a Geopandas GeoDataFrame can be coerced to the necessary format.</p>
 <section id="ingest-data-1" class="level3">
 <h3 class="anchored" data-anchor-id="ingest-data-1">Ingest Data</h3>
-<p>For the</p>
-<div id="ef9a4be0" class="cell" data-execution_count="6">
+<p>To demonstrate working with polygons, the Welsh super generalised 2023 local authority district boundaries will be ingested from <a href="https://geoportal.statistics.gov.uk/datasets/2e9f5c259fec4e1c9951ecb974253c66_0/explore?location=55.223511%2C-3.317025%2C6.81">ONS Open Geography Portal</a>.</p>
+<p>As elevation and polygon colour will be controlled by features of the data, sklearn.prepeocessing is used to scale the “Shape__Area” column.</p>
+<div id="05d7f938" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ENDPOINT<span class="op">=</span><span class="st">"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_December_2023_Boundaries_UK_BSC/FeatureServer/0/query"</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>PARAMS[<span class="st">"where"</span>] <span class="op">=</span> <span class="st">"LAD23CD like 'W%'"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(ENDPOINT, params<span class="op">=</span>PARAMS)</span>
@@ -31275,7 +31282,8 @@ A Note on the Purpose
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>x_scaled <span class="op">=</span> min_max_scaler.fit_transform(x)</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>polygons[<span class="st">"area_norm"</span>] <span class="op">=</span> pd.Series(x_scaled.flatten())</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>polygons.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+</details>
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -31385,45 +31393,55 @@ A Note on the Purpose
 </div>
 </div>
 </div>
-<div id="cbcc1985" class="cell" data-execution_count="7">
+<p>In order to pass the content of this GeoDataFrame to pydeck, use the <code>to_json</code> method to format as a geoJSON string. Then use <code>json.loads()</code> to format that string as a dictionary.</p>
+<div id="140c190d" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># format data for use in pydeck</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>json_out <span class="op">=</span> json.loads(polygons.to_json())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>json_out <span class="op">=</span> json.loads(polygons.to_json())</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>json_out.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>dict_keys(['type', 'features'])</code></pre>
 </div>
-<div id="dc6c279f" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="st">"100"</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="st">"(1 - properties.area_norm) * 255"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">"properties.area_norm * 255"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fill <span class="op">=</span> <span class="ss">f"[</span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>g<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">]"</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>geojson <span class="op">=</span> pdk.Layer(</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"GeoJsonLayer"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        json_out,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        pickable<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        opacity<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        stroked<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        filled<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        extruded<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        wireframe<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        auto_highlight<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        get_elevation<span class="op">=</span><span class="st">"properties.area_norm * 200"</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        elevation_scale<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        get_fill_color<span class="op">=</span>fill,</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>tooltip <span class="op">=</span> {<span class="st">"text"</span>: <span class="st">"</span><span class="sc">{LAD23NM}</span><span class="ch">\n</span><span class="sc">{LAD23CD}</span><span class="st">"</span>}</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>view_state <span class="op">=</span> pdk.ViewState(</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    longitude<span class="op">=-</span><span class="fl">2.84</span>,</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    latitude<span class="op">=</span><span class="fl">52.42</span>,</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    zoom<span class="op">=</span><span class="fl">6.5</span>,</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    max_zoom<span class="op">=</span><span class="dv">15</span>,</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    pitch<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    bearing<span class="op">=</span><span class="dv">33</span>,</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> pdk.Deck(</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    layers<span class="op">=</span>geojson,</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    initial_view_state<span class="op">=</span>view_state,</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>tooltip,</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+</div>
+</section>
+<section id="pydeck-visualisation-1" class="level3">
+<h3 class="anchored" data-anchor-id="pydeck-visualisation-1">Pydeck Visualisation</h3>
+<p>This format can now be passed to pydeck. One ‘gotcha’ to be aware of, when using attributes in the json to control elevation or colour, the dictionary keys must be referenced, eg <code>"properties.area_norm"</code>.</p>
+<p>In contrast, when using json attributes in the tooltip, you can refer to them directly, eg <code>"area_norm"</code>.</p>
+<div id="1505ae6c" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="st">"100"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="st">"(1 - properties.area_norm) * 255"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">"properties.area_norm * 255"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fill <span class="op">=</span> <span class="ss">f"[</span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>g<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">]"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>geojson <span class="op">=</span> pdk.Layer(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"GeoJsonLayer"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        json_out,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        pickable<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        opacity<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        stroked<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        filled<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        extruded<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        wireframe<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        auto_highlight<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        get_elevation<span class="op">=</span><span class="st">"properties.area_norm * 200"</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        elevation_scale<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        get_fill_color<span class="op">=</span>fill,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>tooltip <span class="op">=</span> {<span class="st">"text"</span>: <span class="st">"</span><span class="sc">{LAD23NM}</span><span class="ch">\n</span><span class="sc">{LAD23CD}</span><span class="st">"</span>}</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>view_state <span class="op">=</span> pdk.ViewState(</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    longitude<span class="op">=-</span><span class="fl">2.84</span>,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    latitude<span class="op">=</span><span class="fl">52.42</span>,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    zoom<span class="op">=</span><span class="fl">6.5</span>,</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    max_zoom<span class="op">=</span><span class="dv">15</span>,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    pitch<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    bearing<span class="op">=</span><span class="dv">33</span>,</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> pdk.Deck(</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    layers<span class="op">=</span>geojson,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    initial_view_state<span class="op">=</span>view_state,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>tooltip,</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 
         <iframe width="100%" height="500" frameborder="0" srcdoc="<!DOCTYPE html>
 <html>
@@ -55251,7 +55269,7 @@ A Note on the Purpose
       &quot;filled&quot;: true,
       &quot;getElevation&quot;: &quot;@@=properties.area_norm * 200&quot;,
       &quot;getFillColor&quot;: &quot;@@=[100,(1 - properties.area_norm) * 255,properties.area_norm * 255]&quot;,
-      &quot;id&quot;: &quot;e578a1e3-641d-4de3-a157-803c0b4b4225&quot;,
+      &quot;id&quot;: &quot;48aae611-90e5-4392-b5b6-ea60470bab97&quot;,
       &quot;opacity&quot;: 1,
       &quot;pickable&quot;: true,
       &quot;stroked&quot;: true,
@@ -55285,16 +55303,21 @@ A Note on the Purpose
 </div>
 </div>
 </section>
-<section id="tips" class="level3">
-<h3 class="anchored" data-anchor-id="tips">Tips</h3>
-<ul>
-<li></li>
-</ul>
 </section>
+<section id="tips" class="level2">
+<h2 class="anchored" data-anchor-id="tips">Tips</h2>
+<ul>
+<li><code>pydeck</code> does not raise when layer data is not formatted correctly. This can result in some lengthy render times only to discover you have an empty map. To combat this, work with the head or some small sample of your data until you have your map working.</li>
+</ul>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>This article has walked the reader through . For more help with …</p>
+<p>This article has recorded the state of play between <code>pydeck</code> and <code>geopandas</code> at the time of writing. Specifically, formatting:</p>
+<ul>
+<li>geometry columns for pydeck <code>ScatterplotLayer</code></li>
+<li>a GeoDataFrame for use with pydeck <code>GeoJsonLayer</code>.</li>
+</ul>
+<p>I hope it saves someone some time bashing geopandas about.</p>
 <p id="fin">
 <i>fin!</i>
 </p>

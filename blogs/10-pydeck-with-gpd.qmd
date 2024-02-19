@@ -1,5 +1,5 @@
 ---
-title: "Getting Pydeck to Play Ball with GeoPandas."
+title: "Getting Pydeck to Play Nicely with GeoPandas."
 author: "Rich Leyshon"
 date: "February 18 2024"
 description: "Building Pydeck Maps from GeoPandas GeoDataFrames."
@@ -87,11 +87,16 @@ from sklearn import preprocessing
 
 ### Ingest Data
 
-For the point data, I will ingest all Welsh lower super output area 2021 population-weighted centroids from [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/79fa1c80981b4e4eb218bbce1afc304b_0/explore).
+For the point data, I will ingest all Welsh lower super output area 2021
+population-weighted centroids from
+[ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/79fa1c80981b4e4eb218bbce1afc304b_0/explore).
 
-For more on working with ONS Open Geography Portal, see [Getting Data from ONS Open Geography Portal](/./blogs/06-working-with-ONS-open-geo-portal.qmd).
+For more on working with ONS Open Geography Portal, see
+[Getting Data from ONS Open Geography Portal](/./blogs/06-working-with-ONS-open-geo-portal.qmd).
 
 ```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
 ENDPOINT = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LLSOA_Dec_2021_PWC_for_England_and_Wales_2022/FeatureServer/0/query"
 PARAMS = {
     "where": "LSOA21CD like 'W%'",
@@ -171,9 +176,16 @@ GeoDataFrame can be coerced to the necessary format.
 
 ### Ingest Data
 
-For the 
+To demonstrate working with polygons, the Welsh super generalised 2023 local
+authority district boundaries will be ingested from
+[ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/2e9f5c259fec4e1c9951ecb974253c66_0/explore?location=55.223511%2C-3.317025%2C6.81).
+
+As elevation and polygon colour will be controlled by features of the data,
+sklearn.prepeocessing is used to scale the "Shape__Area" column.
 
 ```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
 ENDPOINT="https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_December_2023_Boundaries_UK_BSC/FeatureServer/0/query"
 PARAMS["where"] = "LAD23CD like 'W%'"
 resp = requests.get(ENDPOINT, params=PARAMS)
@@ -192,12 +204,24 @@ polygons["area_norm"] = pd.Series(x_scaled.flatten())
 polygons.head()
 ```
 
+In order to pass the content of this GeoDataFrame to pydeck, use the `to_json`
+method to format as a geoJSON string. Then use `json.loads()` to format that
+string as a dictionary.
 
 ```{python}
 # format data for use in pydeck
 json_out = json.loads(polygons.to_json())
+json_out.keys()
 ```
 
+### Pydeck Visualisation
+
+This format can now be passed to pydeck. One 'gotcha' to be aware of, when
+using attributes in the json to control elevation or colour, the dictionary
+keys must be referenced, eg `"properties.area_norm"`.
+
+In contrast, when using json attributes in the tooltip, you can refer to them
+directly, eg `"area_norm"`.
 
 ```{python}
 r = "100"
@@ -235,13 +259,21 @@ r = pdk.Deck(
 r
 ```
 
+## Tips
 
-### Tips
-
-* 
+* `pydeck` does not raise when layer data is not formatted correctly. This
+can result in some lengthy render times only to discover you have an empty map.
+To combat this, work with the head or some small sample of your data until you
+have your map working.
 
 ## Conclusion
 
-This article has walked the reader through . For more help with ...
+This article has recorded the state of play between `pydeck` and `geopandas` at
+the time of writing. Specifically, formatting:
+
+* geometry columns for pydeck `ScatterplotLayer`
+* a GeoDataFrame for use with pydeck `GeoJsonLayer`.
+
+I hope it saves someone some time bashing geopandas about.
 
 <p id=fin><i>fin!</i></p>
