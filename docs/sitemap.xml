@@ -25,23 +25,19 @@
     <lastmod>2023-12-28T08:50:10.181Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/09-cycling-network-r5py.html</loc>
-    <lastmod>2024-02-13T07:12:28.383Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/10-pydeck-with-gpd.html</loc>
+    <lastmod>2024-02-19T08:53:29.623Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/07-schedule-deploy-shinyapps.html</loc>
-    <lastmod>2024-01-06T07:06:32.675Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/08-quarto-conda-env.html</loc>
+    <lastmod>2024-01-06T20:32:43.737Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
-    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</loc>
+    <lastmod>2024-02-19T08:53:29.623Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
-    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
     <lastmod>2023-12-31T08:34:23.473Z</lastmod>
   </url>
   <url>
@@ -49,20 +45,28 @@
     <lastmod>2023-12-31T08:34:23.473Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
     <lastmod>2023-12-31T08:34:23.473Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</loc>
-    <lastmod>2024-02-19T07:52:31.634Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
+    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/08-quarto-conda-env.html</loc>
-    <lastmod>2024-01-06T20:32:43.737Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
+    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/10-pydeck-with-gpd.html</loc>
-    <lastmod>2024-02-19T08:48:03.252Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/07-schedule-deploy-shinyapps.html</loc>
+    <lastmod>2024-01-06T07:06:32.675Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/09-cycling-network-r5py.html</loc>
+    <lastmod>2024-02-13T07:12:28.383Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/11-fiddly-bits-of-pytest.html</loc>
+    <lastmod>2024-03-24T07:03:14.743Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>

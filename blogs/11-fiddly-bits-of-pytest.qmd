@@ -1,0 +1,54 @@
+---
+title: "The Fiddly Bits of Pytest"
+author: "Rich Leyshon"
+date: "March 24 2024"
+description: "Plain English discussion of the more intrictate aspects of testing with pytest."
+categories:
+    - Explanation
+    - pytest
+    - Unit tests
+image: "https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;q=70"
+image-alt: "Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-cycling-env-py"
+    language: "python"
+    display_name: "blog-cycling-env"
+---
+
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;q=7"></img>
+  <figcaption style="text-align:center;">Creative commons license by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
+</figure>
+
+## Introduction
+
+Pydeck is a python client for pydeck.gl, a powerful geospatial visualisation
+
+
+- <a href="https://deckgl.readthedocs.io/en/latest/" target="_blank">Pydeck documentation</a>
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose
+
+:::
+
+### Intended Audience
+
+
+### What You'll Need:
+
+- [ ] Preferred python environment manager (eg `conda`)
+
+```{.python filename=requirements.txt eval=false}
+geopandas
+pandas
+pydeck
+requests
+
+```
+
+
+<p id=fin><i>fin!</i></p>
