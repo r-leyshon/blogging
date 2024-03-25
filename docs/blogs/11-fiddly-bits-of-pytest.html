@@ -23,40 +23,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -165,6 +131,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#intended-audience" id="toc-intended-audience" class="nav-link" data-scroll-target="#intended-audience">Intended Audience</a></li>
   <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What You’ll Need:</a></li>
   </ul></li>
+  <li><a href="#fixtures" id="toc-fixtures" class="nav-link" data-scroll-target="#fixtures">Fixtures</a></li>
+  <li><a href="#temporary-files-directories" id="toc-temporary-files-directories" class="nav-link" data-scroll-target="#temporary-files-directories">Temporary Files &amp; Directories</a></li>
+  <li><a href="#parametrized-tests" id="toc-parametrized-tests" class="nav-link" data-scroll-target="#parametrized-tests">Parametrized Tests</a></li>
+  <li><a href="#marks" id="toc-marks" class="nav-link" data-scroll-target="#marks">Marks</a></li>
+  <li><a href="#mocking" id="toc-mocking" class="nav-link" data-scroll-target="#mocking">Mocking</a></li>
   </ul>
 </nav>
     </div>
@@ -213,16 +184,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <figure class="center figure">
-<img class="shaded_box figure-img" width="400px" src="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;q=7">
+<img class="shaded_box figure-img" width="400px" src="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg">
 <figcaption style="text-align:center;">
 Creative commons license by <a href="https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe">Ralph</a>
 </figcaption>
 </figure>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Pydeck is a python client for pydeck.gl, a powerful geospatial visualisation</p>
+<p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses some of the more intricate features of <code>pytest</code>, favouring accessible language and simple examples to describe the scenarios.</p>
 <ul>
-<li><a href="https://deckgl.readthedocs.io/en/latest/" target="_blank">Pydeck documentation</a></li>
+<li><a href="https://docs.pytest.org/en/8.0.x/" target="_blank">Pytest documentation</a></li>
 </ul>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -230,39 +201,50 @@ Creative commons license by <a href="https://pixexid.com/profile/cjxrsxsl7000008
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Note on the Purpose
+A Note on the Purpose (Click to expand)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-
+<p>This article intends to discuss clearly. It doesn’t aim to be clever or impressive. Its aim is to extend the audience’s understanding of the more intricate features of <code>pytest</code> by describing their utility with simple code examples.</p>
 </div>
 </div>
 </div>
 <section id="intended-audience" class="level3">
 <h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
+<p>Programmers with a working knowledge of python and some familiarity with <code>pytest</code> and packaging. The type of programmer who has wondered about how to mock an api call or how to optimise their test code.</p>
 </section>
 <section id="what-youll-need" class="level3">
 <h3 class="anchored" data-anchor-id="what-youll-need">What You’ll Need:</h3>
 <ul class="task-list">
 <li><label><input type="checkbox">Preferred python environment manager (eg <code>conda</code>)</label></li>
+<li><label><input type="checkbox"><code>pip install pytest==8.1.1</code></label></li>
+<li><label><input type="checkbox">Git</label></li>
+<li><label><input type="checkbox">GitHub account</label></li>
+<li><label><input type="checkbox">Command line access</label></li>
 </ul>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>requirements.txt</strong></pre>
-</div>
-<div class="sourceCode" id="cb1" data-filename="requirements.txt" data-eval="false"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>geopandas</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pandas</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pydeck</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>requests</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+</section>
+</section>
+<section id="fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="fixtures">Fixtures</h2>
+</section>
+<section id="temporary-files-directories" class="level2">
+<h2 class="anchored" data-anchor-id="temporary-files-directories">Temporary Files &amp; Directories</h2>
+</section>
+<section id="parametrized-tests" class="level2">
+<h2 class="anchored" data-anchor-id="parametrized-tests">Parametrized Tests</h2>
+</section>
+<section id="marks" class="level2">
+<h2 class="anchored" data-anchor-id="marks">Marks</h2>
+</section>
+<section id="mocking" class="level2">
+<h2 class="anchored" data-anchor-id="mocking">Mocking</h2>
 <p id="fin">
 <i>fin!</i>
 </p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

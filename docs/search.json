@@ -529,7 +529,7 @@
     "href": "blogs/11-fiddly-bits-of-pytest.html#introduction",
     "title": "The Fiddly Bits of Pytest",
     "section": "Introduction",
-    "text": "Introduction\nPydeck is a python client for pydeck.gl, a powerful geospatial visualisation\n\nPydeck documentation\n\n\n\n\n\n\n\nA Note on the Purpose\n\n\n\n\n\n\n\n\n\n\nIntended Audience\n\n\nWhat You’ll Need:\n\nPreferred python environment manager (eg conda)\n\n\n\nrequirements.txt\n\ngeopandas\npandas\npydeck\nrequests\n\n\nfin!"
+    "text": "Introduction\npytest is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses some of the more intricate features of pytest, favouring accessible language and simple examples to describe the scenarios.\n\nPytest documentation\n\n\n\n\n\n\n\nA Note on the Purpose (Click to expand)\n\n\n\n\n\nThis article intends to discuss clearly. It doesn’t aim to be clever or impressive. Its aim is to extend the audience’s understanding of the more intricate features of pytest by describing their utility with simple code examples.\n\n\n\n\nIntended Audience\nProgrammers with a working knowledge of python and some familiarity with pytest and packaging. The type of programmer who has wondered about how to mock an api call or how to optimise their test code.\n\n\nWhat You’ll Need:\n\nPreferred python environment manager (eg conda)\npip install pytest==8.1.1\nGit\nGitHub account\nCommand line access"
   },
   {
     "objectID": "book-reviews/01-deep-work.html",
@@ -705,5 +705,40 @@
     "title": "Donkey Kong Country Relaxing Piano (Instrumental)",
     "section": "Overall",
     "text": "Overall\nWhether or not 1990’s Nintendo is your thing, what a beautiful effort from the artist. I’d recommend listening to their other albums in a similar vein. But this one is my favourite, though I am likely biased due to some formative connection to the source material. But whether serenity is your goal, or maybe you just need to get a baby off to sleep, this little album is the right tool for the job.\nFor more music to encourage your work efforts, check out Productivity Pulse."
+  },
+  {
+    "objectID": "blogs/11-fiddly-bits-of-pytest.html#fixtures",
+    "href": "blogs/11-fiddly-bits-of-pytest.html#fixtures",
+    "title": "The Fiddly Bits of Pytest",
+    "section": "Fixtures",
+    "text": "Fixtures"
+  },
+  {
+    "objectID": "blogs/11-fiddly-bits-of-pytest.html#temporary-files-directories",
+    "href": "blogs/11-fiddly-bits-of-pytest.html#temporary-files-directories",
+    "title": "The Fiddly Bits of Pytest",
+    "section": "Temporary Files & Directories",
+    "text": "Temporary Files & Directories"
+  },
+  {
+    "objectID": "blogs/11-fiddly-bits-of-pytest.html#parametrized-tests",
+    "href": "blogs/11-fiddly-bits-of-pytest.html#parametrized-tests",
+    "title": "The Fiddly Bits of Pytest",
+    "section": "Parametrized Tests",
+    "text": "Parametrized Tests"
+  },
+  {
+    "objectID": "blogs/11-fiddly-bits-of-pytest.html#marks",
+    "href": "blogs/11-fiddly-bits-of-pytest.html#marks",
+    "title": "The Fiddly Bits of Pytest",
+    "section": "Marks",
+    "text": "Marks"
+  },
+  {
+    "objectID": "blogs/11-fiddly-bits-of-pytest.html#mocking",
+    "href": "blogs/11-fiddly-bits-of-pytest.html#mocking",
+    "title": "The Fiddly Bits of Pytest",
+    "section": "Mocking",
+    "text": "Mocking\n\nfin!"
   }
 ]
