@@ -23,6 +23,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -137,7 +171,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#what-are-fixtures" id="toc-what-are-fixtures" class="nav-link" data-scroll-target="#what-are-fixtures">What are fixtures?</a></li>
   <li><a href="#when-would-you-use-fixtures" id="toc-when-would-you-use-fixtures" class="nav-link" data-scroll-target="#when-would-you-use-fixtures">When would you use fixtures?</a></li>
   <li><a href="#scoping-fixtures" id="toc-scoping-fixtures" class="nav-link" data-scroll-target="#scoping-fixtures">Scoping Fixtures</a></li>
-  <li><a href="#troubleshooting-fixtures" id="toc-troubleshooting-fixtures" class="nav-link" data-scroll-target="#troubleshooting-fixtures">Troubleshooting Fixtures</a></li>
+  <li><a href="#troubleshooting-fixture-scopes" id="toc-troubleshooting-fixture-scopes" class="nav-link" data-scroll-target="#troubleshooting-fixture-scopes">Troubleshooting Fixture Scopes</a></li>
   </ul></li>
   <li><a href="#temporary-files-directories" id="toc-temporary-files-directories" class="nav-link" data-scroll-target="#temporary-files-directories">Temporary Files &amp; Directories</a></li>
   <li><a href="#parametrized-tests" id="toc-parametrized-tests" class="nav-link" data-scroll-target="#parametrized-tests">Parametrized Tests</a></li>
@@ -240,6 +274,7 @@ A Note on the Purpose (Click to expand)
 </section>
 <section id="fixtures" class="level2">
 <h2 class="anchored" data-anchor-id="fixtures">Fixtures</h2>
+<p>The example code that accompanies this section is available in the fixtures branch of the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/fixtures">example code repo</a>.</p>
 <section id="what-are-fixtures" class="level3">
 <h3 class="anchored" data-anchor-id="what-are-fixtures">What are fixtures?</h3>
 <p>Data. Well, data provided specifically for testing purposes. This is the essential definition for a fixture. One could argue the case that fixtures are more than this. Fixtures could be environment variables, class instances, connection to a server or whatever dependencies your code needs to run.</p>
@@ -248,25 +283,156 @@ A Note on the Purpose (Click to expand)
 <section id="when-would-you-use-fixtures" class="level3">
 <h3 class="anchored" data-anchor-id="when-would-you-use-fixtures">When would you use fixtures?</h3>
 <p>It’s a bad idea to commit data to a git version-controlled repository, right? Agreed. Though fixtures are rarely ‘real’ data. The data used for testing purposes should be minimal and are usually synthetic.</p>
-<ul>
-<li><strong>Minimal fixtures</strong> conform to the schema of the actual data under test. These fixtures will be as small as possible while capturing all known important cases. Keeping the data small maintains a performant test suite and avoids problems associated with large files and git version control.</li>
-</ul>
+<p><strong>Minimal fixtures</strong> conform to the schema of the actual data under test. These fixtures will be as small as possible while capturing all known important cases. Keeping the data small maintains a performant test suite and avoids problems associated with large files and git version control.</p>
 <p>If you have ever encountered a problem in a system that was caused by a problematic record in the data, the aspect of that record that broke your system should absolutely make it into the next version of your minimal test fixture. Writing a test that checks that the codebase can handle such problem records is known as ‘regression testing’ - safeguarding against old bugs resurfacing when code is refactored or new features are implemented. This scenario commonly occurs when a developer unwittingly violates Chesterton’s Principle.</p>
 <iframe src="https://www.youtube.com/embed/qPGbl2gxGqI" class="shaded-box" title="Chesterton's Fence by Sprouts" style="display: block; width: 600px; height: 338px" frameborder="0">
 </iframe>
 <p>Many thanks to my colleague Mat for pointing me towards this useful analogy. A considerate developer would probably include a comment in their code about a specific problem that they’ve handled (like erecting a sign next to Chesterton’s fence). An experienced developer would do the same, and also write a regression test to ensure the problem doesn’t re-emerge in the future (monitoring the fence with CCTV…). Discovering these problem cases and employing defensive strategies avoids future pain for yourself and colleagues.</p>
 <p>As you can imagine, covering all the important cases and keeping the fixture minimal are a compromise. At the outset of the work, it may not be obvious what problematic cases may arise. Packages such as <a href="https://hypothesis.readthedocs.io/en/latest/"><code>hypothesis</code></a> allow you to generate awkward cases. Non-utf-8 strings anyone? Hypothesis can generate these test cases for you - <em>ăѣ𝔠ծềſģȟᎥ𝒋ǩľḿꞑȯ𝘱𝑞𝗋𝘴ȶ𝞄𝜈ψ𝒙𝘆𝚣</em>.</p>
-<ul>
-<li><strong>Non-disclosive fixtures</strong> are those that do not expose personally identifiable or commercially-sensitive information. If you are working with this sort of data, it is necessary to produce toy test fixtures that mimic the schema of the real data. Names and addresses can be de-identified to random alphanumeric strings. Location data can be adjusted with noise. The use of dummy variables or categories can mitigate the risk of disclosure by differencing.</li>
-</ul>
+<p><strong>Non-disclosive fixtures</strong> are those that do not expose personally identifiable or commercially-sensitive information. If you are working with this sort of data, it is necessary to produce toy test fixtures that mimic the schema of the real data. Names and addresses can be de-identified to random alphanumeric strings. Location data can be adjusted with noise. The use of dummy variables or categories can mitigate the risk of disclosure by differencing.</p>
 <p>By adequately anonymising data and testing problem cases, the programmer exhibit their duty to upholding organisational duty to the General Data Protection Regulation, specifically to the duties to accurately store, process, retain and erase personally-identifiable information.</p>
 <p>In cases where system integrates with data available in the public domain, it is may be permissable to include a small sample of the data as a test fixture. Ensure the license that the data is distributed under is compatible with your code’s license. If the license is compatible, I recommend including a reference to the fixture, its source and license within a LICENSE.note file. This practice is enforced by Comprehensive R Archive Network. You can read more about this in the <a href="https://r-pkgs.org/license.html#sec-how-to-include">R Packages documentation</a>.</p>
 </section>
 <section id="scoping-fixtures" class="level3">
 <h3 class="anchored" data-anchor-id="scoping-fixtures">Scoping Fixtures</h3>
+<p>Pytest fixtures have different scopes, meaning that they will be prepared differently dependent on the scope you specify. The avalable scopes are as follows.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Scope Name</th>
+<th>Teardown after each</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+<td>test function</td>
+</tr>
+<tr class="even">
+<td>class</td>
+<td>test class</td>
+</tr>
+<tr class="odd">
+<td>module</td>
+<td>test module</td>
+</tr>
+<tr class="even">
+<td>session</td>
+<td>pytest session</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the default scope for any fixtures that you define will be ‘function’. A function-scoped fixture will be set up for every test function that requires it. Once the function has executed, the fixture will then be torn down and all changes to this fixture will be lost. This default behaviour encourages isolation in your test suite. Meaning that the tests have no dependencies upon each other. The test functions could be run in any order without affecting the results of the test. Function-scoped fixtures are the shortest-lived fixtures. Moving down the table, the persistence of the fixtures increases, so that changes to a session-scoped fixture persist for the entire test execution direction, only being torn down once pytest has executed all tests.</p>
+<section id="scoping-for-performance" class="level4">
+<h4 class="anchored" data-anchor-id="scoping-for-performance">Scoping for Performance</h4>
+<p>It is generally advisable to keep your tests free of external dependencies. By definition, a unit test is completely isolated. However, there may be a few cases where this would be less desirable. Slow test suites may introduce excessive friction to the software development process. Persistent fixtures can be used to improve the performance of a test suite.</p>
+<p>For example, here we define some expensive class:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" data-filename="expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""A module containing an expensive class definition."""</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExpensiveDoodah:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A toy class that represents some costly operation.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    This class will sleep for the specified number of seconds on instantiation.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    sleep_time : Union[int, float]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of seconds to wait on init.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sleep_time: Union[<span class="bu">int</span>, <span class="bu">float</span>] <span class="op">=</span> <span class="dv">2</span>):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Sleeping for </span><span class="sc">{</span>sleep_time<span class="sc">}</span><span class="ss"> seconds"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        time.sleep(sleep_time)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This class will be used to demonstrate the effect of scoping with some costly operation. This example could represent reading in a bulky xlsx file, for instance.</p>
+<p>To test <code>ExpensiveDoodah</code>, I will define a function-scoped fixture. To do this, we use pytest’s fixture decorator to return the class instance with a specified sleep time of 2 seconds.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" data-filename="test_expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.expensive <span class="im">import</span> ExpensiveDoodah</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> module_doodah():</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Function-scoped ExpensiveDoodah."""</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ExpensiveDoodah(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we extend our test module to include a test class with 3 separate test functions, all making assertions about the <code>ExpensiveDoodah</code>. The assertions will all be the same for this simple example, that <code>ExpensiveDoodah</code> executes without raising any error conditions. Notice we must pass the name of the fixture in each test function’s signature.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-filename="test_expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for expensive.py using function-scoped fixture."""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> contextlib <span class="im">import</span> nullcontext <span class="im">as</span> does_not_raise</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.expensive <span class="im">import</span> ExpensiveDoodah</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> doodah_fixture():</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Function-scoped ExpensiveDoodah."""</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ExpensiveDoodah(<span class="dv">2</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestA:</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A test class."""</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_1(<span class="va">self</span>, doodah_fixture):</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test 1."""</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> does_not_raise():</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>            doodah_fixture</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_2(<span class="va">self</span>, doodah_fixture):</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test 2."""</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> does_not_raise():</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            doodah_fixture</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_3(<span class="va">self</span>, doodah_fixture):</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test 3."""</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> does_not_raise():</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>            doodah_fixture</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The result of running this test module can be seen below:</p>
+<pre><code>collected 3 items
+
+./tests/test_expensive_function_scoped.py ...    [100%]
+
+============================ 3 passed in 6.04s ================================
+</code></pre>
+<p>Notice that the test module took just over 6 seconds to execute because the function-scoped fixture was set up once for each test function.</p>
+<p>If instead we had defined <code>doodah_fixture</code> with a different scope, it would reduce the time for the test suite to complete.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" data-filename="test_expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"module"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> doodah_fixture():</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Module-scoped ExpensiveDoodah."""</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ExpensiveDoodah(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>collected 3 items
+
+./tests/test_expensive_function_scoped.py ...    [100%]
+
+============================ 3 passed in 2.02s ================================
+</code></pre>
+<p>The scoping feature of pytest fixtures can be used to optimise a test-suite and avoid lengthy delays while waiting for your test suites to execute. However, any changes to the fixture contents will persist until the fixture is next torn down. Keeping track of the states of differently-scoped fixtures in a complex test suite can be tricky and reduces segmentation overall. Bear that in mind when considering which scope best suits your needs.</p>
 </section>
-<section id="troubleshooting-fixtures" class="level3">
-<h3 class="anchored" data-anchor-id="troubleshooting-fixtures">Troubleshooting Fixtures</h3>
+</section>
+<section id="troubleshooting-fixture-scopes" class="level3">
+<h3 class="anchored" data-anchor-id="troubleshooting-fixture-scopes">Troubleshooting Fixture Scopes</h3>
 </section>
 </section>
 <section id="temporary-files-directories" class="level2">
