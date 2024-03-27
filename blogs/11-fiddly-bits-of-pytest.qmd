@@ -52,7 +52,93 @@ mock an api call or how to optimise their test code.
 - [ ] GitHub account
 - [ ] Command line access
 
+### Preparation
+
+This blog is accompanied by code in
+[this repository](https://github.com/r-leyshon/pytest-fiddly-examples). The
+main branch provides a template with the minimum structure and requirements
+expected to run a `pytest` suite. The repo branches contain the code used in
+the examples of the following sections.
+
+Feel free to fork or clone the repo and checkout to the example branches as
+needed.
+
 ## Fixtures
+
+### What are fixtures?
+
+Data. Well, data provided specifically for testing purposes. This is the
+essential definition for a fixture. One could argue the case that fixtures are
+more than this. Fixtures could be environment variables, class instances,
+connection to a server or whatever dependencies your code needs to run.
+
+I would agree that fixtures are not just data. But that all fixtures return
+data of some sort, regardless of the system under test.
+
+### When would you use fixtures?
+
+It's a bad idea to commit data to a git version-controlled repository, right?
+Agreed. Though fixtures are rarely 'real' data. The data used for testing
+purposes should be minimal and are usually synthetic. 
+
+* **Minimal fixtures** conform to the schema of the actual data under test.
+These fixtures will be as small as possible while capturing all known important
+cases. Keeping the data small maintains a performant test suite and avoids
+problems associated with large files and git version control.
+
+If you have ever encountered a problem in a system that was caused by a
+problematic record in the data, the aspect of that record that broke your
+system should absolutely make it into the next version of your minimal test
+fixture. Writing a test that checks that the codebase can handle such problem
+records is known as 'regression testing' - safeguarding against old bugs
+resurfacing when code is refactored or new features are implemented. This
+scenario commonly occurs when a developer unwittingly violates Chesterton's
+Principle.
+
+
+<iframe src="https://www.youtube.com/embed/qPGbl2gxGqI" class="shaded-box" title="Chesterton's Fence by Sprouts" style="display: block; width: 600px; height: 338px" frameborder="0">
+</iframe>
+
+Many thanks to my colleague Mat for pointing me towards this useful analogy. A
+considerate developer would probably include a comment in their code about a
+specific problem that they've handled (like erecting a sign next to
+Chesterton's fence). An experienced developer would do the same, and also write
+a regression test to ensure the problem doesn't re-emerge in the future
+(monitoring the fence with CCTV...). Discovering these problem cases and
+employing defensive strategies avoids future pain for yourself and colleagues.
+
+As you can imagine, covering all the important cases and keeping the fixture
+minimal are a compromise. At the outset of the work, it may not be obvious what
+problematic cases may arise. Packages such as
+[`hypothesis`](https://hypothesis.readthedocs.io/en/latest/) allow you to
+generate awkward cases. Non-utf-8 strings anyone? Hypothesis can generate
+these test cases for you - *ăѣ𝔠ծềſģȟᎥ𝒋ǩľḿꞑȯ𝘱𝑞𝗋𝘴ȶ𝞄𝜈ψ𝒙𝘆𝚣*.
+
+* **Non-disclosive fixtures** are those that do not expose personally
+identifiable or commercially-sensitive information. If you are working with
+this sort of data, it is necessary to produce toy test fixtures that mimic the
+schema of the real data. Names and addresses can be de-identified to random
+alphanumeric strings. Location data can be adjusted with noise. The use of
+dummy variables or categories can mitigate the risk of disclosure by
+differencing.
+
+By adequately anonymising data and testing problem cases, the programmer
+exhibit their duty to upholding organisational duty to the General Data
+Protection Regulation, specifically to the duties to accurately store, process,
+retain and erase personally-identifiable information.
+
+In cases where system integrates with data available in the public domain, it
+is may be permissable to include a small sample of the data as a test fixture.
+Ensure the license that the data is distributed under is compatible with your
+code's license. If the license is compatible, I recommend including a reference
+to the fixture, its source and license within a LICENSE.note file. This
+practice is enforced by Comprehensive R Archive Network. You can read more about
+this in the
+[R Packages documentation](https://r-pkgs.org/license.html#sec-how-to-include).
+
+### Scoping Fixtures
+
+### Troubleshooting Fixtures
 
 ## Temporary Files & Directories
 
