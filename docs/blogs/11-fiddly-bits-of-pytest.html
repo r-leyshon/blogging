@@ -60,7 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <link href="..//./favicon.ico" rel="icon">
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -90,6 +90,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
 
 
@@ -325,7 +328,11 @@ A Note on the Purpose (Click to expand)
 <p>Note that the default scope for any fixtures that you define will be ‘function’. A function-scoped fixture will be set up for every test function that requires it. Once the function has executed, the fixture will then be torn down and all changes to this fixture will be lost. This default behaviour encourages isolation in your test suite. Meaning that the tests have no dependencies upon each other. The test functions could be run in any order without affecting the results of the test. Function-scoped fixtures are the shortest-lived fixtures. Moving down the table, the persistence of the fixtures increases, so that changes to a session-scoped fixture persist for the entire test execution direction, only being torn down once pytest has executed all tests.</p>
 <section id="scoping-for-performance" class="level4">
 <h4 class="anchored" data-anchor-id="scoping-for-performance">Scoping for Performance</h4>
-<p>It is generally advisable to keep your tests free of external dependencies. By definition, a unit test is completely isolated. However, there may be a few cases where this would be less desirable. Slow test suites may introduce excessive friction to the software development process. Persistent fixtures can be used to improve the performance of a test suite.</p>
+<hr>
+<blockquote class="blockquote">
+<p>performance vs isolation</p>
+</blockquote>
+<p>By definition, a unit test is completely isolated. However, there may be a few cases where this would be less desirable. Slow test suites may introduce excessive friction to the software development process. Persistent fixtures can be used to improve the performance of a test suite.</p>
 <p>For example, here we define some expensive class:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -428,7 +435,178 @@ A Note on the Purpose (Click to expand)
 
 ============================ 3 passed in 2.02s ================================
 </code></pre>
-<p>The scoping feature of pytest fixtures can be used to optimise a test-suite and avoid lengthy delays while waiting for your test suites to execute. However, any changes to the fixture contents will persist until the fixture is next torn down. Keeping track of the states of differently-scoped fixtures in a complex test suite can be tricky and reduces segmentation overall. Bear that in mind when considering which scope best suits your needs.</p>
+<p>The scoping feature of pytest fixtures can be used to optimise a test-suite and avoid lengthy delays while waiting for your test suites to execute. However, any changes to the fixture contents will persist until the fixture is next torn down. Keeping track of the states of differently-scoped fixtures in a complex test suite can be tricky and reduces segmentation overall. Bear this in mind when considering which scope best suits your needs.</p>
+</section>
+<section id="scope-persistence" class="level4">
+<h4 class="anchored" data-anchor-id="scope-persistence">Scope Persistence</h4>
+<hr>
+<blockquote class="blockquote">
+<p>function &lt; class &lt; module &lt; session</p>
+</blockquote>
+<p>Using scopes other than ‘function’ can be useful for end-to-end testing. Perhaps you have a complex analytical pipeline and need to check that the various components work well <strong>together</strong>, rather than in isolation as with a unit test. This sort of test can be extremely useful for developers in a rush. You can test that the so called ‘promise’ of the codebase is as expected, even though the implementation may change.</p>
+<p>The analogy here would be that the success criteria of a SatNav is that it gets you to your desired destination whatever the suggested route you selected. Checking that you used the fastest or most fuel efficient option is probably a good idea. But if you don’t have time, you’ll just have to take the hit if you encounter a toll road. It’s still worth checking that the postcode you hastily input to the satnav is the correct one.</p>
+<iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d19867.3453412218!2d-0.12357612910538017!3d51.50554381133014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d51.5020874!2d-0.0776174!4m5!1s0x48760520cd5b5eb5%3A0xa26abf514d902a7!2sBuckingham%20Palace%2C%20London!3m2!1d51.501363999999995!2d-0.14189!5e0!3m2!1sen!2suk!4v1711782045831!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="shaded-box" title="Google Maps displaying multiple routes to Buckingham Palace. (c) Google." style="display: block; width: 600px; height: 338px">
+</iframe>
+<p>Perhaps your success criteria is that you need to write a dataframe to file. A great end-to-end test would check that the dataframe produced has the expected number of rows, or even has rows! Of course it’s also a good idea to check the dataframe conforms to the expected table schema, too: number of columns, names of columns, order and data types. This sort of check is often overlooked in favour of pressing on with development. If you’ve ever encountered a situation where you’ve updated a codebase and later realised you now have empty tables (I certainly have), this sort of test would be really handy, immediately alerting you to this fact and helping you efficiently locate the source of the bug.</p>
+<p>In this part, I will explore the scoping of fixtures with dataframes. Again, I’ll use a toy example to demonstrate scope behaviour. Being a child of the ’90s (mostly), I’ll use a scenario from my childhood. Scooby Doo is still a thing, right?</p>
+<section id="enter-the-mystery-machine" class="level5">
+<h5 class="anchored" data-anchor-id="enter-the-mystery-machine"><strong>Enter: The Mystery Machine</strong></h5>
+<p><img src=".././www/11-fiddly-bits-of-pytest/mm.jpg" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
+<p>The scenario: The passengers of the Mystery Machine van all have the munchies. They stop at a ‘drive thru’ to get some takeaway. We have a table with a record for each character. We have data about the characters’ names, their favourite food, whether they have ‘the munchies’, and the contents of their stomach.</p>
+<div id="073ca7bd" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mystery_machine <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"name"</span>: [<span class="st">"Daphne"</span>, <span class="st">"Fred"</span>, <span class="st">"Scooby Doo"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Velma"</span>],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fave_food"</span>: [</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"carrots"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"beans"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                <span class="st">"scooby snacks"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"burgers"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="st">"hot dogs"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"has_munchies"</span>: [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>, <span class="co"># everyone's hungry</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"stomach_contents"</span>: [<span class="st">"empty"</span>] <span class="op">*</span> <span class="dv">5</span>, <span class="co"># all have empty stomachs</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>mystery_machine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">fave_food</th>
+<th data-quarto-table-cell-role="th">has_munchies</th>
+<th data-quarto-table-cell-role="th">stomach_contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Daphne</td>
+<td>carrots</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Fred</td>
+<td>beans</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Scooby Doo</td>
+<td>scooby snacks</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Shaggy</td>
+<td>burgers</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Velma</td>
+<td>hot dogs</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>To use this simple dataframe as a fixture, I could go ahead and define it with <code>@pytest.fixture()</code> directly within a test file. But if I would like to share it across several test modules, then there are 2 options:</p>
+<ol type="1">
+<li>Write the dataframe to disk as csv (or whatever format you prefer) and save in the <code>./tests/data/</code> folder. At the start of your test modules you can read the data from disk and use it for testing. In this approach you’ll likely define the data as a test fixture in each of the test modules that need to work with it.</li>
+<li>Define the fixtures within a special python file called <code>conftest.py</code>, which must be located at the root of your project. This file is used to configure your tests. <code>pytest</code> will look in this file for any required fixture definitions when executing your test suite. If it finds a fixture with the same name as that required by a test, the fixture code may be run.</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wait! Did you just say ‘<strong>may</strong> be run’?</p>
+</div>
+</div>
+<p>Depending on the scope of your fixture, <code>pytest</code> may not need to execute the code for each test. If you’ve defined a session-scoped fixture, it’s going to persist for the duration of the entire test suite execution. Imagine test number 1 and 10 both require the same test fixture. The fixture definition only gets executed the first time a test requires it.</p>
+</section>
+<section id="define-fixtures" class="level5">
+<h5 class="anchored" data-anchor-id="define-fixtures"><strong>Define Fixtures</strong></h5>
+<p>For our example, we will create a <code>conftest.py</code> file and define some fixtures with differing scopes.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>conftest.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb8" data-filename="conftest.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Demonstrate scoping fixtures."""</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"session"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mystery_machine():</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Session-scoped fixture returning pandas dataframe."""</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"name"</span>: [<span class="st">"Daphne"</span>, <span class="st">"Fred"</span>, <span class="st">"Scooby Doo"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Velma"</span>],</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fave_food"</span>: [</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">"carrots"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                <span class="st">"beans"</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                <span class="st">"scooby snacks"</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">"burgers"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">"hot dogs"</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"has_munchies"</span>: [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"stomach_contents"</span>: [<span class="st">"empty"</span>] <span class="op">*</span> <span class="dv">5</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"session"</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_session_scoped(_mystery_machine):</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Session-scoped fixture returning the _mystery_machine dataframe."""</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"module"</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_module_scoped(_mystery_machine):</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Module-scoped _mystery_machine dataframe."""</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"class"</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_class_scoped(_mystery_machine):</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Class-scoped _mystery_machine dataframe."""</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_function_scoped(_mystery_machine):</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Function-scoped _mystery_machine dataframe."""</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fixtures can reference each other, if they’re scoped correctly. More on this in <a href="#troubleshooting-fixture-scopes">the next section</a>. This is useful for my toy example as I intend the source functions to update the dataframes directly, if I wasn’t careful about deep copying the fixtures, my functions would update the original <code>_mystery_machine</code> fixture’s table. Those changes would then be subsequently passed to the other fixtures, meaning I couldn’t clearly demonstrate how the different scopes persist.</p>
+</section>
+<section id="define-the-source-functions" class="level5">
+<h5 class="anchored" data-anchor-id="define-the-source-functions">Define the Source Functions</h5>
+</section>
 </section>
 </section>
 <section id="troubleshooting-fixture-scopes" class="level3">

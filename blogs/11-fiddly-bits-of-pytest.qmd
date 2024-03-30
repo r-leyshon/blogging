@@ -166,9 +166,11 @@ test execution direction, only being torn down once pytest has executed all
 tests.
 
 #### Scoping for Performance
+***
 
-It is generally advisable to keep your tests free of external dependencies. By
-definition, a unit test is completely isolated. However, there may be a few
+> performance vs isolation
+
+By definition, a unit test is completely isolated. However, there may be a few
 cases where this would be less desirable. Slow test suites may introduce
 excessive friction to the software development process. Persistent fixtures can
 be used to improve the performance of a test suite. 
@@ -297,8 +299,167 @@ The scoping feature of pytest fixtures can be used to optimise a test-suite and
 avoid lengthy delays while waiting for your test suites to execute. However,
 any changes to the fixture contents will persist until the fixture is next torn
 down. Keeping track of the states of differently-scoped fixtures in a complex
-test suite can be tricky and reduces segmentation overall. Bear that in mind
+test suite can be tricky and reduces segmentation overall. Bear this in mind
 when considering which scope best suits your needs.
+
+#### Scope Persistence
+***
+
+> function < class < module < session
+
+Using scopes other than 'function' can be useful for end-to-end testing.
+Perhaps you have a complex analytical pipeline and need to check that the
+various components work well **together**, rather than in isolation as with a
+unit test. This sort of test can be extremely useful for developers in a rush.
+You can test that the so called 'promise' of the codebase is as expected, even
+though the implementation may change.
+
+The analogy here would be that the success criteria of a SatNav is that it gets
+you to your desired destination whatever the suggested route you selected.
+Checking that you used the fastest or most fuel efficient option is probably a
+good idea. But if you don't have time, you'll just have to take the hit if you
+encounter a toll road. It's still worth checking that the postcode you hastily
+input to the satnav is the correct one.
+
+<iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d19867.3453412218!2d-0.12357612910538017!3d51.50554381133014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d51.5020874!2d-0.0776174!4m5!1s0x48760520cd5b5eb5%3A0xa26abf514d902a7!2sBuckingham%20Palace%2C%20London!3m2!1d51.501363999999995!2d-0.14189!5e0!3m2!1sen!2suk!4v1711782045831!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="shaded-box" title="Google Maps displaying multiple routes to Buckingham Palace. (c) Google." style="display: block; width: 600px; height: 338px">
+</iframe>
+
+Perhaps your success criteria is that you need to write a dataframe to file. 
+A great end-to-end test would check that the dataframe produced has the
+expected number of rows, or even has rows! Of course it's also a good idea to
+check the dataframe conforms to the expected table schema, too: number of
+columns, names of columns, order and data types. This sort of check is often
+overlooked in favour of pressing on with development. If you've ever
+encountered a situation where you've updated a codebase and later realised you
+now have empty tables (I certainly have), this sort of test would be really
+handy, immediately alerting you to this fact and helping you efficiently locate
+the source of the bug.
+
+In this part, I will explore the scoping of fixtures with dataframes. Again,
+I'll use a toy example to demonstrate scope behaviour. Being a child of the
+'90s (mostly), I'll use a scenario from my childhood. Scooby Doo is still a
+thing, right?
+
+##### **Enter: The Mystery Machine**
+
+<img src=/./www/11-fiddly-bits-of-pytest/mm.jpg alt="Scooby Doo & the gang in the Mystery Machine" class=center>
+</img>
+
+The scenario: The passengers of the Mystery Machine van all have the munchies.
+They stop at a 'drive thru' to get some takeaway. We have a table with a record
+for each character. We have data about the characters' names, their favourite
+food, whether they have 'the munchies', and the contents of their stomach.
+
+```{python}
+import pandas as pd
+mystery_machine = pd.DataFrame(
+        {
+            "name": ["Daphne", "Fred", "Scooby Doo", "Shaggy", "Velma"],
+            "fave_food": [
+                "carrots",
+                "beans",
+                "scooby snacks",
+                "burgers",
+                "hot dogs",
+            ],
+            "has_munchies": [True] * 5, # everyone's hungry
+            "stomach_contents": ["empty"] * 5, # all have empty stomachs
+        }
+    )
+mystery_machine
+```
+
+To use this simple dataframe as a fixture, I could go ahead and define it with
+`@pytest.fixture()` directly within a test file. But if I would like to share
+it across several test modules, then there are 2 options:
+
+1. Write the dataframe to disk as csv (or whatever format you prefer) and save
+in the `./tests/data/` folder. At the start of your test modules you can read
+the data from disk and use it for testing. In this approach you'll likely
+define the data as a test fixture in each of the test modules that need to work
+with it.
+2. Define the fixtures within a special python file called `conftest.py`, which
+must be located at the root of your project. This file is used to configure
+your tests. `pytest` will look in this file for any required fixture
+definitions when executing your test suite. If it finds a fixture with the same
+name as that required by a test, the fixture code may be run. 
+
+:::{.callout-caution}
+Wait! Did you just say '**may** be run'?
+:::
+
+Depending on the scope of your fixture, `pytest` may not need to execute the
+code for each test. If you've defined a session-scoped fixture, it's going to
+persist for the duration of the entire test suite execution. Imagine test
+number 1 and 10 both require the same test fixture. The fixture definition only
+gets executed the first time a test requires it.
+
+##### **Define Fixtures**
+
+For our example, we will create a `conftest.py` file and define some fixtures
+with differing scopes.
+
+```{.python filename=conftest.py}
+"""Demonstrate scoping fixtures."""
+import pandas as pd
+import pytest
+
+
+@pytest.fixture(scope="session")
+def _mystery_machine():
+    """Session-scoped fixture returning pandas dataframe."""
+    return pd.DataFrame(
+        {
+            "name": ["Daphne", "Fred", "Scooby Doo", "Shaggy", "Velma"],
+            "fave_food": [
+                "carrots",
+                "beans",
+                "scooby snacks",
+                "burgers",
+                "hot dogs",
+            ],
+            "has_munchies": [True] * 5,
+            "stomach_contents": ["empty"] * 5,
+        }
+    )
+
+
+@pytest.fixture(scope="session")
+def _mm_session_scoped(_mystery_machine):
+    """Session-scoped fixture returning the _mystery_machine dataframe."""
+    return _mystery_machine.copy(deep=True)
+
+
+@pytest.fixture(scope="module")
+def _mm_module_scoped(_mystery_machine):
+    """Module-scoped _mystery_machine dataframe."""
+    return _mystery_machine.copy(deep=True)
+
+
+@pytest.fixture(scope="class")
+def _mm_class_scoped(_mystery_machine):
+    """Class-scoped _mystery_machine dataframe."""
+    return _mystery_machine.copy(deep=True)
+
+
+@pytest.fixture(scope="function")
+def _mm_function_scoped(_mystery_machine):
+    """Function-scoped _mystery_machine dataframe."""
+    return _mystery_machine.copy(deep=True)
+
+```
+
+Fixtures can reference each other, if they're scoped correctly. More on this in
+[the next section](#troubleshooting-fixture-scopes). This is useful for my toy
+example as I intend the source functions to update the dataframes directly, if
+I wasn't careful about deep copying the fixtures, my functions would update the
+original `_mystery_machine` fixture's table. Those changes would then be
+subsequently passed to the other fixtures, meaning I couldn't clearly
+demonstrate how the different scopes persist.
+
+##### Define the Source Functions
+
+
 
 ### Troubleshooting Fixture Scopes
 
