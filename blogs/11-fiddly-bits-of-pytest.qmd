@@ -10,6 +10,11 @@ categories:
 image: "https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;q=70"
 image-alt: "Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
 toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-pytest-env-py"
+    language: "python"
+    display_name: "blog-pytest-env"
 ---
 
 <figure class=center>
