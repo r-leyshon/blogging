@@ -8,9 +8,9 @@
 
 <meta name="author" content="Rich Leyshon">
 <meta name="dcterms.date" content="2024-03-24">
-<meta name="description" content="Plain English discussion of the more intrictate aspects of testing with pytest.">
+<meta name="description" content="Plain English discussion of pytest fixtures.">
 
-<title>The Data Savvy Corner - The Fiddly Bits of Pytest</title>
+<title>The Data Savvy Corner - Pytest Fixtures in Plain English</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,13 +97,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../www/styles.css">
-<meta property="og:title" content="The Data Savvy Corner - The Fiddly Bits of Pytest">
-<meta property="og:description" content="Plain English discussion of the more intrictate aspects of testing with pytest.">
+<meta property="og:title" content="The Data Savvy Corner - Pytest Fixtures in Plain English">
+<meta property="og:description" content="Plain English discussion of pytest fixtures.">
 <meta property="og:image" content="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;amp;q=70">
 <meta property="og:site_name" content="The Data Savvy Corner">
 <meta property="og:image:alt" content="Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
-<meta name="twitter:title" content="The Data Savvy Corner - The Fiddly Bits of Pytest">
-<meta name="twitter:description" content="Plain English discussion of the more intrictate aspects of testing with pytest.">
+<meta name="twitter:title" content="The Data Savvy Corner - Pytest Fixtures in Plain English">
+<meta name="twitter:description" content="Plain English discussion of pytest fixtures.">
 <meta name="twitter:image" content="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;amp;q=70">
 <meta name="twitter:site" content="@Rich_L1984">
 <meta name="twitter:image:alt" content="Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
@@ -169,17 +169,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What You’ll Need:</a></li>
   <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
   </ul></li>
-  <li><a href="#fixtures" id="toc-fixtures" class="nav-link" data-scroll-target="#fixtures">Fixtures</a>
-  <ul class="collapse">
   <li><a href="#what-are-fixtures" id="toc-what-are-fixtures" class="nav-link" data-scroll-target="#what-are-fixtures">What are fixtures?</a></li>
   <li><a href="#when-would-you-use-fixtures" id="toc-when-would-you-use-fixtures" class="nav-link" data-scroll-target="#when-would-you-use-fixtures">When would you use fixtures?</a></li>
-  <li><a href="#scoping-fixtures" id="toc-scoping-fixtures" class="nav-link" data-scroll-target="#scoping-fixtures">Scoping Fixtures</a></li>
-  <li><a href="#troubleshooting-fixture-scopes" id="toc-troubleshooting-fixture-scopes" class="nav-link" data-scroll-target="#troubleshooting-fixture-scopes">Troubleshooting Fixture Scopes</a></li>
+  <li><a href="#scoping-fixtures" id="toc-scoping-fixtures" class="nav-link" data-scroll-target="#scoping-fixtures">Scoping fixtures</a>
+  <ul class="collapse">
+  <li><a href="#scoping-for-performance" id="toc-scoping-for-performance" class="nav-link" data-scroll-target="#scoping-for-performance">Scoping for performance</a></li>
+  <li><a href="#scope-persistence" id="toc-scope-persistence" class="nav-link" data-scroll-target="#scope-persistence">Scope persistence</a></li>
   </ul></li>
-  <li><a href="#temporary-files-directories" id="toc-temporary-files-directories" class="nav-link" data-scroll-target="#temporary-files-directories">Temporary Files &amp; Directories</a></li>
-  <li><a href="#parametrized-tests" id="toc-parametrized-tests" class="nav-link" data-scroll-target="#parametrized-tests">Parametrized Tests</a></li>
-  <li><a href="#marks" id="toc-marks" class="nav-link" data-scroll-target="#marks">Marks</a></li>
-  <li><a href="#mocking" id="toc-mocking" class="nav-link" data-scroll-target="#mocking">Mocking</a></li>
+  <li><a href="#troubleshooting-fixture-scopes" id="toc-troubleshooting-fixture-scopes" class="nav-link" data-scroll-target="#troubleshooting-fixture-scopes">Troubleshooting Fixture Scopes</a></li>
   </ul>
 </nav>
     </div>
@@ -188,17 +185,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Fiddly Bits of Pytest</h1>
+<h1 class="title">Pytest Fixtures in Plain English</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Explanation</div>
     <div class="quarto-category">pytest</div>
     <div class="quarto-category">Unit tests</div>
+    <div class="quarto-category">fixtures</div>
+    <div class="quarto-category">pytest-in-plain-english</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Plain English discussion of the more intrictate aspects of testing with pytest.
+    Plain English discussion of pytest fixtures.
   </div>
 </div>
 
@@ -235,10 +234,9 @@ Creative commons license by <a href="https://pixexid.com/profile/cjxrsxsl7000008
 </figure>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses some of the more intricate features of <code>pytest</code>, favouring accessible language and simple examples to describe the scenarios.</p>
-<ul>
-<li><a href="https://docs.pytest.org/en/8.0.x/" target="_blank">Pytest documentation</a></li>
-</ul>
+<p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses using test data as fixtures with <code>pytest</code> and is the first in a series of blogs called <a href="../../docs/index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
+<p>file:///Users/richardleyshon/Documents/blogging/index.html#category=pytest-in-plain-english file:///Users/richardleyshon/Documents/blogging/docs/index.html#category=pytest-in-plain-english</p>
+<p>For a wealth of documentation, guides and how-tos, please consult the <a href="https://docs.pytest.org/en/8.0.x/" target="_blank">Pytest documentation</a>.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -257,7 +255,7 @@ A Note on the Purpose (Click to expand)
 </div>
 <section id="intended-audience" class="level3">
 <h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
-<p>Programmers with a working knowledge of python and some familiarity with <code>pytest</code> and packaging. The type of programmer who has wondered about how to mock an api call or how to optimise their test code.</p>
+<p>Programmers with a working knowledge of python and some familiarity with <code>pytest</code> and packaging. The type of programmer who has wondered about how to optimise their test code.</p>
 </section>
 <section id="what-youll-need" class="level3">
 <h3 class="anchored" data-anchor-id="what-youll-need">What You’ll Need:</h3>
@@ -273,18 +271,16 @@ A Note on the Purpose (Click to expand)
 <h3 class="anchored" data-anchor-id="preparation">Preparation</h3>
 <p>This blog is accompanied by code in <a href="https://github.com/r-leyshon/pytest-fiddly-examples">this repository</a>. The main branch provides a template with the minimum structure and requirements expected to run a <code>pytest</code> suite. The repo branches contain the code used in the examples of the following sections.</p>
 <p>Feel free to fork or clone the repo and checkout to the example branches as needed.</p>
-</section>
-</section>
-<section id="fixtures" class="level2">
-<h2 class="anchored" data-anchor-id="fixtures">Fixtures</h2>
 <p>The example code that accompanies this section is available in the fixtures branch of the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/fixtures">example code repo</a>.</p>
-<section id="what-are-fixtures" class="level3">
-<h3 class="anchored" data-anchor-id="what-are-fixtures">What are fixtures?</h3>
+</section>
+</section>
+<section id="what-are-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-fixtures">What are fixtures?</h2>
 <p>Data. Well, data provided specifically for testing purposes. This is the essential definition for a fixture. One could argue the case that fixtures are more than this. Fixtures could be environment variables, class instances, connection to a server or whatever dependencies your code needs to run.</p>
 <p>I would agree that fixtures are not just data. But that all fixtures return data of some sort, regardless of the system under test.</p>
 </section>
-<section id="when-would-you-use-fixtures" class="level3">
-<h3 class="anchored" data-anchor-id="when-would-you-use-fixtures">When would you use fixtures?</h3>
+<section id="when-would-you-use-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="when-would-you-use-fixtures">When would you use fixtures?</h2>
 <p>It’s a bad idea to commit data to a git version-controlled repository, right? Agreed. Though fixtures are rarely ‘real’ data. The data used for testing purposes should be minimal and are usually synthetic.</p>
 <p><strong>Minimal fixtures</strong> conform to the schema of the actual data under test. These fixtures will be as small as possible while capturing all known important cases. Keeping the data small maintains a performant test suite and avoids problems associated with large files and git version control.</p>
 <p>If you have ever encountered a problem in a system that was caused by a problematic record in the data, the aspect of that record that broke your system should absolutely make it into the next version of your minimal test fixture. Writing a test that checks that the codebase can handle such problem records is known as ‘regression testing’ - safeguarding against old bugs resurfacing when code is refactored or new features are implemented. This scenario commonly occurs when a developer unwittingly violates Chesterton’s Principle.</p>
@@ -296,8 +292,8 @@ A Note on the Purpose (Click to expand)
 <p>By adequately anonymising data and testing problem cases, the programmer exhibit their duty to upholding organisational duty to the General Data Protection Regulation, specifically to the duties to accurately store, process, retain and erase personally-identifiable information.</p>
 <p>In cases where system integrates with data available in the public domain, it is may be permissable to include a small sample of the data as a test fixture. Ensure the license that the data is distributed under is compatible with your code’s license. If the license is compatible, I recommend including a reference to the fixture, its source and license within a LICENSE.note file. This practice is enforced by Comprehensive R Archive Network. You can read more about this in the <a href="https://r-pkgs.org/license.html#sec-how-to-include">R Packages documentation</a>.</p>
 </section>
-<section id="scoping-fixtures" class="level3">
-<h3 class="anchored" data-anchor-id="scoping-fixtures">Scoping Fixtures</h3>
+<section id="scoping-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="scoping-fixtures">Scoping fixtures</h2>
 <p>Pytest fixtures have different scopes, meaning that they will be prepared differently dependent on the scope you specify. The avalable scopes are as follows.</p>
 <table class="table">
 <thead>
@@ -326,8 +322,8 @@ A Note on the Purpose (Click to expand)
 </tbody>
 </table>
 <p>Note that the default scope for any fixtures that you define will be ‘function’. A function-scoped fixture will be set up for every test function that requires it. Once the function has executed, the fixture will then be torn down and all changes to this fixture will be lost. This default behaviour encourages isolation in your test suite. Meaning that the tests have no dependencies upon each other. The test functions could be run in any order without affecting the results of the test. Function-scoped fixtures are the shortest-lived fixtures. Moving down the table, the persistence of the fixtures increases, so that changes to a session-scoped fixture persist for the entire test execution direction, only being torn down once pytest has executed all tests.</p>
-<section id="scoping-for-performance" class="level4">
-<h4 class="anchored" data-anchor-id="scoping-for-performance">Scoping for Performance</h4>
+<section id="scoping-for-performance" class="level3">
+<h3 class="anchored" data-anchor-id="scoping-for-performance">Scoping for performance</h3>
 <hr>
 <blockquote class="blockquote">
 <p>performance vs isolation</p>
@@ -437,8 +433,8 @@ A Note on the Purpose (Click to expand)
 </code></pre>
 <p>The scoping feature of pytest fixtures can be used to optimise a test-suite and avoid lengthy delays while waiting for your test suites to execute. However, any changes to the fixture contents will persist until the fixture is next torn down. Keeping track of the states of differently-scoped fixtures in a complex test suite can be tricky and reduces segmentation overall. Bear this in mind when considering which scope best suits your needs.</p>
 </section>
-<section id="scope-persistence" class="level4">
-<h4 class="anchored" data-anchor-id="scope-persistence">Scope Persistence</h4>
+<section id="scope-persistence" class="level3">
+<h3 class="anchored" data-anchor-id="scope-persistence">Scope persistence</h3>
 <hr>
 <blockquote class="blockquote">
 <p>function &lt; class &lt; module &lt; session</p>
@@ -449,11 +445,12 @@ A Note on the Purpose (Click to expand)
 </iframe>
 <p>Perhaps your success criteria is that you need to write a dataframe to file. A great end-to-end test would check that the dataframe produced has the expected number of rows, or even has rows! Of course it’s also a good idea to check the dataframe conforms to the expected table schema, too: number of columns, names of columns, order and data types. This sort of check is often overlooked in favour of pressing on with development. If you’ve ever encountered a situation where you’ve updated a codebase and later realised you now have empty tables (I certainly have), this sort of test would be really handy, immediately alerting you to this fact and helping you efficiently locate the source of the bug.</p>
 <p>In this part, I will explore the scoping of fixtures with dataframes. Again, I’ll use a toy example to demonstrate scope behaviour. Being a child of the ’90s (mostly), I’ll use a scenario from my childhood. Scooby Doo is still a thing, right?</p>
-<section id="enter-the-mystery-machine" class="level5">
-<h5 class="anchored" data-anchor-id="enter-the-mystery-machine"><strong>Enter: The Mystery Machine</strong></h5>
+<section id="define-data" class="level4">
+<h4 class="anchored" data-anchor-id="define-data">Define Data</h4>
+<p><strong>Enter: The Mystery Machine</strong></p>
 <p><img src=".././www/11-fiddly-bits-of-pytest/mm.jpg" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
 <p>The scenario: The passengers of the Mystery Machine van all have the munchies. They stop at a ‘drive thru’ to get some takeaway. We have a table with a record for each character. We have data about the characters’ names, their favourite food, whether they have ‘the munchies’, and the contents of their stomach.</p>
-<div id="960a6ece" class="cell" data-execution_count="1">
+<div id="7d5ba0d1" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mystery_machine <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        {</span>
@@ -548,8 +545,8 @@ Caution
 </div>
 <p>Depending on the scope of your fixture, <code>pytest</code> may not need to execute the code for each test. If you’ve defined a session-scoped fixture, it’s going to persist for the duration of the entire test suite execution. Imagine test number 1 and 10 both require the same test fixture. The fixture definition only gets executed the first time a test requires it.</p>
 </section>
-<section id="define-fixtures" class="level5">
-<h5 class="anchored" data-anchor-id="define-fixtures"><strong>Define Fixtures</strong></h5>
+<section id="define-fixtures" class="level4">
+<h4 class="anchored" data-anchor-id="define-fixtures">Define fixtures</h4>
 <p>For our example, we will create a <code>conftest.py</code> file and define some fixtures with differing scopes.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -604,26 +601,13 @@ Caution
 </div>
 <p>Fixtures can reference each other, if they’re scoped correctly. More on this in <a href="#troubleshooting-fixture-scopes">the next section</a>. This is useful for my toy example as I intend the source functions to update the dataframes directly, if I wasn’t careful about deep copying the fixtures, my functions would update the original <code>_mystery_machine</code> fixture’s table. Those changes would then be subsequently passed to the other fixtures, meaning I couldn’t clearly demonstrate how the different scopes persist.</p>
 </section>
-<section id="define-the-source-functions" class="level5">
-<h5 class="anchored" data-anchor-id="define-the-source-functions">Define the Source Functions</h5>
+<section id="define-the-source-functions" class="level4">
+<h4 class="anchored" data-anchor-id="define-the-source-functions">Define the source functions</h4>
 </section>
 </section>
 </section>
-<section id="troubleshooting-fixture-scopes" class="level3">
-<h3 class="anchored" data-anchor-id="troubleshooting-fixture-scopes">Troubleshooting Fixture Scopes</h3>
-</section>
-</section>
-<section id="temporary-files-directories" class="level2">
-<h2 class="anchored" data-anchor-id="temporary-files-directories">Temporary Files &amp; Directories</h2>
-</section>
-<section id="parametrized-tests" class="level2">
-<h2 class="anchored" data-anchor-id="parametrized-tests">Parametrized Tests</h2>
-</section>
-<section id="marks" class="level2">
-<h2 class="anchored" data-anchor-id="marks">Marks</h2>
-</section>
-<section id="mocking" class="level2">
-<h2 class="anchored" data-anchor-id="mocking">Mocking</h2>
+<section id="troubleshooting-fixture-scopes" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting-fixture-scopes">Troubleshooting Fixture Scopes</h2>
 <p id="fin">
 <i>fin!</i>
 </p>

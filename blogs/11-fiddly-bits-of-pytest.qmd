@@ -1,12 +1,14 @@
 ---
-title: "The Fiddly Bits of Pytest"
+title: "Pytest Fixtures in Plain English"
 author: "Rich Leyshon"
 date: "March 24 2024"
-description: "Plain English discussion of the more intrictate aspects of testing with pytest."
+description: "Plain English discussion of pytest fixtures."
 categories:
     - Explanation
     - pytest
     - Unit tests
+    - fixtures
+    - pytest-in-plain-english
 image: "https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;q=70"
 image-alt: "Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
 toc: true
@@ -25,12 +27,17 @@ jupyter:
 ## Introduction
 
 `pytest` is a testing package for the python framework. It is broadly used to
-quality assure code logic. This article discusses some of the more intricate
-features of `pytest`, favouring accessible language and simple examples to
-describe the scenarios.
+quality assure code logic. This article discusses using test data as fixtures
+with `pytest` and is the first in a series of blogs called
+[pytest in plain English](/../docs/index.html#category=pytest-in-plain-english),
+favouring accessible language and simple examples to explain the more intricate
+features of the `pytest` package.
 
+file:///Users/richardleyshon/Documents/blogging/index.html#category=pytest-in-plain-english
+file:///Users/richardleyshon/Documents/blogging/docs/index.html#category=pytest-in-plain-english
 
-- <a href="https://docs.pytest.org/en/8.0.x/" target="_blank">Pytest documentation</a>
+For a wealth of documentation, guides and how-tos, please consult the
+<a href="https://docs.pytest.org/en/8.0.x/" target="_blank">Pytest documentation</a>.
 
 :::{.callout collapse="true"}
 
@@ -47,7 +54,7 @@ examples.
 
 Programmers with a working knowledge of python and some familiarity with
 `pytest` and packaging. The type of programmer who has wondered about how to
-mock an api call or how to optimise their test code.
+optimise their test code.
 
 ### What You'll Need:
 
@@ -68,13 +75,11 @@ the examples of the following sections.
 Feel free to fork or clone the repo and checkout to the example branches as
 needed.
 
-## Fixtures
-
 The example code that accompanies this section is available in the fixtures
 branch of the 
 [example code repo](https://github.com/r-leyshon/pytest-fiddly-examples/tree/fixtures).
 
-### What are fixtures?
+## What are fixtures?
 
 Data. Well, data provided specifically for testing purposes. This is the
 essential definition for a fixture. One could argue the case that fixtures are
@@ -84,7 +89,7 @@ connection to a server or whatever dependencies your code needs to run.
 I would agree that fixtures are not just data. But that all fixtures return
 data of some sort, regardless of the system under test.
 
-### When would you use fixtures?
+## When would you use fixtures?
 
 It's a bad idea to commit data to a git version-controlled repository, right?
 Agreed. Though fixtures are rarely 'real' data. The data used for testing
@@ -145,7 +150,7 @@ practice is enforced by Comprehensive R Archive Network. You can read more about
 this in the
 [R Packages documentation](https://r-pkgs.org/license.html#sec-how-to-include).
 
-### Scoping Fixtures
+## Scoping fixtures
 
 Pytest fixtures have different scopes, meaning that they will be prepared
 differently dependent on the scope you specify. The avalable scopes are as
@@ -170,7 +175,7 @@ increases, so that changes to a session-scoped fixture persist for the entire
 test execution direction, only being torn down once pytest has executed all
 tests.
 
-#### Scoping for Performance
+### Scoping for performance
 ***
 
 > performance vs isolation
@@ -307,7 +312,7 @@ down. Keeping track of the states of differently-scoped fixtures in a complex
 test suite can be tricky and reduces segmentation overall. Bear this in mind
 when considering which scope best suits your needs.
 
-#### Scope Persistence
+### Scope persistence
 ***
 
 > function < class < module < session
@@ -345,7 +350,9 @@ I'll use a toy example to demonstrate scope behaviour. Being a child of the
 '90s (mostly), I'll use a scenario from my childhood. Scooby Doo is still a
 thing, right?
 
-##### **Enter: The Mystery Machine**
+#### Define Data
+
+**Enter: The Mystery Machine**
 
 <img src=/./www/11-fiddly-bits-of-pytest/mm.jpg alt="Scooby Doo & the gang in the Mystery Machine" class=center>
 </img>
@@ -399,7 +406,7 @@ persist for the duration of the entire test suite execution. Imagine test
 number 1 and 10 both require the same test fixture. The fixture definition only
 gets executed the first time a test requires it.
 
-##### **Define Fixtures**
+#### Define fixtures
 
 For our example, we will create a `conftest.py` file and define some fixtures
 with differing scopes.
@@ -462,19 +469,10 @@ original `_mystery_machine` fixture's table. Those changes would then be
 subsequently passed to the other fixtures, meaning I couldn't clearly
 demonstrate how the different scopes persist.
 
-##### Define the Source Functions
+#### Define the source functions
 
+## Troubleshooting Fixture Scopes
 
-
-### Troubleshooting Fixture Scopes
-
-## Temporary Files & Directories
-
-## Parametrized Tests
-
-## Marks
-
-## Mocking
 
 
 <p id=fin><i>fin!</i></p>
