@@ -450,7 +450,7 @@ A Note on the Purpose (Click to expand)
 <p><strong>Enter: The Mystery Machine</strong></p>
 <p><img src=".././www/11-fiddly-bits-of-pytest/mm.jpg" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
 <p>The scenario: The passengers of the Mystery Machine van all have the munchies. They stop at a ‘drive thru’ to get some takeaway. We have a table with a record for each character. We have data about the characters’ names, their favourite food, whether they have ‘the munchies’, and the contents of their stomach.</p>
-<div id="7d5ba0d1" class="cell" data-execution_count="1">
+<div id="4c1da54d" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mystery_machine <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        {</span>
@@ -603,6 +603,51 @@ Caution
 </section>
 <section id="define-the-source-functions" class="level4">
 <h4 class="anchored" data-anchor-id="define-the-source-functions">Define the source functions</h4>
+<p>Now let’s create a function that will feed characters their favourite food if they have the munchies.</p>
+<p>Note that it is commonplace to copy a pandas DataFrame so that any operations carried out by the function are confined to the function’s scope. To demonstrate changes to the fixtures I will instead choose to edit the dataframe inplace.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>feed_characters.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb9" data-filename="feed_characters.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Helping learners understand how to work with pytest fixtures."""</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> serve_food(df: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Serve characters their desired food.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Iterates over a df, feeding characters if they have 'the munchies' with</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">    their fave_food. If the character is not Scooby Doo or Shaggy, then update</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">    their has_munchies status to False. The input df is modified inplace.</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pd.DataFrame</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">        A dataframe with the following columns: "name": str, "fave_food": str,</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">        "has_munchies": bool, "stomach_contents": str.</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">    pd.DataFrame</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">        Updated dataframe with new statuses for stomach_contents and</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">        has_munchies.</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ind, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">"has_munchies"</span>]:</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if character is hungry then feed them</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>            food <span class="op">=</span> row[<span class="st">"fave_food"</span>]</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>            character <span class="op">=</span> row[<span class="st">"name"</span>]</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Feeding </span><span class="sc">{</span>food<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>character<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>            df.loc[ind, [<span class="st">"stomach_contents"</span>]] <span class="op">=</span> food</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> character <span class="kw">not</span> <span class="kw">in</span> [<span class="st">"Scooby Doo"</span>, <span class="st">"Shaggy"</span>]:</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Scooby &amp; Shaggy are always hungry</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>                df.loc[ind, <span class="st">"has_munchies"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if not hungry then do not adjust</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
 </section>
