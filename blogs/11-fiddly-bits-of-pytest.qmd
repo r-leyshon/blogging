@@ -158,6 +158,7 @@ follows.
 | function    | test function       |
 | class       | test class          |
 | module      | test module         |
+| package     | package under test  |
 | session     | pytest session      |
 
 Note that the default scope for any fixtures that you define will be
@@ -312,7 +313,7 @@ when considering which scope best suits your needs.
 ### Scope persistence
 ***
 
-> function < class < module < session
+> function < class < module < package < session
 
 Using scopes other than 'function' can be useful for end-to-end testing.
 Perhaps you have a complex analytical pipeline and need to check that the
@@ -518,6 +519,7 @@ carried out by the function are confined to the function's scope. To
 demonstrate changes to the fixtures I will instead choose to edit the DataFrame
 inplace.
 
+#### Tests in a Single Test Module
 
 Now to write some tests. To use the fixtures we defined earlier, we simply 
 declare that a test function requires the fixture. Pytest will notice this 
@@ -740,7 +742,7 @@ assertions about the fixtures. This new test will check whether the
 `stomach_contents` column of the module and class-scoped fixtures have been
 updated. Recall that the characters start out with `"empty"` stomach contents.
 
-```{.python filename="test_feed_characters"}
+```{.python filename="test_feed_characters.py"}
 
 # ... (TestServeFood)
     # (test_serve_food_updates_df)
@@ -770,6 +772,34 @@ have been discarded. As `test_whether_changes_to_stomach_contents_persist()`
 exists within a new class `TestSomeOtherTestClass`, the code for
 `_mm_class_scoped` has been executed again, providing the original DataFrame
 values.
+
+While the persistence of fixtures may be useful for end to end tests or
+similar, this approach reduces isolation in the test suite. Be aware that this
+may introduce a bit of friction to your pytest development process. For
+example, it can be commonplace to develop a new test and to check that it
+passes by invoking pytest with the keyword `-k` flag to run that single test
+only. This approach useful if you have a costly test suite and you just want to
+examine changes in a single unit.
+
+However, with the current state of the test module `test_feed_characters.py`,
+executing the entire test module by running
+`pytest ./tests/test_feed_characters.py` will pass while running
+`pytest -k "TestSomeOtherTestClass"` will fail. This is because the assertions
+in `TestSomeOtherTestClass` rely on code being executed within the preceding
+test class `TestServeFood`. Tests in `TestSomeOtherTestClass` rely on changes
+elswehere in your test suite and by definition are no longer unit tests. For
+those developers who work with
+[pytest-randomly](https://pypi.org/project/pytest-randomly/) to help sniff out
+poorly-isolated tests, this approach could cause a bit of a headache.
+
+A good compromise could be to ensure that the use of fixture scopes other than
+`function` are isolated and clearly documented within a test suite. Thoughtful
+grouping of integration tests within test modules or classes can limit grief 
+for collaborating developers. Even better would be to
+[mark tests](https://docs.pytest.org/en/latest/how-to/mark.html) according to
+their scoped dependencies. This approach allows tests to be grouped and
+executed seperately, though the implementation of this is beyond the scope of
+this article. 
 
 ## Troubleshooting Fixture Scopes
 

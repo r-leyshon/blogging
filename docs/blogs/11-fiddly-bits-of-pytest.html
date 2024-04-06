@@ -315,6 +315,10 @@ A Note on the Purpose (Click to expand)
 <td>test module</td>
 </tr>
 <tr class="even">
+<td>package</td>
+<td>package under test</td>
+</tr>
+<tr class="odd">
 <td>session</td>
 <td>pytest session</td>
 </tr>
@@ -436,7 +440,7 @@ A Note on the Purpose (Click to expand)
 <h3 class="anchored" data-anchor-id="scope-persistence">Scope persistence</h3>
 <hr>
 <blockquote class="blockquote">
-<p>function &lt; class &lt; module &lt; session</p>
+<p>function &lt; class &lt; module &lt; package &lt; session</p>
 </blockquote>
 <p>Using scopes other than ‘function’ can be useful for end-to-end testing. Perhaps you have a complex analytical pipeline and need to check that the various components work well <strong>together</strong>, rather than in isolation as with a unit test. This sort of test can be extremely useful for developers in a rush. You can test that the so called ‘promise’ of the codebase is as expected, even though the implementation may change.</p>
 <p>The analogy here would be that the success criteria of a SatNav is that it gets you to your desired destination whatever the suggested route you selected. Checking that you used the fastest or most fuel efficient option is probably a good idea. But if you don’t have time, you’ll just have to take the hit if you encounter a toll road. It’s still worth checking that the postcode you hastily input to the satnav is the correct one.</p>
@@ -449,7 +453,7 @@ A Note on the Purpose (Click to expand)
 <p><strong>Enter: The Mystery Machine</strong></p>
 <p><img src=".././www/11-fiddly-bits-of-pytest/mm.jpg" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
 <p>The scenario: The passengers of the Mystery Machine van all have the munchies. They stop at a ‘drive thru’ to get some takeaway. We have a table with a record for each character. We have data about the characters’ names, their favourite food, whether they have ‘the munchies’, and the contents of their stomach.</p>
-<div id="e8ca536e" class="cell" data-execution_count="1">
+<div id="5a627975" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mystery_machine <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        {</span>
@@ -647,6 +651,9 @@ Caution
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that it is commonplace to copy a pandas DataFrame so that any operations carried out by the function are confined to the function’s scope. To demonstrate changes to the fixtures I will instead choose to edit the DataFrame inplace.</p>
+</section>
+<section id="tests-in-a-single-test-module" class="level4">
+<h4 class="anchored" data-anchor-id="tests-in-a-single-test-module">Tests in a Single Test Module</h4>
 <p>Now to write some tests. To use the fixtures we defined earlier, we simply declare that a test function requires the fixture. Pytest will notice this dependency on collection, check the fixture scope and execute the fixture code if appropriate. The following test <code>test_scopes_before_action</code> checks that the <code>mystery_machine</code> fixtures all have the expected <code>has_munchies</code> column values at the outset of the test module, i.e.&nbsp;everybody is hungry before our source function takes some action.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
@@ -847,9 +854,9 @@ Caution
 <p>Within the same test module, we can add some other test class and make assertions about the fixtures. This new test will check whether the <code>stomach_contents</code> column of the module and class-scoped fixtures have been updated. Recall that the characters start out with <code>"empty"</code> stomach contents.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>test_feed_characters</strong></pre>
+<pre><strong>test_feed_characters.py</strong></pre>
 </div>
-<div class="sourceCode" id="cb13" data-filename="test_feed_characters"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb13" data-filename="test_feed_characters.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (TestServeFood)</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (test_serve_food_updates_df)</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (test_expected_states_within_same_class) ...</span></span>
@@ -873,6 +880,9 @@ Caution
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        ), <span class="st">"Values in class-scoped fixture are not as expected"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In this example, it is demonstrated that changes to the class-scoped fixture have been discarded. As <code>test_whether_changes_to_stomach_contents_persist()</code> exists within a new class <code>TestSomeOtherTestClass</code>, the code for <code>_mm_class_scoped</code> has been executed again, providing the original DataFrame values.</p>
+<p>While the persistence of fixtures may be useful for end to end tests or similar, this approach reduces isolation in the test suite. Be aware that this may introduce a bit of friction to your pytest development process. For example, it can be commonplace to develop a new test and to check that it passes by invoking pytest with the keyword <code>-k</code> flag to run that single test only. This approach useful if you have a costly test suite and you just want to examine changes in a single unit.</p>
+<p>However, with the current state of the test module <code>test_feed_characters.py</code>, executing the entire test module by running <code>pytest ./tests/test_feed_characters.py</code> will pass while running <code>pytest -k "TestSomeOtherTestClass"</code> will fail. This is because the assertions in <code>TestSomeOtherTestClass</code> rely on code being executed within the preceding test class <code>TestServeFood</code>. Tests in <code>TestSomeOtherTestClass</code> rely on changes elswehere in your test suite and by definition are no longer unit tests. For those developers who work with <a href="https://pypi.org/project/pytest-randomly/">pytest-randomly</a> to help sniff out poorly-isolated tests, this approach could cause a bit of a headache.</p>
+<p>A good compromise could be to ensure that the use of fixture scopes other than <code>function</code> are isolated and clearly documented within a test suite. Thoughtful grouping of integration tests within test modules or classes can limit grief for collaborating developers. Even better would be to <a href="https://docs.pytest.org/en/latest/how-to/mark.html">mark tests</a> according to their scoped dependencies. This approach allows tests to be grouped and executed seperately, though the implementation of this is beyond the scope of this article.</p>
 </section>
 </section>
 </section>
