@@ -1022,4 +1022,19 @@ result in a passing test.
 
 ## Summary
 
+Hopefully by now you feel comfortable in when and how to use fixtures for
+`pytest`. We've covered quite a bit, including:
+* What fixtures are
+* Use-cases
+* Where to store them
+* How to reference them
+* How to scope them
+* How changes to fixtures persist or not
+* Handling scope errors 
+
+If you spot an error with this article, feel free to
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+Happy testing!
+
 <p id=fin><i>fin!</i></p>

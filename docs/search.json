@@ -564,7 +564,7 @@
     "href": "blogs/11-fiddly-bits-of-pytest.html#summary",
     "title": "Pytest Fixtures in Plain English",
     "section": "Summary",
-    "text": "Summary\n\nfin!"
+    "text": "Summary\nHopefully by now you feel comfortable in when and how to use fixtures for pytest. We’ve covered quite a bit, including: * What fixtures are * Use-cases * Where to store them * How to reference them * How to scope them * How changes to fixtures persist or not * Handling scope errors\nIf you spot an error with this article, feel free to raise an issue on GitHub.\nHappy testing!\n\nfin!"
   },
   {
     "objectID": "book-reviews/01-deep-work.html",
