@@ -107,7 +107,7 @@ scenario commonly occurs when a developer unwittingly violates Chesterton's
 Principle.
 
 
-<iframe src="https://www.youtube.com/embed/qPGbl2gxGqI" class="shaded-box" title="Chesterton's Fence by Sprouts" style="display: block; width: 600px; height: 338px" frameborder="0">
+<iframe src="https://www.youtube.com/embed/qPGbl2gxGqI" class="shaded_box" title="Chesterton's Fence by Sprouts" style="display: block; width: 600px; height: 338px" frameborder="0">
 </iframe>
 
 Many thanks to my colleague Mat for pointing me towards this useful analogy. A
@@ -329,7 +329,7 @@ good idea. But if you don't have time, you'll just have to take the hit if you
 encounter a toll road. It's still worth checking that the postcode you hastily
 input to the satnav is the correct one.
 
-<iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d19867.3453412218!2d-0.12357612910538017!3d51.50554381133014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d51.5020874!2d-0.0776174!4m5!1s0x48760520cd5b5eb5%3A0xa26abf514d902a7!2sBuckingham%20Palace%2C%20London!3m2!1d51.501363999999995!2d-0.14189!5e0!3m2!1sen!2suk!4v1711782045831!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="shaded-box" title="Google Maps displaying multiple routes to Buckingham Palace. (c) Google." style="display: block; width: 600px; height: 338px">
+<iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d19867.3453412218!2d-0.12357612910538017!3d51.50554381133014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d51.5020874!2d-0.0776174!4m5!1s0x48760520cd5b5eb5%3A0xa26abf514d902a7!2sBuckingham%20Palace%2C%20London!3m2!1d51.501363999999995!2d-0.14189!5e0!3m2!1sen!2suk!4v1711782045831!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="shaded_box" title="Google Maps displaying multiple routes to Buckingham Palace. (c) Google." style="display: block; width: 600px; height: 338px">
 </iframe>
 
 Perhaps your success criteria is that you need to write a DataFrame to file. 
@@ -343,12 +343,12 @@ now have empty tables (I certainly have), this sort of test would be really
 handy, immediately alerting you to this fact and helping you efficiently locate
 the source of the bug.
 
+#### Define Data
+
 In this part, I will explore the scoping of fixtures with DataFrames. Again,
 I'll use a toy example to demonstrate scope behaviour. Being a child of the
 '90s (mostly), I'll use a scenario from my childhood. Scooby Doo is still a
 thing, right?
-
-#### Define Data
 
 **Enter: The Mystery Machine**
 
@@ -519,7 +519,7 @@ carried out by the function are confined to the function's scope. To
 demonstrate changes to the fixtures I will instead choose to edit the DataFrame
 inplace.
 
-#### Tests in a Single Test Module
+#### Fixtures Within a Single Test Module
 
 Now to write some tests. To use the fixtures we defined earlier, we simply 
 declare that a test function requires the fixture. Pytest will notice this 
@@ -654,7 +654,7 @@ Scooby Doo and Shaggy's) gets updated to `False`.
 
 :::{.callout-tip collapse="true"}
 
-##### **How to keep your test code neat**
+##### **Parametrized Tests**
 
 Writing the test out this way makes things explicit and easy to follow.
 However, you could make this test smaller by using a neat feature of the
@@ -773,6 +773,9 @@ exists within a new class `TestSomeOtherTestClass`, the code for
 `_mm_class_scoped` has been executed again, providing the original DataFrame
 values.
 
+##### **Balancing Isolation & Persistence**
+***
+
 While the persistence of fixtures may be useful for end to end tests or
 similar, this approach reduces isolation in the test suite. Be aware that this
 may introduce a bit of friction to your pytest development process. For
@@ -792,7 +795,7 @@ those developers who work with
 [pytest-randomly](https://pypi.org/project/pytest-randomly/) to help sniff out
 poorly-isolated tests, this approach could cause a bit of a headache.
 
-A good compromise could be to ensure that the use of fixture scopes other than
+A good compromise would be to ensure that the use of fixture scopes other than
 `function` are isolated and clearly documented within a test suite. Thoughtful
 grouping of integration tests within test modules or classes can limit grief 
 for collaborating developers. Even better would be to
@@ -801,7 +804,161 @@ their scoped dependencies. This approach allows tests to be grouped and
 executed seperately, though the implementation of this is beyond the scope of
 this article. 
 
-## Troubleshooting Fixture Scopes
+#### Fixtures Across Multiple Test Modules
+
+Finally in this section, we will explore fixture behaviour across more than one
+test module. Below I define a new source module with a function used to update
+the `mystery_machine` DataFrame. This function will update the `fave_food`
+column for a character if it has already eaten. This is meant to represent a
+character's preference for a dessert following a main course. Once more, this
+function will not deep copy the input DataFrame but will allow inplace
+adjustment.
+
+<img class="center shaded_box" alt="Delicious ice cream" title="Delicious ice cream by Prompart https://pixexid.com/profile/@prompart" src="https://images.pixexid.com/delicious-ice-cream-ibt3ypxn.jpeg?h=700&amp;q=70">
+
+```{.python filename="update_food.py"}
+"""Helping learners understand how to work with pytest fixtures."""
+import pandas as pd
+
+
+def fancy_dessert(
+    df: pd.DataFrame,
+    fave_desserts: dict = {
+        "Daphne": "brownie",
+        "Fred": "ice cream",
+        "Scooby Doo": "apple crumble",
+        "Shaggy": "pudding",
+        "Velma": "banana bread",
+    },
+) -> pd.DataFrame:
+    """Update a characters favourite_food to a dessert if they have eaten.
+
+    Iterates over a df, updating the fave_food value for a character if the
+    stomach_contents are not 'empty'.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        A dataframe with the following columns: "name": str, "fave_food": str,
+        "has_munchies": bool, "stomach_contents": str.
+    fave_desserts : dict, optional
+        A mapping of "name" to a replacement favourite_food, by default
+        { "Daphne": "brownie", "Fred": "ice cream",
+        "Scooby Doo": "apple crumble", "Shaggy": "pudding",
+        "Velma": "banana bread", }
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with updated fave_food values.
+
+    """
+    for ind, row in df.iterrows():
+        if row["stomach_contents"] != "empty":
+            # character has eaten, now they should prefer a dessert
+            character = row["name"]
+            dessert = fave_desserts[character]
+            print(f"{character} now wants {dessert}.")
+            df.loc[ind, "fave_food"] = dessert
+        else:
+            # if not eaten, do not adjust
+            pass
+    return df
+
+```
+Note that the condition required for `fancy_dessert()` to take action is that
+the contents of the character's `stomach_contents` should be not equal to
+"empty". Now to test this this new src module, we create a new test module. We
+will run assertions of the `fave_food` columns against the differently-scoped
+fixtures. 
+
+```{.python filename="test_update_food.py"}
+"""Testing pandas operations with test fixtures."""
+from example_pkg.update_food import fancy_dessert
+
+
+class TestFancyDessert:
+    """Tests for fancy_dessert()."""
+
+    def test_fancy_dessert_updates_fixtures_as_expected(
+        self,
+        _mm_session_scoped,
+        _mm_module_scoped,
+        _mm_class_scoped,
+        _mm_function_scoped,
+    ):
+        """Test fancy_dessert() changes favourite_food values to dessert.
+
+        These assertions depend on the current state of the scoped fixtures. If
+        changes performed in
+        test_feed_characters::TestServeFood::test_serve_food_updates_df()
+        persist, then characters will not have empty stomach_contents,
+        resulting in a switch of their favourite_food to dessert.
+        """
+        # first, check update_food() with the session-scoped fixture.
+        assert list(fancy_dessert(_mm_session_scoped)["fave_food"].values) == [
+            "brownie",
+            "ice cream",
+            "apple crumble",
+            "pudding",
+            "banana bread",
+        ], (
+            "The changes to the session-scoped df 'stomach_contents' column",
+            " have not persisted as expected.",
+        )
+        # next, check update_food() with the module-scoped fixture.
+        assert list(fancy_dessert(_mm_module_scoped)["fave_food"].values) == [
+            "carrots",
+            "beans",
+            "scooby snacks",
+            "burgers",
+            "hot dogs",
+        ], (
+            "The module-scoped df 'stomach_contents' column was not as",
+            " expected",
+        )
+        # now, check update_food() with the class-scoped fixture. Note that we
+        # are now making assertions about changes from a different class.
+        assert list(fancy_dessert(_mm_class_scoped)["fave_food"].values) == [
+            "carrots",
+            "beans",
+            "scooby snacks",
+            "burgers",
+            "hot dogs",
+        ], (
+            "The class-scoped df 'stomach_contents' column was not as",
+            " expected",
+        )
+        # Finally, check update_food() with the function-scoped fixture. As
+        # in TestServeFood::test_expected_states_within_same_class(), the
+        # function-scoped fixture starts from scratch.
+        assert list(
+            fancy_dessert(_mm_function_scoped)["fave_food"].values
+        ) == ["carrots", "beans", "scooby snacks", "burgers", "hot dogs"], (
+            "The function-scoped df 'stomach_contents' column was not as",
+            " expected",
+        )
+
+```
+Note that the only fixture expected to have been adjusted by `update_food()` is
+`_mm_session_scoped`. When running the `pytest` command, changes from executing
+the first test module `test_feed_characters.py` propagate for this fixture
+only. All other fixture scopes will go through setup once more on execution of
+the second test module.
+
+Note that this arrangement is highly dependent on the order of which the test
+modules are collected. `pytest` collects tests in alphabetical ordering by
+default, and as such `test_update_food.py` can be expected to be executed after
+`test_feed_characters.py`. As in the case of
+[the previous section](#balancing-isolation--persistence), this test module
+is highly dependent upon the order of the pytest execution. This makes the
+tests less portable and means that running the test module  with
+`pytest tests/test_update_food.py` in isolation would fail. I would once more
+suggest using
+[`pytest` marks](https://docs.pytest.org/en/latest/how-to/mark.html) to group
+these types of tests and execute them seperately to the rest of the test suite.
+
+## `ScopeMismatch` Error
 
 
 <p id=fin><i>fin!</i></p>
