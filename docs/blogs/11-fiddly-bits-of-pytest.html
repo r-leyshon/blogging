@@ -281,20 +281,20 @@ A Note on the Purpose (Click to expand)
 </section>
 <section id="when-would-you-use-fixtures" class="level2">
 <h2 class="anchored" data-anchor-id="when-would-you-use-fixtures">When would you use fixtures?</h2>
-<p>It’s a bad idea to commit data to a git version-controlled repository, right? Agreed. Though fixtures are rarely ‘real’ data. The data used for testing purposes should be minimal and are usually synthetic.</p>
+<p>It’s a bad idea to commit data to a git repository, right? Agreed. Though fixtures are rarely ‘real’ data. The data used for testing purposes should be minimal and are usually synthetic.</p>
 <p><strong>Minimal fixtures</strong> conform to the schema of the actual data under test. These fixtures will be as small as possible while capturing all known important cases. Keeping the data small maintains a performant test suite and avoids problems associated with large files and git version control.</p>
 <p>If you have ever encountered a problem in a system that was caused by a problematic record in the data, the aspect of that record that broke your system should absolutely make it into the next version of your minimal test fixture. Writing a test that checks that the codebase can handle such problem records is known as ‘regression testing’ - safeguarding against old bugs resurfacing when code is refactored or new features are implemented. This scenario commonly occurs when a developer unwittingly violates Chesterton’s Principle.</p>
 <iframe src="https://www.youtube.com/embed/qPGbl2gxGqI" class="shaded_box" title="Chesterton's Fence by Sprouts" style="display: block; width: 600px; height: 338px" frameborder="0">
 </iframe>
 <p>Many thanks to my colleague Mat for pointing me towards this useful analogy. A considerate developer would probably include a comment in their code about a specific problem that they’ve handled (like erecting a sign next to Chesterton’s fence). An experienced developer would do the same, and also write a regression test to ensure the problem doesn’t re-emerge in the future (monitoring the fence with CCTV…). Discovering these problem cases and employing defensive strategies avoids future pain for yourself and colleagues.</p>
-<p>As you can imagine, covering all the important cases and keeping the fixture minimal are a compromise. At the outset of the work, it may not be obvious what problematic cases may arise. Packages such as <a href="https://hypothesis.readthedocs.io/en/latest/"><code>hypothesis</code></a> allow you to generate awkward cases. Non-utf-8 strings anyone? Hypothesis can generate these test cases for you - <em>ăѣ𝔠ծềſģȟᎥ𝒋ǩľḿꞑȯ𝘱𝑞𝗋𝘴ȶ𝞄𝜈ψ𝒙𝘆𝚣</em>.</p>
+<p>As you can imagine, covering all the important cases while keeping the fixture minimal is a compromise. At the outset of the work, it may not be obvious what problematic cases may arise. Packages such as <a href="https://hypothesis.readthedocs.io/en/latest/"><code>hypothesis</code></a> allow you to generate awkward cases. Non-utf-8 strings anyone? Hypothesis can generate these test cases for you - <em>ăѣ𝔠ծềſģȟᎥ𝒋ǩľḿꞑȯ𝘱𝑞𝗋𝘴ȶ𝞄𝜈ψ𝒙𝘆𝚣</em>.</p>
 <p><strong>Non-disclosive fixtures</strong> are those that do not expose personally identifiable or commercially-sensitive information. If you are working with this sort of data, it is necessary to produce toy test fixtures that mimic the schema of the real data. Names and addresses can be de-identified to random alphanumeric strings. Location data can be adjusted with noise. The use of dummy variables or categories can mitigate the risk of disclosure by differencing.</p>
 <p>By adequately anonymising data and testing problem cases, the programmer exhibit their duty to upholding organisational duty to the General Data Protection Regulation, specifically to the duties to accurately store, process, retain and erase personally-identifiable information.</p>
-<p>In cases where system integrates with data available in the public domain, it is may be permissable to include a small sample of the data as a test fixture. Ensure the license that the data is distributed under is compatible with your code’s license. If the license is compatible, I recommend including a reference to the fixture, its source and license within a LICENSE.note file. This practice is enforced by Comprehensive R Archive Network. You can read more about this in the <a href="https://r-pkgs.org/license.html#sec-how-to-include">R Packages documentation</a>.</p>
+<p>In cases where the system integrates with data available in the public domain, it is may be permissible to include a small sample of the data as a test fixture. Ensure the license that the data is distributed under is compatible with your code’s license. If the license is compatible, I recommend including a reference to the fixture, its source and license within a LICENSE.note file. This practice is enforced by Comprehensive R Archive Network. You can read more about this in the <a href="https://r-pkgs.org/license.html#sec-how-to-include">R Packages documentation</a>.</p>
 </section>
 <section id="scoping-fixtures" class="level2">
 <h2 class="anchored" data-anchor-id="scoping-fixtures">Scoping fixtures</h2>
-<p>Pytest fixtures have different scopes, meaning that they will be prepared differently dependent on the scope you specify. The avalable scopes are as follows.</p>
+<p>Pytest fixtures have different scopes, meaning that they will be prepared differently dependent on the scope you specify. The available scopes are as follows:</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -454,7 +454,7 @@ A Note on the Purpose (Click to expand)
 <p><strong>Enter: The Mystery Machine</strong></p>
 <p><img src=".././www/11-fiddly-bits-of-pytest/mm.jpg" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
 <p>The scenario: The passengers of the Mystery Machine van all have the munchies. They stop at a ‘drive thru’ to get some takeaway. We have a table with a record for each character. We have data about the characters’ names, their favourite food, whether they have ‘the munchies’, and the contents of their stomach.</p>
-<div id="36719add" class="cell" data-execution_count="1">
+<div id="bd4f1c67" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mystery_machine <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        {</span>
@@ -668,7 +668,7 @@ Caution
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>You may notice that the assert statements in the tests below requires pulling column values out and casting to lists. The <code>pandas</code> package has it’s own testing module that is super useful for testing all aspects of DataFrames. Check out the <a href="https://pandas.pydata.org/docs/reference/testing.html"><code>pandas</code> testing documentation</a> for more on how to write robust tests for pandas DataFrames and Series.</p>
+<p>You may notice that the assert statements in the tests below requires pulling column values out and casting to lists. The <code>pandas</code> package has its own testing module that is super useful for testing all aspects of DataFrames. Check out the <a href="https://pandas.pydata.org/docs/reference/testing.html"><code>pandas</code> testing documentation</a> for more on how to write robust tests for pandas DataFrames and Series.</p>
 </div>
 </div>
 </div>
@@ -863,7 +863,7 @@ Caution
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (test_expected_states_within_same_class) ...</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestSomeOtherTestClass:</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Demonstrate persistance of changes to class-scoped fixture."""</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Demonstrate persistence of changes to class-scoped fixture."""</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_whether_changes_to_stomach_contents_persist(</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, _mm_class_scoped, _mm_module_scoped</span>
@@ -885,8 +885,8 @@ Caution
 <h5 class="anchored" data-anchor-id="balancing-isolation-persistence"><strong>Balancing Isolation &amp; Persistence</strong></h5>
 <hr>
 <p>While the persistence of fixtures may be useful for end to end tests or similar, this approach reduces isolation in the test suite. Be aware that this may introduce a bit of friction to your pytest development process. For example, it can be commonplace to develop a new test and to check that it passes by invoking pytest with the keyword <code>-k</code> flag to run that single test only. This approach useful if you have a costly test suite and you just want to examine changes in a single unit.</p>
-<p>However, with the current state of the test module <code>test_feed_characters.py</code>, executing the entire test module by running <code>pytest ./tests/test_feed_characters.py</code> will pass while running <code>pytest -k "TestSomeOtherTestClass"</code> will fail. This is because the assertions in <code>TestSomeOtherTestClass</code> rely on code being executed within the preceding test class <code>TestServeFood</code>. Tests in <code>TestSomeOtherTestClass</code> rely on changes elswehere in your test suite and by definition are no longer unit tests. For those developers who work with <a href="https://pypi.org/project/pytest-randomly/">pytest-randomly</a> to help sniff out poorly-isolated tests, this approach could cause a bit of a headache.</p>
-<p>A good compromise would be to ensure that the use of fixture scopes other than <code>function</code> are isolated and clearly documented within a test suite. Thoughtful grouping of integration tests within test modules or classes can limit grief for collaborating developers. Even better would be to <a href="https://docs.pytest.org/en/latest/how-to/mark.html">mark tests</a> according to their scoped dependencies. This approach allows tests to be grouped and executed seperately, though the implementation of this is beyond the scope of this article.</p>
+<p>However, with the current state of the test module <code>test_feed_characters.py</code>, executing the entire test module by running <code>pytest ./tests/test_feed_characters.py</code> will pass while running <code>pytest -k "TestSomeOtherTestClass"</code> will fail. This is because the assertions in <code>TestSomeOtherTestClass</code> rely on code being executed within the preceding test class <code>TestServeFood</code>. Tests in <code>TestSomeOtherTestClass</code> rely on changes elsewhere in your test suite and by definition are no longer unit tests. For those developers who work with <a href="https://pypi.org/project/pytest-randomly/">pytest-randomly</a> to help sniff out poorly-isolated tests, this approach could cause a bit of a headache.</p>
+<p>A good compromise would be to ensure that the use of fixture scopes other than <code>function</code> are isolated and clearly documented within a test suite. Thoughtful grouping of integration tests within test modules or classes can limit grief for collaborating developers. Even better would be to <a href="https://docs.pytest.org/en/latest/how-to/mark.html">mark tests</a> according to their scoped dependencies. This approach allows tests to be grouped and executed separately, though the implementation of this is beyond the scope of this article.</p>
 </section>
 </section>
 <section id="fixtures-across-multiple-test-modules" class="level4">
@@ -945,7 +945,7 @@ Caution
 <span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
 <span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that the condition required for <code>fancy_dessert()</code> to take action is that the contents of the character’s <code>stomach_contents</code> should be not equal to “empty”. Now to test this this new src module, we create a new test module. We will run assertions of the <code>fave_food</code> columns against the differently-scoped fixtures.</p>
+<p>Note that the condition required for <code>fancy_dessert()</code> to take action is that the contents of the character’s <code>stomach_contents</code> should be not equal to “empty”. Now to test this new src module, we create a new test module. We will run assertions of the <code>fave_food</code> columns against the differently-scoped fixtures.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>test_update_food.py</strong></pre>
@@ -1017,14 +1017,14 @@ Caution
 <span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that the only fixture expected to have been adjusted by <code>update_food()</code> is <code>_mm_session_scoped</code>. When running the <code>pytest</code> command, changes from executing the first test module <code>test_feed_characters.py</code> propagate for this fixture only. All other fixture scopes will go through setup once more on execution of the second test module.</p>
-<p>Note that this arrangement is highly dependent on the order of which the test modules are collected. <code>pytest</code> collects tests in alphabetical ordering by default, and as such <code>test_update_food.py</code> can be expected to be executed after <code>test_feed_characters.py</code>. As in the case of <a href="#balancing-isolation--persistence">the previous section</a>, this test module is highly dependent upon the order of the pytest execution. This makes the tests less portable and means that running the test module with <code>pytest tests/test_update_food.py</code> in isolation would fail. I would once more suggest using <a href="https://docs.pytest.org/en/latest/how-to/mark.html"><code>pytest</code> marks</a> to group these types of tests and execute them seperately to the rest of the test suite.</p>
+<p>Note that this arrangement is highly dependent on the order of which the test modules are collected. <code>pytest</code> collects tests in alphabetical ordering by default, and as such <code>test_update_food.py</code> can be expected to be executed after <code>test_feed_characters.py</code>. As in the case of <a href="#balancing-isolation--persistence">the previous section</a>, this test module is highly dependent upon the order of the pytest execution. This makes the tests less portable and means that running the test module with <code>pytest tests/test_update_food.py</code> in isolation would fail. I would once more suggest using <a href="https://docs.pytest.org/en/latest/how-to/mark.html"><code>pytest</code> marks</a> to group these types of tests and execute them separately to the rest of the test suite.</p>
 </section>
 </section>
 </section>
 <section id="scopemismatch-error" class="level2">
 <h2 class="anchored" data-anchor-id="scopemismatch-error"><code>ScopeMismatch</code> Error</h2>
 <p>When working with <code>pytest</code> fixtures, occasionally you will encounter a <code>ScopeMismatch</code> exception. This may happen when attempting to use certain pytest plug-ins or perhaps if trying to use temporary directory fixtures like <code>tmp_path</code> with fixtures that are scoped differently to function-scope. Occasionally, you may encounter this exception when attempting to reference your own fixture in other fixtures, as was done with the <a href="#define-fixtures"><code>mystery_machine</code> fixture above</a>.</p>
-<p>The reason for <code>ScopeMismatch</code> is straight forward. Fixture scopes have a hierarchy, based on their persistence:</p>
+<p>The reason for <code>ScopeMismatch</code> is straightforward. Fixture scopes have a hierarchy, based on their persistence:</p>
 <blockquote class="blockquote">
 <p>function &lt; class &lt; module &lt; package &lt; session</p>
 </blockquote>

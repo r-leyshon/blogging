@@ -88,9 +88,9 @@ data of some sort, regardless of the system under test.
 
 ## When would you use fixtures?
 
-It's a bad idea to commit data to a git version-controlled repository, right?
-Agreed. Though fixtures are rarely 'real' data. The data used for testing
-purposes should be minimal and are usually synthetic. 
+It's a bad idea to commit data to a git repository, right? Agreed. Though
+fixtures are rarely 'real' data. The data used for testing purposes should be
+minimal and are usually synthetic. 
 
 **Minimal fixtures** conform to the schema of the actual data under test.
 These fixtures will be as small as possible while capturing all known important
@@ -118,8 +118,8 @@ a regression test to ensure the problem doesn't re-emerge in the future
 (monitoring the fence with CCTV...). Discovering these problem cases and
 employing defensive strategies avoids future pain for yourself and colleagues.
 
-As you can imagine, covering all the important cases and keeping the fixture
-minimal are a compromise. At the outset of the work, it may not be obvious what
+As you can imagine, covering all the important cases while keeping the fixture
+minimal is a compromise. At the outset of the work, it may not be obvious what
 problematic cases may arise. Packages such as
 [`hypothesis`](https://hypothesis.readthedocs.io/en/latest/) allow you to
 generate awkward cases. Non-utf-8 strings anyone? Hypothesis can generate
@@ -138,20 +138,20 @@ exhibit their duty to upholding organisational duty to the General Data
 Protection Regulation, specifically to the duties to accurately store, process,
 retain and erase personally-identifiable information.
 
-In cases where system integrates with data available in the public domain, it
-is may be permissable to include a small sample of the data as a test fixture.
-Ensure the license that the data is distributed under is compatible with your
-code's license. If the license is compatible, I recommend including a reference
-to the fixture, its source and license within a LICENSE.note file. This
-practice is enforced by Comprehensive R Archive Network. You can read more about
-this in the
+In cases where the system integrates with data available in the public domain,
+it is may be permissible to include a small sample of the data as a test
+fixture. Ensure the license that the data is distributed under is compatible
+with your code's license. If the license is compatible, I recommend including a
+reference to the fixture, its source and license within a LICENSE.note file.
+This practice is enforced by Comprehensive R Archive Network. You can read more
+about this in the
 [R Packages documentation](https://r-pkgs.org/license.html#sec-how-to-include).
 
 ## Scoping fixtures
 
 Pytest fixtures have different scopes, meaning that they will be prepared
-differently dependent on the scope you specify. The avalable scopes are as
-follows. 
+differently dependent on the scope you specify. The available scopes are as
+follows: 
 
 | Scope Name  | Teardown after each |
 | ----------- | ------------------- |
@@ -534,7 +534,7 @@ function takes some action.
 ##### **Testing Pandas DataFrames**
 
 You may notice that the assert statements in the tests below requires pulling 
-column values out and casting to lists. The `pandas` package has it's own
+column values out and casting to lists. The `pandas` package has its own
 testing module that is super useful for testing all aspects of DataFrames.
 Check out the
 [`pandas` testing documentation](https://pandas.pydata.org/docs/reference/testing.html)
@@ -749,7 +749,7 @@ updated. Recall that the characters start out with `"empty"` stomach contents.
     # (test_expected_states_within_same_class) ...
 
 class TestSomeOtherTestClass:
-    """Demonstrate persistance of changes to class-scoped fixture."""
+    """Demonstrate persistence of changes to class-scoped fixture."""
 
     def test_whether_changes_to_stomach_contents_persist(
         self, _mm_class_scoped, _mm_module_scoped
@@ -790,7 +790,7 @@ executing the entire test module by running
 `pytest -k "TestSomeOtherTestClass"` will fail. This is because the assertions
 in `TestSomeOtherTestClass` rely on code being executed within the preceding
 test class `TestServeFood`. Tests in `TestSomeOtherTestClass` rely on changes
-elswehere in your test suite and by definition are no longer unit tests. For
+elsewhere in your test suite and by definition are no longer unit tests. For
 those developers who work with
 [pytest-randomly](https://pypi.org/project/pytest-randomly/) to help sniff out
 poorly-isolated tests, this approach could cause a bit of a headache.
@@ -801,7 +801,7 @@ grouping of integration tests within test modules or classes can limit grief
 for collaborating developers. Even better would be to
 [mark tests](https://docs.pytest.org/en/latest/how-to/mark.html) according to
 their scoped dependencies. This approach allows tests to be grouped and
-executed seperately, though the implementation of this is beyond the scope of
+executed separately, though the implementation of this is beyond the scope of
 this article. 
 
 #### Fixtures Across Multiple Test Modules
@@ -868,8 +868,8 @@ def fancy_dessert(
 ```
 Note that the condition required for `fancy_dessert()` to take action is that
 the contents of the character's `stomach_contents` should be not equal to
-"empty". Now to test this this new src module, we create a new test module. We
-will run assertions of the `fave_food` columns against the differently-scoped
+"empty". Now to test this new src module, we create a new test module. We will
+run assertions of the `fave_food` columns against the differently-scoped
 fixtures. 
 
 ```{.python filename="test_update_food.py"}
@@ -956,7 +956,7 @@ tests less portable and means that running the test module  with
 `pytest tests/test_update_food.py` in isolation would fail. I would once more
 suggest using
 [`pytest` marks](https://docs.pytest.org/en/latest/how-to/mark.html) to group
-these types of tests and execute them seperately to the rest of the test suite.
+these types of tests and execute them separately to the rest of the test suite.
 
 ## `ScopeMismatch` Error
 
@@ -968,7 +968,7 @@ Occasionally, you may encounter this exception when attempting to reference
 your own fixture in other fixtures, as was done with the
 [`mystery_machine` fixture above](#define-fixtures). 
 
-The reason for `ScopeMismatch` is straight forward. Fixture scopes have a
+The reason for `ScopeMismatch` is straightforward. Fixture scopes have a
 hierarchy, based on their persistence:
 
 > function < class < module < package < session
