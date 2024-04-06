@@ -960,5 +960,66 @@ these types of tests and execute them seperately to the rest of the test suite.
 
 ## `ScopeMismatch` Error
 
+When working with `pytest` fixtures, occasionally you will encounter a
+`ScopeMismatch` exception. This may happen when attempting to use certain
+pytest plug-ins or perhaps if trying to use temporary directory fixtures like
+`tmp_path` with fixtures that are scoped differently to function-scope.
+Occasionally, you may encounter this exception when attempting to reference
+your own fixture in other fixtures, as was done with the
+[`mystery_machine` fixture above](#define-fixtures). 
+
+The reason for `ScopeMismatch` is straight forward. Fixture scopes have a
+hierarchy, based on their persistence:
+
+> function < class < module < package < session
+
+Fixtures with a greater scope in the hierarchy are not permitted to reference
+those lower in the hierarchy. The way I remember this rule is that:
+
+> Fixtures must only reference equal or greater scopes.
+
+It is unclear why this rule has been implemented other than to reduce
+complexity (which is reason enough in my book). There was talk about
+implementing `scope="any"` some time ago, but it looks like this idea was
+abandoned. To reproduce the error:
+
+```{.python filename="test_bad_scoping.py"}
+"""Demomstrate ScopeMismatch error."""
+
+import pytest
+
+@pytest.fixture(scope="function")
+def _fix_a():
+    return 1
+
+@pytest.fixture(scope="class")
+def _fix_b(_fix_a):
+    return _fix_a + _fix_a
+
+
+def test__fix_b_return_val(_fix_b):
+    assert _fix_b == 2
+
+```
+Executing this test module results in:
+```
+================================= ERRORS ======================================
+________________ ERROR at setup of test__fix_b_return_val _____________________
+ScopeMismatch: You tried to access the function scoped fixture _fix_a with a
+class scoped request object, involved factories:
+tests/test_bad_scoping.py:9:  def _fix_b(_fix_a)
+tests/test_bad_scoping.py:5:  def _fix_a()
+========================== short test summary info ============================
+ERROR tests/test_bad_scoping.py::test__fix_b_return_val - Failed:
+ScopeMismatch: You tried to access the function scoped fixture _fix_a with a
+class scoped request object, involved factories:
+=========================== 1 error in 0.01s ==================================
+```
+
+This error can be avoided by adjusting the fixture scopes to adhere to the
+hierarchy rule, so updating `_fix_a` to use a class cope or greater would
+result in a passing test.
+
+## Summary
 
 <p id=fin><i>fin!</i></p>
