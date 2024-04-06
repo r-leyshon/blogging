@@ -33,9 +33,6 @@ with `pytest` and is the first in a series of blogs called
 favouring accessible language and simple examples to explain the more intricate
 features of the `pytest` package.
 
-file:///Users/richardleyshon/Documents/blogging/index.html#category=pytest-in-plain-english
-file:///Users/richardleyshon/Documents/blogging/docs/index.html#category=pytest-in-plain-english
-
 For a wealth of documentation, guides and how-tos, please consult the
 <a href="https://docs.pytest.org/en/8.0.x/" target="_blank">Pytest documentation</a>.
 
@@ -334,10 +331,10 @@ input to the satnav is the correct one.
 <iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d19867.3453412218!2d-0.12357612910538017!3d51.50554381133014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d51.5020874!2d-0.0776174!4m5!1s0x48760520cd5b5eb5%3A0xa26abf514d902a7!2sBuckingham%20Palace%2C%20London!3m2!1d51.501363999999995!2d-0.14189!5e0!3m2!1sen!2suk!4v1711782045831!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="shaded-box" title="Google Maps displaying multiple routes to Buckingham Palace. (c) Google." style="display: block; width: 600px; height: 338px">
 </iframe>
 
-Perhaps your success criteria is that you need to write a dataframe to file. 
-A great end-to-end test would check that the dataframe produced has the
+Perhaps your success criteria is that you need to write a DataFrame to file. 
+A great end-to-end test would check that the DataFrame produced has the
 expected number of rows, or even has rows! Of course it's also a good idea to
-check the dataframe conforms to the expected table schema, too: number of
+check the DataFrame conforms to the expected table schema, too: number of
 columns, names of columns, order and data types. This sort of check is often
 overlooked in favour of pressing on with development. If you've ever
 encountered a situation where you've updated a codebase and later realised you
@@ -345,7 +342,7 @@ now have empty tables (I certainly have), this sort of test would be really
 handy, immediately alerting you to this fact and helping you efficiently locate
 the source of the bug.
 
-In this part, I will explore the scoping of fixtures with dataframes. Again,
+In this part, I will explore the scoping of fixtures with DataFrames. Again,
 I'll use a toy example to demonstrate scope behaviour. Being a child of the
 '90s (mostly), I'll use a scenario from my childhood. Scooby Doo is still a
 thing, right?
@@ -381,11 +378,11 @@ mystery_machine = pd.DataFrame(
 mystery_machine
 ```
 
-To use this simple dataframe as a fixture, I could go ahead and define it with
+To use this simple DataFrame as a fixture, I could go ahead and define it with
 `@pytest.fixture()` directly within a test file. But if I would like to share
 it across several test modules, then there are 2 options:
 
-1. Write the dataframe to disk as csv (or whatever format you prefer) and save
+1. Write the DataFrame to disk as csv (or whatever format you prefer) and save
 in the `./tests/data/` folder. At the start of your test modules you can read
 the data from disk and use it for testing. In this approach you'll likely
 define the data as a test fixture in each of the test modules that need to work
@@ -419,7 +416,7 @@ import pytest
 
 @pytest.fixture(scope="session")
 def _mystery_machine():
-    """Session-scoped fixture returning pandas dataframe."""
+    """Session-scoped fixture returning pandas DataFrame."""
     return pd.DataFrame(
         {
             "name": ["Daphne", "Fred", "Scooby Doo", "Shaggy", "Velma"],
@@ -438,32 +435,32 @@ def _mystery_machine():
 
 @pytest.fixture(scope="session")
 def _mm_session_scoped(_mystery_machine):
-    """Session-scoped fixture returning the _mystery_machine dataframe."""
+    """Session-scoped fixture returning the _mystery_machine DataFrame."""
     return _mystery_machine.copy(deep=True)
 
 
 @pytest.fixture(scope="module")
 def _mm_module_scoped(_mystery_machine):
-    """Module-scoped _mystery_machine dataframe."""
+    """Module-scoped _mystery_machine DataFrame."""
     return _mystery_machine.copy(deep=True)
 
 
 @pytest.fixture(scope="class")
 def _mm_class_scoped(_mystery_machine):
-    """Class-scoped _mystery_machine dataframe."""
+    """Class-scoped _mystery_machine DataFrame."""
     return _mystery_machine.copy(deep=True)
 
 
 @pytest.fixture(scope="function")
 def _mm_function_scoped(_mystery_machine):
-    """Function-scoped _mystery_machine dataframe."""
+    """Function-scoped _mystery_machine DataFrame."""
     return _mystery_machine.copy(deep=True)
 
 ```
 
 Fixtures can reference each other, if they're scoped correctly. More on this in
 [the next section](#troubleshooting-fixture-scopes). This is useful for my toy
-example as I intend the source functions to update the dataframes directly, if
+example as I intend the source functions to update the DataFrames directly, if
 I wasn't careful about deep copying the fixtures, my functions would update the
 original `_mystery_machine` fixture's table. Those changes would then be
 subsequently passed to the other fixtures, meaning I couldn't clearly
@@ -473,11 +470,6 @@ demonstrate how the different scopes persist.
 
 Now let's create a function that will feed characters their favourite food if
 they have the munchies. 
-
-Note that it is commonplace to copy a pandas DataFrame so that any operations
-carried out by the function are confined to the function's scope. To
-demonstrate changes to the fixtures I will instead choose to edit the dataframe
-inplace.
 
 ```{.python filename=feed_characters.py}
 """Helping learners understand how to work with pytest fixtures."""
@@ -494,13 +486,13 @@ def serve_food(df: pd.DataFrame) -> pd.DataFrame:
     Parameters
     ----------
     df : pd.DataFrame
-        A dataframe with the following columns: "name": str, "fave_food": str,
+        A DataFrame with the following columns: "name": str, "fave_food": str,
         "has_munchies": bool, "stomach_contents": str.
 
     Returns
     -------
     pd.DataFrame
-        Updated dataframe with new statuses for stomach_contents and
+        Updated DataFrame with new statuses for stomach_contents and
         has_munchies.
 
     """
@@ -521,8 +513,265 @@ def serve_food(df: pd.DataFrame) -> pd.DataFrame:
 
 ```
 
-## Troubleshooting Fixture Scopes
+Note that it is commonplace to copy a pandas DataFrame so that any operations
+carried out by the function are confined to the function's scope. To
+demonstrate changes to the fixtures I will instead choose to edit the DataFrame
+inplace.
 
+
+Now to write some tests. To use the fixtures we defined earlier, we simply 
+declare that a test function requires the fixture. Pytest will notice this 
+dependency on collection, check the fixture scope and execute the fixture code 
+if appropriate. The following test `test_scopes_before_action` checks that the
+`mystery_machine` fixtures all have the expected `has_munchies` column values
+at the outset of the test module, i.e. everybody is hungry before our source
+function takes some action.
+
+:::{.callout-tip collapse="true"}
+
+##### **Testing Pandas DataFrames**
+
+You may notice that the assert statements in the tests below requires pulling 
+column values out and casting to lists. The `pandas` package has it's own
+testing module that is super useful for testing all aspects of DataFrames.
+Check out the
+[`pandas` testing documentation](https://pandas.pydata.org/docs/reference/testing.html)
+for more on how to write robust tests for pandas DataFrames and Series.
+
+:::
+
+```{.python filename="test_feed_characters.py"}
+"""Testing pandas operations with test fixtures."""
+from example_pkg.feed_characters import serve_food
+
+
+def test_scopes_before_action(
+    _mm_session_scoped,
+    _mm_module_scoped,
+    _mm_class_scoped,
+    _mm_function_scoped,
+):
+    """Assert that all characters have the munchies at the outset."""
+    assert list(_mm_session_scoped["has_munchies"].values) == [True] * 5, (
+        "The session-scoped DataFrame 'has_munchies' column was not as ",
+        "expected before any action was taken.",
+    )
+    assert list(_mm_module_scoped["has_munchies"].values) == [True] * 5, (
+        "The module-scoped DataFrame 'has_munchies' column was not as ",
+        "expected before any action was taken.",
+    )
+    assert list(_mm_class_scoped["has_munchies"].values) == [True] * 5, (
+        "The class-scoped DataFrame 'has_munchies' column was not as ",
+        "expected before any action was taken.",
+    )
+    assert list(_mm_function_scoped["has_munchies"].values) == [True] * 5, (
+        "The function-scoped DataFrame 'has_munchies' column was not as ",
+        "expected before any action was taken.",
+    )
+
+```
+
+Now to test the `serve_food()` function operates as expected. We can define
+a test class that will house all tests designed to test the functionality of 
+`serve_food()`. Within that class let's define our first test that simply
+checks that the value of the `has_munchies` column has been updated as we would
+expect after using the `serve_food()` function.
+
+```{.python filename="test_feed_characters.py"}
+class TestServeFood:
+    """Tests that serve_food() updates the 'has_munchies' column."""
+
+    def test_serve_food_updates_df(
+        self,
+        _mm_session_scoped,
+        _mm_module_scoped,
+        _mm_class_scoped,
+        _mm_function_scoped,
+    ):
+        """Test serve_food updates the has_munchies columns as expected.
+
+        This function will update each fixture in the same way, providing each
+        character with their favourite_food and updating the contents of their
+        stomach. The column we will assert against will be has_munchies, which
+        should be updated to False after feeding in all cases except for Scooby
+        Doo and Shaggy, who always have the munchies.
+        """
+        # first lets check that the session-scoped dataframe gets updates
+        assert list(serve_food(_mm_session_scoped)["has_munchies"].values) == [
+            False,
+            False,
+            True,
+            True,
+            False,
+        ], (
+            "The `serve_food()` has not updated the session-scoped df",
+            " 'has_munchies' column as expected.",
+        )
+        # next check the same for the module-scoped fixture
+        assert list(serve_food(_mm_module_scoped)["has_munchies"].values) == [
+            False,
+            False,
+            True,
+            True,
+            False,
+        ], (
+            "The `serve_food()` has not updated the module-scoped df",
+            " 'has_munchies' column as expected.",
+        )
+        # Next check class-scoped fixture updates
+        assert list(serve_food(_mm_class_scoped)["has_munchies"].values) == [
+            False,
+            False,
+            True,
+            True,
+            False,
+        ], (
+            "The `serve_food()` has not updated the class-scoped df",
+            " 'has_munchies' column as expected.",
+        )
+        # Finally check the function-scoped df does the same...
+        assert list(
+            serve_food(_mm_function_scoped)["has_munchies"].values
+        ) == [
+            False,
+            False,
+            True,
+            True,
+            False,
+        ], (
+            "The `serve_food()` has not updated the function-scoped df",
+            " 'has_munchies' column as expected.",
+        )
+
+```
+
+Notice that the test makes exactly the same assertion for every differently
+scoped fixture? In every instance, we have fed the characters in the mystery
+machine DataFrame and therefore everyone's `has_munchies` status (apart from
+Scooby Doo and Shaggy's) gets updated to `False`.
+
+:::{.callout-tip collapse="true"}
+
+##### **How to keep your test code neat**
+
+Writing the test out this way makes things explicit and easy to follow.
+However, you could make this test smaller by using a neat feature of the
+`pytest` package called **parametrized** tests. This is basically like applying
+conditions to your tests in a `for` loop. Perhaps you have a bunch of
+conditions to check, multiple DataFrames or whatever. These can be
+programmatically served with
+[parametrized tests](https://docs.pytest.org/en/7.1.x/how-to/parametrize.html).
+While outside of the scope of this article, I intend to write a blog on this in
+the future.
+:::
+
+Now we can update the test class to include a new test that checks the state of
+the fixtures. At this point, we will start to see some differences due to the
+scoping of the fixtures. The new `test_expected_states_within_same_class()`
+will assert that the changes to the fixtures brought about in the previous test
+`test_serve_food_updates_df()` will persist, except for the the case of
+`_mm_function_scoped`.
+
+```{.python filename="test_feed_characters.py"}
+class TestServeFood:
+    """Tests that serve_food() updates the 'has_munchies' column."""
+    # ... (test_serve_food_updates_df)
+
+    def test_expected_states_within_same_class(
+        self,
+        _mm_session_scoped,
+        _mm_module_scoped,
+        _mm_class_scoped,
+        _mm_function_scoped,
+    ):
+        """Test to ensure fixture states are as expected."""
+        # Firstly, session-scoped changes should persist, only Scooby Doo &
+        # Shaggy should still have the munchies...
+        assert list(_mm_session_scoped["has_munchies"].values) == [
+            False,
+            False,
+            True,
+            True,
+            False,
+        ], (
+            "The changes to the session-scoped df 'has_munchies' column have",
+            " not persisted as expected.",
+        )
+        # Secondly, module-scoped changes should persist, as was the case for
+        # the session-scope test above
+        assert list(_mm_module_scoped["has_munchies"].values) == [
+            False,
+            False,
+            True,
+            True,
+            False,
+        ], (
+            "The changes to the module-scoped df 'has_munchies' column have",
+            " not persisted as expected.",
+        )
+        # Next, class-scoped changes should persist just the same
+        assert list(_mm_class_scoped["has_munchies"].values) == [
+            False,
+            False,
+            True,
+            True,
+            False,
+        ], (
+            "The changes to the class-scoped df 'has_munchies' column have",
+            " not persisted as expected.",
+        )
+        # Finally, demonstrate that function-scoped fixture starts from scratch
+        # Therefore all characters should have the munchies all over again.
+        assert (
+            list(_mm_function_scoped["has_munchies"].values) == [True] * 5
+        ), (
+            "The function_scoped df 'has_munchies' column is not as expected.",
+        )
+
+```
+
+In the above test, we assert that the function-scoped fixture values have
+the original values. The function-scoped fixture is executed again as
+`test_expected_states_within_same_class` is executed, ensuring a 'fresh',
+unchanged version of the fixture DataFrame is provided. 
+
+Within the same test module, we can add some other test class and make
+assertions about the fixtures. This new test will check whether the
+`stomach_contents` column of the module and class-scoped fixtures have been
+updated. Recall that the characters start out with `"empty"` stomach contents.
+
+```{.python filename="test_feed_characters"}
+
+# ... (TestServeFood)
+    # (test_serve_food_updates_df)
+    # (test_expected_states_within_same_class) ...
+
+class TestSomeOtherTestClass:
+    """Demonstrate persistance of changes to class-scoped fixture."""
+
+    def test_whether_changes_to_stomach_contents_persist(
+        self, _mm_class_scoped, _mm_module_scoped
+    ):
+        """Check the stomach_contents column."""
+        assert list(_mm_module_scoped["stomach_contents"].values) == [
+            "carrots",
+            "beans",
+            "scooby snacks",
+            "burgers",
+            "hot dogs",
+        ], "Changes to module-scoped fixture have not propagated as expected."
+        assert (
+            list(_mm_class_scoped["stomach_contents"].values) == ["empty"] * 5
+        ), "Values in class-scoped fixture are not as expected"
+```
+
+In this example, it is demonstrated that changes to the class-scoped fixture 
+have been discarded. As `test_whether_changes_to_stomach_contents_persist()`
+exists within a new class `TestSomeOtherTestClass`, the code for
+`_mm_class_scoped` has been executed again, providing the original DataFrame
+values.
+
+## Troubleshooting Fixture Scopes
 
 
 <p id=fin><i>fin!</i></p>
