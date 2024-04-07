@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Rich Leyshon">
+<meta name="dcterms.date" content="2024-03-24">
+<meta name="description" content="Plain English Discussion of Pytest Fixtures.">
+
+<title>The Data Savvy Corner - Pytest Fixtures in Plain English</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="..//./favicon.ico" rel="icon">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../www/styles.css">
+<meta property="og:title" content="The Data Savvy Corner - Pytest Fixtures in Plain English">
+<meta property="og:description" content="Plain English Discussion of Pytest Fixtures.">
+<meta property="og:image" content="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;amp;q=70">
+<meta property="og:site_name" content="The Data Savvy Corner">
+<meta property="og:image:alt" content="Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
+<meta name="twitter:title" content="The Data Savvy Corner - Pytest Fixtures in Plain English">
+<meta name="twitter:description" content="Plain English Discussion of Pytest Fixtures.">
+<meta name="twitter:image" content="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;amp;q=70">
+<meta name="twitter:site" content="@Rich_L1984">
+<meta name="twitter:image:alt" content="Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">The Data Savvy Corner</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blogs/index.html"> 
+<span class="menu-text">Byte-Wise Musings</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../music-reviews/index.html"> 
+<span class="menu-text">Productivity Pulse</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../book-reviews/index.html"> 
+<span class="menu-text">Bookmarked Insights</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools tools-wide">
+    <a href="https://twitter.com/Rich_L1984" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-twitter-x"></i></a>
+    <a href="https://github.com/r-leyshon" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/richard-leyshon-316121163/" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#intended-audience" id="toc-intended-audience" class="nav-link" data-scroll-target="#intended-audience">Intended Audience</a></li>
+  <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What You’ll Need:</a></li>
+  <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
+  </ul></li>
+  <li><a href="#what-are-fixtures" id="toc-what-are-fixtures" class="nav-link" data-scroll-target="#what-are-fixtures">What are fixtures?</a></li>
+  <li><a href="#when-would-you-use-fixtures" id="toc-when-would-you-use-fixtures" class="nav-link" data-scroll-target="#when-would-you-use-fixtures">When would you use fixtures?</a></li>
+  <li><a href="#scoping-fixtures" id="toc-scoping-fixtures" class="nav-link" data-scroll-target="#scoping-fixtures">Scoping fixtures</a>
+  <ul class="collapse">
+  <li><a href="#scoping-for-performance" id="toc-scoping-for-performance" class="nav-link" data-scroll-target="#scoping-for-performance">Scoping for performance</a></li>
+  <li><a href="#scope-persistence" id="toc-scope-persistence" class="nav-link" data-scroll-target="#scope-persistence">Scope persistence</a></li>
+  </ul></li>
+  <li><a href="#scopemismatch-error" id="toc-scopemismatch-error" class="nav-link" data-scroll-target="#scopemismatch-error"><code>ScopeMismatch</code> Error</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Pytest Fixtures in Plain English</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Explanation</div>
+    <div class="quarto-category">pytest</div>
+    <div class="quarto-category">Unit tests</div>
+    <div class="quarto-category">fixtures</div>
+    <div class="quarto-category">pytest-in-plain-english</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Plain English Discussion of Pytest Fixtures.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Rich Leyshon </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 24, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<figure class="center figure">
+<img class="shaded_box figure-img" width="400px" src="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg">
+<figcaption style="text-align:center;">
+Creative commons license by <a href="https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe">Ralph</a>
+</figcaption>
+</figure>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses using test data as fixtures with <code>pytest</code> and is the first in a series of blogs called <a href="../../index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
+<p>For a wealth of documentation, guides and how-tos, please consult the <a href="https://docs.pytest.org/en/8.0.x/" target="_blank">pytest documentation</a>.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A Note on the Purpose (Click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This article intends to discuss clearly. It doesn’t aim to be clever or impressive. Its aim is to extend the audience’s understanding of the more intricate features of <code>pytest</code> by describing their utility with simple code examples.</p>
+</div>
+</div>
+</div>
+<section id="intended-audience" class="level3">
+<h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
+<p>Programmers with a working knowledge of python and some familiarity with <code>pytest</code> and packaging. The type of programmer who has wondered about how to optimise their test code.</p>
+</section>
+<section id="what-youll-need" class="level3">
+<h3 class="anchored" data-anchor-id="what-youll-need">What You’ll Need:</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Preferred python environment manager (eg <code>conda</code>)</label></li>
+<li><label><input type="checkbox"><code>pip install pytest==8.1.1</code></label></li>
+<li><label><input type="checkbox">Git</label></li>
+<li><label><input type="checkbox">GitHub account</label></li>
+<li><label><input type="checkbox">Command line access</label></li>
+</ul>
+</section>
+<section id="preparation" class="level3">
+<h3 class="anchored" data-anchor-id="preparation">Preparation</h3>
+<p>This blog is accompanied by code in <a href="https://github.com/r-leyshon/pytest-fiddly-examples">this repository</a>. The main branch provides a template with the minimum structure and requirements expected to run a <code>pytest</code> suite. The repo branches contain the code used in the examples of the following sections.</p>
+<p>Feel free to fork or clone the repo and checkout to the example branches as needed.</p>
+<p>The example code that accompanies this article is available in the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/fixtures">fixtures branch</a> of the example code repo.</p>
+</section>
+</section>
+<section id="what-are-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-fixtures">What are fixtures?</h2>
+<p>Data. Well, data provided specifically for testing purposes. This is the essential definition for a fixture. One could argue the case that fixtures are more than this. Fixtures could be environment variables, class instances, connection to a server or whatever dependencies your code needs to run.</p>
+<p>I would agree that fixtures are not just data. But that all fixtures return data of some sort, regardless of the system under test.</p>
+</section>
+<section id="when-would-you-use-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="when-would-you-use-fixtures">When would you use fixtures?</h2>
+<p>It’s a bad idea to commit data to a git repository, right? Agreed. Though fixtures are rarely ‘real’ data. The data used for testing purposes should be minimal and are usually synthetic.</p>
+<p><strong>Minimal fixtures</strong> conform to the schema of the actual data that the system requires. These fixtures will be as small as possible while capturing all known important cases. Keeping the data small maintains a performant test suite and avoids problems associated with large files and git version control.</p>
+<p>If you have ever encountered a problem in a system that was caused by a problematic record in the data, the aspect of that record that broke your system should absolutely make it into the next version of your minimal test fixture. Writing a test that checks that the codebase can handle such problem records is known as ‘regression testing’ - safeguarding against old bugs resurfacing when code is refactored or new features are implemented. This scenario commonly occurs when a developer unwittingly violates Chesterton’s Principle.</p>
+<iframe src="https://www.youtube.com/embed/qPGbl2gxGqI" class="shaded_box" title="Chesterton's Fence by Sprouts" style="display: block; width: 600px; height: 338px" frameborder="0">
+</iframe>
+<p>Many thanks to my colleague Mat for pointing me towards this useful analogy. A considerate developer would probably include a comment in their code about a specific problem that they’ve handled (like erecting a sign next to Chesterton’s fence). An experienced developer would do the same, and also write a regression test to ensure the problem doesn’t re-emerge in the future (monitoring the fence with CCTV…). Discovering these problem cases and employing defensive strategies avoids future pain for yourself and colleagues.</p>
+<p>As you can imagine, covering all the important cases while keeping the fixture minimal is a compromise. At the outset of the work, it may not be obvious what problematic cases may arise. Packages such as <a href="https://hypothesis.readthedocs.io/en/latest/"><code>hypothesis</code></a> allow you to generate awkward cases. Non-utf-8 strings anyone? Hypothesis can generate these test cases for you, along with many more interesting edge-cases - <em>ăѣ𝔠ծềſģȟᎥ𝒋ǩľḿꞑȯ𝘱𝑞𝗋𝘴ȶ𝞄𝜈ψ𝒙𝘆𝚣</em> (Non-utf8 strings often cause problems for web apps).</p>
+<p><strong>Non-disclosive fixtures</strong> are those that do not expose personally identifiable or commercially-sensitive information. If you are working with this sort of data, it is necessary to produce toy test fixtures that mimic the schema of the real data. Names and addresses can be de-identified to random alphanumeric strings. Location data can be adjusted with noise. The use of dummy variables or categories can mitigate the risk of disclosure by differencing.</p>
+<p>By adequately anonymising data and testing problem cases, the programmer exhibits upholds duties under the General Data Protection Regulation:</p>
+<blockquote class="blockquote">
+<p>accurately store, process, retain and erase personally-identifiable information.</p>
+</blockquote>
+<p>In cases where the system integrates with data available in the public domain, it is may be permissible to include a small sample of the data as a test fixture. Ensure the license that the data is distributed under is compatible with your code’s license. If the license is compatible, I recommend including a reference to the fixture, its source and license within a LICENSE.note file. This practice is enforced by Comprehensive R Archive Network. You can read more about this in the <a href="https://r-pkgs.org/license.html#sec-how-to-include">R Packages documentation</a>.</p>
+</section>
+<section id="scoping-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="scoping-fixtures">Scoping fixtures</h2>
+<p><code>pytest</code> fixtures have different scopes, meaning that they will be prepared differently dependent on the scope you specify. The available scopes are as follows:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Scope Name</th>
+<th>Teardown after each</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+<td>test function</td>
+</tr>
+<tr class="even">
+<td>class</td>
+<td>test class</td>
+</tr>
+<tr class="odd">
+<td>module</td>
+<td>test module</td>
+</tr>
+<tr class="even">
+<td>package</td>
+<td>package under test</td>
+</tr>
+<tr class="odd">
+<td>session</td>
+<td><code>pytest</code> session</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the default scope for any fixtures that you define will be ‘function’. A function-scoped fixture will be set up for every test function that requires it. Once the function has executed, the fixture will then be torn down and all changes to this fixture will be lost. This default behaviour encourages isolation in your test suite. Meaning that the tests have no dependencies upon each other. The test functions could be run in any order without affecting the results of the test. Function-scoped fixtures are the shortest-lived fixtures. Moving down the table above, the persistence of the fixtures increases. Changes to a session-scoped fixture persist for the entire test execution duration, only being torn down once <code>pytest</code> has executed all tests.</p>
+<section id="scoping-for-performance" class="level3">
+<h3 class="anchored" data-anchor-id="scoping-for-performance">Scoping for performance</h3>
+<hr>
+<blockquote class="blockquote">
+<p>performance vs isolation</p>
+</blockquote>
+<p>By definition, a unit test is completely isolated, meaning that it will have no dependencies other than the code it needs to test. However, there may be a few cases where this would be less desirable. Slow test suites may introduce excessive friction to the software development process. Persistent fixtures can be used to improve the performance of a test suite.</p>
+<p>For example, here we define some expensive class:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" data-filename="expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""A module containing an expensive class definition."""</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExpensiveDoodah:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A toy class that represents some costly operation.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    This class will sleep for the specified number of seconds on instantiation.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    sleep_time : Union[int, float]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of seconds to wait on init.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sleep_time: Union[<span class="bu">int</span>, <span class="bu">float</span>] <span class="op">=</span> <span class="dv">2</span>):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Sleeping for </span><span class="sc">{</span>sleep_time<span class="sc">}</span><span class="ss"> seconds"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        time.sleep(sleep_time)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This class will be used to demonstrate the effect of scoping with some costly operation. This example could represent reading in a bulky xlsx file or querying a large database.</p>
+<p>To serve <code>ExpensiveDoodah</code> to our tests, I will define a function-scoped fixture. To do this, we use a <code>pytest</code> fixture decorator to return the class instance with a specified sleep time of 2 seconds.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" data-filename="test_expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.expensive <span class="im">import</span> ExpensiveDoodah</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> module_doodah():</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Function-scoped ExpensiveDoodah."""</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ExpensiveDoodah(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now to test <code>ExpensiveDoodah</code> we extend our test module to include a test class with 3 separate test functions. The assertions will all be the same for this simple example - that <code>ExpensiveDoodah</code> executes without raising any error conditions. Notice we must pass the name of the fixture in each test function’s signature.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-filename="test_expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for expensive.py using function-scoped fixture."""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> contextlib <span class="im">import</span> nullcontext <span class="im">as</span> does_not_raise</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.expensive <span class="im">import</span> ExpensiveDoodah</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> doodah_fixture():</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Function-scoped ExpensiveDoodah."""</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ExpensiveDoodah(<span class="dv">2</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestA:</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A test class."""</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_1(<span class="va">self</span>, doodah_fixture):</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test 1."""</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> does_not_raise():</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>            doodah_fixture</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_2(<span class="va">self</span>, doodah_fixture):</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test 2."""</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> does_not_raise():</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            doodah_fixture</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_3(<span class="va">self</span>, doodah_fixture):</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test 3."""</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> does_not_raise():</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>            doodah_fixture</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The result of running this test module can be seen below:</p>
+<pre><code>collected 3 items
+
+./tests/test_expensive_function_scoped.py ...    [100%]
+
+============================ 3 passed in 6.04s ================================
+</code></pre>
+<p>Notice that the test module took just over 6 seconds to execute because the function-scoped fixture was set up once for each test function.</p>
+<p>If instead we had defined <code>doodah_fixture</code> with a different scope, it would reduce the time for the test suite to complete by approximately two thirds. This is the sort of benefit that can be gained from considerate use of <code>pytest</code> fixtures.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_expensive.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" data-filename="test_expensive.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"module"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> doodah_fixture():</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Module-scoped ExpensiveDoodah."""</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ExpensiveDoodah(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>collected 3 items
+
+./tests/test_expensive_function_scoped.py ...    [100%]
+
+============================ 3 passed in 2.02s ================================
+</code></pre>
+<p>The scoping feature of <code>pytest</code> fixtures can be used to optimise a test-suite and avoid lengthy delays while waiting for your test suites to execute. However, any changes to the fixture contents will persist until the fixture is next torn down. Keeping track of the states of differently-scoped fixtures in a complex test suite can be tricky and reduces segmentation overall. Bear this in mind when considering which scope best suits your needs.</p>
+</section>
+<section id="scope-persistence" class="level3">
+<h3 class="anchored" data-anchor-id="scope-persistence">Scope persistence</h3>
+<hr>
+<blockquote class="blockquote">
+<p>function &lt; class &lt; module &lt; package &lt; session</p>
+</blockquote>
+<p>Using scopes other than ‘function’ can be useful for end-to-end testing. Perhaps you have a complex analytical pipeline and need to check that the various components work well <strong>together</strong>, rather than in isolation as with a unit test. This sort of test can be extremely useful for developers in a rush. You can test that the so called ‘promise’ of the codebase is as expected, even though the implementation may change.</p>
+<p>The analogy here would be that the success criteria of a SatNav is that it gets you to your desired destination whatever the suggested route you selected. Checking that you used the fastest or most fuel efficient option is probably a good idea. But if you don’t have time, you’ll just have to take the hit if you encounter a toll road. Though it’s still worth checking that the postcode you hastily input to the satnav is the correct one.</p>
+<iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d19867.3453412218!2d-0.12357612910538017!3d51.50554381133014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d51.5020874!2d-0.0776174!4m5!1s0x48760520cd5b5eb5%3A0xa26abf514d902a7!2sBuckingham%20Palace%2C%20London!3m2!1d51.501363999999995!2d-0.14189!5e0!3m2!1sen!2suk!4v1711782045831!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="shaded_box" title="Google Maps displaying multiple routes to Buckingham Palace. (c) Google." style="display: block; width: 600px; height: 338px">
+</iframe>
+<p><br> Perhaps your success criteria is that you need to write a DataFrame to file. A great end-to-end test would check that the DataFrame produced has the expected number of rows, or even has rows! Of course it’s also a good idea to check the DataFrame conforms to the expected table schema, too: number of columns, names of columns, order and data types. This sort of check is often overlooked in favour of pressing on with development. If you’ve ever encountered a situation where you’ve updated a codebase and later realised you now have empty tables (I certainly have), this sort of test would be really handy, immediately alerting you to this fact and helping you efficiently locate the source of the bug.</p>
+<section id="define-data" class="level4">
+<h4 class="anchored" data-anchor-id="define-data">Define Data</h4>
+<p>In this part, I will explore the scoping of fixtures with DataFrames. Again, I’ll use a toy example to demonstrate scope behaviour. Being a child of the ’90s (mostly), I’ll use a scenario from my childhood. Scooby Doo is still a thing, right?</p>
+<p><strong>Enter: The Mystery Machine</strong></p>
+<p><img src=".././www/11-fiddly-bits-of-pytest/mm.jpg" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
+<p>The scenario: The passengers of the Mystery Machine van all have the munchies. They stop at a ‘drive thru’ to get some takeaway. We have a table with a record for each character. We have columns with data about the characters’ names, their favourite food, whether they have ‘the munchies’, and the contents of their stomach.</p>
+<div id="ceb021fc" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mystery_machine <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"name"</span>: [<span class="st">"Daphne"</span>, <span class="st">"Fred"</span>, <span class="st">"Scooby Doo"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Velma"</span>],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fave_food"</span>: [</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"carrots"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"beans"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                <span class="st">"scooby snacks"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"burgers"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="st">"hot dogs"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"has_munchies"</span>: [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>, <span class="co"># everyone's hungry</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"stomach_contents"</span>: [<span class="st">"empty"</span>] <span class="op">*</span> <span class="dv">5</span>, <span class="co"># all have empty stomachs</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>mystery_machine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">fave_food</th>
+<th data-quarto-table-cell-role="th">has_munchies</th>
+<th data-quarto-table-cell-role="th">stomach_contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Daphne</td>
+<td>carrots</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Fred</td>
+<td>beans</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Scooby Doo</td>
+<td>scooby snacks</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Shaggy</td>
+<td>burgers</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Velma</td>
+<td>hot dogs</td>
+<td>True</td>
+<td>empty</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>To use this simple DataFrame as a fixture, I could go ahead and define it with <code>@pytest.fixture()</code> directly within a test file. But if I would like to share it across several test modules (<a href="#fixtures-across-multiple-test-modules">as implemented later</a>), then there are 2 options:</p>
+<ol type="1">
+<li>Write the DataFrame to disk as csv (or whatever format you prefer) and save in a <code>./tests/data/</code> folder. At the start of your test modules you can read the data from disk and use it for testing. In this approach you’ll likely define the data as a test fixture in each of the test modules that need to work with it.</li>
+<li>Define the fixtures within a special python file called <code>conftest.py</code>, which must be located at the root of your project. This file is used to configure your tests. <code>pytest</code> will look in this file for any required fixture definitions when executing your test suite. If it finds a fixture with the same name as that required by a test, the fixture code may be run.</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wait! Did you just say ‘<strong>may</strong> be run’?</p>
+</div>
+</div>
+<p>Depending on the scope of your fixture, <code>pytest</code> may not need to execute the code for each test. For example, let’s say we’re working with a session-scoped fixture. This type of fixture will persist for the duration of the entire test suite execution. Imagine test number 1 and 10 both require this test fixture. The fixture definition only gets executed the first time a test requires it. This test fixture will be set up as test 1 executes and will persist until tear down occurs at the end of the <code>pytest</code> session. Test 10 will therefore use the same instance of this fixture as test 1 used, meaning any changes to the fixture may be carried forward.</p>
+</section>
+<section id="define-fixtures" class="level4">
+<h4 class="anchored" data-anchor-id="define-fixtures">Define fixtures</h4>
+<p>For our example, we will create a <code>conftest.py</code> file and define some fixtures with differing scopes.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>conftest.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb8" data-filename="conftest.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Demonstrate scoping fixtures."""</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"session"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mystery_machine():</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Session-scoped fixture returning pandas DataFrame."""</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"name"</span>: [<span class="st">"Daphne"</span>, <span class="st">"Fred"</span>, <span class="st">"Scooby Doo"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Velma"</span>],</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fave_food"</span>: [</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">"carrots"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                <span class="st">"beans"</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                <span class="st">"scooby snacks"</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">"burgers"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">"hot dogs"</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"has_munchies"</span>: [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"stomach_contents"</span>: [<span class="st">"empty"</span>] <span class="op">*</span> <span class="dv">5</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"session"</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_session_scoped(_mystery_machine):</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Session-scoped fixture returning the _mystery_machine DataFrame."""</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"module"</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_module_scoped(_mystery_machine):</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Module-scoped _mystery_machine DataFrame."""</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"class"</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_class_scoped(_mystery_machine):</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Class-scoped _mystery_machine DataFrame."""</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _mm_function_scoped(_mystery_machine):</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Function-scoped _mystery_machine DataFrame."""</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mystery_machine.copy(deep<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fixtures can reference each other, if they’re scoped correctly. More on this in <a href="#scopemismatch-error">the next section</a>. This is useful for my toy example as I intend the source functions to update the DataFrames directly, if I wasn’t careful about deep copying the fixtures, my functions would update the original <code>_mystery_machine</code> fixture’s table. Those changes would then be subsequently passed to the other fixtures, meaning I couldn’t clearly demonstrate how the different scopes persist.</p>
+</section>
+<section id="define-the-source-functions" class="level4">
+<h4 class="anchored" data-anchor-id="define-the-source-functions">Define the source functions</h4>
+<p>Now, let’s create a function that will feed characters their favourite food if they have the munchies.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>feed_characters.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb9" data-filename="feed_characters.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Helping learners understand how to work with pytest fixtures."""</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> serve_food(df: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Serve characters their desired food.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Iterates over a df, feeding characters if they have 'the munchies' with</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">    their fave_food. If the character is not Scooby Doo or Shaggy, then update</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">    their has_munchies status to False. The input df is modified inplace.</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pd.DataFrame</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">        A DataFrame with the following columns: "name": str, "fave_food": str,</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">        "has_munchies": bool, "stomach_contents": str.</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">    pd.DataFrame</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">        Updated DataFrame with new statuses for stomach_contents and</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">        has_munchies.</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ind, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">"has_munchies"</span>]:</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if character is hungry then feed them</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>            food <span class="op">=</span> row[<span class="st">"fave_food"</span>]</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>            character <span class="op">=</span> row[<span class="st">"name"</span>]</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Feeding </span><span class="sc">{</span>food<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>character<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>            df.loc[ind, [<span class="st">"stomach_contents"</span>]] <span class="op">=</span> food</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> character <span class="kw">not</span> <span class="kw">in</span> [<span class="st">"Scooby Doo"</span>, <span class="st">"Shaggy"</span>]:</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Scooby &amp; Shaggy are always hungry</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>                df.loc[ind, <span class="st">"has_munchies"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if not hungry then do not adjust</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that it is commonplace to copy a pandas DataFrame so that any operations carried out by the function are confined to the function’s scope. To demonstrate changes to the fixtures I will instead choose to edit the DataFrame inplace.</p>
+</section>
+<section id="fixtures-within-a-single-test-module" class="level4">
+<h4 class="anchored" data-anchor-id="fixtures-within-a-single-test-module">Fixtures Within a Single Test Module</h4>
+<p>Now to write some tests. To use the fixtures we defined earlier, we simply declare that a test function requires the fixture. <code>pytest</code> will notice this dependency on collection, check the fixture scope and execute the fixture code if appropriate. The following test <code>test_scopes_before_action</code> checks that the <code>mystery_machine</code> fixtures all have the expected <code>has_munchies</code> column values at the outset of the test module, i.e.&nbsp;everybody is hungry before our source function takes some action. This type of test doesn’t check behaviour of any source code and therefore would be unnecessary for quality assurance purposes. But I include it here to demonstrate the simple use of fixtures and prove to the reader the state of the DataFrame fixtures prior to any source code intervention.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<strong>Testing <code>pandas</code> DataFrames</strong>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You may notice that the assert statements in the tests below requires pulling column values out and casting to lists. The <code>pandas</code> package has its own testing module that is super useful for testing all aspects of DataFrames. Check out the <a href="https://pandas.pydata.org/docs/reference/testing.html"><code>pandas</code> testing documentation</a> for more on how to write robust tests for pandas DataFrames and Series.</p>
+</div>
+</div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_feed_characters.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb10" data-filename="test_feed_characters.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Testing pandas operations with test fixtures."""</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.feed_characters <span class="im">import</span> serve_food</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_scopes_before_action(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    _mm_session_scoped,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    _mm_module_scoped,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    _mm_class_scoped,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    _mm_function_scoped,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>):</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Assert that all characters have the munchies at the outset."""</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(_mm_session_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>, (</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"The session-scoped DataFrame 'has_munchies' column was not as "</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"expected before any action was taken."</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(_mm_module_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>, (</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"The module-scoped DataFrame 'has_munchies' column was not as "</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"expected before any action was taken."</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(_mm_class_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>, (</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"The class-scoped DataFrame 'has_munchies' column was not as "</span>,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"expected before any action was taken."</span>,</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(_mm_function_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span>, (</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"The function-scoped DataFrame 'has_munchies' column was not as "</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"expected before any action was taken."</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now to test the <code>serve_food()</code> function operates as expected. We can define a test class that will house all tests for <code>serve_food()</code>. Within that class let’s define our first test that simply checks that the value of the <code>has_munchies</code> column has been updated as we would expect after using the <code>serve_food()</code> function.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_feed_characters.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb11" data-filename="test_feed_characters.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestServeFood:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Tests that serve_food() updates the 'has_munchies' column."""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_serve_food_updates_df(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        _mm_session_scoped,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        _mm_module_scoped,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        _mm_class_scoped,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        _mm_function_scoped,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test serve_food updates the has_munchies columns as expected.</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">        This function will update each fixture in the same way, providing each</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">        character with their favourite_food and updating the contents of their</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">        stomach. The column we will assert against will be has_munchies, which</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">        should be updated to False after feeding in all cases except for Scooby</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">        Doo and Shaggy, who always have the munchies.</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># first lets check that the session-scoped dataframe gets updates</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(serve_food(_mm_session_scoped)[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The `serve_food()` has not updated the session-scoped df"</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">" 'has_munchies' column as expected."</span>,</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># next check the same for the module-scoped fixture</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(serve_food(_mm_module_scoped)[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The `serve_food()` has not updated the module-scoped df"</span>,</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>            <span class="st">" 'has_munchies' column as expected."</span>,</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Next check class-scoped fixture updates</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(serve_food(_mm_class_scoped)[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The `serve_food()` has not updated the class-scoped df"</span>,</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>            <span class="st">" 'has_munchies' column as expected."</span>,</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Finally check the function-scoped df does the same...</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>            serve_food(_mm_function_scoped)[<span class="st">"has_munchies"</span>].values</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>        ) <span class="op">==</span> [</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The `serve_food()` has not updated the function-scoped df"</span>,</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>            <span class="st">" 'has_munchies' column as expected."</span>,</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that the test makes exactly the same assertion for every differently scoped fixture? In every instance, we have fed the characters in the mystery machine DataFrame and therefore everyone’s <code>has_munchies</code> status (apart from Scooby Doo and Shaggy’s) gets updated to <code>False</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<strong>Parametrized Tests</strong>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Writing the test out this way makes things explicit and easy to follow. However, you could make this test smaller by using a neat feature of the <code>pytest</code> package called <strong>parametrized</strong> tests. This is basically like applying conditions to your tests in a <code>for</code> loop. Perhaps you have a bunch of conditions to check, multiple DataFrames or whatever. These can be programmatically served with <a href="https://docs.pytest.org/en/7.1.x/how-to/parametrize.html">parametrized tests</a>. While outside of the scope of this article, I intend to write a blog on this in the future.</p>
+</div>
+</div>
+</div>
+<p>Next, we can add to the test class, including a new test that checks the state of the fixtures. At this point, we will start to see some differences due to scoping. The new <code>test_expected_states_within_same_class()</code> will assert that the changes to the fixtures brought about in the previous test <code>test_serve_food_updates_df()</code> will persist, except for the the case of <code>_mm_function_scoped</code> which will go through teardown at the end of every test function.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_feed_characters.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb12" data-filename="test_feed_characters.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestServeFood:</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Tests that serve_food() updates the 'has_munchies' column."""</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... (test_serve_food_updates_df)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_expected_states_within_same_class(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        _mm_session_scoped,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        _mm_module_scoped,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        _mm_class_scoped,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        _mm_function_scoped,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test to ensure fixture states are as expected."""</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Firstly, session-scoped changes should persist, only Scooby Doo &amp;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Shaggy should still have the munchies...</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(_mm_session_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The changes to the session-scoped df 'has_munchies' column have"</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>            <span class="st">" not persisted as expected."</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Secondly, module-scoped changes should persist, as was the case for</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the session-scope test above</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(_mm_module_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The changes to the module-scoped df 'has_munchies' column have"</span>,</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>            <span class="st">" not persisted as expected."</span>,</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Next, class-scoped changes should persist just the same</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(_mm_class_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>            <span class="va">True</span>,</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>            <span class="va">False</span>,</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The changes to the class-scoped df 'has_munchies' column have"</span>,</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>            <span class="st">" not persisted as expected."</span>,</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Finally, demonstrate that function-scoped fixture starts from scratch</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Therefore all characters should have the munchies all over again.</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> (</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>            <span class="bu">list</span>(_mm_function_scoped[<span class="st">"has_munchies"</span>].values) <span class="op">==</span> [<span class="va">True</span>] <span class="op">*</span> <span class="dv">5</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>        ), (</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The function_scoped df 'has_munchies' column is not as expected."</span>,</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the above test, we assert that the function-scoped fixture values have the original fixture’s values. The function-scoped fixture goes through set-up again as <code>test_expected_states_within_same_class</code> is executed, ensuring a ‘fresh’, unchanged version of the fixture DataFrame is provided.</p>
+<p>Within the same test module, we can add some other test class and make assertions about the fixtures. This new test will check whether the <code>stomach_contents</code> column of the module and class-scoped fixtures have been updated. Recall that the characters start out with <code>"empty"</code> stomach contents.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_feed_characters.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb13" data-filename="test_feed_characters.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (TestServeFood)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (test_serve_food_updates_df)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (test_expected_states_within_same_class) ...</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestSomeOtherTestClass:</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Demonstrate persistence of changes to class-scoped fixture."""</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_whether_changes_to_stomach_contents_persist(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, _mm_class_scoped, _mm_module_scoped</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Check the stomach_contents column."""</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(_mm_module_scoped[<span class="st">"stomach_contents"</span>].values) <span class="op">==</span> [</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"carrots"</span>,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"beans"</span>,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"scooby snacks"</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"burgers"</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hot dogs"</span>,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>        ], <span class="st">"Changes to module-scoped fixture have not propagated as expected."</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> (</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>            <span class="bu">list</span>(_mm_class_scoped[<span class="st">"stomach_contents"</span>].values) <span class="op">==</span> [<span class="st">"empty"</span>] <span class="op">*</span> <span class="dv">5</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        ), <span class="st">"Values in class-scoped fixture are not as expected"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this example, it is demonstrated that changes to the class-scoped fixture have been discarded. As <code>test_whether_changes_to_stomach_contents_persist()</code> exists within a new class called <code>TestSomeOtherTestClass</code>, the code for <code>_mm_class_scoped</code> has been executed again, providing the original DataFrame values.</p>
+<section id="balancing-isolation-persistence" class="level5">
+<h5 class="anchored" data-anchor-id="balancing-isolation-persistence"><strong>Balancing Isolation &amp; Persistence</strong></h5>
+<hr>
+<p>While the persistence of fixtures may be useful for end to end tests, this approach reduces isolation in the test suite. Be aware that this may introduce a bit of friction to your <code>pytest</code> development process. For example, it can be commonplace to develop a new test and to check that it passes by invoking <code>pytest</code> with the keyword <code>-k</code> flag to run that single test (or subset of tests) only. This approach is useful if you have a costly test suite and you just want to examine changes in a single unit.</p>
+<p>At the current state of the test module, executing the entire test module by running <code>pytest ./tests/test_feed_characters.py</code> will pass. However, running <code>pytest -k "TestSomeOtherTestClass"</code> will fail. This is because the assertions in <code>TestSomeOtherTestClass</code> rely on code being executed within the preceding test class. Tests in <code>TestSomeOtherTestClass</code> rely on changes elsewhere in your test suite and by definition are no longer unit tests. For those developers who work with <a href="https://pypi.org/project/pytest-randomly/">pytest-randomly</a> to help sniff out poorly-isolated tests, this approach could cause a bit of a headache.</p>
+<p>A good compromise would be to ensure that the use of fixture scopes other than <code>function</code> are isolated and clearly documented within a test suite. Thoughtful grouping of integration tests within test modules or classes can limit grief for collaborating developers. Even better would be to <a href="https://docs.pytest.org/en/latest/how-to/mark.html">mark tests</a> according to their scoped dependencies. This approach allows tests to be grouped and executed separately, though the implementation of this is beyond the scope of this article.</p>
+</section>
+</section>
+<section id="fixtures-across-multiple-test-modules" class="level4">
+<h4 class="anchored" data-anchor-id="fixtures-across-multiple-test-modules">Fixtures Across Multiple Test Modules</h4>
+<p>Finally in this section, we will explore fixture behaviour across more than one test module. Below I define a new source module with a function used to update the <code>mystery_machine</code> DataFrame. This function will update the <code>fave_food</code> column for a character if it has already eaten. This is meant to represent a character’s preference for a dessert following a main course. Once more, this function will not deep copy the input DataFrame but will allow inplace adjustment.</p>
+<p><img class="center shaded_box" alt="Delicious ice cream" title="Delicious ice cream by Prompart https://pixexid.com/profile/@prompart" src="https://images.pixexid.com/delicious-ice-cream-ibt3ypxn.jpeg?h=700&amp;q=70"></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>update_food.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb14" data-filename="update_food.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Helping learners understand how to work with pytest fixtures."""</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fancy_dessert(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    df: pd.DataFrame,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    fave_desserts: <span class="bu">dict</span> <span class="op">=</span> {</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Daphne"</span>: <span class="st">"brownie"</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Fred"</span>: <span class="st">"ice cream"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Scooby Doo"</span>: <span class="st">"apple crumble"</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Shaggy"</span>: <span class="st">"pudding"</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Velma"</span>: <span class="st">"banana bread"</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Update a characters favourite_food to a dessert if they have eaten.</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">    Iterates over a df, updating the fave_food value for a character if the</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">    stomach_contents are not 'empty'.</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pd.DataFrame</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">        A dataframe with the following columns: "name": str, "fave_food": str,</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="co">        "has_munchies": bool, "stomach_contents": str.</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co">    fave_desserts : dict, optional</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co">        A mapping of "name" to a replacement favourite_food, by default</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co">        { "Daphne": "brownie", "Fred": "ice cream",</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="co">        "Scooby Doo": "apple crumble", "Shaggy": "pudding",</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="co">        "Velma": "banana bread", }</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="co">    pd.DataFrame</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="co">        Dataframe with updated fave_food values.</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ind, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">"stomach_contents"</span>] <span class="op">!=</span> <span class="st">"empty"</span>:</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>            <span class="co"># character has eaten, now they should prefer a dessert</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>            character <span class="op">=</span> row[<span class="st">"name"</span>]</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>            dessert <span class="op">=</span> fave_desserts[character]</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>character<span class="sc">}</span><span class="ss"> now wants </span><span class="sc">{</span>dessert<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>            df.loc[ind, <span class="st">"fave_food"</span>] <span class="op">=</span> dessert</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if not eaten, do not adjust</span></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that the condition required for <code>fancy_dessert()</code> to take action is that the contents of the character’s <code>stomach_contents</code> should be not equal to “empty”. Now to test this new src module, we create a new test module. We will run assertions of the <code>fave_food</code> columns against the differently-scoped fixtures.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_update_food.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb15" data-filename="test_update_food.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Testing pandas operations with test fixtures."""</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.update_food <span class="im">import</span> fancy_dessert</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestFancyDessert:</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Tests for fancy_dessert()."""</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_fancy_dessert_updates_fixtures_as_expected(</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        _mm_session_scoped,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        _mm_module_scoped,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        _mm_class_scoped,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>        _mm_function_scoped,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Test fancy_dessert() changes favourite_food values to dessert.</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">        These assertions depend on the current state of the scoped fixtures. If</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">        changes performed in</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">        test_feed_characters::TestServeFood::test_serve_food_updates_df()</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">        persist, then characters will not have empty stomach_contents,</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">        resulting in a switch of their favourite_food to dessert.</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># first, check update_food() with the session-scoped fixture.</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(fancy_dessert(_mm_session_scoped)[<span class="st">"fave_food"</span>].values) <span class="op">==</span> [</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>            <span class="st">"brownie"</span>,</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ice cream"</span>,</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">"apple crumble"</span>,</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pudding"</span>,</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">"banana bread"</span>,</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The changes to the session-scoped df 'stomach_contents' column"</span>,</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>            <span class="st">" have not persisted as expected."</span>,</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># next, check update_food() with the module-scoped fixture.</span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(fancy_dessert(_mm_module_scoped)[<span class="st">"fave_food"</span>].values) <span class="op">==</span> [</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>            <span class="st">"carrots"</span>,</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>            <span class="st">"beans"</span>,</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>            <span class="st">"scooby snacks"</span>,</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>            <span class="st">"burgers"</span>,</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hot dogs"</span>,</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The module-scoped df 'stomach_contents' column was not as"</span>,</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>            <span class="st">" expected"</span>,</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>        <span class="co"># now, check update_food() with the class-scoped fixture. Note that we</span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># are now making assertions about changes from a different class.</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(fancy_dessert(_mm_class_scoped)[<span class="st">"fave_food"</span>].values) <span class="op">==</span> [</span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>            <span class="st">"carrots"</span>,</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>            <span class="st">"beans"</span>,</span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>            <span class="st">"scooby snacks"</span>,</span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>            <span class="st">"burgers"</span>,</span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hot dogs"</span>,</span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>        ], (</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The class-scoped df 'stomach_contents' column was not as"</span>,</span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>            <span class="st">" expected"</span>,</span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Finally, check update_food() with the function-scoped fixture. As</span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>        <span class="co"># in TestServeFood::test_expected_states_within_same_class(), the</span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># function-scoped fixture starts from scratch.</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">list</span>(</span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>            fancy_dessert(_mm_function_scoped)[<span class="st">"fave_food"</span>].values</span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>        ) <span class="op">==</span> [<span class="st">"carrots"</span>, <span class="st">"beans"</span>, <span class="st">"scooby snacks"</span>, <span class="st">"burgers"</span>, <span class="st">"hot dogs"</span>], (</span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The function-scoped df 'stomach_contents' column was not as"</span>,</span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>            <span class="st">" expected"</span>,</span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that the only fixture expected to have been adjusted by <code>update_food()</code> is <code>_mm_session_scoped</code>. When running the <code>pytest</code> command, changes from executing the first test module <code>test_feed_characters.py</code> propagate for this fixture only. All other fixture scopes used will go through teardown and then setup once more on execution of the second test module.</p>
+<p>This arrangement is highly dependent on the order of which the test modules are collected. <code>pytest</code> collects tests in alphabetical ordering by default, and as such <code>test_update_food.py</code> can be expected to be executed after <code>test_feed_characters.py</code>. This test module is highly dependent upon the order of the <code>pytest</code> execution. This makes the tests less portable and means that running the test module with <code>pytest tests/test_update_food.py</code> in isolation would fail. I would once more suggest using <a href="https://docs.pytest.org/en/latest/how-to/mark.html"><code>pytest</code> marks</a> to group these types of tests and execute them separately to the rest of the test suite.</p>
+</section>
+</section>
+</section>
+<section id="scopemismatch-error" class="level2">
+<h2 class="anchored" data-anchor-id="scopemismatch-error"><code>ScopeMismatch</code> Error</h2>
+<p>When working with <code>pytest</code> fixtures, occasionally you will encounter a <code>ScopeMismatch</code> exception. This may happen when attempting to use certain <code>pytest</code> plug-ins or perhaps if trying to use temporary directory fixtures like <code>tmp_path</code> with fixtures that are scoped differently to function-scope. Occasionally, you may encounter this exception when attempting to reference your own fixture in other fixtures, as was done with the <a href="#define-fixtures"><code>mystery_machine</code> fixture above</a>.</p>
+<p>The reason for <code>ScopeMismatch</code> is straightforward. Fixture scopes have a hierarchy, based on their persistence:</p>
+<blockquote class="blockquote">
+<p>function &lt; class &lt; module &lt; package &lt; session</p>
+</blockquote>
+<p>Fixtures with a greater scope in the hierarchy are not permitted to reference those lower in the hierarchy. The way I remember this rule is that:</p>
+<blockquote class="blockquote">
+<p>Fixtures must only reference equal or greater scopes.</p>
+</blockquote>
+<p>It is unclear why this rule has been implemented other than to reduce complexity (which is reason enough in my book). There was talk about implementing <code>scope="any"</code> some time ago, but it looks like this idea was abandoned. To reproduce the error:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>test_bad_scoping.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb16" data-filename="test_bad_scoping.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Demomstrate ScopeMismatch error."""</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _fix_a():</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"class"</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _fix_b(_fix_a):</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _fix_a <span class="op">+</span> _fix_a</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test__fix_b_return_val(_fix_b):</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> _fix_b <span class="op">==</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Executing this test module results in:</p>
+<pre><code>================================= ERRORS ======================================
+________________ ERROR at setup of test__fix_b_return_val _____________________
+ScopeMismatch: You tried to access the function scoped fixture _fix_a with a
+class scoped request object, involved factories:
+tests/test_bad_scoping.py:9:  def _fix_b(_fix_a)
+tests/test_bad_scoping.py:5:  def _fix_a()
+========================== short test summary info ============================
+ERROR tests/test_bad_scoping.py::test__fix_b_return_val - Failed:
+ScopeMismatch: You tried to access the function scoped fixture _fix_a with a
+class scoped request object, involved factories:
+=========================== 1 error in 0.01s ==================================</code></pre>
+<p>This error can be avoided by adjusting the fixture scopes to adhere to the hierarchy rule, so updating <code>_fix_a</code> to use a class scope or greater would result in a passing test.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>Hopefully by now you feel comfortable in when and how to use fixtures for <code>pytest</code>. We’ve covered quite a bit, including:</p>
+<ul>
+<li>What fixtures are</li>
+<li>Use-cases</li>
+<li>Where to store them</li>
+<li>How to reference them</li>
+<li>How to scope them</li>
+<li>How changes to fixtures persist or not</li>
+<li>Handling scope errors</li>
+</ul>
+<p>If you spot an error with this article, or have suggested improvement then feel free to <a href="https://github.com/r-leyshon/blogging/issues">raise an issue on GitHub</a>.</p>
+<p>Happy testing!</p>
+</section>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>To past and present colleagues who have helped to discuss pros and cons, establishing practice and firming-up some opinions. Particularly:</p>
+<ul>
+<li>Clara</li>
+<li>Dan C</li>
+<li>Dan S</li>
+<li>Edward</li>
+<li>Ethan</li>
+<li>Henry</li>
+<li>Ian</li>
+<li>Iva</li>
+<li>Jay</li>
+<li>Mark</li>
+<li>Martin R</li>
+<li>Martin W</li>
+<li>Mat</li>
+<li>Sergio</li>
+</ul>
+<p id="fin">
+<i>fin!</i>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

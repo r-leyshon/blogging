@@ -18,6 +18,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/11-fiddly-bits-of-pytest.html",
       "/blogs/10-pydeck-with-gpd.html",
       "/blogs/09-cycling-network-r5py.html",
       "/blogs/08-quarto-conda-env.html",
@@ -33,6 +34,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blogs/11-fiddly-bits-of-pytest.html",
       "/blogs/10-pydeck-with-gpd.html",
       "/blogs/09-cycling-network-r5py.html",
       "/music-reviews/03-dk-county-piano.html",
