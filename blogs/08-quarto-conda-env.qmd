@@ -7,6 +7,7 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - How-to
     - Quarto
     - Conda Environments
+    - Conda
 image: https://images.pixexid.com/this-3d-abstract-composition-showcases-a-futuristic-cityscape-made-of-neon-light-3gph8k0n.jpeg?h=700&amp;q=70
 image-alt: "This 3D abstract composition showcases a futuristic cityscape made of neon lights and geometric shapes, perfect for a cyberpunk-inspired desktop wallpaper. Creative commons license, created by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
 toc: true
@@ -193,6 +194,21 @@ parent website environment, and then specific, minimal environments created for
 each article requiring a python environment.
 * Alternatively, consider using `venv` or `poetry` to manage python
 environments @DO4DSPKGLayer for quarto projects.
+
+## Troubleshooting
+
+* You've created a new environment and it is not discovered when running
+`python -m nb_conda_kernels list`:
+  * Activate your new environment
+  * `pip install ipykernel`
+  * Run:
+  ```{zsh}
+  python -m ipykernel install --user --name <INSERT_ENV_NAME> --display-name "<INSERT_DISPLAY_NAME>"
+  ```
+  * Deactivate the new environment.
+  * Run `python -m nb_conda_kernels list` once more and the new env should
+  appear.
+  * Taken from [this SO thread](https://stackoverflow.com/questions/71993110/anaconda-3-2021-11-environment-not-showing-up-in-jupyter-notebook) 
 
 ## Conclusion
 

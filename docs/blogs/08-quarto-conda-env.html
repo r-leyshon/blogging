@@ -195,6 +195,7 @@ div.csl-indent {
   <li><a href="#configure-the-quarto-project" id="toc-configure-the-quarto-project" class="nav-link" data-scroll-target="#configure-the-quarto-project">Configure the Quarto Project</a></li>
   <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   </ul></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
@@ -209,6 +210,7 @@ div.csl-indent {
     <div class="quarto-category">How-to</div>
     <div class="quarto-category">Quarto</div>
     <div class="quarto-category">Conda Environments</div>
+    <div class="quarto-category">Conda</div>
   </div>
   </div>
 
@@ -458,6 +460,23 @@ A Note on the Purpose
 <li>Alternatively, consider using <code>venv</code> or <code>poetry</code> to manage python environments <span class="citation" data-cites="DO4DSPKGLayer"><a href="#ref-DO4DSPKGLayer" role="doc-biblioref">[3]</a></span> for quarto projects.</li>
 </ul>
 </section>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li>You’ve created a new environment and it is not discovered when running <code>python -m nb_conda_kernels list</code>:
+<ul>
+<li>Activate your new environment</li>
+<li><code>pip install ipykernel</code></li>
+<li>Run:</li>
+</ul>
+<pre class="{zsh}"><code>python -m ipykernel install --user --name &lt;INSERT_ENV_NAME&gt; --display-name "&lt;INSERT_DISPLAY_NAME&gt;"</code></pre>
+<ul>
+<li>Deactivate the new environment.</li>
+<li>Run <code>python -m nb_conda_kernels list</code> once more and the new env should appear.</li>
+<li>Taken from <a href="https://stackoverflow.com/questions/71993110/anaconda-3-2021-11-environment-not-showing-up-in-jupyter-notebook">this SO thread</a></li>
+</ul></li>
+</ul>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
