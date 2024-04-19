@@ -11,7 +11,7 @@ library(glue)
 source(here("R/music-reviews/config-secrets.R"))
 
 get_album_artwork_url = function(
-    spotify_id = "3L6hd0cFppOmzmpd8DAgF8",
+    spotify_id = "3K48lplYXbQSc87pfuJ0Pa",
     api_key_path = here::here(".secrets.toml")
     ){
     # configure api secrets
