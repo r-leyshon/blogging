@@ -1,0 +1,187 @@
+---
+title: "Triads"
+author: "Rich Leyshon"
+date: April 19 2024
+description: "Code Elektro's exploration of future Japan's criminal underworld"
+categories:
+- Instrumental
+- Synthwave
+- Electronic
+- Electro
+image: https://i.scdn.co/image/ab67616d0000b273c6a43b3a48e548e3da50eeaa
+image-alt: Album cover art
+toc: true
+---
+
+## Dysto-Tokyo
+
+Welcome to neon-lit streets, where the glint of laser-edged katana underlie the
+bustling cityscape. Where proud tradition is falling foul of organised
+exploitation. A realm where cybernetic dreams and dystopian nightmares converge
+in a symphony of pulsating synths and electrifying beats. Code Elektro's
+masterpiece third album invites listeners on an immersive journey through a
+world where tradition meets technology, and the line between reality and
+virtuality blurs. With each track, the album paints a vivid portrait of a
+futuristic Tokyo, where shadowy figures roam the alleys and threat stalks the
+unwary.
+
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/3K48lplYXbQSc87pfuJ0Pa?utm_source=generator
+" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
+
+<br>
+
+For a formal description of the audio feature categories presented here, please
+consult the
+<a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.
+
+Triads is perfect for those moments when you crave an escape into a futuristic
+realm of imagination. Whether you're embarking on a late-night drive through
+the city, diving into a cyberpunk novel, or simply seeking to enhance your
+creative flow, this album serves as the ideal soundtrack to accompany your
+journey into the unknown. Its pulsating rhythms and evocative melodies evoke a
+sense of adventure and intrigue, making it the perfect companion for any
+escapade into the realm of dystopian dreams.
+
+```{r, width="300px", fig.align="center"}
+#| warning: false
+#| echo: false
+library(here)
+library(kableExtra)
+library(glue)
+source(here("R/music-reviews/spotify-album.R"))
+source(here("R/music-reviews/config-secrets.R"))
+album_id = "3K48lplYXbQSc87pfuJ0Pa"
+viz_album_audio_features(
+spotify_id = album_id,    
+title_font_size = 14,
+subtitle_font_size = 10,
+title_hjust = 0.2,
+subtitle_hjust = 0.1,
+debug = FALSE
+)
+
+```
+
+::: {.callout-tip collapse="true"}
+## Interpreting the Ridge Plot (Click to expand)
+
+These ridge plots show a histogram of the mean audio feature values across each
+track in the album. Look across the horizontal axis at where the peaks for each
+feature occur. For example, if the album contains lots of tracks with busy
+vocals, the speechiness feature will show a peak to the right of the horizontal
+axis. Conversely, an instrumental album would have a speechiness peak to the
+left of the horizontal axis but you would also expect it to have a peak to the
+right of the axis in the instrumentalness feature.
+:::
+
+## The Tracks
+
+Below are the mean audio feature values for each track. The last row (green)
+presents a mean summary of the album.
+
+```{r}
+#| echo: false
+tab = create_album_audio_summary_table(spotify_id = album_id)
+# create album average
+numeric_cols = select(tab, where(is.numeric))
+summary_tab = summarise(numeric_cols, across(everything(), mean))
+summ_row = cbind(track_name = glue::glue("Album Mean"), summary_tab)
+tab = rbind(tab, summ_row)
+# Visualise
+summ_ind = nrow(tab)
+kableExtra::kbl(tab) %>%
+row_spec(summ_ind, color = "white", background = "#146542")
+
+```
+
+The ridge plot profile is remarkably similar to the
+[ghostrunner ost](/./music-reviews/01-ghostrunner-ost.qmd), reviewed back in
+September 2023. Like ghostrunner, this albunm is low in speechiness and high in
+instrumentalness. In contrast, ghostrunner reported a broader distribution in
+valence than triads, which I find surprising. Triads is certainly a less
+menacing listen with some really beautiful melodies influenced by Japanese
+culture.
+
+## Rise of the Triads (Intro)
+This introductory track sets the stage for adventure. With pulsating synths and
+an aura of anticipation, it serves as the perfect prelude to the sonic journey
+ahead.
+
+## Shinobi
+"Shinobi" channels the spirit of classic ninja films with its driving rhythms
+and mysterious melodies. Its electrifying energy evokes intrigue and images of
+stealthy warriors navigating through moonlit landscapes, ready to face any
+challenge.
+
+## Night Train
+My favourite track. "Night Train" is an inspired prelude to action. An
+inspiring ride through the skies of a neon-lit cyberpunk city. A steady tempo
+and glittering percussive synth arrangement introduce the city's grand scale
+accompanied by an alluring mix of danger and opportunity.
+
+## Chinese Dreams
+With "Chinese Dreams," Code Elektro delivers a mesmerizing blend of
+Eastern-inspired melodies and retro-futuristic synths. Its hypnotic rhythms
+and evocative instrumentation transport listeners to a realm where ancient
+traditions meet cutting-edge technology. 
+
+## The Monk
+"The Monk" immerses listeners in a meditative soundscape, the onset of a surly
+tempest and a gong that could have been sampled straight from a '70s martial
+arts flick. Contemplative melodies set to swelling rhythms create a sense of
+growing urgency. 
+
+## In the Shadows
+"In the Shadows" conjures images of clandestine meetings and covert operations
+with its brooding atmosphere and enigmatic melodies. Its pulsating rhythms and
+suspenseful build-ups create a sense of tension and intrigue, keeping listeners
+on the edge of their seats. Something dark is afoot, and only a select few
+will ever know of what happened this day.
+
+## The Wilderness
+"The Wilderness" transports listeners to a landscapes where nature has been
+thoroughly hybridised with technology. Its expansive soundscapes and ethereal
+melodies evoke feelings of awe and wonder, then interspersed with an abundance
+of chiptune glitch and reverb, challenging assumptions and provoking wonder.
+
+## International Karate
+This track is a steady movement with inspired homages to the sweet melodies of
+the East. Its minimalist approach provides a moment of introspection amidst the
+album's high-energy tracks.
+
+## Triads
+The title track of the album is a tour de force of synth-driven bliss. "Triads"
+starts with a subtle ascent evoking impending action or imminent discovery.
+Then somewhere a door is kicked through and violence spills out onto the
+street, with a bassy reverb drawing the attention of all passers-by to the
+apparent chaos. Its pulsating rhythms and euphoric melodies leave a lasting
+impression.
+
+## Mission Control
+"Mission Control" takes listeners on a cosmic voyage through space and time.
+Its propulsive rhythms evoke the spirit of space exploration and the promise of
+discovery, inviting listeners to join in on an epic adventure to the far
+reaches of the universe.
+
+## Silent Runner
+"Silent Runner" captivates listeners with its hauntingly beautiful melodies and
+hypnotic rhythms. A sweet soprano accompaniment counters a mysteriously
+brooding rhythm section. Its ethereal atmosphere and dreamlike quality create a
+sense of weightlessness, like drifting through the cosmos on a silent journey.
+
+## Tokyo Dawn
+Closing out the album is "Tokyo Dawn," a mesmerizing journey through to the
+dawn, bringing a sense of security and achievement. A sweet and contemplative
+outtro accompanying the hero through their jounrey home.
+
+## Overall
+
+In conclusion, "Triads" is a captivating odyssey through a cybernetic
+dreamscape, where each track offers a unique sonic experience that transports
+listeners to distant realms of imagination. Whether you're a fan of synthwave
+or simply appreciate immersive music that takes you on a journey, "Triads" is
+an album that is sure to leave a lasting impression.
+
+For more music to encourage your work efforts, check out
+[Productivity Pulse](index.qmd).
