@@ -11,6 +11,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blogs/12-pytest-tmp-path.html",
       "/music-reviews/04-triads.html",
       "/blogs/11-fiddly-bits-of-pytest.html",
       "/blogs/10-pydeck-with-gpd.html",
@@ -34,6 +35,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/12-pytest-tmp-path.html",
       "/blogs/11-fiddly-bits-of-pytest.html",
       "/blogs/10-pydeck-with-gpd.html",
       "/blogs/09-cycling-network-r5py.html",

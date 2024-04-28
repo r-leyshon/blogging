@@ -1,0 +1,182 @@
+---
+title: "Pytest With `tmp_path` in Plain English"
+author: "Rich Leyshon"
+date: "April 25 2024"
+description: "Plain English Discussion of Pytest Temporary Fixtures."
+categories:
+    - Explanation
+    - pytest
+    - Unit tests
+    - tmp_path
+    - tmp_path_factory
+    - fixtures
+    - pytest-in-plain-english
+image: "https://images.pixexid.com/a-clock-with-gears-made-of-layered-textured-paper-and-a-glossy-metallic-face-s-0yp5gyd5.jpeg?h=699&amp;q=70"
+image-alt: "A clock with gears made of layered, textured paper and a glossy metallic face, set against a backdrop of passing time by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-pytest-env-py"
+    language: "python"
+    display_name: "blog-pytest-env"
+---
+
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://images.pixexid.com/a-clock-with-gears-made-of-layered-textured-paper-and-a-glossy-metallic-face-s-0yp5gyd5.jpeg"></img>
+  <figcaption style="text-align:center;">Creative commons license by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
+</figure>
+
+## Introduction
+
+`pytest` is a testing package for the python framework. It is broadly used to
+quality assure code logic. This article discusses why and how we use pytest's
+temporary fixtures `tmp_path` and `tmp_path_factory`. This blog is the second
+in a series of blogs called
+[pytest in plain English](/../index.html#category=pytest-in-plain-english),
+favouring accessible language and simple examples to explain the more intricate
+features of the `pytest` package.
+
+For a wealth of documentation, guides and how-tos, please consult the
+<a href="https://docs.pytest.org/en/8.0.x/" target="_blank">`pytest` documentation</a>.
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose (Click to expand)
+
+This article intends to discuss clearly. It doesn't aim to be clever or
+impressive. Its aim is to extend understanding without overwhelming the reader.
+
+:::
+
+### Intended Audience
+
+Programmers with a working knowledge of python and some familiarity with
+`pytest` and packaging. The type of programmer who has wondered about how to
+optimise their test code.
+
+### What You'll Need:
+
+- [ ] Preferred python environment manager (eg `conda`)
+- [ ] `pip install pytest==8.1.1`
+- [ ] Git
+- [ ] GitHub account
+- [ ] Command line access
+
+### Preparation
+
+This blog is accompanied by code in
+[this repository](https://github.com/r-leyshon/pytest-fiddly-examples). The
+main branch provides a template with the minimum structure and requirements
+expected to run a `pytest` suite. The repo branches contain the code used in
+the examples of the following sections.
+
+Feel free to fork or clone the repo and checkout to the example branches as
+needed.
+
+The example code that accompanies this article is available in the
+[temp-fixtures branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/temp-fixtures)
+of the example code repo.
+
+## What are temporary fixtures?
+
+In the previous [`pytest` in plain English](/blogs/11-fiddly-bits-of-pytest.qmd)
+article, we discussed how to write our own fixtures to serve data to our tests.
+But `pytest` comes with its own set of fixtures that are really useful in
+certain situations. In this article, we will consider those fixtures that are
+used to create temporary directories and files.
+
+## Why do we need temporary fixtures?
+
+If the code you need to test carries out file operations, then you ought to
+consider how to read and write files to and from disk safely. It is best
+practice in testing to ensure the system state in unaffected by running the
+test suite. In the very worst cases I have encountered, running the test suite
+has resulted in timestamped csvs being written to disk every time `pytest` was
+run. As developers potentially run these tests hundreds of times while working
+on a code base, this thoughtless little side-effect quickly results in a messy
+file system. 
+
+Just to clarify - I'm not saying it's a bad idea to use timestamped file names.
+Or to have functions with these kinds of side effects - they can be really
+useful. It's just when the test suite creates junk on your disk that you
+weren't aware of...
+
+By using temporary fixtures, we are ensuring the tests are isolated from each
+other and behave in dependable ways. If you ever encounter a test suite that
+behaves differently on subsequent runs, then be suspicious of a messy test
+suite with file operations that have changed the state of the system. In order
+for us to reason about the state of the code, we need to be able to rely on the
+answers we get from the tests, known in test-engineering speak as
+**determinism**.
+
+## Let's compare the available temporary fixtures
+
+The 2 fixtures that we should be working with as of 2024 are `tmp_path` and
+`tmp_path_factory`. Both of these newer temporary fixtures return
+`pathlib.Path` objects and are included with the `pytest` package in order to
+encourage developers to use them. No need to import `tempfile` or any other
+dependency to get what you need, it's all bundled up with your `pytest`
+installation.
+
+`tmp_path` is a function-scoped fixture. Meaning that if we use `tmp_path` in
+2 unit tests, then we will be served with 2 separate temporary directories to
+work with. This should meet most developers' needs. But if you're doing
+something more complex with files, there are occasions where you may need a
+more persistent temporary directory. Perhaps a bunch of your functions need to
+work sequentially using files on disk and you need to test how all these units
+work together. This kind of scenario can arise if you are working on really
+large files where in-memory operations become too costly. This is where
+`tmp_path_factory` can be useful, as it is a session-scoped temporary
+structure. A `tmp_path_factory` structure will be created at the start of a
+test suite and will persist until teardown happens once the last test has been
+executed.
+
+| Fixture Name       | Scope    | Teardown after each |
+| ------------------ | ---------| ------------------- |
+| `tmp_path`         | function | test function       |
+| `tmp_path_factory` | session  | `pytest` session    |
+
+### What about tmpdir?
+
+Ah, the eagle-eyed among you may have noticed that they `pytest` package
+contains other fixtures that seem to be about temporary structures. Namely
+`tmpdir` and `tmpdir_factory`. These fixtures are older equivalents of the
+fixtures we discussed above. The main difference is that instead of returning
+`pathlib.Path` objects, they return `py.path.local` objects. These fixtures
+were written before `pathlib` had been adopted as the
+[standardised approach](https://peps.python.org/pep-0519/#standard-library-changes)
+to handling paths across multiple operating systems. These future of `tmpdir`
+and `tmpdir_factory` have been discussed for deprecation. These fixtures are
+being sunsetted and it is advised to port old test suites over to the new
+`tmp_path` fixture instead. The `pytest` team have
+[provided a utility](https://docs.pytest.org/en/7.1.x/how-to/tmp_path.html#the-tmpdir-and-tmpdir-factory-fixtures)
+to help developers identify these issues in their old test suites. 
+
+In summary, don't use `tmpdir` any more and consider converting old code if you
+used it in the past... 
+
+
+
+## Summary
+
+...
+
+* ...
+
+If you spot an error with this article, or have  suggested improvement then
+feel free to
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+Happy testing!
+
+## Acknowledgements
+
+To past and present colleagues who have helped to discuss pros and cons,
+establishing practice and firming-up some opinions. Particularly:
+
+* Charlie
+* Dan
+* Edward
+* Ian
+
+<p id=fin><i>fin!</i></p>
