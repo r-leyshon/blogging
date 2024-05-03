@@ -77,7 +77,7 @@ The example code that accompanies this article is available in the
 [temp-fixtures branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/temp-fixtures)
 of the example code repo.
 
-## What are temporary fixtures?
+## What Are Temporary Fixtures?
 
 In the previous [`pytest` in plain English](/blogs/11-fiddly-bits-of-pytest.qmd)
 article, we discussed how to write our own fixtures to serve data to our tests.
@@ -85,7 +85,7 @@ But `pytest` comes with its own set of fixtures that are really useful in
 certain situations. In this article, we will consider those fixtures that are
 used to create temporary directories and files.
 
-## Why do we need temporary fixtures?
+### Why Do We Need Temporary Fixtures?
 
 If the code you need to test carries out file operations, then you ought to
 consider how to read and write files to and from disk safely. It is best
@@ -109,7 +109,7 @@ for us to reason about the state of the code, we need to be able to rely on the
 answers we get from the tests, known in test-engineering speak as
 **determinism**.
 
-## Let's compare the available temporary fixtures
+### Let's Compare the Available Temporary Fixtures
 
 The 2 fixtures that we should be working with as of 2024 are `tmp_path` and
 `tmp_path_factory`. Both of these newer temporary fixtures return
@@ -136,10 +136,10 @@ executed.
 | `tmp_path`         | function | test function       |
 | `tmp_path_factory` | session  | `pytest` session    |
 
-### What about tmpdir?
+### What About `tmpdir`?
 
 Ah, the eagle-eyed among you may have noticed that they `pytest` package
-contains other fixtures that seem to be about temporary structures. Namely
+contains other fixtures that are relevant to temporary structures. Namely
 `tmpdir` and `tmpdir_factory`. These fixtures are older equivalents of the
 fixtures we discussed above. The main difference is that instead of returning
 `pathlib.Path` objects, they return `py.path.local` objects. These fixtures
@@ -155,13 +155,398 @@ to help developers identify these issues in their old test suites.
 In summary, don't use `tmpdir` any more and consider converting old code if you
 used it in the past... 
 
+## How to Use Temporary Fixtures
+
+### Writing Source Code
+
+As a reminder, <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/temp-fixtures" target="_blank">the code for this section is located here.</a>
+
+In this deliberately silly example, let's say we have a poem sitting on our
+disk in a text file. Thanks to chatGPT for the poem and MSFT Bing Copilot for
+the image, making this a trivial consideration. Or should I really thank the
+millions of people who wrote the content that these services trained on?
+
+Saving the text file in the chunk below to the `./tests/data/` folder is where
+you would typically save data for your tests.
+
+<img src="https://i.imgur.com/TKN3zzt.png" alt="A modern take on Jack and Jill sees the pair fending off bugs in a future technological dystopia." class="center" width=400/>
+
+```{.abc filename="tests/data/jack-jill-2024.txt"}
+In the realm of data, where Jack and Jill dwell,
+They ventured forth, their tale to tell.
+But amidst the bytes, a glitch they found,
+A challenge profound, in algorithms bound.
+
+Their circuits whirred, their processors spun,
+As they analyzed the glitch, one by one.
+Yet despite their prowess, misfortune struck,
+A bug so elusive, like lightning struck.
+
+Their systems faltered, errors abound,
+As frustration grew with each rebound.
+But Jack and Jill, with minds so keen,
+Refused to let the glitch remain unseen.
+
+With perseverance strong and logic clear,
+They traced the bug to its hidden sphere.
+And with precision fine and code refined,
+They patched the glitch, their brilliance defined.
+
+In the end, though misfortune came their way,
+Jack and Jill triumphed, without delay.
+For in the realm of AI, where challenges frown,
+Their intellect prevailed, wearing victory's crown.
+
+So let their tale inspire, in bytes and code,
+Where challenges rise on the digital road.
+For Jack and Jill, with their AI might,
+Showed that even in darkness, there's always light.
+
+```
+
+Let's imagine for some reason we want a program that can edit the text and
+write new versions of the poem to disk. Let's go ahead and create a function
+that will read the poem from disk and replace any word that you'd like to
+change.
+
+```{python filename="./src/example_pkg/update_poetry.py"}
+"""Demonstrating tmp_path & tmp_path_factory with a simple txt file."""
+from pathlib import Path
+from typing import Union
+
+def _update_a_term(
+    txt_pth: Union[Path, str], target_pattern:str, replacement:str) -> str:
+    """Replace the target pattern in a body of text.
+
+    Parameters
+    ----------
+    txt_pth : Union[Path, str]
+        Path to a txt file.
+    target_pattern : str
+        The pattern to replace.
+    replacement : str
+        The replacement value.
+
+    Returns
+    -------
+    str
+        String with any occurences of target_pattern replaced with specified
+        replacement value.
+
+    """
+    with open(txt_pth, "r") as f:
+        txt = f.read()
+        f.close()
+    return txt.replace(target_pattern, replacement)
+
+```
+
+Now we can try using the function to rename a character in the rhyme, by
+running the below code in a python shell.
+
+```{python}
+from pyprojroot import here
+rhyme = _update_a_term(
+  txt_pth=here("data/blogs/jack-jill-2024.txt"),
+  target_pattern="Jill",
+  replacement="Jock")
+print(rhyme[0:175])
+
+```
+
+::: {.callout-note collapse="true"}
+
+#### Why Use Underscores?
+
+You may have noticed that the above function start with an underscore. This
+convention means the function is not intended for use by the user. These
+internal functions would typically have less defensive checks than those you
+intend to expose to your users. It's not an enforced thing but is considered
+good practice. It means "use at your own risk" as internals often have less
+documentation, may not be directly tested and could be less stable than
+functions in the api.
+
+This tends to be <a href="https://realpython.com/python-double-underscore/#:~:text=In%20general%2C%20you%20should%20use,strict%20rule%20that%20Python%20enforces." target="_blank">more useful when you are writing classes</a>
+, though this is beyond the scope of this article. 
+
+:::
+
+Great, next we need a little utility function that will take our text and write
+it to a file of our choosing.
+
+```{python filename=""}
+def _write_string_to_txt(some_txt:str, out_pth:Union[Path, str]) -> None:
+    """Write some string to a text file.
+
+    Parameters
+    ----------
+    some_txt : str
+        The text to write to file.
+    out_pth : Union[Path, str]
+        The path to the file.
+    
+    Returns
+    -------
+    None
+
+    """
+    with open(out_pth, "w") as f:
+        f.writelines(some_txt)
+        f.close()    
+
+```
+
+The finally, we need a wrapper function that will take the above functions,
+allowing the user to read in the text file, replace a pattern and then write
+the new poem to file.
+
+```{python}
+
+def update_poem(
+    poem_pth:Union[Path, str],
+    target_pattern:str,
+    replacement:str,
+    out_file:Union[Path, str]) -> None:
+    """Takes a txt file, replaces a pattern and writes to a new file.
+
+    Parameters
+    ----------
+    poem_pth : Union[Path, str]
+        Path to a txt file.
+    target_pattern : str
+        A pattern to update.
+    replacement : str
+        The replacement value.
+    out_file : Union[Path, str]
+        A file path to write to.
+
+    """
+    txt = _update_a_term(poem_pth, target_pattern, replacement)
+    _write_string_to_txt(txt, out_file)
+
+```
+
+How do we know it works? We can use it and observe the output, as I did with
+`_update_a_term()` earlier, but this article is about testing. So let's get to
+it.
+
+### Testing the Source Code
+
+We need to test `update_poem()` but it writes files to disk. We don't want to
+litter our (and our colleagues') disks with files every time pytest runs.
+Therefore we need to ensure the function's `out_file` parameter is pointing at
+a temporary directory. In that way, we can rely on the temporary structure's
+behaviour on teardown to remove these files when pytest finishes doing its
+business.
+
+```{python filename="tests/test_update_poetry.py"}
+#| eval: false
+
+"""Tests for update_poetry module."""
+import os
+
+import pytest
+
+from example_pkg import update_poetry
+
+def test_update_poem_writes_new_pattern_to_file(tmp_path):
+    """Check that update_poem changes the poem pattern and writes to file."""
+    new_poem_path = os.path.join(tmp_path, "new_poem.txt")
+    update_poetry.update_poem(
+        poem_pth="tests/data/jack-jill-2024.txt",
+        target_pattern="glitch",
+        replacement="bug",
+        out_file=new_poem_path
+        )
+
+```
+
+Before I go ahead and add a bunch of assertions in, look at how easy it is to
+use `tmp_path`, blink and you'll miss it. You simply reference it in the
+signature of the test that you wish to use it and then you are able to go ahead
+and use it like you would any other path object.
+
+So far in this test function, I specified that I'd like to read the text from a
+file called `jack-jill-2024.txt`, replace the word "glitch" with "bug" wherever
+it occurs and then write this text to a file called `new_poem.txt` in a
+temporary directory. 
+
+Some simple tests for this little function:
+
+* Does the file I asked for exist?
+* Are the contents of that file as I expect?
+
+Let's go ahead and add in those assertions.
+
+```{python filename="tests/test_update_poetry.py"}
+#| eval: false
+
+"""Tests for update_poetry module."""
+
+import os
+
+import pytest
+
+from example_pkg import update_poetry
+
+def test_update_poem_writes_new_pattern_to_file(tmp_path):
+    """Check that update_poem changes the poem pattern and writes to file."""
+    new_poem_path = os.path.join(tmp_path, "new_poem.txt")
+    update_poetry.update_poem(
+        poem_pth="tests/data/jack-jill-2024.txt",
+        target_pattern="glitch",
+        replacement="bug",
+        out_file=new_poem_path
+        )
+    # Now for the assertions
+    assert os.path.exists(new_poem_path)
+    assert os.listdir(tmp_path) == ["new_poem.txt"]
+    # let's check what pattern was written - now we need to read in the
+    # contents of the new file.
+    with open(new_poem_path, "r") as f:
+        what_was_written = f.read()
+        f.close()
+    assert "glitch" not in what_was_written
+    assert "bug" in what_was_written
+    
+```
+
+Running `pytest` results in the below output.
+
+```
+<INSERT CONSOLE OUTPUT>
+```
+
+So we prove that the function works how we hoped it would. But what if I want
+to work with the `new_poem.txt` file again in another test function? Let's add
+another test to `test_update_poetry.py` and see what we get when we try to use
+`tmp_path` once more.
+
+```{python filename="tests/test_update_poetry.py"}
+#| eval: false
+"""Tests for update_poetry module."""
+# import statements ...
+
+# def test_update_poem_writes_new_pattern_to_file(tmp_path): ...
+
+def test_do_i_get_a_new_tmp_path(tmp_path):
+    """Remind ourselves that tmp_path is function-scoped."""
+    assert "new_poem" not in os.listdir(tmp_path)
+    assert os.listdir(tmp_path) == []
+    
+```
+
+As is demonstrated when running `pytest` once more, `tmp_path` is
+function-scoped and we have now lost the new poem with the bugs instead of the
+glitches. Drat! What to do...
+
+```
+<INSERT CODE>
+
+```
+
+As mentioned earlier, `pytest` provides another fixture with more
+flexibility, called `tmp_path_factory`. As this fixture is session-scoped, we
+can have full control over this fixtures scoping. 
+
+::: {.callout-tip collapse="true"}
+
+#### Fixture Scopes
+
+For a refresher on the rules of scope referencing, please see the blog [Pytest Fixtures in Plain English](/blogs/11-fiddly-bits-of-pytest.qmd#scopemismatch-error).
+
+:::
+
+```{python filename="tests/test_update_poetry.py"}
+#| eval: false
+"""Tests for update_poetry module."""
+# import statements ...
+
+# def test_update_poem_writes_new_pattern_to_file(tmp_path): ...
+
+# def test_do_i_get_a_new_tmp_path(tmp_path): ...
+
+@pytest.fixture(scope="module")
+def _module_scoped_tmp(tmp_path_factory):
+    yield tmp_path_factory.mktemp("put_poetry_here", numbered=False)
+
+```
+
+Note that as `tmp_path_factory` is session-scoped, I'm free to reference it in
+another fixture with any scope. Here I define a module-scoped fixture, which
+means teardown of `_module_scoped_tmp` will occur once the final test in this
+tes module completes. Now repeating the logic executed with `tmp_path` above,
+but this time with our new module-scoped temporary directory, we get a
+different outcome.
+
+```{python filename="tests/test_update_poetry.py"}
+#| eval: false
+"""Tests for update_poetry module."""
+# import statements ...
+
+# def test_update_poem_writes_new_pattern_to_file(tmp_path): ...
+
+# def test_do_i_get_a_new_tmp_path(tmp_path): ...
+
+@pytest.fixture(scope="module")
+def _module_scoped_tmp(tmp_path_factory):
+    yield tmp_path_factory.mktemp("put_poetry_here", numbered=False)
+
+
+def test_module_scoped_tmp_exists(_module_scoped_tmp):
+    new_poem_path = os.path.join(_module_scoped_tmp, "new_poem.txt")
+    update_poetry.update_poem(
+        poem_pth="tests/data/jack-jill-2024.txt",
+        target_pattern="glitch",
+        replacement="bug",
+        out_file=new_poem_path
+        )
+    assert os.path.exists(new_poem_path)
+    with open(new_poem_path, "r") as f:
+        what_was_written = f.read()
+        f.close()
+    assert "glitch" not in what_was_written
+    assert "bug" in what_was_written
+    assert os.listdir(_module_scoped_tmp) == ["new_poem.txt"]
+
+
+def test_do_i_get_a_new_tmp_path_factory(_module_scoped_tmp):
+    assert not os.listdir(_module_scoped_tmp) == [] # not empty...
+    assert os.listdir(_module_scoped_tmp) == ["new_poem.txt"]
+    # module-scoped fixture still contains file made in previous test function
+    with open(os.path.join(_module_scoped_tmp, "new_poem.txt")) as f:
+        found_txt = f.read()
+        f.close()
+    assert "glitch" not in found_txt
+    assert "bug" in found_txt
+
+```
+
+Executing `pytest` one final time demonstrates that the same output file
+written to disk with `test_module_scoped_tmp_exists()` is subsequently
+available for further testing in `test_do_i_get_a_new_tmp_path_factory()`.
+
+Whilst this may be useful for anything time-consuming your test suite has to
+do, note that the order that these 2 tests run in is now important. These tests
+are no longer isolated and trying to run the second test on its own with
+`pytest -k "test_do_i_get_a_new_tmp_path_factory"` would result in a fail. For
+this reason it may be advisable to pop the test functions within a common
+test class, or even use
+<a href="https://docs.pytest.org/en/7.1.x/example/markers.html" target="_blank">pytest marks</a>
+to mark them as integration tests (more on this in a future blog). 
 
 
 ## Summary
 
-...
+The reasons we use temporary fixtures and how to use them has been demonstrated
+with another silly (but hopefully relatable) little example. I have not gone
+into the wealth of methods available in these temporary fixtures, but they have
+a wealth of utilities to help. Maybe you're working with a complex nested
+directory structure for example, the `glob` method would surely help with that.
 
-* ...
+```
+<INSERT CODE>
+```
 
 If you spot an error with this article, or have  suggested improvement then
 feel free to
@@ -178,5 +563,6 @@ establishing practice and firming-up some opinions. Particularly:
 * Dan
 * Edward
 * Ian
+* Mark
 
 <p id=fin><i>fin!</i></p>
