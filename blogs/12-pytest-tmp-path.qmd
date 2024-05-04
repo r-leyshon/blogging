@@ -414,7 +414,11 @@ def test_update_poem_writes_new_pattern_to_file(tmp_path):
 Running `pytest` results in the below output.
 
 ```
-<INSERT CONSOLE OUTPUT>
+collected 1 item
+
+tests/test_update_poetry.py .                                            [100%]
+
+============================== 1 passed in 0.01s ==============================
 ```
 
 So we prove that the function works how we hoped it would. But what if I want
@@ -441,7 +445,11 @@ function-scoped and we have now lost the new poem with the bugs instead of the
 glitches. Drat! What to do...
 
 ```
-<INSERT CODE>
+collected 2 items
+                                                                                                                                       
+tests/test_update_poetry.py ..                                           [100%]
+
+============================== 2 passed in 0.01s ==============================
 
 ```
 
@@ -526,6 +534,14 @@ Executing `pytest` one final time demonstrates that the same output file
 written to disk with `test_module_scoped_tmp_exists()` is subsequently
 available for further testing in `test_do_i_get_a_new_tmp_path_factory()`.
 
+```
+collected 4 items
+
+tests/test_update_poetry.py ....                                         [100%]
+
+============================== 4 passed in 0.01s ==============================
+```
+
 Whilst this may be useful for anything time-consuming your test suite has to
 do, note that the order that these 2 tests run in is now important. These tests
 are no longer isolated and trying to run the second test on its own with
@@ -544,9 +560,27 @@ into the wealth of methods available in these temporary fixtures, but they have
 a wealth of utilities to help. Maybe you're working with a complex nested
 directory structure for example, the `glob` method would surely help with that.
 
+Below are the public methods and attributes of `tmp_path`:
+
 ```
-<INSERT CODE>
+['absolute', 'anchor', 'as_posix', 'as_uri', 'chmod', 'cwd', 'drive', 'exists',
+'expanduser', 'glob', 'group', 'hardlink_to', 'home', 'is_absolute',
+'is_block_device', 'is_char_device', 'is_dir', 'is_fifo', 'is_file',
+'is_junction', 'is_mount', 'is_relative_to', 'is_reserved', 'is_socket',
+'is_symlink', 'iterdir', 'joinpath', 'lchmod', 'lstat', 'match', 'mkdir',
+'name', 'open', 'owner', 'parent', 'parents', 'parts', 'read_bytes',
+'read_text', 'readlink', 'relative_to', 'rename', 'replace', 'resolve',
+'rglob', 'rmdir', 'root', 'samefile', 'stat', 'stem', 'suffix', 'suffixes',
+'symlink_to', 'touch', 'unlink', 'walk', 'with_name', 'with_segments',
+'with_stem', 'with_suffix', 'write_bytes', 'write_text'] 
 ```
+
+It is useful to
+[read the `pathlib.Path` docs](https://docs.python.org/3/library/pathlib.html#pathlib.Path)
+as both fixtures return this type. And for more of a deep-dive with the pytest
+api, I recommend reading the
+[tmp docstrings](https://github.com/pytest-dev/pytest/blob/main/src/_pytest/tmpdir.py)
+on GitHub.
 
 If you spot an error with this article, or have  suggested improvement then
 feel free to
