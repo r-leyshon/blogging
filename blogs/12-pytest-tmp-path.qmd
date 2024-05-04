@@ -52,7 +52,7 @@ impressive. Its aim is to extend understanding without overwhelming the reader.
 
 Programmers with a working knowledge of python and some familiarity with
 `pytest` and packaging. The type of programmer who has wondered about how to
-optimise their test code.
+follow best practice in testing python code.
 
 ### What You'll Need:
 
@@ -75,7 +75,7 @@ needed.
 
 The example code that accompanies this article is available in the
 [temp-fixtures branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/temp-fixtures)
-of the example code repo.
+of the repo.
 
 ## What Are Temporary Fixtures?
 
@@ -87,19 +87,19 @@ used to create temporary directories and files.
 
 ### Why Do We Need Temporary Fixtures?
 
-If the code you need to test carries out file operations, then you ought to
-consider how to read and write files to and from disk safely. It is best
-practice in testing to ensure the system state is unaffected by running the
-test suite. In the very worst cases I have encountered, running the test suite
-has resulted in timestamped csvs being written to disk every time `pytest` was
-run. As developers potentially run these tests hundreds of times while working
-on a code base, this thoughtless little side-effect quickly results in a messy
-file system. 
+If the code you need to test carries out file operations, then there are a few
+considerations needed when writing our tests. It is best practice in testing to
+ensure the system state is unaffected by running the test suite. In the very
+worst cases I have encountered, running the test suite has resulted in
+timestamped csvs being written to disk every time `pytest` was run. As
+developers potentially run these tests hundreds of times while working on a
+code base, this thoughtless little side-effect quickly results in a messy file
+system. 
 
 Just to clarify - I'm not saying it's a bad idea to use timestamped file names.
-Or to have functions with these kinds of side effects - they can be really
-useful. It's just when the test suite creates junk on your disk that you
-weren't aware of...
+Or to have functions with these kinds of side effects - these features can be
+really useful. The problem is when the test suite creates junk on your disk
+that you weren't aware of...
 
 By using temporary fixtures, we are ensuring the tests are isolated from each
 other and behave in dependable ways. If you ever encounter a test suite that
@@ -204,10 +204,9 @@ Showed that even in darkness, there's always light.
 
 ```
 
-Let's imagine for some reason we want a program that can edit the text and
-write new versions of the poem to disk. Let's go ahead and create a function
-that will read the poem from disk and replace any word that you'd like to
-change.
+Let's imagine we need a program that can edit the text and write new versions
+of the poem to disk. Let's go ahead and create a function that will read the
+poem from disk and replace any word that you'd like to change.
 
 ```{python filename="./src/example_pkg/update_poetry.py"}
 """Demonstrating tmp_path & tmp_path_factory with a simple txt file."""
@@ -266,9 +265,6 @@ good practice. It means "use at your own risk" as internals often have less
 documentation, may not be directly tested and could be less stable than
 functions in the api.
 
-This tends to be <a href="https://realpython.com/python-double-underscore/#:~:text=In%20general%2C%20you%20should%20use,strict%20rule%20that%20Python%20enforces." target="_blank">more useful when you are writing classes</a>
-, though this is beyond the scope of this article. 
-
 :::
 
 Great, next we need a little utility function that will take our text and write
@@ -296,9 +292,9 @@ def _write_string_to_txt(some_txt:str, out_pth:Union[Path, str]) -> None:
 
 ```
 
-Finally, we need a wrapper function that will take the above functions,
-allowing the user to read in the text file, replace a pattern and then write
-the new poem to file.
+Finally, we need a wrapper function that will use the above functions, allowing
+the user to read in the text file, replace a pattern and then write the new
+poem to file.
 
 ```{python}
 
@@ -333,7 +329,7 @@ it.
 ### Testing the Source Code
 
 We need to test `update_poem()` but it writes files to disk. We don't want to
-litter our (and our colleagues') disks with files every time pytest runs.
+litter our (and our colleagues') disks with files every time `pytest` runs.
 Therefore we need to ensure the function's `out_file` parameter is pointing at
 a temporary directory. In that way, we can rely on the temporary structure's
 behaviour on teardown to remove these files when pytest finishes doing its
@@ -363,8 +359,8 @@ def test_update_poem_writes_new_pattern_to_file(tmp_path):
 
 Before I go ahead and add a bunch of assertions in, look at how easy it is to
 use `tmp_path`, blink and you'll miss it. You simply reference it in the
-signature of the test that you wish to use it and then you are able to go ahead
-and use it like you would any other path object.
+signature of the test where you wish to use it and then you are able to work
+with it like you would any other path object.
 
 So far in this test function, I specified that I'd like to read the text from a
 file called `jack-jill-2024.txt`, replace the word "glitch" with "bug" wherever
@@ -446,7 +442,7 @@ glitches. Drat! What to do...
 
 ```
 collected 2 items
-                                                                                                                                       
+
 tests/test_update_poetry.py ..                                           [100%]
 
 ============================== 2 passed in 0.01s ==============================
@@ -483,7 +479,7 @@ def _module_scoped_tmp(tmp_path_factory):
 Note that as `tmp_path_factory` is session-scoped, I'm free to reference it in
 another fixture with any scope. Here I define a module-scoped fixture, which
 means teardown of `_module_scoped_tmp` will occur once the final test in this
-tes module completes. Now repeating the logic executed with `tmp_path` above,
+test module completes. Now repeating the logic executed with `tmp_path` above,
 but this time with our new module-scoped temporary directory, we get a
 different outcome.
 
@@ -542,11 +538,10 @@ tests/test_update_poetry.py ....                                         [100%]
 ============================== 4 passed in 0.01s ==============================
 ```
 
-Whilst this may be useful for anything time-consuming your test suite has to
-do, note that the order that these 2 tests run in is now important. These tests
-are no longer isolated and trying to run the second test on its own with
+Note that the order that these 2 tests run in is now important. These tests are
+no longer isolated and trying to run the second test on its own with
 `pytest -k "test_do_i_get_a_new_tmp_path_factory"` would result in a failure.
-For this reason it may be advisable to pop the test functions within a common
+For this reason, it may be advisable to pop the test functions within a common
 test class, or even use
 <a href="https://docs.pytest.org/en/7.1.x/example/markers.html" target="_blank">pytest marks</a>
 to mark them as integration tests (more on this in a future blog). 
@@ -557,8 +552,8 @@ to mark them as integration tests (more on this in a future blog).
 The reasons we use temporary fixtures and how to use them has been demonstrated
 with another silly (but hopefully relatable) little example. I have not gone
 into the wealth of methods available in these temporary fixtures, but they have
-a wealth of utilities to help. Maybe you're working with a complex nested
-directory structure for example, the `glob` method would surely help with that.
+many useful utilities. Maybe you're working with a complex nested directory
+structure for example, the `glob` method would surely help with that.
 
 Below are the public methods and attributes of `tmp_path`:
 
@@ -577,8 +572,9 @@ Below are the public methods and attributes of `tmp_path`:
 
 It is useful to
 [read the `pathlib.Path` docs](https://docs.python.org/3/library/pathlib.html#pathlib.Path)
-as both fixtures return this type. And for more of a deep-dive with the pytest
-api, I recommend reading the
+as both fixtures return this type and many of the methods above are inherited
+from these types. To read the `tmp_path` and `tmp_path_factory` implementation,
+I recommend reading the
 [tmp docstrings](https://github.com/pytest-dev/pytest/blob/main/src/_pytest/tmpdir.py)
 on GitHub.
 
