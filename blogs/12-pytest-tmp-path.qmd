@@ -89,7 +89,7 @@ used to create temporary directories and files.
 
 If the code you need to test carries out file operations, then you ought to
 consider how to read and write files to and from disk safely. It is best
-practice in testing to ensure the system state in unaffected by running the
+practice in testing to ensure the system state is unaffected by running the
 test suite. In the very worst cases I have encountered, running the test suite
 has resulted in timestamped csvs being written to disk every time `pytest` was
 run. As developers potentially run these tests hundreds of times while working
@@ -106,7 +106,7 @@ other and behave in dependable ways. If you ever encounter a test suite that
 behaves differently on subsequent runs, then be suspicious of a messy test
 suite with file operations that have changed the state of the system. In order
 for us to reason about the state of the code, we need to be able to rely on the
-answers we get from the tests, known in test-engineering speak as
+answers we get from the tests, known in test engineering speak as
 **determinism**.
 
 ### Let's Compare the Available Temporary Fixtures
@@ -138,17 +138,17 @@ executed.
 
 ### What About `tmpdir`?
 
-Ah, the eagle-eyed among you may have noticed that they `pytest` package
+Ah, the eagle-eyed among you may have noticed that the `pytest` package
 contains other fixtures that are relevant to temporary structures. Namely
 `tmpdir` and `tmpdir_factory`. These fixtures are older equivalents of the
 fixtures we discussed above. The main difference is that instead of returning
 `pathlib.Path` objects, they return `py.path.local` objects. These fixtures
 were written before `pathlib` had been adopted as the
 [standardised approach](https://peps.python.org/pep-0519/#standard-library-changes)
-to handling paths across multiple operating systems. These future of `tmpdir`
-and `tmpdir_factory` have been discussed for deprecation. These fixtures are
-being sunsetted and it is advised to port old test suites over to the new
-`tmp_path` fixture instead. The `pytest` team have
+to handling paths across multiple operating systems. The future of `tmpdir` and
+`tmpdir_factory` have been discussed for deprecation. These fixtures are being
+sunsetted and it is advised to port old test suites over to the new `tmp_path`
+fixture instead. The `pytest` team has
 [provided a utility](https://docs.pytest.org/en/7.1.x/how-to/tmp_path.html#the-tmpdir-and-tmpdir-factory-fixtures)
 to help developers identify these issues in their old test suites. 
 
@@ -230,7 +230,7 @@ def _update_a_term(
     Returns
     -------
     str
-        String with any occurences of target_pattern replaced with specified
+        String with any occurrences of target_pattern replaced with specified
         replacement value.
 
     """
@@ -258,7 +258,7 @@ print(rhyme[0:175])
 
 #### Why Use Underscores?
 
-You may have noticed that the above function start with an underscore. This
+You may have noticed that the above function starts with an underscore. This
 convention means the function is not intended for use by the user. These
 internal functions would typically have less defensive checks than those you
 intend to expose to your users. It's not an enforced thing but is considered
@@ -296,7 +296,7 @@ def _write_string_to_txt(some_txt:str, out_pth:Union[Path, str]) -> None:
 
 ```
 
-The finally, we need a wrapper function that will take the above functions,
+Finally, we need a wrapper function that will take the above functions,
 allowing the user to read in the text file, replace a pattern and then write
 the new poem to file.
 
@@ -455,7 +455,7 @@ tests/test_update_poetry.py ..                                           [100%]
 
 As mentioned earlier, `pytest` provides another fixture with more
 flexibility, called `tmp_path_factory`. As this fixture is session-scoped, we
-can have full control over this fixtures scoping. 
+can have full control over this fixture's scoping. 
 
 ::: {.callout-tip collapse="true"}
 
@@ -545,8 +545,8 @@ tests/test_update_poetry.py ....                                         [100%]
 Whilst this may be useful for anything time-consuming your test suite has to
 do, note that the order that these 2 tests run in is now important. These tests
 are no longer isolated and trying to run the second test on its own with
-`pytest -k "test_do_i_get_a_new_tmp_path_factory"` would result in a fail. For
-this reason it may be advisable to pop the test functions within a common
+`pytest -k "test_do_i_get_a_new_tmp_path_factory"` would result in a failure.
+For this reason it may be advisable to pop the test functions within a common
 test class, or even use
 <a href="https://docs.pytest.org/en/7.1.x/example/markers.html" target="_blank">pytest marks</a>
 to mark them as integration tests (more on this in a future blog). 

@@ -282,9 +282,9 @@ A Note on the Purpose (Click to expand)
 <p>In the previous <a href="../blogs/11-fiddly-bits-of-pytest.html"><code>pytest</code> in plain English</a> article, we discussed how to write our own fixtures to serve data to our tests. But <code>pytest</code> comes with its own set of fixtures that are really useful in certain situations. In this article, we will consider those fixtures that are used to create temporary directories and files.</p>
 <section id="why-do-we-need-temporary-fixtures" class="level3">
 <h3 class="anchored" data-anchor-id="why-do-we-need-temporary-fixtures">Why Do We Need Temporary Fixtures?</h3>
-<p>If the code you need to test carries out file operations, then you ought to consider how to read and write files to and from disk safely. It is best practice in testing to ensure the system state in unaffected by running the test suite. In the very worst cases I have encountered, running the test suite has resulted in timestamped csvs being written to disk every time <code>pytest</code> was run. As developers potentially run these tests hundreds of times while working on a code base, this thoughtless little side-effect quickly results in a messy file system.</p>
+<p>If the code you need to test carries out file operations, then you ought to consider how to read and write files to and from disk safely. It is best practice in testing to ensure the system state is unaffected by running the test suite. In the very worst cases I have encountered, running the test suite has resulted in timestamped csvs being written to disk every time <code>pytest</code> was run. As developers potentially run these tests hundreds of times while working on a code base, this thoughtless little side-effect quickly results in a messy file system.</p>
 <p>Just to clarify - I’m not saying it’s a bad idea to use timestamped file names. Or to have functions with these kinds of side effects - they can be really useful. It’s just when the test suite creates junk on your disk that you weren’t aware of…</p>
-<p>By using temporary fixtures, we are ensuring the tests are isolated from each other and behave in dependable ways. If you ever encounter a test suite that behaves differently on subsequent runs, then be suspicious of a messy test suite with file operations that have changed the state of the system. In order for us to reason about the state of the code, we need to be able to rely on the answers we get from the tests, known in test-engineering speak as <strong>determinism</strong>.</p>
+<p>By using temporary fixtures, we are ensuring the tests are isolated from each other and behave in dependable ways. If you ever encounter a test suite that behaves differently on subsequent runs, then be suspicious of a messy test suite with file operations that have changed the state of the system. In order for us to reason about the state of the code, we need to be able to rely on the answers we get from the tests, known in test engineering speak as <strong>determinism</strong>.</p>
 </section>
 <section id="lets-compare-the-available-temporary-fixtures" class="level3">
 <h3 class="anchored" data-anchor-id="lets-compare-the-available-temporary-fixtures">Let’s Compare the Available Temporary Fixtures</h3>
@@ -314,7 +314,7 @@ A Note on the Purpose (Click to expand)
 </section>
 <section id="what-about-tmpdir" class="level3">
 <h3 class="anchored" data-anchor-id="what-about-tmpdir">What About <code>tmpdir</code>?</h3>
-<p>Ah, the eagle-eyed among you may have noticed that they <code>pytest</code> package contains other fixtures that are relevant to temporary structures. Namely <code>tmpdir</code> and <code>tmpdir_factory</code>. These fixtures are older equivalents of the fixtures we discussed above. The main difference is that instead of returning <code>pathlib.Path</code> objects, they return <code>py.path.local</code> objects. These fixtures were written before <code>pathlib</code> had been adopted as the <a href="https://peps.python.org/pep-0519/#standard-library-changes">standardised approach</a> to handling paths across multiple operating systems. These future of <code>tmpdir</code> and <code>tmpdir_factory</code> have been discussed for deprecation. These fixtures are being sunsetted and it is advised to port old test suites over to the new <code>tmp_path</code> fixture instead. The <code>pytest</code> team have <a href="https://docs.pytest.org/en/7.1.x/how-to/tmp_path.html#the-tmpdir-and-tmpdir-factory-fixtures">provided a utility</a> to help developers identify these issues in their old test suites.</p>
+<p>Ah, the eagle-eyed among you may have noticed that the <code>pytest</code> package contains other fixtures that are relevant to temporary structures. Namely <code>tmpdir</code> and <code>tmpdir_factory</code>. These fixtures are older equivalents of the fixtures we discussed above. The main difference is that instead of returning <code>pathlib.Path</code> objects, they return <code>py.path.local</code> objects. These fixtures were written before <code>pathlib</code> had been adopted as the <a href="https://peps.python.org/pep-0519/#standard-library-changes">standardised approach</a> to handling paths across multiple operating systems. The future of <code>tmpdir</code> and <code>tmpdir_factory</code> have been discussed for deprecation. These fixtures are being sunsetted and it is advised to port old test suites over to the new <code>tmp_path</code> fixture instead. The <code>pytest</code> team has <a href="https://docs.pytest.org/en/7.1.x/how-to/tmp_path.html#the-tmpdir-and-tmpdir-factory-fixtures">provided a utility</a> to help developers identify these issues in their old test suites.</p>
 <p>In summary, don’t use <code>tmpdir</code> any more and consider converting old code if you used it in the past…</p>
 </section>
 </section>
@@ -361,7 +361,7 @@ A Note on the Purpose (Click to expand)
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>Showed that even in darkness, there's always light.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s imagine for some reason we want a program that can edit the text and write new versions of the poem to disk. Let’s go ahead and create a function that will read the poem from disk and replace any word that you’d like to change.</p>
-<div id="0b343a0f" class="cell" data-execution_count="1">
+<div id="832328eb" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Demonstrating tmp_path &amp; tmp_path_factory with a simple txt file."""</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
@@ -382,7 +382,7 @@ A Note on the Purpose (Click to expand)
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">    str</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">        String with any occurences of target_pattern replaced with specified</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">        String with any occurrences of target_pattern replaced with specified</span></span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">        replacement value.</span></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
@@ -392,7 +392,7 @@ A Note on the Purpose (Click to expand)
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> txt.replace(target_pattern, replacement)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can try using the function to rename a character in the rhyme, by running the below code in a python shell.</p>
-<div id="b8128649" class="cell" data-execution_count="2">
+<div id="08c5cfcb" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyprojroot <span class="im">import</span> here</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rhyme <span class="op">=</span> _update_a_term(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  txt_pth<span class="op">=</span>here(<span class="st">"data/blogs/jack-jill-2024.txt"</span>),</span>
@@ -418,13 +418,13 @@ Why Use Underscores?
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>You may have noticed that the above function start with an underscore. This convention means the function is not intended for use by the user. These internal functions would typically have less defensive checks than those you intend to expose to your users. It’s not an enforced thing but is considered good practice. It means “use at your own risk” as internals often have less documentation, may not be directly tested and could be less stable than functions in the api.</p>
+<p>You may have noticed that the above function starts with an underscore. This convention means the function is not intended for use by the user. These internal functions would typically have less defensive checks than those you intend to expose to your users. It’s not an enforced thing but is considered good practice. It means “use at your own risk” as internals often have less documentation, may not be directly tested and could be less stable than functions in the api.</p>
 <p>This tends to be <a href="https://realpython.com/python-double-underscore/#:~:text=In%20general%2C%20you%20should%20use,strict%20rule%20that%20Python%20enforces." target="_blank">more useful when you are writing classes</a> , though this is beyond the scope of this article.</p>
 </div>
 </div>
 </div>
 <p>Great, next we need a little utility function that will take our text and write it to a file of our choosing.</p>
-<div id="a35c90c5" class="cell" data-execution_count="3">
+<div id="1b10f32e" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _write_string_to_txt(some_txt:<span class="bu">str</span>, out_pth:Union[Path, <span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Write some string to a text file.</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -444,8 +444,8 @@ Why Use Underscores?
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        f.writelines(some_txt)</span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        f.close()    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The finally, we need a wrapper function that will take the above functions, allowing the user to read in the text file, replace a pattern and then write the new poem to file.</p>
-<div id="f31b2747" class="cell" data-execution_count="4">
+<p>Finally, we need a wrapper function that will take the above functions, allowing the user to read in the text file, replace a pattern and then write the new poem to file.</p>
+<div id="411e552c" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_poem(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    poem_pth:Union[Path, <span class="bu">str</span>],</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    target_pattern:<span class="bu">str</span>,</span>
@@ -473,7 +473,7 @@ Why Use Underscores?
 <section id="testing-the-source-code" class="level3">
 <h3 class="anchored" data-anchor-id="testing-the-source-code">Testing the Source Code</h3>
 <p>We need to test <code>update_poem()</code> but it writes files to disk. We don’t want to litter our (and our colleagues’) disks with files every time pytest runs. Therefore we need to ensure the function’s <code>out_file</code> parameter is pointing at a temporary directory. In that way, we can rely on the temporary structure’s behaviour on teardown to remove these files when pytest finishes doing its business.</p>
-<div id="fb7d597f" class="cell" data-execution_count="5">
+<div id="bc98d162" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -499,7 +499,7 @@ Why Use Underscores?
 <li>Are the contents of that file as I expect?</li>
 </ul>
 <p>Let’s go ahead and add in those assertions.</p>
-<div id="a774bb17" class="cell" data-execution_count="6">
+<div id="adf9324c" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -535,7 +535,7 @@ tests/test_update_poetry.py .                                            [100%]
 
 ============================== 1 passed in 0.01s ==============================</code></pre>
 <p>So we prove that the function works how we hoped it would. But what if I want to work with the <code>new_poem.txt</code> file again in another test function? Let’s add another test to <code>test_update_poetry.py</code> and see what we get when we try to use <code>tmp_path</code> once more.</p>
-<div id="feed7372" class="cell" data-execution_count="7">
+<div id="a5558f2b" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import statements ...</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -553,7 +553,7 @@ tests/test_update_poetry.py ..                                           [100%]
 
 ============================== 2 passed in 0.01s ==============================
 </code></pre>
-<p>As mentioned earlier, <code>pytest</code> provides another fixture with more flexibility, called <code>tmp_path_factory</code>. As this fixture is session-scoped, we can have full control over this fixtures scoping.</p>
+<p>As mentioned earlier, <code>pytest</code> provides another fixture with more flexibility, called <code>tmp_path_factory</code>. As this fixture is session-scoped, we can have full control over this fixture’s scoping.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -570,7 +570,7 @@ Fixture Scopes
 </div>
 </div>
 </div>
-<div id="91e56e65" class="cell" data-execution_count="8">
+<div id="11f6ed15" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import statements ...</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -583,7 +583,7 @@ Fixture Scopes
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">yield</span> tmp_path_factory.mktemp(<span class="st">"put_poetry_here"</span>, numbered<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that as <code>tmp_path_factory</code> is session-scoped, I’m free to reference it in another fixture with any scope. Here I define a module-scoped fixture, which means teardown of <code>_module_scoped_tmp</code> will occur once the final test in this tes module completes. Now repeating the logic executed with <code>tmp_path</code> above, but this time with our new module-scoped temporary directory, we get a different outcome.</p>
-<div id="d88c2c35" class="cell" data-execution_count="9">
+<div id="7bdc80a3" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import statements ...</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -629,7 +629,7 @@ Fixture Scopes
 tests/test_update_poetry.py ....                                         [100%]
 
 ============================== 4 passed in 0.01s ==============================</code></pre>
-<p>Whilst this may be useful for anything time-consuming your test suite has to do, note that the order that these 2 tests run in is now important. These tests are no longer isolated and trying to run the second test on its own with <code>pytest -k "test_do_i_get_a_new_tmp_path_factory"</code> would result in a fail. For this reason it may be advisable to pop the test functions within a common test class, or even use <a href="https://docs.pytest.org/en/7.1.x/example/markers.html" target="_blank">pytest marks</a> to mark them as integration tests (more on this in a future blog).</p>
+<p>Whilst this may be useful for anything time-consuming your test suite has to do, note that the order that these 2 tests run in is now important. These tests are no longer isolated and trying to run the second test on its own with <code>pytest -k "test_do_i_get_a_new_tmp_path_factory"</code> would result in a failure. For this reason it may be advisable to pop the test functions within a common test class, or even use <a href="https://docs.pytest.org/en/7.1.x/example/markers.html" target="_blank">pytest marks</a> to mark them as integration tests (more on this in a future blog).</p>
 </section>
 </section>
 <section id="summary" class="level2">
