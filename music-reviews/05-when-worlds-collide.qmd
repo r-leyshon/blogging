@@ -1,8 +1,8 @@
 ---
 title: "When Worlds Collide"
 author: "Rich Leyshon"
-date: April 19 2024
-description: "Thomas Barrandon's understated beauty"
+date: May 19 2024
+description: "Thomas Barrandon's understated scifi masterpiece"
 categories:
 - Instrumental
 - Synthwave
@@ -15,7 +15,7 @@ toc: true
 
 ## A Cosmic Convergence
 
-The EP offers a mesmerizing journey through electronic soundscapes, evoking a
+The EP offers a mesmerising journey through electronic soundscapes, evoking a
 sense of otherworldly exploration. Barrandon masterfully combines retro
 synthwave elements with modern cinematic vibes.
 
