@@ -1,0 +1,123 @@
+---
+title: "When Worlds Collide"
+author: "Rich Leyshon"
+date: May 19 2024
+description: "Thomas Barrandon's understated scifi masterpiece"
+categories:
+- Instrumental
+- Synthwave
+- Electronic
+- Electro
+image: https://i.scdn.co/image/ab67616d0000b2737d131aac6ecf7c3bde8c9235
+image-alt: Album cover art
+toc: true
+---
+
+## A Cosmic Convergence
+
+The EP offers a mesmerising journey through electronic soundscapes, evoking a
+sense of otherworldly exploration. Barrandon masterfully combines retro
+synthwave elements with modern cinematic vibes.
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/2qLTwcS85LwrTvIGcK64WR?utm_source=generator&theme=0" width="40%" height="60" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class=center></iframe>
+
+<br>
+
+For a formal description of the audio feature categories presented here, please
+consult the
+<a href="https://developer.spotify.com/documentation/web-api/reference/get-audio-features" target="_blank">Spotify Developer API Documentation</a>.
+
+Overall, a laid-back and peaceful affair, with distribution in the lower
+valence and speechiness values. Acousticness and instrumentalness are mostly
+confined to lower values, with the distinct exception of the final track, "A
+New Start". A broad middle-range distribution in energy and danceability is
+common across all tracks.
+
+```{r, width="300px", fig.align="center"}
+#| warning: false
+#| echo: false
+library(here)
+library(kableExtra)
+library(glue)
+source(here("R/music-reviews/spotify-album.R"))
+source(here("R/music-reviews/config-secrets.R"))
+album_id = "2qLTwcS85LwrTvIGcK64WR"
+viz_album_audio_features(
+spotify_id = album_id,    
+title_font_size = 14,
+subtitle_font_size = 10,
+title_hjust = -0.4,
+subtitle_hjust = 0.2,
+debug = FALSE
+)
+
+```
+
+::: {.callout-tip collapse="true"}
+## Interpreting the Ridge Plot (Click to expand)
+
+These ridge plots show a histogram of the mean audio feature values across each
+track in the album. Look across the horizontal axis at where the peaks for each
+feature occur. For example, if the album contains lots of tracks with busy
+vocals, the speechiness feature will show a peak to the right of the horizontal
+axis. Conversely, an instrumental album would have a speechiness peak to the
+left of the horizontal axis but you would also expect it to have a peak to the
+right of the axis in the instrumentalness feature.
+:::
+
+## The Tracks
+
+Below are the mean audio feature values for each track. The last row (green)
+presents a mean summary of the album.
+
+```{r}
+#| echo: false
+tab = create_album_audio_summary_table(spotify_id = album_id)
+# create album average
+numeric_cols = select(tab, where(is.numeric))
+summary_tab = summarise(numeric_cols, across(everything(), mean))
+summ_row = cbind(track_name = glue::glue("Album Mean"), summary_tab)
+tab = rbind(tab, summ_row)
+# Visualise
+summ_ind = nrow(tab)
+kableExtra::kbl(tab) %>%
+row_spec(summ_ind, color = "white", background = "#146542")
+
+```
+
+...
+
+## Extinction
+The opening track sets the tone with its haunting melodies and pulsating beats.
+It’s reminiscent of the Stranger Things theme, yet maintains its unique
+identity, aiming for a more subtle tension to emerge.
+
+## Doomsday Clock
+From the outset a  percussive metronome  gradually builds tension. A brooding
+composition, the synths create an eerie atmosphere, leaving you on the edge of
+anticipation. 
+
+## Pale Blue Dot
+
+![Look again at that dot. That's here. That's home. That's us. (Carl Sagan)](https://science.nasa.gov/wp-content/uploads/2023/09/PIA23645_PaleBlueDotRevisited_1600.jpg?w=640&format=jpeg)
+
+A beautiful piece that balances melancholy and hope. The delicate piano
+interludes blend seamlessly with the electronic textures.
+
+## Fragment
+The standout track, this shorter number feels like a glitch in the matrix. Its
+beats and fragmented sounds add an intriguing layer.
+
+## New Start
+Short but impactful, this track offers a sense of resolution. The uplifting
+melodies and arpeggios leave you with a feeling of renewal. Peaceful piano is
+used to great effect, a distinct step change to the synth of the rest of the
+EP.
+
+## Overall
+When Worlds Collide is a journey that transcends time and space. Each track
+contributes to the EP’s cohesive narrative, making it a must-listen for fans of
+synthwave and ambient music.
+
+For more music to encourage your work efforts, check out
+[Productivity Pulse](index.qmd).
