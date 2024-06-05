@@ -1,0 +1,147 @@
+---
+title: "Parametrized Tests With Pytest in Plain English"
+author: "Rich Leyshon"
+date: "June 03 2024"
+description: "Plain English Discussion of Pytest Parametrize"
+categories:
+    - Explanation
+    - pytest
+    - Unit tests
+    - parametrize
+    - pytest-in-plain-english
+image: "https://i.imgur.com/n1flYqU.jpeg"
+image-alt: "Complex sushi conveyer belt with a futuristic theme in a pastel palette."
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-pytest-env-py"
+    language: "python"
+    display_name: "blog-pytest-env"
+---
+
+<figure class=center>
+  <img class="shaded_box" width=400px src="https://i.imgur.com/n1flYqU.jpeg"></img>
+  <figcaption style="text-align:center;">Complex sushi conveyer belt with a futuristic theme in a pastel palette.</figcaption>
+</figure>
+
+## Introduction
+
+`pytest` is a testing package for the python framework. It is broadly used to
+quality assure code logic. This article discusses what parametrized tests mean
+and how to implement them with `pytest`. This blog is the third in a series of
+blogs called
+[pytest in plain English](/../index.html#category=pytest-in-plain-english),
+favouring accessible language and simple examples to explain the more intricate
+features of the `pytest` package.
+
+For a wealth of documentation, guides and how-tos, please consult the
+<a href="https://docs.pytest.org/en/8.0.x/" target="_blank">`pytest` documentation</a>.
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose (Click to expand)
+
+This article intends to discuss clearly. It doesn't aim to be clever or
+impressive. Its aim is to extend understanding without overwhelming the reader.
+
+:::
+
+### Intended Audience
+
+Programmers with a working knowledge of python and some familiarity with
+`pytest` and packaging. The type of programmer who has wondered about how to
+follow best practice in testing python code.
+
+### What You'll Need:
+
+- [ ] Preferred python environment manager (eg `conda`)
+- [ ] `pip install pytest==8.1.1`
+- [ ] Git
+- [ ] GitHub account
+- [ ] Command line access
+
+### Preparation
+
+This blog is accompanied by code in
+[this repository](https://github.com/r-leyshon/pytest-fiddly-examples). The
+main branch provides a template with the minimum structure and requirements
+expected to run a `pytest` suite. The repo branches contain the code used in
+the examples of the following sections.
+
+Feel free to fork or clone the repo and checkout to the example branches as
+needed.
+
+The example code that accompanies this article is available in the
+[temp-fixtures branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
+of the repo.
+
+## What Are Parametrized Tests?
+
+Parametrized tests are simply tests that are applied recursively to multiple
+input values. For example, rather than testing a function on one input value,
+a list of different values could be passed as a parametrized fixture.
+
+A standard approach to testing could look like Figure 1 below, where separate
+tests are defined for the different values we need to check. This would likely
+result in a fair amount of repeated boilerplate code.
+
+![Figure 1: Testing multiple values without parametrization](https://i.imgur.com/obEM4Oo.png)
+
+Instead, we can reduce the number of tests down to 1 and pass a list of tuples
+to the test instead. Each tuple should contain a parameter value and the
+expected result, as illustrated in Figure 2.
+
+![Figure 2: Parametrized testing of multiple values](https://i.imgur.com/12QNQxt.png)
+
+So let's imagine we have a simple function called `double()`, the setup for the
+parametrized list is illustrated in Figure 3.
+
+![Figure 3: Exemplified paramatrization for `test_double()`](https://i.imgur.com/9jqdR9O.png)
+
+### Why use Parametrization?
+
+This approach allows us to thoroughly check the behaviour of our functions
+against multiple values, ensuring that edge-cases are safely treated or
+exceptions are raised as expected. 
+
+In this way, we serve multiple parameters and expected outcomes to a single
+test, reducing boilerplate code. Parametrization is not a silver bullet, and we
+still need to define all of our parameters and results in a parametrized
+fixture. This approach is not quite as flexible as the property-based testing
+achieveable with a package such as
+[`hypothesis`](https://hypothesis.readthedocs.io/en/latest/). However, the
+learning curve for `hypothesis` is a bit greater and may be dispropotionate to
+the job at hand.
+
+For the reasons outlined above, there are likely many competent python
+developers that never use parametrized fixtures. But parametrization does allow
+us to avoid implementing tests with a `for` loop or vectorized approaches to
+the same outcomes. When coupled with programmatic approaches to generating our
+input parameters, many lines of code can be saved. And things get even more
+interesting when we pass multiple parametrized fixtures to our tests, which
+I'll come to in a bit. For these reasons, I believe that awareness of
+parametrization should be promoted among python developers as a useful solution
+in the software development toolkit.
+
+
+## Summary
+
+...
+
+If you spot an error with this article, or have  suggested improvement then
+feel free to
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+Happy testing!
+
+## Acknowledgements
+
+To past and present colleagues who have helped to discuss pros and cons,
+establishing practice and firming-up some opinions. Particularly:
+
+* Charlie
+* Ethan
+* Henry
+* Sergio
+
+<p id=fin><i>fin!</i></p>
