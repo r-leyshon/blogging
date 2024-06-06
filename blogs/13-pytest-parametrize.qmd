@@ -75,7 +75,9 @@ The example code that accompanies this article is available in the
 [temp-fixtures branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
 of the repo.
 
-## What Are Parametrized Tests?
+## Overview
+
+### What Are Parametrized Tests?
 
 Parametrized tests are simply tests that are applied recursively to multiple
 input values. For example, rather than testing a function on one input value,
@@ -123,12 +125,74 @@ I'll come to in a bit. For these reasons, I believe that awareness of
 parametrization should be promoted among python developers as a useful solution
 in the software development toolkit.
 
+## Implementing Parametrization
+
+In this section, we will compare some very simple examples of tests with and
+without parametrization. Feel free to clone the repository and check out to the
+[example code](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
+branch to run the examples.
+
+### The Source Code
+
+Here we define a very basic function that checks whether an integer is prime.
+If a prime is encountered, then True is returned. If not, then False. The value
+1 gets its own treatment (return `False`). Lastly, we include some basic
+defensive checks, we return a `TypeError` is anything other than integer is
+passed to the function and a `ValueError` if the number is less than or equal
+to 0.
+
+```{python filename="primes.py"}
+
+def is_num_prime(pos_int: int) -> bool:
+    """Check if a positive integer is a prime number.
+
+    Parameters
+    ----------
+    pos_int : int
+        A positive integer.
+
+    Returns
+    -------
+    bool
+        True if the number is a prime number.
+
+    Raises
+    ------
+    TypeError
+        Value passed to `pos_int` is not an integer.
+    ValueError
+        Value passed to `pos_int` is less than or equal to 0.
+    """
+    if not isinstance(pos_int, int):
+        raise TypeError("`pos_int` must be a positive integer.")
+    if pos_int <= 0:
+        raise ValueError("`pos_int` must be a positive integer.")
+    elif pos_int == 1:
+        return False
+    else:
+        for i in range(2, (pos_int // 2) + 1):
+            # If divisible by any number 2<>(n/2)+1, it is not prime
+            if (pos_int % i) == 0:
+                return False
+        else:
+            return True
+
+```
+
+Running this function with a range of values demonstrates its behaviour.
+
+```{python}
+for i in range(1, 11):
+  print(f"{i}: {is_num_prime(i)}")
+
+```
+
 
 ## Summary
 
 ...
 
-If you spot an error with this article, or have  suggested improvement then
+If you spot an error with this article, or have a suggested improvement then
 feel free to
 [raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
 
