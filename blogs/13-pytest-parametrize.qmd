@@ -486,21 +486,275 @@ collected 56 items / 36 deselected / 20 selected
 
 ## Stacked Parametrization
 
-Parametrize gets really interesting when you have a case where you need to test
-**combinations of input parameters** against expected outputs. In this
+<img src=https://i.imgur.com/GLgYXI4.png alt="People surrounding a giant stack of pancakes" class=center width=400></img>
+
+Parametrize gets really interesting when you have a situation where you need to
+test **combinations of input parameters** against expected outputs. In this
 scenario, stacked parametrization allows you to set up all combinations with
 very little fuss. 
 
-<img src=https://i.imgur.com/GLgYXI4.png alt="People surrounding a giant stack of pancakes" class=center width=400></img>
+For this section, I will define a new function built on top of our
+`is_num_prime()` function. This function will take 2 positive integers and add
+them together, but only if both of the input integers are prime. Otherwise
+we'll simply return the input numbers. To keep things simple, we'll always
+return a tuple with the answer in all cases.
+
+```{python filename="primes.py"}
+def sum_if_prime(pos_int1: int, pos_int2: int) -> tuple:
+    """Sum 2 integers only if they are prime numbers.
+
+    Parameters
+    ----------
+    pos_int1 : int
+        A positive integer.
+    pos_int2 : int
+        A positive integer.
+
+    Returns
+    -------
+    tuple
+        Tuple of one integer if both inputs are prime numbers, else returns a
+        tuple of the inputs.
+    """
+    if is_num_prime(pos_int1) and is_num_prime(pos_int2):
+        return (pos_int1 + pos_int2,)
+    else:
+        return (pos_int1, pos_int2)
+
+```
+
+Then using this function with a range of numbers:
+
+```{python}
+for i in range(1, 6):
+    print(f"{i} and {i} result: {sum_if_prime(i, i)}")
+```
+
+Testing combinations of input parameters for this function will quickly become
+burdensome:
+
+```{python filename="test_primes.py"}
+#| eval: false
+from example_pkg.primes import sum_if_prime
 
 
+def test_sum_if_prime_with_manual_combinations():
+    """Manually check several cases."""
+    assert sum_if_prime(1, 1) == (1, 1)
+    assert sum_if_prime(1, 2) == (1, 2)
+    assert sum_if_prime(1, 3) == (1, 3)
+    assert sum_if_prime(1, 4) == (1, 4)
+    assert sum_if_prime(1, 5) == (1, 5)
+    assert sum_if_prime(2, 1) == (2, 1)
+    assert sum_if_prime(2, 2) == (4,) # the first case where both are primes
+    assert sum_if_prime(2, 3) == (5,) 
+    assert sum_if_prime(2, 4) == (2, 4)
+    assert sum_if_prime(2, 5) == (7,)
+    # ...
+```
 
+```
+% pytest -k "test_sum_if_prime_with_manual_combinations"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 55 deselected / 1 selected
 
+tests/test_primes.py .                                                   [100%]
 
+====================== 1 passed, 55 deselected in 0.01s =======================
+
+```
+
+### Single Assertions
+
+Because we take more than one input parameter, we can use stacked
+parametrization to easily inject all combinations of parameters to a test. All
+this means is that we use more than one parametrized fixture to the same test.
+Behind the scenes, `pytest` sets up a matrix of all parameter combinations to
+inject into our test.
+
+This allows us to very easily pass all of these parameter combinations to a
+**single assertion statement**, as in the diagram below.
+
+![Stacked parametrization against a single assertion](https://i.imgur.com/gyx5Jy4.png)
+
+To use stacked parametrization against our `sum_if_prime()` function, we can
+use 2 separate iterables:
+
+```{python filename="test_primes.py"}
+#| eval: false
+@pytest.mark.parametrize("first_ints", range(1,6))
+@pytest.mark.parametrize("second_ints", range(1,6))
+def test_sum_if_prime_stacked_parametrized_inputs(
+    first_ints, second_ints, expected_answers):
+    """Using stacked parameters to set up combinations of all cases."""
+    assert isinstance(sum_if_prime(first_ints, second_ints), tuple)
+
+```
+
+:::{.scrolling}
+
+```
+% pytest -k "test_sum_if_prime_stacked_parametrized_inputs" -v
+============================= test session starts =============================
+platform darwin -- Python 3.11.6, pytest-7.4.3, pluggy-1.3.0 
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+plugins: anyio-4.0.0
+collected 56 items / 31 deselected / 25 selected
+
+test_sum_if_prime_stacked_parametrized_inputs[1-1] PASSED                [  4%]
+test_sum_if_prime_stacked_parametrized_inputs[1-2] PASSED                [  8%]
+test_sum_if_prime_stacked_parametrized_inputs[1-3] PASSED                [ 12%]
+test_sum_if_prime_stacked_parametrized_inputs[1-4] PASSED                [ 16%]
+test_sum_if_prime_stacked_parametrized_inputs[1-5] PASSED                [ 20%]
+test_sum_if_prime_stacked_parametrized_inputs[2-1] PASSED                [ 24%]
+test_sum_if_prime_stacked_parametrized_inputs[2-2] PASSED                [ 28%]
+test_sum_if_prime_stacked_parametrized_inputs[2-3] PASSED                [ 32%]
+test_sum_if_prime_stacked_parametrized_inputs[2-4] PASSED                [ 36%]
+test_sum_if_prime_stacked_parametrized_inputs[2-5] PASSED                [ 40%]
+test_sum_if_prime_stacked_parametrized_inputs[3-1] PASSED                [ 44%]
+test_sum_if_prime_stacked_parametrized_inputs[3-2] PASSED                [ 48%]
+test_sum_if_prime_stacked_parametrized_inputs[3-3] PASSED                [ 52%]
+test_sum_if_prime_stacked_parametrized_inputs[3-4] PASSED                [ 56%]
+test_sum_if_prime_stacked_parametrized_inputs[3-5] PASSED                [ 60%]
+test_sum_if_prime_stacked_parametrized_inputs[4-1] PASSED                [ 64%]
+test_sum_if_prime_stacked_parametrized_inputs[4-2] PASSED                [ 68%]
+test_sum_if_prime_stacked_parametrized_inputs[4-3] PASSED                [ 72%]
+test_sum_if_prime_stacked_parametrized_inputs[4-4] PASSED                [ 76%]
+test_sum_if_prime_stacked_parametrized_inputs[4-5] PASSED                [ 80%]
+test_sum_if_prime_stacked_parametrized_inputs[5-1] PASSED                [ 84%]
+test_sum_if_prime_stacked_parametrized_inputs[5-2] PASSED                [ 88%]
+test_sum_if_prime_stacked_parametrized_inputs[5-3] PASSED                [ 92%]
+test_sum_if_prime_stacked_parametrized_inputs[5-4] PASSED                [ 96%]
+test_sum_if_prime_stacked_parametrized_inputs[5-5] PASSED                [100%]
+
+====================== 25 passed, 31 deselected in 0.01s ======================
+
+```
+:::
+
+The above test; which is 6 lines long; executed 25 tests. This is clearly a very
+beneficial feature of `pytest`. However, the eagle-eyed among you may have
+spotted a problem - this is only going to work if the expected answer is always
+the same. The test we defined is only checking that a `tuple` is returned in
+all cases. How can we ensure that we serve the expected answers to the test
+too? This is where things get a little fiddly.
+
+### Multiple Assertions
+
+To test our function against combinations of parameters with
+**different expected answers**, we must employ a dictionary mapping of the
+parameter combinations as keys and the expected assertions as values.
+
+![Using a dictionary to map multiple assertions against stacked parametrized fixtures](https://i.imgur.com/DMkpVG7.png)
+
+To do this, we need to define a new fixture, which will return the required
+dictionary mapping of parameters to expected values.
+
+```{python filename="test_primes.py"}
+#| eval: false
+# Using stacked parametrization, we can avoid manually typing the cases out,
+# though we do still need to define a dictionary of the expected answers...
+@pytest.fixture
+def expected_answers() -> dict:
+    """A dictionary of expected answers for all combinations of 1 through 5.
+
+    First key corresponds to `pos_int1` and second key is `pos_int2`.
+
+    Returns
+    -------
+    dict
+        Dictionary of cases and their expected tuples.
+    """
+    expected= {
+        1: {1: (1,1), 2: (1,2), 3: (1,3), 4: (1,4), 5: (1,5),},
+        2: {1: (2,1), 2: (4,), 3: (5,), 4: (2,4), 5: (7,),},
+        3: {1: (3,1), 2: (5,), 3: (6,), 4: (3,4), 5: (8,),},
+        4: {1: (4,1), 2: (4,2), 3: (4,3), 4: (4,4), 5: (4,5),},
+        5: {1: (5,1), 2: (7,), 3: (8,), 4: (5,4), 5: (10,),},
+    }
+    return expected
+
+```
+
+Passing our `expected_answers` fixture to our test will allow us to use this
+dictionary against each value of the parameters. Let's update
+`test_sum_if_prime_stacked_parametrized_inputs` to use the parameter values to
+access the expected assertion value from the dictionary.
+
+```{python filename="test_primes.py"}
+#| eval: false
+@pytest.mark.parametrize("first_ints", range(1,6))
+@pytest.mark.parametrize("second_ints", range(1,6))
+def test_sum_if_prime_stacked_parametrized_inputs(
+    first_ints, second_ints, expected_answers):
+    """Using stacked parameters to set up combinations of all cases."""
+    assert isinstance(sum_if_prime(first_ints, second_ints), tuple)
+    answer = sum_if_prime(first_ints, second_ints)
+    # using the parametrized values, pull out their keys from the
+    # expected_answers dictionary
+    assert answer == expected_answers[first_ints][second_ints]
+
+```
+
+Finally, running this test produces the below `pytest` report.
+
+:::{.scrolling}
+
+```
+% pytest -k "test_sum_if_prime_stacked_parametrized_inputs" -v
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 31 deselected / 25 selected
+
+test_sum_if_prime_stacked_parametrized_inputs[1-1] PASSED                [  4%]
+test_sum_if_prime_stacked_parametrized_inputs[1-2] PASSED                [  8%]
+test_sum_if_prime_stacked_parametrized_inputs[1-3] PASSED                [ 12%]
+test_sum_if_prime_stacked_parametrized_inputs[1-4] PASSED                [ 16%]
+test_sum_if_prime_stacked_parametrized_inputs[1-5] PASSED                [ 20%]
+test_sum_if_prime_stacked_parametrized_inputs[2-1] PASSED                [ 24%]
+test_sum_if_prime_stacked_parametrized_inputs[2-2] PASSED                [ 28%]
+test_sum_if_prime_stacked_parametrized_inputs[2-3] PASSED                [ 32%]
+test_sum_if_prime_stacked_parametrized_inputs[2-4] PASSED                [ 36%]
+test_sum_if_prime_stacked_parametrized_inputs[2-5] PASSED                [ 40%]
+test_sum_if_prime_stacked_parametrized_inputs[3-1] PASSED                [ 44%]
+test_sum_if_prime_stacked_parametrized_inputs[3-2] PASSED                [ 48%]
+test_sum_if_prime_stacked_parametrized_inputs[3-3] PASSED                [ 52%]
+test_sum_if_prime_stacked_parametrized_inputs[3-4] PASSED                [ 56%]
+test_sum_if_prime_stacked_parametrized_inputs[3-5] PASSED                [ 60%]
+test_sum_if_prime_stacked_parametrized_inputs[4-1] PASSED                [ 64%]
+test_sum_if_prime_stacked_parametrized_inputs[4-2] PASSED                [ 68%]
+test_sum_if_prime_stacked_parametrized_inputs[4-3] PASSED                [ 72%]
+test_sum_if_prime_stacked_parametrized_inputs[4-4] PASSED                [ 76%]
+test_sum_if_prime_stacked_parametrized_inputs[4-5] PASSED                [ 80%]
+test_sum_if_prime_stacked_parametrized_inputs[5-1] PASSED                [ 84%]
+test_sum_if_prime_stacked_parametrized_inputs[5-2] PASSED                [ 88%]
+test_sum_if_prime_stacked_parametrized_inputs[5-3] PASSED                [ 92%]
+test_sum_if_prime_stacked_parametrized_inputs[5-4] PASSED                [ 96%]
+test_sum_if_prime_stacked_parametrized_inputs[5-5] PASSED                [100%]
+
+====================== 25 passed, 31 deselected in 0.01s ======================
+```
+
+:::
 
 ## Summary
 
-...
+There you have it - how to use basic and stacked parametrization in your tests.
+We have:
+
+* used parametrize to inject multiple parameter values to a single test.
+* used stacked parametrize to test combinations of parameters against a single
+assertion.
+* used a nested dictionary fixture to map stacked parametrize input
+combinations to different expected assertion values.
 
 If you spot an error with this article, or have a suggested improvement then
 feel free to
@@ -517,5 +771,9 @@ establishing practice and firming-up some opinions. Particularly:
 * Ethan
 * Henry
 * Sergio
+
+The diagrams used in this article were produced with
+[Excalidraw](https://excalidraw.com/), with thanks to Mat for the
+recommendation.
 
 <p id=fin><i>fin!</i></p>
