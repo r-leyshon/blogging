@@ -10,7 +10,7 @@ categories:
     - parametrize
     - pytest-in-plain-english
 image: "https://i.imgur.com/n1flYqU.jpeg"
-image-alt: "Complex sushi conveyer belt with a futuristic theme in a pastel palette."
+image-alt: "Complex sushi conveyor belt with a futuristic theme in a pastel palette."
 toc: true
 jupyter: 
   kernelspec:
@@ -22,7 +22,7 @@ css: /www/13-pytest-parametrize/styles.css
 
 <figure class=center>
   <img class="shaded_box" width=400px src="https://i.imgur.com/n1flYqU.jpeg"></img>
-  <figcaption style="text-align:center;">Complex sushi conveyer belt with a futuristic theme in a pastel palette.</figcaption>
+  <figcaption style="text-align:center;">Complex sushi conveyor belt with a futuristic theme in a pastel palette.</figcaption>
 </figure>
 
 ## Introduction
@@ -111,9 +111,9 @@ In this way, we serve multiple parameters and expected outcomes to a single
 test, reducing boilerplate code. Parametrization is not a silver bullet, and we
 still need to define all of our parameters and results in a parametrized
 fixture. This approach is not quite as flexible as the property-based testing
-achieveable with a package such as
+achievable with a package such as
 [`hypothesis`](https://hypothesis.readthedocs.io/en/latest/). However, the
-learning curve for `hypothesis` is a bit greater and may be dispropotionate to
+learning curve for `hypothesis` is a bit greater and may be disproportionate to
 the job at hand.
 
 For the reasons outlined above, there are likely many competent python
@@ -238,7 +238,7 @@ tests/test_primes.py .                                                   [100%]
 Notice that both assertions will either pass or fail together. This could
 potentially make it more challenging to troubleshoot a failing pipeline when
 the function is changed and now behaves differently for certain cases. It could
-be better to have seperate test functions for each value, but that seems like
+be better to have separate test functions for each value, but that seems like
 an awful lot of work...
 
 ### ...Enter Parametrize
@@ -255,7 +255,7 @@ decorator, which takes 2 arguments, a string and an iterable.
 
 ```
 
-The string should contain comma seperated values for the names that you would
+The string should contain comma separated values for the names that you would
 like to refer to when iterating through the iterable. They could be "x, y",
 "fizz, buzz" or whatever placeholder you would wish to use in your test. These
 names will map to the index of elements in the iterable.
@@ -390,7 +390,7 @@ To parametrize the equivalent test, we can take the below approach.
 def test_is_num_primes_parametrized(some_integers, answers):
     """The same tests but this time with parametrized input.
 
-    Fewer lines and 5 seperate tests are run by pytest.
+    Fewer lines and 5 separate tests are run by pytest.
     """
     assert is_num_prime(some_integers) == answers
 
