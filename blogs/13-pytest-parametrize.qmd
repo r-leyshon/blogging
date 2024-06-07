@@ -20,9 +20,9 @@ jupyter:
 css: /www/13-pytest-parametrize/styles.css
 ---
 
-<figure class=center>
+<figure class=center >
   <img class="shaded_box" width=400px src="https://i.imgur.com/n1flYqU.jpeg"></img>
-  <figcaption style="text-align:center;">Complex sushi conveyor belt with a futuristic theme in a pastel palette.</figcaption>
+  <figcaption>Complex sushi conveyor belt with a futuristic theme in a pastel palette.</figcaption>
 </figure>
 
 ## Introduction
@@ -73,7 +73,7 @@ Feel free to fork or clone the repo and checkout to the example branches as
 needed.
 
 The example code that accompanies this article is available in the
-[temp-fixtures branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
+[parametrize branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
 of the repo.
 
 ## Overview
@@ -138,8 +138,8 @@ branch to run the examples.
 Here we define a very basic function that checks whether an integer is prime.
 If a prime is encountered, then True is returned. If not, then False. The value
 1 gets its own treatment (return `False`). Lastly, we include some basic
-defensive checks, we return a `TypeError` is anything other than integer is
-passed to the function and a `ValueError` if the number is less than or equal
+defensive checks, we return a `TypeError` if anything other than integer is
+passed to the function and a `ValueError` if the integer is less than or equal
 to 0.
 
 ```{python filename="primes.py"}
@@ -218,7 +218,7 @@ def test_is_num_primes_exceptions_manually():
 Within this function, I can run multiple assertions against several hard-coded
 inputs. I'm only checking against a couple of values here but production-ready
 code may test against many more cases. To do that, I'd need to have a lot of
-copy-pasted `pytest.raises` statements. Perhaps more importantly, watch what
+repeated `pytest.raises` statements. Perhaps more importantly, watch what
 happens when I run the test.
 
 ```
@@ -235,11 +235,10 @@ tests/test_primes.py .                                                   [100%]
 
 ```
 
-Notice that both assertions will either pass or fail together. This could
-potentially make it more challenging to troubleshoot a failing pipeline when
-the function is changed and now behaves differently for certain cases. It could
-be better to have separate test functions for each value, but that seems like
-an awful lot of work...
+Notice that both assertions will either pass or fail together as one test. This
+could potentially make it more challenging to troubleshoot a failing pipeline.
+It could be better to have separate test functions for each value, but that
+seems like an awful lot of work...
 
 ### ...Enter Parametrize
 
@@ -256,17 +255,17 @@ decorator, which takes 2 arguments, a string and an iterable.
 ```
 
 The string should contain comma separated values for the names that you would
-like to refer to when iterating through the iterable. They could be "x, y",
-"fizz, buzz" or whatever placeholder you would wish to use in your test. These
-names will map to the index of elements in the iterable.
+like to refer to when iterating through the iterable. They can be any
+placeholder you would wish to use in your test. These names will map to the
+index of elements in the iterable.
 
-So with the above setup, when I use this fixture with a test, I will expect to
-inject the following values to a test:
+So when I use the fixture with a test, I will expect to inject the following
+values:
 
-iteration 1... "some_values" = 1.0, "exception_types" = TypeError
+iteration 1... "some_values" = 1.0, "exception_types" = TypeError  
 iteration 2... "some_values" = -1, "exception_types" = ValueError
 
-Lets go ahead and use this parametrized fixture with a test.
+Let's go ahead and use this parametrized fixture with a test.
 
 ```{python filename="test_primes.py"}
 #| eval: false
@@ -327,8 +326,8 @@ being executed. This can be very helpful in identifying problem cases.
 ### Yet More Cases
 
 Next up, we may wish to check return values for our function with several
-cases. To keep things simple, let's write a test that checks the return values
-for a range of numbers between 1 and 5.
+more cases. To keep things simple, let's write a test that checks the return
+values for a range of numbers between 1 and 5.
 
 ```{python filename="test_primes.py"}
 #| eval: false
@@ -361,9 +360,9 @@ def test_is_num_primes_with_list():
 
 ```
 
-This is certainly neater than the previous example. Although both of these
-tests will evaluate as a single test, so a failing instance will not be
-explicitly indicated in the `pytest` report.
+This is certainly neater than the previous example. Although both
+implementations will evaluate as a single test, so a failing instance will not
+be explicitly indicated in the `pytest` report.
 
 ```
 % pytest -k "test_is_num_primes_with_list"
@@ -420,7 +419,7 @@ tests/test_primes.py::test_is_num_primes_parametrized[5-True] PASSED     [100%]
 
 Where this approach really comes into its own is when the number of cases you
 need to test increases, you can explore ways of generating cases rather than
-hard-coding the values, as in the previous cases.
+hard-coding the values, as in the previous examples.
 
 In the example below, we can use the `range()` function to generate the 
 integers we need to test, and then zipping these cases to their expected return
@@ -495,9 +494,9 @@ very little fuss.
 
 For this section, I will define a new function built on top of our
 `is_num_prime()` function. This function will take 2 positive integers and add
-them together, but only if both of the input integers are prime. Otherwise
+them together, but only if both of the input integers are prime. Otherwise,
 we'll simply return the input numbers. To keep things simple, we'll always
-return a tuple with the answer in all cases.
+return a tuple in all cases.
 
 ```{python filename="primes.py"}
 def sum_if_prime(pos_int1: int, pos_int2: int) -> tuple:
@@ -570,12 +569,12 @@ tests/test_primes.py .                                                   [100%]
 ### Single Assertions
 
 Because we take more than one input parameter, we can use stacked
-parametrization to easily inject all combinations of parameters to a test. All
-this means is that we use more than one parametrized fixture to the same test.
-Behind the scenes, `pytest` sets up a matrix of all parameter combinations to
-inject into our test.
+parametrization to easily inject all combinations of parameters to a test.
+Simply put, this means that we pass more than one parametrized fixture to the
+same test. Behind the scenes, `pytest` prepares all parameter combinations to
+inject into our test. 
 
-This allows us to very easily pass all of these parameter combinations to a
+This allows us to very easily pass all parameter combinations to a
 **single assertion statement**, as in the diagram below.
 
 ![Stacked parametrization against a single assertion](https://i.imgur.com/gyx5Jy4.png)
@@ -636,7 +635,7 @@ test_sum_if_prime_stacked_parametrized_inputs[5-5] PASSED                [100%]
 
 ```
 :::
-
+<br>
 The above test; which is 6 lines long; executed 25 tests. This is clearly a very
 beneficial feature of `pytest`. However, the eagle-eyed among you may have
 spotted a problem - this is only going to work if the expected answer is always
@@ -681,8 +680,8 @@ def expected_answers() -> dict:
 
 ```
 
-Passing our `expected_answers` fixture to our test will allow us to use this
-dictionary against each value of the parameters. Let's update
+Passing our `expected_answers` fixture to our test will allow us to match all
+parameter combinations to their expected answer. Let's update
 `test_sum_if_prime_stacked_parametrized_inputs` to use the parameter values to
 access the expected assertion value from the dictionary.
 
@@ -772,7 +771,7 @@ establishing practice and firming-up some opinions. Particularly:
 * Henry
 * Sergio
 
-The diagrams used in this article were produced with
+The diagrams used in this article were produced with the excellent
 [Excalidraw](https://excalidraw.com/), with thanks to Mat for the
 recommendation.
 
