@@ -1,0 +1,778 @@
+---
+title: "Parametrized Tests With Pytest in Plain English"
+author: "Rich Leyshon"
+date: "June 07 2024"
+description: "Plain English Discussion of Pytest Parametrize"
+categories:
+    - Explanation
+    - pytest
+    - Unit tests
+    - parametrize
+    - pytest-in-plain-english
+image: "https://i.imgur.com/n1flYqU.jpeg"
+image-alt: "Complex sushi conveyor belt with a futuristic theme in a pastel palette."
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-pytest-env-py"
+    language: "python"
+    display_name: "blog-pytest-env"
+css: /www/13-pytest-parametrize/styles.css
+---
+
+<figure class=center >
+  <img class="shaded_box" width=400px src="https://i.imgur.com/n1flYqU.jpeg"></img>
+  <figcaption>Complex sushi conveyor belt with a futuristic theme in a pastel palette.</figcaption>
+</figure>
+
+## Introduction
+
+`pytest` is a testing package for the python framework. It is broadly used to
+quality assure code logic. This article discusses what parametrized tests mean
+and how to implement them with `pytest`. This blog is the third in a series of
+blogs called
+[pytest in plain English](/../index.html#category=pytest-in-plain-english),
+favouring accessible language and simple examples to explain the more intricate
+features of the `pytest` package.
+
+For a wealth of documentation, guides and how-tos, please consult the
+<a href="https://docs.pytest.org/en/8.0.x/" target="_blank">`pytest` documentation</a>.
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose (Click to expand)
+
+This article intends to discuss clearly. It doesn't aim to be clever or
+impressive. Its aim is to extend understanding without overwhelming the reader.
+
+:::
+
+### Intended Audience
+
+Programmers with a working knowledge of python and some familiarity with
+`pytest` and packaging. The type of programmer who has wondered about how to
+follow best practice in testing python code.
+
+### What You'll Need:
+
+- [ ] Preferred python environment manager (eg `conda`)
+- [ ] `pip install pytest==8.1.1`
+- [ ] Git
+- [ ] GitHub account
+- [ ] Command line access
+
+### Preparation
+
+This blog is accompanied by code in
+[this repository](https://github.com/r-leyshon/pytest-fiddly-examples). The
+main branch provides a template with the minimum structure and requirements
+expected to run a `pytest` suite. The repo branches contain the code used in
+the examples of the following sections.
+
+Feel free to fork or clone the repo and checkout to the example branches as
+needed.
+
+The example code that accompanies this article is available in the
+[parametrize branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
+of the repo.
+
+## Overview
+
+### What Are Parametrized Tests?
+
+Parametrized tests are simply tests that are applied recursively to multiple
+input values. For example, rather than testing a function on one input value,
+a list of different values could be passed as a parametrized fixture.
+
+A standard approach to testing could look like Figure 1 below, where separate
+tests are defined for the different values we need to check. This would likely
+result in a fair amount of repeated boilerplate code.
+
+![Figure 1: Testing multiple values without parametrization](https://i.imgur.com/obEM4Oo.png)
+
+Instead, we can reduce the number of tests down to 1 and pass a list of tuples
+to the test instead. Each tuple should contain a parameter value and the
+expected result, as illustrated in Figure 2.
+
+![Figure 2: Parametrized testing of multiple values](https://i.imgur.com/12QNQxt.png)
+
+So let's imagine we have a simple function called `double()`, the setup for the
+parametrized list is illustrated in Figure 3.
+
+![Figure 3: Exemplified paramatrization for `test_double()`](https://i.imgur.com/9jqdR9O.png)
+
+### Why use Parametrization?
+
+This approach allows us to thoroughly check the behaviour of our functions
+against multiple values, ensuring that edge-cases are safely treated or
+exceptions are raised as expected. 
+
+In this way, we serve multiple parameters and expected outcomes to a single
+test, reducing boilerplate code. Parametrization is not a silver bullet, and we
+still need to define all of our parameters and results in a parametrized
+fixture. This approach is not quite as flexible as the property-based testing
+achievable with a package such as
+[`hypothesis`](https://hypothesis.readthedocs.io/en/latest/). However, the
+learning curve for `hypothesis` is a bit greater and may be disproportionate to
+the job at hand.
+
+For the reasons outlined above, there are likely many competent python
+developers that never use parametrized fixtures. But parametrization does allow
+us to avoid implementing tests with a `for` loop or vectorized approaches to
+the same outcomes. When coupled with programmatic approaches to generating our
+input parameters, many lines of code can be saved. And things get even more
+interesting when we pass multiple parametrized fixtures to our tests, which
+I'll come to in a bit. For these reasons, I believe that awareness of
+parametrization should be promoted among python developers as a useful solution
+in the software development toolkit.
+
+## Implementing Parametrization
+
+In this section, we will compare some very simple examples of tests with and
+without parametrization. Feel free to clone the repository and check out to the
+[example code](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
+branch to run the examples.
+
+### Define the Source Code
+
+Here we define a very basic function that checks whether an integer is prime.
+If a prime is encountered, then True is returned. If not, then False. The value
+1 gets its own treatment (return `False`). Lastly, we include some basic
+defensive checks, we return a `TypeError` if anything other than integer is
+passed to the function and a `ValueError` if the integer is less than or equal
+to 0.
+
+```{python filename="primes.py"}
+
+def is_num_prime(pos_int: int) -> bool:
+    """Check if a positive integer is a prime number.
+
+    Parameters
+    ----------
+    pos_int : int
+        A positive integer.
+
+    Returns
+    -------
+    bool
+        True if the number is a prime number.
+
+    Raises
+    ------
+    TypeError
+        Value passed to `pos_int` is not an integer.
+    ValueError
+        Value passed to `pos_int` is less than or equal to 0.
+    """
+    if not isinstance(pos_int, int):
+        raise TypeError("`pos_int` must be a positive integer.")
+    if pos_int <= 0:
+        raise ValueError("`pos_int` must be a positive integer.")
+    elif pos_int == 1:
+        return False
+    else:
+        for i in range(2, (pos_int // 2) + 1):
+            # If divisible by any number 2<>(n/2)+1, it is not prime
+            if (pos_int % i) == 0:
+                return False
+        else:
+            return True
+
+```
+
+Running this function with a range of values demonstrates its behaviour.
+
+```{python}
+for i in range(1, 11):
+  print(f"{i}: {is_num_prime(i)}")
+
+```
+
+### Let's Get Testing
+
+Let's begin with the defensive tests. Let's say I need to check that the
+function can be relied upon to raise on a number of conditions. The typical
+approach may be to test the raise conditions within a dedicated test function.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+"""Tests for primes module."""
+import pytest
+
+from example_pkg.primes import is_num_prime
+
+
+def test_is_num_primes_exceptions_manually():
+    """Testing the function's defensive checks.
+
+    Here we have to repeat a fair bit of pytest boilerplate.
+    """
+    with pytest.raises(TypeError, match="must be a positive integer."):
+        is_num_prime(1.0)
+    with pytest.raises(ValueError, match="must be a positive integer."):
+        is_num_prime(-1)
+
+```
+
+Within this function, I can run multiple assertions against several hard-coded
+inputs. I'm only checking against a couple of values here but production-ready
+code may test against many more cases. To do that, I'd need to have a lot of
+repeated `pytest.raises` statements. Perhaps more importantly, watch what
+happens when I run the test.
+
+```
+% pytest -k "test_is_num_primes_exceptions_manually"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 55 deselected / 1 selected                                
+
+tests/test_primes.py .                                                   [100%]
+
+======================= 1 passed, 55 deselected in 0.01s ======================
+
+```
+
+Notice that both assertions will either pass or fail together as one test. This
+could potentially make it more challenging to troubleshoot a failing pipeline.
+It could be better to have separate test functions for each value, but that
+seems like an awful lot of work...
+
+### ...Enter Parametrize
+
+Now to start using parametrize, we need to use the `@pytest.mark.parametrize`
+decorator, which takes 2 arguments, a string and an iterable.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+@pytest.mark.parametrize(
+    "some_values, exception_types", [(1.0, TypeError), (-1, ValueError)]
+    )
+
+```
+
+The string should contain comma separated values for the names that you would
+like to refer to when iterating through the iterable. They can be any
+placeholder you would wish to use in your test. These names will map to the
+index of elements in the iterable.
+
+So when I use the fixture with a test, I will expect to inject the following
+values:
+
+iteration 1... "some_values" = 1.0, "exception_types" = TypeError  
+iteration 2... "some_values" = -1, "exception_types" = ValueError
+
+Let's go ahead and use this parametrized fixture with a test.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+@pytest.mark.parametrize(
+    "some_values, exception_types", [(1.0, TypeError), (-1, ValueError)]
+    )
+def test_is_num_primes_exceptions_parametrized(some_values, exception_types):
+    """The same defensive checks but this time with parametrized input.
+
+    Less lines in the test but if we increase the number of cases, we need to
+    add more lines to the parametrized fixture instead.
+    """
+    with pytest.raises(exception_types, match="must be a positive integer."):
+        is_num_prime(some_values)
+
+```
+
+The outcome for running this test is shown below.
+
+```
+% pytest -k "test_is_num_primes_exceptions_parametrized"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 54 deselected / 2 selected                                
+
+tests/test_primes.py ..                                                  [100%]
+
+======================= 2 passed, 54 deselected in 0.01s ======================
+
+```
+
+It's a subtle difference, but notice that we now get 2 passing tests rather
+than 1? We can make this more explicit by passing the `-v` flag (for verbose)
+when we invoke `pytest`.
+
+```
+% pytest -k "test_is_num_primes_exceptions_parametrized" -v 
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 54 deselected / 2 selected                                
+
+test_is_num_primes_exceptions_parametrized[1.0-TypeError] PASSED         [ 50%]
+test_is_num_primes_exceptions_parametrized[-1-ValueError] PASSED         [100%]
+
+======================= 2 passed, 54 deselected in 0.01s ======================
+
+```
+
+In this way, we get a helpful printout of the test and parameter combination
+being executed. This can be very helpful in identifying problem cases.
+
+### Yet More Cases
+
+Next up, we may wish to check return values for our function with several
+more cases. To keep things simple, let's write a test that checks the return
+values for a range of numbers between 1 and 5.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+def test_is_num_primes_manually():
+    """Test several positive integers return expected boolean.
+
+    This is quite a few lines of code. Note that this runs as a single test.
+    """
+    assert is_num_prime(1) == False
+    assert is_num_prime(2) == True
+    assert is_num_prime(3) == True
+    assert is_num_prime(4) == False
+    assert is_num_prime(5) == True
+```
+
+One way that this can be serialised is by using a list of parameters and
+expected results.
+
+```{python}
+#| eval: false
+
+def test_is_num_primes_with_list():
+    """Test the same values using lists.
+
+    Less lines but is run as a single test.
+    """
+    answers = [is_num_prime(i) for i in range(1, 6)]
+    assert answers == [False, True, True, False, True]
+
+```
+
+This is certainly neater than the previous example. Although both
+implementations will evaluate as a single test, so a failing instance will not
+be explicitly indicated in the `pytest` report.
+
+```
+% pytest -k "test_is_num_primes_with_list"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 55 deselected / 1 selected                               
+
+tests/test_primes.py .                                                   [100%]
+
+======================= 1 passed, 55 deselected in 0.01s ======================
+```
+
+To parametrize the equivalent test, we can take the below approach.
+
+```{python}
+#| eval: false
+
+@pytest.mark.parametrize(
+    "some_integers, answers",
+    [(1, False), (2, True), (3, True), (4, False), (5, True)]
+    )
+def test_is_num_primes_parametrized(some_integers, answers):
+    """The same tests but this time with parametrized input.
+
+    Fewer lines and 5 separate tests are run by pytest.
+    """
+    assert is_num_prime(some_integers) == answers
+
+```
+
+This is slightly more lines than `test_is_num_primes_with_list` but has the
+advantage of being run as separate tests:
+
+```
+% pytest -k "test_is_num_primes_parametrized" -v
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 51 deselected / 5 selected                               
+
+tests/test_primes.py::test_is_num_primes_parametrized[1-False] PASSED    [ 20%]
+tests/test_primes.py::test_is_num_primes_parametrized[2-True] PASSED     [ 40%]
+tests/test_primes.py::test_is_num_primes_parametrized[3-True] PASSED     [ 60%]
+tests/test_primes.py::test_is_num_primes_parametrized[4-False] PASSED    [ 80%]
+tests/test_primes.py::test_is_num_primes_parametrized[5-True] PASSED     [100%]
+
+======================= 5 passed, 51 deselected in 0.01s ======================
+
+```
+
+Where this approach really comes into its own is when the number of cases you
+need to test increases, you can explore ways of generating cases rather than
+hard-coding the values, as in the previous examples.
+
+In the example below, we can use the `range()` function to generate the 
+integers we need to test, and then zipping these cases to their expected return
+values.
+
+```{python}
+#| eval: false
+
+# if my list of cases is growing, I can employ other tactics...
+in_ = range(1, 21)
+out = [
+    False, True, True, False, True, False, True, False, False, False,
+    True, False, True, False, False, False, True, False, True, False,
+    ]
+
+
+@pytest.mark.parametrize("some_integers, some_answers", zip(in_, out))
+def test_is_num_primes_with_zipped_lists(some_integers, some_answers):
+    """The same tests but this time with zipped inputs."""
+    assert is_num_prime(some_integers) == some_answers
+
+```
+
+Running this test yields the following result:
+
+:::{.scrolling}
+
+```
+% pytest -k "test_is_num_primes_with_zipped_lists" -v 
+============================= test session starts =============================
+platform darwin -- Python 3.11.6, pytest-7.4.3, pluggy-1.3.0
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+plugins: anyio-4.0.0
+collected 56 items / 36 deselected / 20 selected
+
+/test_primes.py::test_is_num_primes_with_zipped_lists[1-False] PASSED  [  5%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[2-True] PASSED   [ 10%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[3-True] PASSED   [ 15%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[4-False] PASSED  [ 20%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[5-True] PASSED   [ 25%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[6-False] PASSED  [ 30%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[7-True] PASSED   [ 35%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[8-False] PASSED  [ 40%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[9-False] PASSED  [ 45%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[10-False] PASSED [ 50%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[11-True] PASSED  [ 55%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[12-False] PASSED [ 60%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[13-True] PASSED  [ 65%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[14-False] PASSED [ 70%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[15-False] PASSED [ 75%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[16-False] PASSED [ 80%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[17-True] PASSED  [ 85%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[18-False] PASSED [ 90%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[19-True] PASSED  [ 95%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[20-False] PASSED [100%]
+
+====================== 20 passed, 36 deselected in 0.02s ======================
+```
+
+:::
+
+## Stacked Parametrization
+
+<img src=https://i.imgur.com/GLgYXI4.png alt="People surrounding a giant stack of pancakes" class=center width=400></img>
+
+Parametrize gets really interesting when you have a situation where you need to
+test **combinations of input parameters** against expected outputs. In this
+scenario, stacked parametrization allows you to set up all combinations with
+very little fuss. 
+
+For this section, I will define a new function built on top of our
+`is_num_prime()` function. This function will take 2 positive integers and add
+them together, but only if both of the input integers are prime. Otherwise,
+we'll simply return the input numbers. To keep things simple, we'll always
+return a tuple in all cases.
+
+```{python filename="primes.py"}
+def sum_if_prime(pos_int1: int, pos_int2: int) -> tuple:
+    """Sum 2 integers only if they are prime numbers.
+
+    Parameters
+    ----------
+    pos_int1 : int
+        A positive integer.
+    pos_int2 : int
+        A positive integer.
+
+    Returns
+    -------
+    tuple
+        Tuple of one integer if both inputs are prime numbers, else returns a
+        tuple of the inputs.
+    """
+    if is_num_prime(pos_int1) and is_num_prime(pos_int2):
+        return (pos_int1 + pos_int2,)
+    else:
+        return (pos_int1, pos_int2)
+
+```
+
+Then using this function with a range of numbers:
+
+```{python}
+for i in range(1, 6):
+    print(f"{i} and {i} result: {sum_if_prime(i, i)}")
+```
+
+Testing combinations of input parameters for this function will quickly become
+burdensome:
+
+```{python filename="test_primes.py"}
+#| eval: false
+from example_pkg.primes import sum_if_prime
+
+
+def test_sum_if_prime_with_manual_combinations():
+    """Manually check several cases."""
+    assert sum_if_prime(1, 1) == (1, 1)
+    assert sum_if_prime(1, 2) == (1, 2)
+    assert sum_if_prime(1, 3) == (1, 3)
+    assert sum_if_prime(1, 4) == (1, 4)
+    assert sum_if_prime(1, 5) == (1, 5)
+    assert sum_if_prime(2, 1) == (2, 1)
+    assert sum_if_prime(2, 2) == (4,) # the first case where both are primes
+    assert sum_if_prime(2, 3) == (5,) 
+    assert sum_if_prime(2, 4) == (2, 4)
+    assert sum_if_prime(2, 5) == (7,)
+    # ...
+```
+
+```
+% pytest -k "test_sum_if_prime_with_manual_combinations"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 55 deselected / 1 selected
+
+tests/test_primes.py .                                                   [100%]
+
+====================== 1 passed, 55 deselected in 0.01s =======================
+
+```
+
+### Single Assertions
+
+Because we take more than one input parameter, we can use stacked
+parametrization to easily inject all combinations of parameters to a test.
+Simply put, this means that we pass more than one parametrized fixture to the
+same test. Behind the scenes, `pytest` prepares all parameter combinations to
+inject into our test. 
+
+This allows us to very easily pass all parameter combinations to a
+**single assertion statement**, as in the diagram below.
+
+![Stacked parametrization against a single assertion](https://i.imgur.com/gyx5Jy4.png)
+
+To use stacked parametrization against our `sum_if_prime()` function, we can
+use 2 separate iterables:
+
+```{python filename="test_primes.py"}
+#| eval: false
+@pytest.mark.parametrize("first_ints", range(1,6))
+@pytest.mark.parametrize("second_ints", range(1,6))
+def test_sum_if_prime_stacked_parametrized_inputs(
+    first_ints, second_ints, expected_answers):
+    """Using stacked parameters to set up combinations of all cases."""
+    assert isinstance(sum_if_prime(first_ints, second_ints), tuple)
+
+```
+
+:::{.scrolling}
+
+```
+% pytest -k "test_sum_if_prime_stacked_parametrized_inputs" -v
+============================= test session starts =============================
+platform darwin -- Python 3.11.6, pytest-7.4.3, pluggy-1.3.0 
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+plugins: anyio-4.0.0
+collected 56 items / 31 deselected / 25 selected
+
+test_sum_if_prime_stacked_parametrized_inputs[1-1] PASSED                [  4%]
+test_sum_if_prime_stacked_parametrized_inputs[1-2] PASSED                [  8%]
+test_sum_if_prime_stacked_parametrized_inputs[1-3] PASSED                [ 12%]
+test_sum_if_prime_stacked_parametrized_inputs[1-4] PASSED                [ 16%]
+test_sum_if_prime_stacked_parametrized_inputs[1-5] PASSED                [ 20%]
+test_sum_if_prime_stacked_parametrized_inputs[2-1] PASSED                [ 24%]
+test_sum_if_prime_stacked_parametrized_inputs[2-2] PASSED                [ 28%]
+test_sum_if_prime_stacked_parametrized_inputs[2-3] PASSED                [ 32%]
+test_sum_if_prime_stacked_parametrized_inputs[2-4] PASSED                [ 36%]
+test_sum_if_prime_stacked_parametrized_inputs[2-5] PASSED                [ 40%]
+test_sum_if_prime_stacked_parametrized_inputs[3-1] PASSED                [ 44%]
+test_sum_if_prime_stacked_parametrized_inputs[3-2] PASSED                [ 48%]
+test_sum_if_prime_stacked_parametrized_inputs[3-3] PASSED                [ 52%]
+test_sum_if_prime_stacked_parametrized_inputs[3-4] PASSED                [ 56%]
+test_sum_if_prime_stacked_parametrized_inputs[3-5] PASSED                [ 60%]
+test_sum_if_prime_stacked_parametrized_inputs[4-1] PASSED                [ 64%]
+test_sum_if_prime_stacked_parametrized_inputs[4-2] PASSED                [ 68%]
+test_sum_if_prime_stacked_parametrized_inputs[4-3] PASSED                [ 72%]
+test_sum_if_prime_stacked_parametrized_inputs[4-4] PASSED                [ 76%]
+test_sum_if_prime_stacked_parametrized_inputs[4-5] PASSED                [ 80%]
+test_sum_if_prime_stacked_parametrized_inputs[5-1] PASSED                [ 84%]
+test_sum_if_prime_stacked_parametrized_inputs[5-2] PASSED                [ 88%]
+test_sum_if_prime_stacked_parametrized_inputs[5-3] PASSED                [ 92%]
+test_sum_if_prime_stacked_parametrized_inputs[5-4] PASSED                [ 96%]
+test_sum_if_prime_stacked_parametrized_inputs[5-5] PASSED                [100%]
+
+====================== 25 passed, 31 deselected in 0.01s ======================
+
+```
+:::
+<br>
+The above test; which is 6 lines long; executed 25 tests. This is clearly a very
+beneficial feature of `pytest`. However, the eagle-eyed among you may have
+spotted a problem - this is only going to work if the expected answer is always
+the same. The test we defined is only checking that a `tuple` is returned in
+all cases. How can we ensure that we serve the expected answers to the test
+too? This is where things get a little fiddly.
+
+### Multiple Assertions
+
+To test our function against combinations of parameters with
+**different expected answers**, we must employ a dictionary mapping of the
+parameter combinations as keys and the expected assertions as values.
+
+![Using a dictionary to map multiple assertions against stacked parametrized fixtures](https://i.imgur.com/DMkpVG7.png)
+
+To do this, we need to define a new fixture, which will return the required
+dictionary mapping of parameters to expected values.
+
+```{python filename="test_primes.py"}
+#| eval: false
+# Using stacked parametrization, we can avoid manually typing the cases out,
+# though we do still need to define a dictionary of the expected answers...
+@pytest.fixture
+def expected_answers() -> dict:
+    """A dictionary of expected answers for all combinations of 1 through 5.
+
+    First key corresponds to `pos_int1` and second key is `pos_int2`.
+
+    Returns
+    -------
+    dict
+        Dictionary of cases and their expected tuples.
+    """
+    expected= {
+        1: {1: (1,1), 2: (1,2), 3: (1,3), 4: (1,4), 5: (1,5),},
+        2: {1: (2,1), 2: (4,), 3: (5,), 4: (2,4), 5: (7,),},
+        3: {1: (3,1), 2: (5,), 3: (6,), 4: (3,4), 5: (8,),},
+        4: {1: (4,1), 2: (4,2), 3: (4,3), 4: (4,4), 5: (4,5),},
+        5: {1: (5,1), 2: (7,), 3: (8,), 4: (5,4), 5: (10,),},
+    }
+    return expected
+
+```
+
+Passing our `expected_answers` fixture to our test will allow us to match all
+parameter combinations to their expected answer. Let's update
+`test_sum_if_prime_stacked_parametrized_inputs` to use the parameter values to
+access the expected assertion value from the dictionary.
+
+```{python filename="test_primes.py"}
+#| eval: false
+@pytest.mark.parametrize("first_ints", range(1,6))
+@pytest.mark.parametrize("second_ints", range(1,6))
+def test_sum_if_prime_stacked_parametrized_inputs(
+    first_ints, second_ints, expected_answers):
+    """Using stacked parameters to set up combinations of all cases."""
+    assert isinstance(sum_if_prime(first_ints, second_ints), tuple)
+    answer = sum_if_prime(first_ints, second_ints)
+    # using the parametrized values, pull out their keys from the
+    # expected_answers dictionary
+    assert answer == expected_answers[first_ints][second_ints]
+
+```
+
+Finally, running this test produces the below `pytest` report.
+
+:::{.scrolling}
+
+```
+% pytest -k "test_sum_if_prime_stacked_parametrized_inputs" -v
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 31 deselected / 25 selected
+
+test_sum_if_prime_stacked_parametrized_inputs[1-1] PASSED                [  4%]
+test_sum_if_prime_stacked_parametrized_inputs[1-2] PASSED                [  8%]
+test_sum_if_prime_stacked_parametrized_inputs[1-3] PASSED                [ 12%]
+test_sum_if_prime_stacked_parametrized_inputs[1-4] PASSED                [ 16%]
+test_sum_if_prime_stacked_parametrized_inputs[1-5] PASSED                [ 20%]
+test_sum_if_prime_stacked_parametrized_inputs[2-1] PASSED                [ 24%]
+test_sum_if_prime_stacked_parametrized_inputs[2-2] PASSED                [ 28%]
+test_sum_if_prime_stacked_parametrized_inputs[2-3] PASSED                [ 32%]
+test_sum_if_prime_stacked_parametrized_inputs[2-4] PASSED                [ 36%]
+test_sum_if_prime_stacked_parametrized_inputs[2-5] PASSED                [ 40%]
+test_sum_if_prime_stacked_parametrized_inputs[3-1] PASSED                [ 44%]
+test_sum_if_prime_stacked_parametrized_inputs[3-2] PASSED                [ 48%]
+test_sum_if_prime_stacked_parametrized_inputs[3-3] PASSED                [ 52%]
+test_sum_if_prime_stacked_parametrized_inputs[3-4] PASSED                [ 56%]
+test_sum_if_prime_stacked_parametrized_inputs[3-5] PASSED                [ 60%]
+test_sum_if_prime_stacked_parametrized_inputs[4-1] PASSED                [ 64%]
+test_sum_if_prime_stacked_parametrized_inputs[4-2] PASSED                [ 68%]
+test_sum_if_prime_stacked_parametrized_inputs[4-3] PASSED                [ 72%]
+test_sum_if_prime_stacked_parametrized_inputs[4-4] PASSED                [ 76%]
+test_sum_if_prime_stacked_parametrized_inputs[4-5] PASSED                [ 80%]
+test_sum_if_prime_stacked_parametrized_inputs[5-1] PASSED                [ 84%]
+test_sum_if_prime_stacked_parametrized_inputs[5-2] PASSED                [ 88%]
+test_sum_if_prime_stacked_parametrized_inputs[5-3] PASSED                [ 92%]
+test_sum_if_prime_stacked_parametrized_inputs[5-4] PASSED                [ 96%]
+test_sum_if_prime_stacked_parametrized_inputs[5-5] PASSED                [100%]
+
+====================== 25 passed, 31 deselected in 0.01s ======================
+```
+
+:::
+
+## Summary
+
+There you have it - how to use basic and stacked parametrization in your tests.
+We have:
+
+* used parametrize to inject multiple parameter values to a single test.
+* used stacked parametrize to test combinations of parameters against a single
+assertion.
+* used a nested dictionary fixture to map stacked parametrize input
+combinations to different expected assertion values.
+
+If you spot an error with this article, or have a suggested improvement then
+feel free to
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+Happy testing!
+
+## Acknowledgements
+
+To past and present colleagues who have helped to discuss pros and cons,
+establishing practice and firming-up some opinions. Particularly:
+
+* Charlie
+* Ethan
+* Henry
+* Sergio
+
+The diagrams used in this article were produced with the excellent
+[Excalidraw](https://excalidraw.com/), with thanks to Mat for the
+recommendation.
+
+<p id=fin><i>fin!</i></p>
