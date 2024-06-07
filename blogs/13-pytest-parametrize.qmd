@@ -1,7 +1,7 @@
 ---
 title: "Parametrized Tests With Pytest in Plain English"
 author: "Rich Leyshon"
-date: "June 03 2024"
+date: "June 07 2024"
 description: "Plain English Discussion of Pytest Parametrize"
 categories:
     - Explanation
