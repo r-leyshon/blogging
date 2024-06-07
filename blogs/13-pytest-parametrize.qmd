@@ -17,6 +17,7 @@ jupyter:
     name: "conda-env-pytest-env-py"
     language: "python"
     display_name: "blog-pytest-env"
+css: /www/13-pytest-parametrize/styles.css
 ---
 
 <figure class=center>
@@ -132,7 +133,7 @@ without parametrization. Feel free to clone the repository and check out to the
 [example code](https://github.com/r-leyshon/pytest-fiddly-examples/tree/parametrize)
 branch to run the examples.
 
-### The Source Code
+### Define the Source Code
 
 Here we define a very basic function that checks whether an integer is prime.
 If a prime is encountered, then True is returned. If not, then False. The value
@@ -186,6 +187,315 @@ for i in range(1, 11):
   print(f"{i}: {is_num_prime(i)}")
 
 ```
+
+### Let's Get Testing
+
+Let's begin with the defensive tests. Let's say I need to check that the
+function can be relied upon to raise on a number of conditions. The typical
+approach may be to test the raise conditions within a dedicated test function.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+"""Tests for primes module."""
+import pytest
+
+from example_pkg.primes import is_num_prime
+
+
+def test_is_num_primes_exceptions_manually():
+    """Testing the function's defensive checks.
+
+    Here we have to repeat a fair bit of pytest boilerplate.
+    """
+    with pytest.raises(TypeError, match="must be a positive integer."):
+        is_num_prime(1.0)
+    with pytest.raises(ValueError, match="must be a positive integer."):
+        is_num_prime(-1)
+
+```
+
+Within this function, I can run multiple assertions against several hard-coded
+inputs. I'm only checking against a couple of values here but production-ready
+code may test against many more cases. To do that, I'd need to have a lot of
+copy-pasted `pytest.raises` statements. Perhaps more importantly, watch what
+happens when I run the test.
+
+```
+% pytest -k "test_is_num_primes_exceptions_manually"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 55 deselected / 1 selected                                
+
+tests/test_primes.py .                                                   [100%]
+
+======================= 1 passed, 55 deselected in 0.01s ======================
+
+```
+
+Notice that both assertions will either pass or fail together. This could
+potentially make it more challenging to troubleshoot a failing pipeline when
+the function is changed and now behaves differently for certain cases. It could
+be better to have seperate test functions for each value, but that seems like
+an awful lot of work...
+
+### ...Enter Parametrize
+
+Now to start using parametrize, we need to use the `@pytest.mark.parametrize`
+decorator, which takes 2 arguments, a string and an iterable.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+@pytest.mark.parametrize(
+    "some_values, exception_types", [(1.0, TypeError), (-1, ValueError)]
+    )
+
+```
+
+The string should contain comma seperated values for the names that you would
+like to refer to when iterating through the iterable. They could be "x, y",
+"fizz, buzz" or whatever placeholder you would wish to use in your test. These
+names will map to the index of elements in the iterable.
+
+So with the above setup, when I use this fixture with a test, I will expect to
+inject the following values to a test:
+
+iteration 1... "some_values" = 1.0, "exception_types" = TypeError
+iteration 2... "some_values" = -1, "exception_types" = ValueError
+
+Lets go ahead and use this parametrized fixture with a test.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+@pytest.mark.parametrize(
+    "some_values, exception_types", [(1.0, TypeError), (-1, ValueError)]
+    )
+def test_is_num_primes_exceptions_parametrized(some_values, exception_types):
+    """The same defensive checks but this time with parametrized input.
+
+    Less lines in the test but if we increase the number of cases, we need to
+    add more lines to the parametrized fixture instead.
+    """
+    with pytest.raises(exception_types, match="must be a positive integer."):
+        is_num_prime(some_values)
+
+```
+
+The outcome for running this test is shown below.
+
+```
+% pytest -k "test_is_num_primes_exceptions_parametrized"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 54 deselected / 2 selected                                
+
+tests/test_primes.py ..                                                  [100%]
+
+======================= 2 passed, 54 deselected in 0.01s ======================
+
+```
+
+It's a subtle difference, but notice that we now get 2 passing tests rather
+than 1? We can make this more explicit by passing the `-v` flag (for verbose)
+when we invoke `pytest`.
+
+```
+% pytest -k "test_is_num_primes_exceptions_parametrized" -v 
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 54 deselected / 2 selected                                
+
+test_is_num_primes_exceptions_parametrized[1.0-TypeError] PASSED         [ 50%]
+test_is_num_primes_exceptions_parametrized[-1-ValueError] PASSED         [100%]
+
+======================= 2 passed, 54 deselected in 0.01s ======================
+
+```
+
+In this way, we get a helpful printout of the test and parameter combination
+being executed. This can be very helpful in identifying problem cases.
+
+### Yet More Cases
+
+Next up, we may wish to check return values for our function with several
+cases. To keep things simple, let's write a test that checks the return values
+for a range of numbers between 1 and 5.
+
+```{python filename="test_primes.py"}
+#| eval: false
+
+def test_is_num_primes_manually():
+    """Test several positive integers return expected boolean.
+
+    This is quite a few lines of code. Note that this runs as a single test.
+    """
+    assert is_num_prime(1) == False
+    assert is_num_prime(2) == True
+    assert is_num_prime(3) == True
+    assert is_num_prime(4) == False
+    assert is_num_prime(5) == True
+```
+
+One way that this can be serialised is by using a list of parameters and
+expected results.
+
+```{python}
+#| eval: false
+
+def test_is_num_primes_with_list():
+    """Test the same values using lists.
+
+    Less lines but is run as a single test.
+    """
+    answers = [is_num_prime(i) for i in range(1, 6)]
+    assert answers == [False, True, True, False, True]
+
+```
+
+This is certainly neater than the previous example. Although both of these
+tests will evaluate as a single test, so a failing instance will not be
+explicitly indicated in the `pytest` report.
+
+```
+% pytest -k "test_is_num_primes_with_list"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 55 deselected / 1 selected                               
+
+tests/test_primes.py .                                                   [100%]
+
+======================= 1 passed, 55 deselected in 0.01s ======================
+```
+
+To parametrize the equivalent test, we can take the below approach.
+
+```{python}
+#| eval: false
+
+@pytest.mark.parametrize(
+    "some_integers, answers",
+    [(1, False), (2, True), (3, True), (4, False), (5, True)]
+    )
+def test_is_num_primes_parametrized(some_integers, answers):
+    """The same tests but this time with parametrized input.
+
+    Fewer lines and 5 seperate tests are run by pytest.
+    """
+    assert is_num_prime(some_integers) == answers
+
+```
+
+This is slightly more lines than `test_is_num_primes_with_list` but has the
+advantage of being run as separate tests:
+
+```
+% pytest -k "test_is_num_primes_parametrized" -v
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+collected 56 items / 51 deselected / 5 selected                               
+
+tests/test_primes.py::test_is_num_primes_parametrized[1-False] PASSED    [ 20%]
+tests/test_primes.py::test_is_num_primes_parametrized[2-True] PASSED     [ 40%]
+tests/test_primes.py::test_is_num_primes_parametrized[3-True] PASSED     [ 60%]
+tests/test_primes.py::test_is_num_primes_parametrized[4-False] PASSED    [ 80%]
+tests/test_primes.py::test_is_num_primes_parametrized[5-True] PASSED     [100%]
+
+======================= 5 passed, 51 deselected in 0.01s ======================
+
+```
+
+Where this approach really comes into its own is when the number of cases you
+need to test increases, you can explore ways of generating cases rather than
+hard-coding the values, as in the previous cases.
+
+In the example below, we can use the `range()` function to generate the 
+integers we need to test, and then zipping these cases to their expected return
+values.
+
+```{python}
+#| eval: false
+
+# if my list of cases is growing, I can employ other tactics...
+in_ = range(1, 21)
+out = [
+    False, True, True, False, True, False, True, False, False, False,
+    True, False, True, False, False, False, True, False, True, False,
+    ]
+
+
+@pytest.mark.parametrize("some_integers, some_answers", zip(in_, out))
+def test_is_num_primes_with_zipped_lists(some_integers, some_answers):
+    """The same tests but this time with zipped inputs."""
+    assert is_num_prime(some_integers) == some_answers
+
+```
+
+Running this test yields the following result:
+
+:::{.scrolling}
+
+```
+% pytest -k "test_is_num_primes_with_zipped_lists" -v 
+============================= test session starts =============================
+platform darwin -- Python 3.11.6, pytest-7.4.3, pluggy-1.3.0
+cachedir: .pytest_cache
+configfile: pyproject.toml
+testpaths: ./tests
+plugins: anyio-4.0.0
+collected 56 items / 36 deselected / 20 selected
+
+/test_primes.py::test_is_num_primes_with_zipped_lists[1-False] PASSED  [  5%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[2-True] PASSED   [ 10%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[3-True] PASSED   [ 15%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[4-False] PASSED  [ 20%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[5-True] PASSED   [ 25%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[6-False] PASSED  [ 30%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[7-True] PASSED   [ 35%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[8-False] PASSED  [ 40%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[9-False] PASSED  [ 45%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[10-False] PASSED [ 50%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[11-True] PASSED  [ 55%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[12-False] PASSED [ 60%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[13-True] PASSED  [ 65%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[14-False] PASSED [ 70%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[15-False] PASSED [ 75%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[16-False] PASSED [ 80%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[17-True] PASSED  [ 85%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[18-False] PASSED [ 90%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[19-True] PASSED  [ 95%]
+/test_primes.py::test_is_num_primes_with_zipped_lists[20-False] PASSED [100%]
+
+====================== 20 passed, 36 deselected in 0.02s ======================
+```
+
+:::
+
+## Stacked Parametrization
+
+Parametrize gets really interesting when you have a case where you need to test
+**combinations of input parameters** against expected outputs. In this
+scenario, stacked parametrization allows you to set up all combinations with
+very little fuss. 
+
+<img src=https://i.imgur.com/GLgYXI4.png alt="People surrounding a giant stack of pancakes" class=center width=400></img>
+
+
+
+
 
 
 ## Summary
