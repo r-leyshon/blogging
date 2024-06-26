@@ -104,18 +104,18 @@ reference.
 
 ## Likelihood and Severity
 
-The likelihood of this risk is debateable, but it is not zero.
+The likelihood of this risk is debatable, but it is not zero.
 
 The community of developers would likely pick up on such an event quickly and
-many of the targetted action's users would benefit from this awareness before
+many of the targeted action's users would benefit from this awareness before
 any damage could be wrought. But why would you roll the dice? It may be equally
-possible that you and your colleagues may not realise this event has occured
+possible that you and your colleagues may not realise this event has occurred
 before it was too late to intervene. 
 
-The severity of such an event would relate to the nature of the targetted
+The severity of such an event would relate to the nature of the targeted
 action. If said action intercepted cloud service credentials, such as those
 required for deployment to GCP, AWS and the like, then the severity could
-be high. Whereas targetting widely used actions such as the
+be high. Whereas targeting widely used actions such as the
 [checkout action][checkout] would present differing severities for public or
 private repositories that use it.
 
@@ -123,7 +123,7 @@ As the effort needed to mitigate this risk is very small, I would encourage
 GitHub Actions users to consider updating all repositories that make use of
 such actions for their continuous deployment workflows. In support of this
 suggested mitigation, here you can see that the well-known python package
-[`numpy`][numpy] have adopted the approach.
+[`numpy`][numpy] have adopted this approach.
 
 ## Acknowledgements
 
