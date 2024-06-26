@@ -1,0 +1,139 @@
+---
+title: "GitHub Actions Security"
+author: "Rich Leyshon"
+date: "June 26 2024"
+description: "Plain English Discussion of Pytest Parametrize"
+categories:
+    - How-to
+    - GitHub
+    - GitHub Actions
+    - CI:CD
+    - Security
+image: "https://i.imgur.com/bPIGcZh.jpg"
+image-alt: "An android locking a high security vault door."
+toc: true
+---
+
+<figure class=center >
+  <img class="shaded_box" width=400px src="https://i.imgur.com/bPIGcZh.jpg"></img>
+  <figcaption>An android locking a high security vault door.</figcaption>
+</figure>
+
+## TL;DR
+
+It's more secure to reference GitHub Actions written by others by referring
+to the commit hash of the code than the version. Particularly if the action
+requires access to a secret credential. For example:
+
+```{.yaml filename="upload-codecov.yml"}
+steps:
+- uses: actions/checkout@main
+- uses: codecov/codecov-action@v4
+  with:
+    token: ${{ secrets.CODECOV_TOKEN }} # required
+```
+
+...is more safely referenced like below:
+
+```{.yaml filename="upload-codecov.yml"}
+steps:
+- uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # sha for v4.1.7
+- uses: codecov/codecov-action@af2ee03a4e3e11499d866845a1e6c5a11f85cf4e # sha v4.5.0 
+  with:
+    token: ${{ secrets.CODECOV_TOKEN }} # required
+```
+
+## Background
+
+* Open source projects have been subject to a number of
+[social engineering attacks][openjs] recently. 
+* This [blog post][julienrenaux] describes risk in relying on GitHub Actions
+written by others.
+
+## The Risk in Plain English
+
+1. Developers use [GitHub actions][marketplace] to conveniently automate
+various tasks.
+2. Some of these actions require access to secret credentials, for example to
+publish code to services in the cloud.
+3. Many of these actions are widely adopted in the open source community,
+handling thousands of secrets every day. Developers therefore trust these
+actions.
+4. There is a risk that bad actors could gain access to an action's codebase
+by placing pressure upon the package maintainers.
+5. Once a bad actor has access to this code, they are able to adjust the code
+associated with the version reference, to do something nefarious, such as
+harvest your secret credentials.
+6. Updating workflow files to reference the actions by commit hash guarantees
+that this code can be trusted to 'do what it says on the tin' in the future.
+Bad actors are unable to create new code that has the same commit reference
+code (known as SHA, short for Simple Hashing Algorithm).
+
+## Updating Your Workflow Files
+
+1. Find the action that you wish to use on GitHub and click on its banner to
+navigate to the action's homepage.
+
+![The GitHub Actions marketplace](https://i.imgur.com/4G5qba2.png)
+
+2. Ensure that you have identified the correct action by checking the author
+and the number of stars. Click on the link shown to navigate to the action's
+repository.
+
+![The Codecov action homepage](https://i.imgur.com/tcBYkpy.png)
+
+3. Consult the readme and releases section to identify the latest version of
+the action. Ensure that the appropriate branch is selected from the branch
+selector widget.
+
+![Checking the selected branch](https://i.imgur.com/eVU7ce5.png)
+
+4. Once you have selected the appropriate branch for the latest release, click
+on the commits section.
+
+![Click on the commits](https://i.imgur.com/5jQWlQs.png)
+
+5. From the list of commits, select the commit associated with the latest
+release and click the copy button to copy the full commit reference to your
+clipboard.
+
+![Copy the full commit sha](https://i.imgur.com/8NVX30Y.png)
+
+6. Replace the version reference in your workflow file with your copied commit
+reference. 
+
+## Likelihood and Severity
+
+The likelihood of this risk is debateable, but it is not zero.
+
+The community of developers would likely pick up on such an event quickly and
+many of the targetted action's users would benefit from this awareness before
+any damage could be wrought. But why would you roll the dice? It may be equally
+possible that you and your colleagues may not realise this event has occured
+before it was too late to intervene. 
+
+The severity of such an event would relate to the nature of the targetted
+action. If said action intercepted cloud service credentials, such as those
+required for deployment to GCP, AWS and the like, then the severity could
+be high. Whereas targetting widely used actions such as the
+[checkout action][checkout] would present differing severities for public or
+private repositories that use it.
+
+As the effort needed to mitigate this risk is very small, I would encourage
+GitHub Actions users to consider updating all repositories that make use of
+such actions for their continuous deployment workflows. In support of this
+suggested mitigation, here you can see that the well-known python package
+[`numpy`][numpy] have adopted the approach.
+
+## Acknowledgements
+
+Thanks to Mat for the conversation about recent bad actor efforts on various
+well-known open source repositories.
+
+<p id=fin><i>fin!</i></p>
+
+[openjs]: https://openjsf.org/blog/openssf-openjs-alert-social-engineering-takeovers
+[julienrenaux]: https://julienrenaux.fr/2019/12/20/github-actions-security-risk/
+[marketplace]: https://github.com/marketplace?type=actions
+[numpy]: https://github.com/numpy/numpy/blob/main/.github/workflows/wheels.yml
+[checkout]: https://github.com/actions/checkout
