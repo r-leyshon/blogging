@@ -6,7 +6,7 @@ description: "How to ingest data using Python requests & ArcGIS REST API."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - How-to
     - Python Shiny
-    - CI/CD
+    - CI:CD
     - GitHub
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Prague_astronomical_clock_%286365120743%29.jpg/800px-Prague_astronomical_clock_%286365120743%29.jpg?20150530221207
 image-alt: "Prague astronomical clock"
