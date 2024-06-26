@@ -52,19 +52,19 @@ written by others.
 
 ## The Risk in Plain English
 
-1. Developers use [GitHub actions][marketplace] to conveniently automate
+1. Developers use [GitHub Actions][marketplace] to conveniently automate
 various tasks.
-2. Some of these actions require access to secret credentials, for example to
+2. Some of these Actions require access to secret credentials, for example to
 publish code to services in the cloud.
-3. Many of these actions are widely adopted in the open source community,
+3. Many of these Actions are widely adopted in the open source community,
 handling thousands of secrets every day. Developers therefore trust these
-actions.
+Actions.
 4. There is a risk that bad actors could gain access to an action's codebase
 by placing pressure upon the package maintainers.
 5. Once a bad actor has access to this code, they are able to adjust the code
 associated with the version reference, to do something nefarious, such as
 harvest your secret credentials.
-6. Updating workflow files to reference the actions by commit hash guarantees
+6. Updating workflow files to reference the Actions by commit hash guarantees
 that this code can be trusted to 'do what it says on the tin' in the future.
 Bad actors are unable to create new code that has the same commit reference
 code (known as SHA, short for Simple Hashing Algorithm).
@@ -115,13 +115,13 @@ before it was too late to intervene.
 The severity of such an event would relate to the nature of the targeted
 action. If said action intercepted cloud service credentials, such as those
 required for deployment to GCP, AWS and the like, then the severity could
-be high. Whereas targeting widely used actions such as the
+be high. Whereas targeting widely used Actions such as the
 [checkout action][checkout] would present differing severities for public or
 private repositories that use it.
 
 As the effort needed to mitigate this risk is very small, I would encourage
 GitHub Actions users to consider updating all repositories that make use of
-such actions for their continuous deployment workflows. In support of this
+such Actions for their continuous deployment workflows. In support of this
 suggested mitigation, here you can see that the well-known python package
 [`numpy`][numpy] have adopted this approach.
 
