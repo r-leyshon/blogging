@@ -879,7 +879,7 @@
     "href": "index.html#recent-articles",
     "title": "Welcome to The Data Savvy Corner!",
     "section": "Recent Articles",
-    "text": "Recent Articles\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nParametrized Tests With Pytest in Plain English\n\n\n\n\n\n\nExplanation\n\n\npytest\n\n\nUnit tests\n\n\nparametrize\n\n\npytest-in-plain-english\n\n\n\nPlain English Discussion of Pytest Parametrize\n\n\n\n\n\nJun 7, 2024\n\n\nRich Leyshon\n\n\n23 min\n\n\n\n\n\n\n\n\n\n\n\n\nWhen Worlds Collide\n\n\n\n\n\n\nInstrumental\n\n\nSynthwave\n\n\nElectronic\n\n\nElectro\n\n\n\nThomas Barrandon’s understated scifi masterpiece\n\n\n\n\n\nMay 19, 2024\n\n\nRich Leyshon\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nPytest With tmp_path in Plain English\n\n\n\n\n\n\nExplanation\n\n\npytest\n\n\nUnit tests\n\n\ntmp_path\n\n\ntmp_path_factory\n\n\nfixtures\n\n\npytest-in-plain-english\n\n\n\nPlain English Discussion of Pytest Temporary Fixtures.\n\n\n\n\n\nApr 25, 2024\n\n\nRich Leyshon\n\n\n16 min\n\n\n\n\n\n\n\n\n\n\n\n\nTriads\n\n\n\n\n\n\nInstrumental\n\n\nSynthwave\n\n\nElectronic\n\n\nElectro\n\n\n\nCode Elektro’s exploration of future Japan’s criminal underworld\n\n\n\n\n\nApr 19, 2024\n\n\nRich Leyshon\n\n\n5 min\n\n\n\n\n\n\n\n\n\n\n\n\nPytest Fixtures in Plain English\n\n\n\n\n\n\nExplanation\n\n\npytest\n\n\nUnit tests\n\n\nfixtures\n\n\npytest-in-plain-english\n\n\n\nPlain English Discussion of Pytest Fixtures.\n\n\n\n\n\nApr 7, 2024\n\n\nRich Leyshon\n\n\n38 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Recent Articles\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nDark Data\n\n\nWhy what you don’t know matters\n\n\n\nNon-fiction\n\n\nData\n\n\nScience\n\n\nMathematics\n\n\nStatistics\n\n\n\nReflecting on Neil Postman’s criticism of modern culture.\n\n\n\n\n\nJul 1, 2024\n\n\nRich Leyshon\n\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\n\nParametrized Tests With Pytest in Plain English\n\n\n\n\n\n\nExplanation\n\n\npytest\n\n\nUnit tests\n\n\nparametrize\n\n\npytest-in-plain-english\n\n\n\nPlain English Discussion of Pytest Parametrize\n\n\n\n\n\nJun 7, 2024\n\n\nRich Leyshon\n\n\n23 min\n\n\n\n\n\n\n\n\n\n\n\n\nWhen Worlds Collide\n\n\n\n\n\n\nInstrumental\n\n\nSynthwave\n\n\nElectronic\n\n\nElectro\n\n\n\nThomas Barrandon’s understated scifi masterpiece\n\n\n\n\n\nMay 19, 2024\n\n\nRich Leyshon\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nPytest With tmp_path in Plain English\n\n\n\n\n\n\nExplanation\n\n\npytest\n\n\nUnit tests\n\n\ntmp_path\n\n\ntmp_path_factory\n\n\nfixtures\n\n\npytest-in-plain-english\n\n\n\nPlain English Discussion of Pytest Temporary Fixtures.\n\n\n\n\n\nApr 25, 2024\n\n\nRich Leyshon\n\n\n16 min\n\n\n\n\n\n\n\n\n\n\n\n\nTriads\n\n\n\n\n\n\nInstrumental\n\n\nSynthwave\n\n\nElectronic\n\n\nElectro\n\n\n\nCode Elektro’s exploration of future Japan’s criminal underworld\n\n\n\n\n\nApr 19, 2024\n\n\nRich Leyshon\n\n\n5 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#about-me",
@@ -1020,5 +1020,40 @@
     "title": "When Worlds Collide",
     "section": "Overall",
     "text": "Overall\nWhen Worlds Collide is a journey that transcends time and space. Each track contributes to the EP’s cohesive narrative, making it a must-listen for fans of synthwave and ambient music.\nFor more music to encourage your work efforts, check out Productivity Pulse."
+  },
+  {
+    "objectID": "book-reviews/04-dark-data.html",
+    "href": "book-reviews/04-dark-data.html",
+    "title": "Dark Data",
+    "section": "",
+    "text": "Image credit: https://api.ndla.no/"
+  },
+  {
+    "objectID": "book-reviews/04-dark-data.html#book-summary",
+    "href": "book-reviews/04-dark-data.html#book-summary",
+    "title": "Dark Data",
+    "section": "Book Summary",
+    "text": "Book Summary\n…"
+  },
+  {
+    "objectID": "book-reviews/04-dark-data.html#on-the-author",
+    "href": "book-reviews/04-dark-data.html#on-the-author",
+    "title": "Dark Data",
+    "section": "On the Author",
+    "text": "On the Author\n…"
+  },
+  {
+    "objectID": "book-reviews/04-dark-data.html#takeaways",
+    "href": "book-reviews/04-dark-data.html#takeaways",
+    "title": "Dark Data",
+    "section": "3 Takeaways",
+    "text": "3 Takeaways\n…"
+  },
+  {
+    "objectID": "book-reviews/04-dark-data.html#in-summary",
+    "href": "book-reviews/04-dark-data.html#in-summary",
+    "title": "Dark Data",
+    "section": "In Summary",
+    "text": "In Summary\n…"
   }
 ]

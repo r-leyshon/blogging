@@ -1,0 +1,38 @@
+---
+title: "Dark Data"
+subtitle: "Why what you don't know matters"
+author: "Rich Leyshon"
+date: July 01 2024
+description: "Reflecting on Neil Postman's criticism of modern culture."
+categories:        
+    - Non-fiction
+    - Data
+    - Science
+    - Mathematics
+    - Statistics
+image: https://i.imgur.com/qVgnzFV.jpeg
+image-alt: "An image of a black hole within a field of binary digits."
+toc: true
+toc-depth: 4
+---
+
+<figure class=center>
+ <img class=shaded_box src=https://i.imgur.com/qVgnzFV.jpeg alt="An image of a black hole within a field of binary digits." width=400px>
+ <figcaption>Image credit: <https://api.ndla.no/></figcaption>
+</figure>
+
+## Book Summary
+
+...
+
+## On the Author
+
+...
+
+## 3 Takeaways
+
+...
+
+## In Summary
+
+...
