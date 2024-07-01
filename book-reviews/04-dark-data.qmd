@@ -23,11 +23,36 @@ toc-depth: 4
 
 ## Book Summary
 
-...
+"Dark Data: Why What You Don't Know Matters" by David J. Hand delves into the
+crucial concept of dark data — information that is unseen, uncollected, or
+unanalysed but significantly impacts decision-making and understanding. Hand
+categorises dark data into 15 types, including self-selection bias and
+time-dependent missing data, illustrating the dangers of ignoring such data
+through historical and contemporary examples like FDR's reelection polls and
+the Challenger shuttle disaster. The book highlights how unrecognized dark data
+can lead to skewed understandings, incorrect conclusions, and flawed actions.
+
+Hand emphasizes the importance of recognising and mitigating dark data,
+teaching readers to be vigilant about the issues posed by unknown information.
+He also explores how dark data can be strategically utilised. The book
+addresses various statistical methods and concepts, underscoring that even in
+the age of big data, the data available is never complete. Through practical
+guidance, Hand aims to help readers make better decisions in a world where
+missing data is inevitable, stressing the significance of understanding what is
+not known.
 
 ## On the Author
 
-...
+David J. Hand is a distinguished British statistician born in Peterborough,
+England. He received his BA from the University of Oxford and his PhD from the
+University of Southampton. Hand's academic career includes significant roles
+such as serving as a professor of statistics at the Open University from 1988
+to 1999 and later becoming an Emeritus Professor of Mathematics at Imperial
+College London, where he also worked as a Senior Research Investigator. His
+research interests are broad and include multivariate statistics,
+classification methods, pattern recognition, computational statistics, and the
+foundations of statistics, with a keen focus on data mining, data science, and
+big data.
 
 ## 3 Takeaways
 
