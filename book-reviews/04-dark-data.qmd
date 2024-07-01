@@ -63,15 +63,54 @@ big data.
 
 ### On Human Bias
 
-francis bacon quote p 168
+> "...At least until the scientific revolution... advances in understanding
+were retarded by a (typically subconscious) reluctance to collect data which
+might discprove a theory... advances were held back by an unwillingness to make
+dark data visible...
+
+My favourite historical example of someone who spotted this problem is given by
+the seventeenth-century philosopher, Francis Bacon, who wrote: "Human
+understanding when it has once adpopted an opinion... draws all things else to
+support and agree with it. And though there be a great number and weight of
+instances to be found on the other side, yet these it either neglects and
+despises, or else by some distinction sets aside and rejects."
+" [@darkdata, pp. 167-168]
+
+Link to Bill Bryson, continental drift.
 
 ### Publication Bias
 
-p 199 Harking 
+> "Yet another cause of mistaken results is the pernicious practice called
+"HARKing", or *H*ypothesizing *A*fter the *R*esult is known...
 
-### Drop NA
+HARKing can be alleviated by requiring researchers to state their hypotheses
+before they collect any data. Some scientific journals are considering moving
+in this direction, guaranteeing publication of a paper regardless of how the 
+results come out...
+" [@darkdata, pp.198-199]
 
-p236
+### Missingness
+
+Hand adapts the American Statistician Donald Rubin's description of the causes
+of missing data into the following:
+
+* Unseen Data Dependent (UDD): The cause of the missingness is related to the
+value of the datum. No reason for this missingness can be discerned from the
+extant data.
+* Seen Data Dependent (SDD): A clue to the reason for the missing datum is
+available within the extant data. 
+* Not Data Dependent (NDD): The reason for the missingess is unrelated to the
+extant data.
+
+Hand's explanation of Complete Case Analysis is an excellent warning to all
+those new to data science. The very common practice of dropping or imputing
+missing values from the data can be a very risky business. What if there were
+an underlying pattern in the missingness? Hand employs a perfectly clear,
+simple tabular example that have no complete cases, meaning that dropping
+missing observations would result in no records. 
+
+> "...if the dark data were not NDD, then even a small reduction in sample size
+could mean we were left with a distorted data set." [@darkdata, p.237]
 
 ## In Summary
 
