@@ -85,16 +85,43 @@ Link to Bill Bryson, continental drift.
 
 ### Publication Bias
 
+Hand rightfully has quite a bit to say about the reproducibility crisis. The
+author explores reproducibility, publication bias and fraud in the scientific
+literature. Although these issues may or may not be intentional, they have the
+potential to frustrate progress and prolong suffering, as in the case of the
+recent retraction @nature-retract of an influential study on Alzheimer's
+disease published in Nature in 2006 @nature-amyloid. This paper has been
+cited more than 2,000 times and used brain scans of patients that have been
+shown to have been falsified.
+
+Hand goes on to talk about the lesser known practice in academia known as
+harking:
+
 > "Yet another cause of mistaken results is the pernicious practice called
 "HARKing", or *H*ypothesizing *A*fter the *R*esult is known...
 
-HARKing can be alleviated by requiring researchers to state their hypotheses
+> HARKing can be alleviated by requiring researchers to state their hypotheses
 before they collect any data. Some scientific journals are considering moving
 in this direction, guaranteeing publication of a paper regardless of how the 
-results come out...
-" [@darkdata, pp.198-199]
+results come out..." [@darkdata, pp.198-199]
 
-### Missingness
+I thoroughly agree with David Hand. Wikipedia @wiki-pub-bias quotes a study
+stating that papers with significant findings are 3x more likely to be
+published than those with null findings. And as the number of publications is
+broadly interpreted as a measure of success for academic institutions and 
+individuals alike, a systemic pressure for fraudulent practice emerges. I would
+go even further and suggest that the barriers to journals demanding full
+reproducibility of analysis - including open and versioned code and data - is
+now lower than ever. In 2024, every respectable journal can require its
+contributors to use open source tools to increase transparency and prove
+reproducibility. So why has this practice not been established? I presume there
+to be inertia in adopting newer tooling. A legacy uplift issue that would
+honestly present reasonable overhead for a significant gain. After all, most 
+people who undertake their statistical analysis in legacy or proprietary
+software have a thorough knowledge framework that would greatly assist them in
+transitioning to open source languages.
+
+### Data Missingness
 
 Hand adapts the American Statistician Donald Rubin's description of the causes
 of missing data into the following:
