@@ -283,6 +283,29 @@ A Note on the Purpose
 <section id="the-scenario" class="level3">
 <h3 class="anchored" data-anchor-id="the-scenario">The Scenario</h3>
 <p>You are writing a quarto document that contains python code. You would like to use conda to manage your python dependencies. You are encountering problems in having quarto select the appropriate conda environment.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Named Environments
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This article covers having quarto execute with “prefix” conda environments. This setup may be useful specifically for a website where different site pages have different dependencies.</p>
+<p>However, many readers may wish for a simpler solution. It is possible to have quarto websites and documents execute with a named environment instead. If you have an environment created like below:</p>
+<p><code>conda create -n my-awesome-env python -y</code></p>
+<p>Then including the following statement within either the _quarto.yml or quarto document’s YAML header should be enough to guarantee that the target environment is picked up when rendering:</p>
+<p><code>jupyter: my-awesome-env</code></p>
+<p>Additionally, if you would just prefer the site or document to render with whatever version of python is available in <strong>the currently active environment</strong>, then use:</p>
+<p><code>jupyter: python3</code></p>
+<p>Many thanks to Ethan for this tip.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="what-youll-need" class="level3">
 <h3 class="anchored" data-anchor-id="what-youll-need">What You’ll Need:</h3>
