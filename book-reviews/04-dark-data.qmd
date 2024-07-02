@@ -14,6 +14,11 @@ image: https://i.imgur.com/qVgnzFV.jpeg
 image-alt: "An image of a black hole within a field of binary digits."
 toc: true
 toc-depth: 4
+jupyter: 
+  kernelspec:
+    name: "conda-env-missingno-env-py"
+    language: "python"
+    display_name: "missingno-env"
 ---
 
 <figure class=center>
@@ -112,6 +117,44 @@ missing observations would result in no records.
 > "...if the dark data were not NDD, then even a small reduction in sample size
 could mean we were left with a distorted data set." [@darkdata, p.237]
 
+Distorting a dataset could be caused by either dropping records or imputing
+values for missing observations. There are far too many machine learning
+tutorials online that carelessly instruct learners to do so, in order to be
+able to use the algorithm of choice. Mindlessly erasing records with missing
+observations would generally mean reversion to the mean but has the potential
+to propagate algorithmic harm. Could the missing records represent people at
+the fringes of society, whose data are often challenging to capture? 
+
+Treating these records should involve a good deal of investigation first. Is
+there a hint in the present data that could explain the missingness? To help
+python developers assess missingness in a dataset, I highly encourage people to
+make use of the [`missingno` package][missingno]. If you write in R, then the
+same functionality is available with [`naniar`][naniar].
+
+The below visual gives an overview of populated records in a data table about
+road traffic collisions. Dark bands are populated records. White bands are
+missing records.
+
+```{python}
+import pandas as pd
+import missingno as msno
+
+collisions = pd.read_csv("https://raw.githubusercontent.com/ResidentMario/missingno-data/master/nyc_collision_factors.csv")
+msno.matrix(collisions.sample(250))
+```
+
+In the above visual, you may see that certain columns demonstrate more
+missingness than others. But that specific columns show patterns in missingness
+in comparison with that of other columns too. For example, in records where
+`ON STREET NAME` and `CROSS STREET NAME` are missing, you may find that
+`OFF STREET NAME` records are present. This simple visual along with many more
+useful tools in the package are available to examine the idiosyncracies within
+data.
+
 ## In Summary
 
 ...
+
+
+[missingno]: https://github.com/ResidentMario/missingno
+[naniar]: https://naniar.njtierney.com/
