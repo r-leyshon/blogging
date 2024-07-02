@@ -208,8 +208,18 @@ data.
 
 ## In Summary
 
-...
-
+In conclusion, David J. Hand offers an insightful exploration into the realm of
+unseen, uncollected, or unanalysed data that profoundly impacts decision-making
+and understanding. Through detailed categorisation and vivid historical and
+contemporary examples, Hand underscores the critical need to recognize and
+address the hidden gaps in our data. His comprehensive analysis highlights how
+ignorance of dark data can lead to flawed conclusions and poor outcomes, while
+alsopresenting strategies to mitigate these risks. By encouraging a vigilant
+and sceptical approach to data analysis, Hand empowers readers to navigate the
+complexities of incomplete information, ultimately fostering better
+decision-making in an era where data is ever-present but often imperfect. This
+book is a valuable resource for anyone looking to deepen their understanding of
+the unseen dimensions of data and its far-reaching implications.
 
 [missingno]: https://github.com/ResidentMario/missingno
 [naniar]: https://naniar.njtierney.com/
