@@ -30,11 +30,11 @@ jupyter:
 "Dark Data: Why What You Don't Know Matters" by David J. Hand delves into the
 crucial concept of dark data — information that is unseen, uncollected, or
 unanalysed but significantly impacts decision-making and understanding. Hand
-categorises dark data into 15 types, including self-selection bias and
-time-dependent missing data, illustrating the dangers of ignoring such data
-through historical and contemporary examples like FDR's reelection polls and
-the Challenger shuttle disaster. The book highlights how unrecognized dark data
-can lead to skewed understandings, incorrect conclusions, and flawed actions.
+categorises dark data into 15 types, illustrating the dangers of ignoring such
+data through historical and contemporary examples like FDR's reelection polls
+and the Challenger shuttle disaster. The book highlights how unrecognized dark
+data can lead to skewed understandings, incorrect conclusions, and flawed
+actions.
 
 > "The first step must always be to be aware there might be dark data. Indeed,
 your default assumption should be that the data are incomplete or inaccurate.
@@ -60,20 +60,19 @@ such as serving as a professor of statistics at the Open University from 1988
 to 1999 and later becoming an Emeritus Professor of Mathematics at Imperial
 College London, where he also worked as a Senior Research Investigator. His
 research interests are broad and include multivariate statistics,
-classification methods, pattern recognition, computational statistics, and the
-foundations of statistics, with a keen focus on data mining, data science, and
-big data.
+classification methods, pattern recognition, computational and foundational
+statistics, with a keen focus on data mining, data science, and big data.
 
-## 3 Takeaways
+## Three Takeaway Ideas
 
 ### On Human Bias
 
 > "...At least until the scientific revolution... advances in understanding
 were retarded by a (typically subconscious) reluctance to collect data which
-might discprove a theory... advances were held back by an unwillingness to make
+might disprove a theory... advances were held back by an unwillingness to make
 dark data visible...
 
-My favourite historical example of someone who spotted this problem is given by
+> My favourite historical example of someone who spotted this problem is given by
 the seventeenth-century philosopher, Francis Bacon, who wrote: "Human
 understanding when it has once adpopted an opinion... draws all things else to
 support and agree with it. And though there be a great number and weight of
@@ -90,12 +89,12 @@ on the topic of Nixon's 1972 U.S. election victory:
 > "I can't believe Nixon won. I don't know anyone who voted for him."
 
 I have known highly intelligent, capable people who'se default position on
-alternative positions is not just one of scepticism, but one of objection. And
+alternative opinions is not just one of scepticism, but one of objection. And
 doubtlessly there have also been times when I have fallen into this trap
 myself. The issue with discounting, excluding and mocking counter opinions is
-that; on occasion; they are falsifiably correct! Widely accepted tautology can,
-has been and will be shattered by those willing to think outside of broadly
-accepted opinion. 
+that; on occasion; they are falsifiable and supported by the evidence! Widely
+accepted dogma can, has been and will be shattered by those willing to think
+outside of broadly accepted opinion. 
 
 My favourite 2 examples of this:
 
@@ -107,22 +106,28 @@ market their profitable vacuum bags and filters with such a model.
 geologists until the mid twentieth century? Bill Bryson @short-history
 describes this as dogmatic resistance of the scientific community to truth. It
 happened that Alfred Wegener, who proposed the idea in World War 2 was not a
-trained geologist. Even in the mid 1950s, the concept had not been adopted and
-notable Harvard University professor Charles Hapgood @deny-drift was vehemently
-opposed to the concept.
+trained geologist and therefore widely disputed. Even in the mid 1950s, the
+concept had not been adopted and notable Harvard University professor Charles
+Hapgood @deny-drift was vehemently opposed to the concept. The fact that a
+concept this profound was being disputed in academic circles just thirty years
+before my birth shattered some preconceptions that I had about our
+understanding of our world. As a child in the '90s, and having a predisposition
+towards studying science, I had a complete ignorance that this topic had been
+so recently contentious in academic circles. My intuition is that many others
+are similarly ignorant of this.
 
 ### Publication Bias
 
-Hand rightfully has quite a bit to say about the reproducibility crisis. The
-author explores reproducibility, publication bias and fraud in the scientific
-literature. Although these issues may or may not be intentional, they have the
-potential to frustrate progress and prolong suffering, as in the case of the
-recent retraction @nature-retract of an influential study on Alzheimer's
-disease published in Nature in 2006 @nature-amyloid. This paper has been
-cited more than 2,000 times and used brain scans of patients that have been
-shown to have been falsified.
+Hand rightfully has quite a bit to say about the reproducibility crisis in
+academic literature. The author explores reproducibility, publication bias and
+fraud in this domain. Although these issues may or may not be
+intentional, they have the potential to frustrate progress and prolong
+suffering, as exemplified in the case of the recent retraction @nature-retract of an
+influential study on Alzheimer's disease published in Nature in 2006
+@nature-amyloid. This paper has been cited more than 2,000 times and used brain
+scans of patients that have been shown to have been falsified.
 
-Hand goes on to talk about the lesser known practice in academia known as
+Hand goes on to talk about a lesser known practice in academia known as
 harking:
 
 > "Yet another cause of mistaken results is the pernicious practice called
@@ -133,21 +138,21 @@ before they collect any data. Some scientific journals are considering moving
 in this direction, guaranteeing publication of a paper regardless of how the 
 results come out..." [@darkdata, pp.198-199]
 
-I thoroughly agree with David Hand. Wikipedia @wiki-pub-bias quotes a study
-stating that papers with significant findings are 3x more likely to be
+I thoroughly agree with this suggestion. Wikipedia @wiki-pub-bias quotes a
+study stating that papers with significant findings are 3x more likely to be
 published than those with null findings. And as the number of publications is
 broadly interpreted as a measure of success for academic institutions and 
 individuals alike, a systemic pressure for fraudulent practice emerges. I would
 go even further and suggest that the barriers to journals demanding full
 reproducibility of analysis - including open and versioned code and data - is
 now lower than ever. In 2024, every respectable journal can require its
-contributors to use open source tools to increase transparency and prove
+contributors to use open source software to increase transparency and prove
 reproducibility. So why has this practice not been established? I presume there
 to be inertia in adopting newer tooling. A legacy uplift issue that would
-honestly present reasonable overhead for a significant gain. After all, most 
-people who undertake their statistical analysis in legacy or proprietary
-software have a thorough knowledge framework that would greatly assist them in
-transitioning to open source languages.
+present modest overhead for significant gain. After all, most  people who
+undertake their statistical analysis in legacy or proprietary software have a
+thorough knowledge framework that would greatly assist them in transitioning to
+open source languages.
 
 ### Data Missingness
 
@@ -155,8 +160,8 @@ Hand adapts the American Statistician Donald Rubin's description of the causes
 of missing data into the following:
 
 * Unseen Data Dependent (UDD): The cause of the missingness is related to the
-value of the datum. No reason for this missingness can be discerned from the
-extant data.
+value of the missing datum. No reason for this missingness can be discerned
+from the extant data.
 * Seen Data Dependent (SDD): A clue to the reason for the missing datum is
 available within the extant data. 
 * Not Data Dependent (NDD): The reason for the missingess is unrelated to the
@@ -175,16 +180,21 @@ could mean we were left with a distorted data set." [@darkdata, p.237]
 Distorting a dataset could be caused by either dropping records or imputing
 values for missing observations. There are far too many machine learning
 tutorials online that carelessly instruct learners to do so, in order to be
-able to use the algorithm of choice. Mindlessly erasing records with missing
-observations would generally mean reversion to the mean but has the potential
-to propagate algorithmic harm. Could the missing records represent people at
-the fringes of society, whose data are often challenging to capture? 
+able to use the algorithm of choice. Mindlessly erasing or imputing records
+with missing observations would generally mean reversion to the mean but has
+the potential to propagate algorithmic harm. Could the missing records
+represent people at the fringes of society, whose data are often challenging to
+capture? I worry that this practice is far too widespread within the field of
+data science, as many of the popular machine learning algorithms will not
+tolerate the inconvenient truth of dark data.
 
-Treating these records should involve a good deal of investigation first. Is
-there a hint in the present data that could explain the missingness? To help
-python developers assess missingness in a dataset, I highly encourage people to
-make use of the [`missingno` package][missingno]. If you write in R, then the
-same functionality is available with [`naniar`][naniar].
+Treating these records should involve a good deal of investigation. Is there a
+hint in the present data that could explain the missingness? Could correlations
+with other dimensions in the data mean a more appopriate imputation value based
+on a sub-group average, rather than the population average?  To help python
+developers assess missingness in a dataset, I highly encourage people to make
+use of the [`missingno` package][missingno]. If you write in R, then the
+equivalent functionality is available with [`naniar`][naniar].
 
 The below visual gives an overview of populated records in a data table about
 road traffic collisions. Dark bands are populated records. White bands are
