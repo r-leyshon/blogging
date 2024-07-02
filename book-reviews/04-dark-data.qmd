@@ -32,7 +32,7 @@ crucial concept of dark data — information that is unseen, uncollected, or
 unanalysed but significantly impacts decision-making and understanding. Hand
 categorises dark data into 15 types, illustrating the dangers of ignoring such
 data through historical and contemporary examples like FDR's reelection polls
-and the Challenger shuttle disaster. The book highlights how unrecognized dark
+and the Challenger shuttle disaster. The book highlights how unrecognised dark
 data can lead to skewed understandings, incorrect conclusions, and flawed
 actions.
 
@@ -42,7 +42,7 @@ your default assumption should be that the data are incomplete or inaccurate.
 - at least until it is proved they are adequate and accurate."
 [@darkdata, p.293]
 
-Hand emphasizes the importance of recognising and mitigating dark data,
+Hand emphasises the importance of recognising and mitigating dark data,
 teaching readers to be vigilant about the issues posed by unknown information.
 He also explores how dark data can be strategically utilised. The book
 addresses various statistical methods and concepts, underscoring that even in
@@ -74,7 +74,7 @@ dark data visible...
 
 > My favourite historical example of someone who spotted this problem is given by
 the seventeenth-century philosopher, Francis Bacon, who wrote: "Human
-understanding when it has once adpopted an opinion... draws all things else to
+understanding when it has once adopted an opinion... draws all things else to
 support and agree with it. And though there be a great number and weight of
 instances to be found on the other side, yet these it either neglects and
 despises, or else by some distinction sets aside and rejects."
@@ -88,7 +88,7 @@ on the topic of Nixon's 1972 U.S. election victory:
 
 > "I can't believe Nixon won. I don't know anyone who voted for him."
 
-I have known highly intelligent, capable people who'se default position on
+I have known highly intelligent, capable people whose default position on
 alternative opinions is not just one of scepticism, but one of objection. And
 doubtlessly there have also been times when I have fallen into this trap
 myself. The issue with discounting, excluding and mocking counter opinions is
@@ -164,7 +164,7 @@ value of the missing datum. No reason for this missingness can be discerned
 from the extant data.
 * Seen Data Dependent (SDD): A clue to the reason for the missing datum is
 available within the extant data. 
-* Not Data Dependent (NDD): The reason for the missingess is unrelated to the
+* Not Data Dependent (NDD): The reason for the missingness is unrelated to the
 extant data.
 
 Hand's explanation of Complete Case Analysis is an excellent warning to all
@@ -190,7 +190,7 @@ tolerate the inconvenient truth of dark data.
 
 Treating these records should involve a good deal of investigation. Is there a
 hint in the present data that could explain the missingness? Could correlations
-with other dimensions in the data mean a more appopriate imputation value based
+with other dimensions in the data mean a more appropriate imputation value based
 on a sub-group average, rather than the population average?  To help python
 developers assess missingness in a dataset, I highly encourage people to make
 use of the [`missingno` package][missingno]. If you write in R, then the
@@ -213,7 +213,7 @@ missingness than others. But that specific columns show patterns in missingness
 in comparison with that of other columns too. For example, in records where
 `ON STREET NAME` and `CROSS STREET NAME` are missing, you may find that
 `OFF STREET NAME` records are present. This simple visual along with many more
-useful tools in the package are available to examine the idiosyncracies within
+useful tools in the package are available to examine the idiosyncrasies within
 data.
 
 ## In Summary
@@ -221,10 +221,10 @@ data.
 In conclusion, David J. Hand offers an insightful exploration into the realm of
 unseen, uncollected, or unanalysed data that profoundly impacts decision-making
 and understanding. Through detailed categorisation and vivid historical and
-contemporary examples, Hand underscores the critical need to recognize and
+contemporary examples, Hand underscores the critical need to recognise and
 address the hidden gaps in our data. His comprehensive analysis highlights how
 ignorance of dark data can lead to flawed conclusions and poor outcomes, while
-alsopresenting strategies to mitigate these risks. By encouraging a vigilant
+also presenting strategies to mitigate these risks. By encouraging a vigilant
 and sceptical approach to data analysis, Hand empowers readers to navigate the
 complexities of incomplete information, ultimately fostering better
 decision-making in an era where data is ever-present but often imperfect. This
