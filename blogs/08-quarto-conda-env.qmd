@@ -2,6 +2,7 @@
 title: "Conda Environments for Quarto Documents"
 author: "Rich Leyshon"
 date: January 06 2024
+updated: July 02 2024
 description: "How to specify a specific Conda environment when rendering quarto documents."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - How-to
@@ -55,6 +56,36 @@ Python practitioners familiar with conda environment management
 You are writing a quarto document that contains python code. You would like to
 use conda to manage your python dependencies. You are encountering problems in 
 having quarto select the appropriate conda environment.
+
+:::{.callout-tip collapse="true"}
+
+#### Named Environments
+
+This article covers having quarto execute with "prefix" conda environments.
+This setup may be useful specifically for a website where different site pages
+have different dependencies.
+
+However, many readers may wish for a simpler solution. It is possible to have
+quarto websites and documents execute with a named environment instead. If you
+have an environment created like below:
+
+`conda create -n my-awesome-env python -y`
+
+Then including the following statement within either the _quarto.yml or quarto
+document's YAML header should be enough to guarantee that the target
+environment is picked up when rendering:
+
+`jupyter: my-awesome-env`
+
+Additionally, if you would just prefer the site or document to render with
+whatever version of python is available in
+**the currently active environment**, then use:
+
+`jupyter: python3`
+
+Many thanks to Ethan for this tip.
+
+:::
 
 ### What You'll Need:
 
