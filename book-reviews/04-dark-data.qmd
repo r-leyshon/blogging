@@ -81,7 +81,35 @@ instances to be found on the other side, yet these it either neglects and
 despises, or else by some distinction sets aside and rejects."
 " [@darkdata, pp. 167-168]
 
-Link to Bill Bryson, continental drift.
+This human bias may be one of the fundamental flaws in human psychology. It's
+something that people consider exists in everyone apart from themselves! My
+favourite (disputed) quote which has become a widely used example of
+confirmation bias has been attributed to the American film critic Pauline Kael,
+on the topic of Nixon's 1972 U.S. election victory:
+
+> "I can't believe Nixon won. I don't know anyone who voted for him."
+
+I have known highly intelligent, capable people who'se default position on
+alternative positions is not just one of scepticism, but one of objection. And
+doubtlessly there have also been times when I have fallen into this trap
+myself. The issue with discounting, excluding and mocking counter opinions is
+that; on occasion; they are falsifiably correct! Widely accepted tautology can,
+has been and will be shattered by those willing to think outside of broadly
+accepted opinion. 
+
+My favourite 2 examples of this:
+
+1. A young James Dyson's rejection when pitching his innovative bagless vacuum
+technology to Hoover @dyson-vindication. Hoover did not see the potential in
+Dyson's early prototype and disliked the fact that they would not be able to
+market their profitable vacuum bags and filters with such a model.
+2. Did you know that the concept of continental drift was highly disputed by 
+geologists until the mid twentieth century? Bill Bryson @short-history
+describes this as dogmatic resistance of the scientific community to truth. It
+happened that Alfred Wegener, who proposed the idea in World War 2 was not a
+trained geologist. Even in the mid 1950s, the concept had not been adopted and
+notable Harvard University professor Charles Hapgood @deny-drift was vehemently
+opposed to the concept.
 
 ### Publication Bias
 
