@@ -12,6 +12,7 @@
   {
     "listing": "/book-reviews/index.html",
     "items": [
+      "/book-reviews/04-dark-data.html",
       "/book-reviews/03-amusing-ourselves-to-death.html",
       "/book-reviews/02-algorithms-to-live-by.html",
       "/book-reviews/01-deep-work.html"
@@ -39,6 +40,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/book-reviews/04-dark-data.html",
       "/blogs/14-gh-actions-security.html",
       "/blogs/13-pytest-parametrize.html",
       "/music-reviews/05-when-worlds-collide.html",
