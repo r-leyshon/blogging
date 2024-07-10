@@ -1,0 +1,165 @@
+---
+title: "Mocking With Pytest in Plain English"
+author: "Rich Leyshon"
+date: "July 10 2024"
+description: "Plain English Comparison of Mocking Approaches in Python"
+categories:
+    - Explanation
+    - pytest
+    - Unit tests
+    - mocking
+    - pytest-in-plain-english
+    - mockito
+    - MagicMock
+    - monkeypatch
+image: "https://i.imgur.com/K0mxjuF.jpeg"
+image-alt: "Soul singer with Joker makeup."
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-pytest-env-py"
+    language: "python"
+    display_name: "blog-pytest-env"
+css: /www/13-pytest-parametrize/styles.css
+---
+
+<figure class=center >
+  <img class="shaded_box" width=400px src="https://i.imgur.com/K0mxjuF.jpeg"></img>
+  <figcaption>Soul singer with Joker makeup.</figcaption>
+</figure>
+
+## Introduction
+
+> "A day without laughter is a day wasted." Charlie Chaplin
+
+`pytest` is a testing package for the python framework. It is broadly used to
+quality assure code logic. This article discusses the dark art of mocking, why
+you should do it and the nuts and bolts of implementing mocked tests. This blog
+is the fourth in a series of blogs called
+[pytest in plain English](/../index.html#category=pytest-in-plain-english),
+favouring accessible language and simple examples to explain the more intricate
+features of the `pytest` package.
+
+For a wealth of documentation, guides and how-tos, please consult the
+<a href="https://docs.pytest.org/en/8.0.x/" target="_blank">`pytest` documentation</a>.
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose (Click to expand)
+
+This article intends to discuss clearly. It doesn't aim to be clever or
+impressive. Its aim is to extend understanding without overwhelming the reader.
+The code may not always be optimal, favouring a simplistic approach wherever
+possible.
+
+:::
+
+### Intended Audience
+
+Programmers with a working knowledge of python, HTTP requests and some
+familiarity with `pytest` and packaging. The type of programmer who has
+wondered about how to follow best practice in testing python code.
+
+### What You'll Need:
+
+- [ ] Preferred python environment manager (eg `conda`)
+- [ ] `pip install pytest==8.1.1 requests mockito`
+- [ ] Git
+- [ ] GitHub account
+- [ ] Command line access
+
+### Preparation
+
+This blog is accompanied by code in
+[this repository](https://github.com/r-leyshon/pytest-fiddly-examples). The
+main branch provides a template with the minimum structure and requirements
+expected to run a `pytest` suite. The repo branches contain the code used in
+the examples of the following sections.
+
+Feel free to fork or clone the repo and checkout to the example branches as
+needed.
+
+The example code that accompanies this article is available in the
+[mocking branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/mocking)
+of the repo.
+
+## Overview
+
+Mocking is one of the trickier elements of testing. It's a bit niche and is
+often perceived to be too hacky to be worth the effort. The options for mocking
+in python are numerous and this adds to the complexity of many example
+implementations you will find online. 
+
+There is also a compromise in simplicity versus flexibility. Some of the
+options available are quite involved and can be adapted to the nichest of
+cases, but may not be the best option for those new to mocking. With this in
+mind, I present 3 alternative methods for mocking python source code:
+
+1. **monkeypatch**: The `pytest` fixture designed for mocking. The origin of
+the fixture's name is debated but potentially arose from the term
+'guerrilla patch' which may have been misinterpreted as 'gorilla patch'. This
+is the concept of modifying source code at runtime, otherwise known as
+'monkeying around'.
+2. **MagicMock**: This is the mocking object provided by python3's builtin
+`unittest` library.
+3. **mockito**: This library is based upon the popular Jave framework of the
+same name. Despite having a user-friendly syntax, `mockito` is robust and
+secure.
+
+### What Are Parametrized Tests?
+
+...
+
+### Why use Parametrization?
+
+...
+
+## Implementing Parametrization
+
+... Feel free to clone the repository and check out to the
+[example code](https://github.com/r-leyshon/pytest-fiddly-examples/tree/mocking)
+branch to run the examples.
+
+### Define the Source Code
+
+...
+
+### Let's Get Testing
+
+...
+
+### ...Enter Parametrize
+...
+
+### Yet More Cases
+...
+
+
+
+## Summary
+
+There you have it - how to use basic and stacked parametrization in your tests.
+We have:
+
+* used parametrize to inject multiple parameter values to a single test.
+* used stacked parametrize to test combinations of parameters against a single
+assertion.
+* used a nested dictionary fixture to map stacked parametrize input
+combinations to different expected assertion values.
+
+If you spot an error with this article, or have a suggested improvement then
+feel free to
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+Happy testing!
+
+## Acknowledgements
+
+To past and present colleagues who have helped to discuss pros and cons,
+establishing practice and firming-up some opinions. Thanks specifically to
+Edward for bringing `mockito` to my attention.
+
+The diagrams used in this article were produced with the excellent
+[Excalidraw](https://excalidraw.com/).
+
+<p id=fin><i>fin!</i></p>
