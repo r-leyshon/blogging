@@ -28,9 +28,9 @@ css: /www/13-pytest-parametrize/styles.css
   <figcaption>Soul singer with Joker makeup.</figcaption>
 </figure>
 
-## Introduction
-
 > "A day without laughter is a day wasted." Charlie Chaplin
+
+## Introduction
 
 `pytest` is a testing package for the python framework. It is broadly used to
 quality assure code logic. This article discusses the dark art of mocking, why
@@ -42,6 +42,25 @@ features of the `pytest` package.
 
 For a wealth of documentation, guides and how-tos, please consult the
 <a href="https://docs.pytest.org/en/8.0.x/" target="_blank">`pytest` documentation</a>.
+
+### What does Mocking Mean?
+
+Code often has external dependencies:
+
+*  Web APIs (as in this article)
+* Websites (if scraping / crawling)
+* External code (importing libraries)
+* Data feeds and databases
+* Environment variables
+
+As developers cannot control the behaviour of those dependencies, they would
+not write tests dependent upon them. In order to test their source code that
+depends on these services, developers need to replace the properties of these
+services when the test suite runs. Injecting replacement values into the code
+at runtime is generally referred to as mocking. Mocking these values means that
+developers can feed dependable results to their code and make reliable
+assertions about the code's behaviour, without changes in the 'outside world'
+affecting outcomes in the system under test.
 
 :::{.callout collapse="true"}
 
@@ -106,7 +125,26 @@ is the concept of modifying source code at runtime, otherwise known as
 same name. Despite having a user-friendly syntax, `mockito` is robust and
 secure.
 
-### What Are Parametrized Tests?
+:::{.callout-note collapse="true"}
+
+### A note on the language
+
+Mocking has a bunch of synonyms & related language which can be a bit
+off-putting. All of the below terms are associated with mocking. Some may be
+preferred to the communities of specific pragramming frameworks over others.
+
+| Term          | Brief Meaning | Frameworks/Libraries |
+|---------------|---------------|----------------------|
+| Mocking       | Creating objects that simulate the behavior of real objects for testing | Mockito (Java), unittest.mock (Python), Jest (JavaScript), Moq (.NET)            |
+| Spying        | Observing and recording method calls on real objects                    | Mockito (Java), Sinon (JavaScript), unittest.mock (Python), RSpec (Ruby) |
+| Stubbing      | Replacing methods with predefined behaviors or return values            | Sinon (JavaScript), RSpec (Ruby), PHPUnit (PHP), unittest.mock (Python)      |
+| Patching      | Temporarily modifying or replacing parts of code for testing            | unittest.mock (Python), pytest-mock (Python), PowerMock (Java)             |
+| Faking        | Creating simplified implementations of complex dependencies             | Faker (multiple languages), Factory Boy (Python), FactoryGirl (Ruby)           |
+| Dummy Objects | Placeholder objects passed around but never actually used               | Can be created in any testing framework                                          |
+
+:::
+
+### What Are Mocked Tests?
 
 ...
 
