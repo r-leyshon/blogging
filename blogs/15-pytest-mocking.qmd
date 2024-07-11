@@ -202,22 +202,353 @@ def get_joke(
 ```
 
 ```{python}
-for _ in range(0,3):
+for _ in range(3):
     print(get_joke(f="application/json"))
 
 ```
 
-
 ### Define the Source Code
 
-...
+The function `get_joke()` uses 2 internals:
+
+1. `_query_endpoint()` Used to construct the HTTP request with required headers
+and user agent.
+2. `_handle_response()` Used to catch HTTP errors, or to pull the text out of
+the various response formats.
+
+```{python filename="example_pkg.only_joking.py"}
+"""Retrieve dad jokes available."""
+import requests
+
+
+def _query_endpoint(
+    endp:str, usr_agent:str, f:str,
+    ) -> requests.models.Response:
+    """Utility for formatting query string & requesting endpoint."""
+    HEADERS = {
+        "User-Agent": usr_agent,
+        "Accept": f,
+        }
+    resp = requests.get(endp, headers=HEADERS)
+    return resp
+
+```
+
+Keeping the part of the codebase that you wish to replace with mocking is often
+the simplest way to get things tested. The target for our mocking will be the
+command that integrates with the external service, so `requests.get()` here. 
+
+As you can see, the use of `requests.get()` expects a few things:
+
+1. An endpoint string.
+2. A dictionary with string values for the keys "User-Agent" and "Accept".
+
+We'll need to consider those dependencies when mocking.
+
+```{python filename="example_pkg.only_joking.py"}
+"""Retrieve dad jokes available."""
+import requests
+
+
+def _query_endpoint(
+    endp:str, usr_agent:str, f:str,
+    ) -> requests.models.Response:
+    ...
+
+
+def _handle_response(r: requests.models.Response) -> str:
+    """Utility for handling reponse object & returning text content.
+
+    Parameters
+    ----------
+    r : requests.models.Response
+        Response returned from webAPI endpoint.
+
+    Raises
+    ------
+    NotImplementedError
+        Requested format `f` was not either 'text/plain' or 'application/json'. 
+    requests.HTTPError
+        HTTP error was encountered.
+    """
+    if r.ok:
+        c_type = r.headers["Content-Type"]
+        if c_type == "application/json":
+            content = r.json()
+            content = content["joke"]
+        elif c_type == "text/plain":
+            content = r.text
+        else:
+            raise NotImplementedError(
+                "This client accepts 'application/json' or 'text/plain' format"
+                )
+    else:
+        raise requests.HTTPError(
+            f"{r.status_code}: {r.reason}"
+        )
+    return content
+
+```
+
+Once `_query_endpoint()` gets us a response, we can feed it into
+`_handle_response()`, where different logic is executed depending on the
+responses properties. Specifically, any response we want to mock would need the
+following properties:
+
+1. headers, containing a dictionary eg: `{"content_type": "plain/text"}`
+2. A `json()` method.
+3. `text`, `status_code` and `reason` attributes.
+
+Finally, the above functions get wrapped in the `get_joke()` function below:
+
+```{python filename="example_pkg.only_joking.py"}
+"""Retrieve dad jokes available."""
+import requests
+
+
+def _query_endpoint(
+    endp:str, usr_agent:str, f:str,
+    ) -> requests.models.Response:
+    ...
+
+
+def _handle_response(r: requests.models.Response) -> str:
+    ...
+
+
+def get_joke(
+    endp:str = "https://icanhazdadjoke.com/",
+    usr_agent:str = "datasavvycorner.com (https://github.com/r-leyshon/pytest-fiddly-examples)", 
+    f:str = "text/plain",
+) -> str:
+    """Request a joke from icanhazdadjoke.com.
+
+    Ask for a joke in either plain text or JSON format. Return the joke text.
+
+    Parameters
+    ----------
+    endp : str, optional
+        Endpoint to query, by default "https://icanhazdadjoke.com/"
+    usr_agent : str, optional
+        User agent value, by default
+        "datasavvycorner.com (https://github.com/r-leyshon/pytest-fiddly-examples)"
+    f : str, optional
+        Format to request eg "application.json", by default "text/plain"
+
+    Returns
+    -------
+    str
+        Joke text.
+    """
+    r = _query_endpoint(endp=endp, usr_agent=usr_agent, f=f)
+    return _handle_response(r)
+
+```
 
 ### Let's Get Testing
 
-...
+The behaviour in `get_joke()` is summarised in the flow chart below:
 
-### ...Enter Parametrize
-...
+<img style=" display: block; margin-left: auto; margin-right: auto; width: 500px;" src="https://i.imgur.com/ekrD8nH.png" alt="get_joke() logic flow">
+
+There are 4 outcomes to check, coloured red and green in the process chart
+above.
+
+1. `get_joke()` successfully returns joke text when the user asked for json
+format.
+2. `get_joke()` successfully returns joke text when the user asked for plain
+text.
+3. `get_joke()` raises `NotImplementedError` if any other valid format is asked
+for. Note that the API also accepts HTML and image formats, though parsing the
+joke text out of those is more involved and beyond the scope of this blog.
+4. `get_joke()` raises a `HTTPError` if the response from the API was not ok.
+
+Note that the event that we wish to target for mocking is highighted in blue - 
+we don't want our tests to execute any real requests.
+
+The strategy for testing this function without making requests to the web API
+is composed of 4 similar steps, regardless of the library used to implement the
+mocking. 
+
+<img style=" display: block; margin-left: auto; margin-right: auto; width: 800px;" src="https://i.imgur.com/6XJH7R9.png" alt="4 step mocking strategy">
+
+1.  **Mock:** Define the object or property that you wish to use as a
+replacement. This could be a static value or something a bit more involved,
+like a mock class that can return dynamic values depending upon the values it
+receives. 
+2. **Patch:** Replace part of the source code with our mock value. 
+3. **Use:** Use the source code to return a value.
+4. **Assert:** Check the returned value is what you expect.
+
+In the examples that follow, I will label the equivalent steps for the various
+mocking implementations.
+
+### The "Ultimate Joke"
+
+What hard-coded text shall I use for my expected joke? I'll
+[create a fixture](/docs/blogs/11-fiddly-bits-of-pytest.html) that will serve
+up this joke text to all of the test modules used below. I'm only going to
+define it once and then refer to it throughout several examples below. So it
+needs to be a pretty memorable, awesome joke.
+
+```{python filename="conftest.py"}
+import pytest
+
+
+@pytest.fixture(scope="session")
+def ULTI_JOKE():
+    return ("Doc, I can't stop singing 'The Green, Green Grass of Home.' That "
+    "sounds like Tom Jones Syndrome. Is it common? Well, It's Not Unusual.")
+
+```
+
+Being a Welshman, I may be a bit biased. But that's a pretty memorable dad joke
+in my opinion. This joke will be available to every test within my test suite
+when I execute `pytest` from the command line. The assertions that we will
+use when using `get_joke()` will expect this string to be returned. If some
+other joke is returned, then we have not mocked correctly and an HTTP request
+was sent to the API.
+
+### Mocking `get_joke()`
+
+I'll start with an example of how to mock `get_joke()` completely. This is an
+intentionally bad idea. In doing this, the test won't actually be executing any
+of the code, just returning a hard-coded value for the joke text. All this does
+is prove that the mocking works as expected and has nothing to do with the
+logic in our source code. 
+
+So why am I doing it? Hopefully I can illustrate the most basic implementation
+of mocking in this way. I'm not having to think about how I can mock a response
+object with all the required properties. I just need to provide some hard coded
+text. 
+
+:::{.panel-tabset}
+
+#### monkeypatch
+
+```{python}
+#| eval: false
+"""Test only_joking.py using monkeypatch to mock api calls."""
+import pytest
+
+import example_pkg.only_joking
+
+
+def test_get_joke_monkeypatched_entirely(monkeypatch, ULTI_JOKE):
+    """Completely replace the entire get_joke return value.
+
+    Not a good idea for testing as none of our source code will be tested. But
+    this demonstrates how to entirely scrub a function and replace with any
+    placeholder value at pytest runtime."""
+    # step 1
+    def _mock_joke():
+        """Return the joke text.
+
+        monkeypatch.setattr expects the value argument to be callable. In plain
+        English, a function or class."""
+        return ULTI_JOKE
+    # step 2
+    monkeypatch.setattr(
+        target=example_pkg.only_joking,
+        name="get_joke",
+        value=_mock_joke
+        )
+    # step 3 & 4
+    # Use the module's namespace to correspond with the monkeypatch
+    assert example_pkg.only_joking.get_joke() == ULTI_JOKE 
+
+```
+
+**Notes**:
+
+* **Step 1**
+    * Step 2 requires the hard coded text to be returned from a callable, like
+    a function or class. So we define `_mock_joke` to serve the text in the
+    required format.
+* **Step 2**
+    * `monkeypatch.setattr()` is able to take the module namespace that we
+    imported as the target. This must be the namespace where the function
+    (or variable etc) is defined.
+* **Step 3**
+    * When invoking the function, be sure to reference the function in the same
+    way as it was monkeypatched. Aliases can also be used if preferable
+    (eg `import example_pkg.only_joking as jk`).
+
+#### MagicMock
+
+```{python}
+#| eval: false
+import pytest
+from unittest.mock import MagicMock, patch
+
+import example_pkg.only_joking
+
+
+def test_get_joke_magicmocked_entirely(ULTI_JOKE):
+    """Completely replace the entire get_joke return value.
+
+    Not a good idea for testing as none of our source code will be tested. But
+    this demonstrates how to entirely scrub a function and replace with any
+    placeholder value at pytest runtime."""
+    # step 1
+    _mock_joke = MagicMock(return_value=ULTI_JOKE)
+    # step 2
+    with patch("example_pkg.only_joking.get_joke", _mock_joke):
+        # step 3
+        joke = example_pkg.only_joking.get_joke()
+        # step 4
+        assert joke == ULTI_JOKE
+```
+
+**Notes**:
+
+* **Step 1**
+    * `MagicMock()` allows us to return static values as mock objects.
+* **Step 3**
+    * When you use `get_joke()`, be sure to call reference the namespace in the
+    same way as to your patch in step 2.
+
+#### mockito
+
+```{python}
+#| eval: false
+from mockito import when, unstub
+
+import example_pkg.only_joking
+
+
+def test_get_joke_mockitoed_entirely(ULTI_JOKE):
+    """Completely replace the entire get_joke return value.
+
+    Not a good idea for testing as none of our source code will be tested. But
+    this demonstrates how to entirely scrub a function and replace with any
+    placeholder value at pytest runtime."""
+    # step 1 & 2
+    when(example_pkg.only_joking).get_joke().thenReturn(ULTI_JOKE)
+    # step 3
+    joke = example_pkg.only_joking.get_joke()
+    # step 4
+    assert joke == ULTI_JOKE
+    unstub()
+
+```
+
+**Notes**:
+
+* **Step 1 & 2**
+    * `mockito`'s intuitive `when(...).thenReturn(...)` pattern allows you
+    to reference any object within the imported namespace. Like with
+    `MagicMock`, the static string `ULTI_JOKE` can be referenced.
+* **Step 3**
+    * When you use `get_joke()`, be sure to call reference the namespace in the
+    same way as to your patch in step 2.
+* **unstub**
+    * This step explicitly 'unpatches' `get_joke()`. If you did not `unstub()`,
+    the patch to `get_joke()` would persist through the rest of your tests.
+    * `mockito` allows you to implicitly `unstub()` by using a context manager
+    like `with`.
+
+:::
 
 ### Yet More Cases
 ...
