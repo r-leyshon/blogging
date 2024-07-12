@@ -471,8 +471,10 @@ def test_get_joke_monkeypatched_entirely(monkeypatch, ULTI_JOKE):
     (or variable etc) is defined.
 * **Step 3**
     * When invoking the function, be sure to reference the function in the same
-    way as it was monkeypatched. Aliases can also be used if preferable
-    (eg `import example_pkg.only_joking as jk`).
+    way as it was monkeypatched.
+    * Aliases can also be used if preferable
+    (eg `import example_pkg.only_joking as jk`). Be sure to update your
+    reference to `get_joke()` in step 2 and 3 to match your import statement.
 
 #### MagicMock
 
@@ -545,14 +547,230 @@ def test_get_joke_mockitoed_entirely(ULTI_JOKE):
 * **unstub**
     * This step explicitly 'unpatches' `get_joke()`. If you did not `unstub()`,
     the patch to `get_joke()` would persist through the rest of your tests.
-    * `mockito` allows you to implicitly `unstub()` by using a context manager
-    like `with`.
+    * `mockito` allows you to implicitly `unstub()` by using the context
+    manager `with`.
 
 :::
 
-### Yet More Cases
-...
+### `monkeypatch()` without OOP
 
+Something I've noticed about the `pytest` documentation for `monkeypatch`, is
+that it gets straight into mocking with Object Oriented Programming (OOP).
+While this may be a bit more convenient, it is certainly not a requirement of
+using `monkeypatch` and definitely adds to the cognitive load for new users.
+This first example will mock the value of `requests.get` without using classes.
+
+```{python}
+#| eval: false
+import pytest
+import requests
+
+from example_pkg.only_joking import get_joke, _handle_response
+
+
+def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
+    # step 1: Mock the response object
+    def _mock_response(*args, **kwargs):
+        resp = requests.models.Response()
+        resp.status_code = 200
+        resp._content = ULTI_JOKE.encode("UTF8")
+        resp.headers = {"Content-Type": "text/plain"}
+        return resp
+    
+    # step 2: Patch requests.get
+    monkeypatch.setattr(requests, "get", _mock_response)
+    # step 3: Use requests.get
+    joke = get_joke()
+    # step 4: Assert
+    assert joke == ULTI_JOKE, f"Expected:\n'{ULTI_JOKE}\nFound:\n{joke}'"
+    # will also work for json format
+    joke = get_joke(f="application/json")
+    assert joke == ULTI_JOKE, f"Expected:\n'{ULTI_JOKE}\nFound:\n{joke}'"
+
+```
+
+**Notes**:
+
+* **Step 1**
+    * The return value of `requests.get()` will be a response object. We need
+    to mock this object with the methods and attributes required by the
+    `_handle_response()` function. 
+    * We need to encode the static joke text as bytes to format the data. 
+    Response objects encode data as bytes for inter-operatability and
+    optimisation purposes.
+* **step4**
+    * As we have set an appropriate value for the mocked response's `_content`
+    attribute, the mocked joke will be returned for both JSON and plain text
+    formats - very convenient!
+
+### Testing JSON format (with OOP)
+
+In this example, we demonstrate the same functionality as above, but with an
+object-oriented design pattern. This approach more closely follows that of
+the `pytest` documentation. As before, `MagicMock` and `mockito` examples will
+be included. 
+
+:::{.panel-tabset}
+
+#### monkeypatch
+
+```{python}
+#| eval: false
+import requests
+
+from example_pkg.only_joking import get_joke, _handle_response
+
+
+@pytest.fixture
+def _mock_response(ULTI_JOKE):
+    """Return a class instance that will mock all the properties of a response
+    object that get_joke needs to work.
+    """
+    HEADERS_MAP = {
+        "text/plain": {"Content-Type": "text/plain"},
+        "application/json": {"Content-Type": "application/json"},
+        "text/html": {"Content-Type": "text/html"},
+    }
+
+    class MockResponse:
+        def __init__(self, f, *args, **kwargs):
+            self.ok = True
+            self.f = f
+            self.headers = HEADERS_MAP[f] # header corresponds to format that
+            # the user requested
+            self.text = ULTI_JOKE 
+
+        def json(self):
+            if self.f == "application/json":
+                return {"joke": ULTI_JOKE}
+            return None
+
+    return MockResponse
+
+
+def test_get_joke_json_monkeypatched(monkeypatch, _mock_response, ULTI_JOKE):
+    """Test behaviour when user asked for JSON joke.
+
+    Test get_joke using the mock class fixture. This approach is the
+    implementation suggested in the pytest docs.
+    """
+    # step 1: Mock
+    def _mock_get_good_resp(*args, **kwargs):
+        """Return fixtures with the correct header.
+
+        If the test uses "text/plain" format, we need to return a MockResponse
+        class instance with headers attribute equal to
+        {"Content-Type": "text/plain"}, likewise for JSON.
+        """
+        f = kwargs["headers"]["Accept"]
+        return _mock_response(f)
+    # Step 2: Patch
+    monkeypatch.setattr(requests, "get", _mock_get_good_resp)
+    # Step 3: Use
+    j_json = get_joke(f="application/json")
+    # Step 4: Assert
+    assert j_json == ULTI_JOKE, f"Expected:\n'{ULTI_JOKE}\nFound:\n{j_json}'"
+
+```
+
+**Notes**:
+
+* **Step 1**
+    * We need to define a class instance to serve a mocked class that has the
+    necessary properties expected by `_handle_response()`.
+    * The mocked response is served to our test as a `pytest` fixture.
+    * Within the test, we need another function, which will be able to take
+    the arguments passed to `requests.get()`. This will allow our class
+    instance to retrieve the appropriate header from the `HEADERS_MAP`
+    dictionary.
+
+As you may appreciate, this does not appear to be the most straight forward
+implementation, but it will allow us to test when the user asks for JSON,
+plain text or HTML formats. In the above test, we assert against JSON format
+only.
+
+#### MagicMock
+
+```{python}
+#| eval: false
+from unittest.mock import MagicMock, patch
+import requests
+
+from example_pkg.only_joking import _query_endpoint, _handle_response, get_joke
+
+
+def test_get_joke_json_magicmocked(ULTI_JOKE):
+    """Test behaviour when user asked for JSON joke."""
+    # step 1: Mock
+    mock_response = MagicMock(spec=requests.models.Response)
+    mock_response.ok = True
+    mock_response.headers = {"Content-Type": "application/json"}
+    mock_response.json.return_value = {"joke": ULTI_JOKE}
+    # step 2: Patch
+    with patch("requests.get", return_value=mock_response):
+        # step 3: Use
+        joke = get_joke(f="application/json")
+        # step 4: Assert
+        assert joke == ULTI_JOKE
+
+```
+
+**Notes**:
+
+* **Step 1**
+    * `MagicMock()` can return a mock object with a specification designed to
+    mock response objects. Super useful.
+    * Our static joke content can be served directly to `MagicMock` without the
+    need for an intermediate class.
+    * In comparison to the `monkeypatch` approach, this appears to be more
+    straight forward and maintainable.
+
+#### mockito
+
+```{python}
+#| eval: false
+from mockito import when, unstub
+import requests
+
+import example_pkg.only_joking
+
+
+def test_get_joke_json_mockitoed(ULTI_JOKE):
+    """Test behaviour when user asked for JSON joke."""
+    # step 1: Mock
+    _mock_response = requests.models.Response()
+    _mock_response.status_code = 200
+    _mock_response._content = b'{"joke": "' + ULTI_JOKE.encode("utf-8") + b'"}'
+    _mock_response.headers = {"Content-Type": "application/json"}
+    # step 2: Patch
+    when(requests).get(...).thenReturn(_mock_response)
+    # step 3: Use
+    joke = example_pkg.only_joking.get_joke(f="application/json")
+    # step 4: Assert
+    assert joke == ULTI_JOKE
+    unstub()
+
+```
+
+**Notes**:
+
+* **Step 1**
+    * In order to encode the expected joke for JSON format, we need a
+    dictionary encoded within a bytestring. This bit is a little tricky.
+    * Alternatively, define the expected dictionary and use the `json`
+    library. `json.dumps(dict).encode("UTF8")` will format the content
+    dictionary in the required way.
+* **Step 2**
+    * `mockito`'s `when()` approach will allow you to access the methods of the
+    object that is being patched, in this case `requests`. 
+    * `mockito` allows you to pass the `...` argument to a patched method, to
+    indicate that whatever arguments were passed to `get()`, return the
+    specified mock value.
+    * Being able to specify values passed in place of `...` will allow you to
+    set different return values depending on argument values received by
+    `get()`.
+
+:::
 
 
 ## Summary
