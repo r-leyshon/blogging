@@ -981,17 +981,147 @@ def test_get_joke_not_implemented_mockitoed():
 
 :::
 
+### Condition 4: Test Bad Response
+
+In this test, we simulate a bad response from the webAPI, which could arise
+for a number of reasons:
+
+* The api is unavailable.
+* The request asked for a resource that is not available.
+* Too many requests were made in a short period.
+
+These conditions are those that we have the least control over and therefore
+have the greatest need for mocking.
+
+:::{.panel-tabset}
+
+#### monkeypatch
+
+```{python}
+#| eval: false
+import pytest
+import requests
+
+from example_pkg.only_joking import get_joke, _handle_response
+
+
+@pytest.fixture
+def _mock_bad_response():
+    class MockBadResponse:
+        def __init__(self, *args, **kwargs):
+            self.ok = False
+            self.status_code = 404
+            self.reason = "Not Found"
+    return MockBadResponse
+
+
+def test_get_joke_http_error_monkeypatched(
+    monkeypatch, _mock_bad_response):
+    """Test bad HTTP response."""
+    #  step 1: Mock
+    def _mock_get_bad_response(*args, **kwargs):
+        f = kwargs["headers"]["Accept"]
+        return _mock_bad_response(f)
+    #  step 2: Patch
+    monkeypatch.setattr(requests, "get", _mock_get_bad_response)
+    # step 3 & 4 Use (try to but exception is raised) & Assert
+    with pytest.raises(requests.HTTPError, match="404: Not Found"):
+        get_joke()
+
+```
+
+
+:::{.callout-note}
+
+##### Notes
+
+* **Step 1**
+    * This time we need to define a new fixture that returns a bad response.
+    * Alternatively, we could have implemented a single fixture for all of our
+    tests that dynamically served a good or bad response dependent upon
+    arguments passed to `get_joke()`, for example different string values
+    passed as the endpoint.
+    * In a more thorough implementation of `get_joke()`, you may wish to retry
+    the request for certain HTTP error status codes. The ability to provide
+    mocked objects that reliably serve those statuses allow you to
+    deterministically validate your code's behaviour.
+
+:::
+
+#### MagicMock
+
+```{python}
+#| eval: false
+import pytest
+from unittest.mock import MagicMock, patch
+import requests
+
+from example_pkg.only_joking import get_joke
+
+
+def test_get_joke_http_error_magicmocked():
+    """Test bad HTTP response."""
+    # step 1: Mock
+    _mock_response = MagicMock(spec=requests.models.Response)
+    _mock_response.ok = False
+    _mock_response.status_code = 404
+    _mock_response.reason = "Not Found"
+    # step 2: Patch
+    with patch("requests.get", return_value=_mock_response):
+        # step 3 & 4 Use (try to but exception is raised) & Assert
+        with pytest.raises(requests.HTTPError, match="404: Not Found"):
+            get_joke()
+
+```
+
+
+#### mockito
+
+```{python}
+#| eval: false
+from mockito import when, unstub
+import requests
+
+import example_pkg.only_joking
+
+
+def test_get_joke_http_error_mockitoed():
+    """Test bad HTTP response."""
+    # step 1: Mock
+    _mock_response = requests.models.Response()
+    _mock_response.status_code = 404
+    _mock_response.reason = "Not Found"
+    # step 2: Patch
+    when(example_pkg.only_joking)._query_endpoint(...).thenReturn(
+        _mock_response)
+    # step 3 & 4 Use (try to but exception is raised) & Assert
+    with pytest.raises(requests.HTTPError, match="404: Not Found"):
+        example_pkg.only_joking.get_joke()
+    unstub()
+
+```
+
+:::
+
 
 ## Summary
 
-There you have it - how to use basic and stacked parametrization in your tests.
-We have:
+We have thoroughly tested our code. We have also seen how to implement the
+tests with 3 different strategies.
 
-* used parametrize to inject multiple parameter values to a single test.
-* used stacked parametrize to test combinations of parameters against a single
-assertion.
-* used a nested dictionary fixture to map stacked parametrize input
-combinations to different expected assertion values.
+I hope that this has provided you with enough introductory material to begin
+mocking tests if you have not done so before. If you find that your specific
+use case for mocking is quite nuanced and fiddly (it's likely to be that way),
+then hopefully the alternative implementations presented here can help you to
+understand how to solve your specific mocking dilemma. 
+
+I hope you've enjoyed the article and the cheesy dad jokes. One final quote for
+those developers having their patience tested by errors attempting to implement
+mocking:
+
+> "He who laughs last, laughs loudest."
+
+...or she for that matter: Don't give up!
 
 If you spot an error with this article, or have a suggested improvement then
 feel free to
