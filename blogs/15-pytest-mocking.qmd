@@ -121,7 +121,7 @@ is the concept of modifying source code at runtime, otherwise known as
 'monkeying around'.
 2. **MagicMock**: This is the mocking object provided by python3's builtin
 `unittest` library.
-3. **mockito**: This library is based upon the popular Jave framework of the
+3. **mockito**: This library is based upon the popular Java framework of the
 same name. Despite having a user-friendly syntax, `mockito` is robust and
 secure.
 
@@ -131,13 +131,13 @@ secure.
 
 Mocking has a bunch of synonyms & related language which can be a bit
 off-putting. All of the below terms are associated with mocking. Some may be
-preferred to the communities of specific pragramming frameworks over others.
+preferred to the communities of specific programming frameworks over others.
 
 | Term          | Brief Meaning | Frameworks/Libraries |
 |---------------|---------------|----------------------|
-| Mocking       | Creating objects that simulate the behavior of real objects for testing | Mockito (Java), unittest.mock (Python), Jest (JavaScript), Moq (.NET)            |
+| Mocking       | Creating objects that simulate the behaviour of real objects for testing | Mockito (Java), unittest.mock (Python), Jest (JavaScript), Moq (.NET)            |
 | Spying        | Observing and recording method calls on real objects                    | Mockito (Java), Sinon (JavaScript), unittest.mock (Python), RSpec (Ruby) |
-| Stubbing      | Replacing methods with predefined behaviors or return values            | Sinon (JavaScript), RSpec (Ruby), PHPUnit (PHP), unittest.mock (Python)      |
+| Stubbing      | Replacing methods with predefined behaviours or return values            | Sinon (JavaScript), RSpec (Ruby), PHPUnit (PHP), unittest.mock (Python)      |
 | Patching      | Temporarily modifying or replacing parts of code for testing            | unittest.mock (Python), pytest-mock (Python), PowerMock (Java)             |
 | Faking        | Creating simplified implementations of complex dependencies             | Faker (multiple languages), Factory Boy (Python), FactoryGirl (Ruby)           |
 | Dummy Objects | Placeholder objects passed around but never actually used               | Can be created in any testing framework                                          |
@@ -358,7 +358,7 @@ def get_joke(
 
 ### Let's Get Testing
 
-The behaviour in `get_joke()` is summarised in the flow chart below:
+The behaviour in `get_joke()` is summarised in the flowchart below:
 
 <img style=" display: block; margin-left: auto; margin-right: auto; width: 500px;" src="https://i.imgur.com/ekrD8nH.png" alt="get_joke() logic flow">
 
@@ -374,7 +374,7 @@ for. Note that the API also accepts HTML and image formats, though parsing the
 joke text out of those is more involved and beyond the scope of this blog.
 4. `get_joke()` raises a `HTTPError` if the response from the API was not ok.
 
-Note that the event that we wish to target for mocking is highighted in blue - 
+Note that the event that we wish to target for mocking is highlighted in blue - 
 we don't want our tests to execute any real requests.
 
 The strategy for testing this function without making requests to the web API
@@ -616,7 +616,7 @@ def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
     to mock this object with the methods and attributes required by the
     `_handle_response()` function. 
     * We need to encode the static joke text as bytes to format the data. 
-    Response objects encode data as bytes for inter-operatability and
+    Response objects encode data as bytes for interoperatability and
     optimisation purposes.
 * **step4**
     * As we have set an appropriate value for the mocked response's `_content`
