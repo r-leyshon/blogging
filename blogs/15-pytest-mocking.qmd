@@ -456,7 +456,9 @@ def test_get_joke_monkeypatched_entirely(monkeypatch, ULTI_JOKE):
 
 ```
 
-**Notes**:
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * Step 2 requires the hard coded text to be returned from a callable, like
@@ -472,6 +474,8 @@ def test_get_joke_monkeypatched_entirely(monkeypatch, ULTI_JOKE):
     * Aliases can also be used if preferable
     (eg `import example_pkg.only_joking as jk`). Be sure to update your
     reference to `get_joke()` in step 2 and 3 to match your import statement.
+
+:::
 
 #### MagicMock
 
@@ -498,13 +502,17 @@ def test_get_joke_magicmocked_entirely(ULTI_JOKE):
         assert joke == ULTI_JOKE
 ```
 
-**Notes**:
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * `MagicMock()` allows us to return static values as mock objects.
 * **Step 3**
     * When you use `get_joke()`, be sure to call reference the namespace in the
     same way as to your patch in step 2.
+
+:::
 
 #### mockito
 
@@ -531,7 +539,9 @@ def test_get_joke_mockitoed_entirely(ULTI_JOKE):
 
 ```
 
-**Notes**:
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1 & 2**
     * `mockito`'s intuitive `when(...).thenReturn(...)` pattern allows you
@@ -545,6 +555,8 @@ def test_get_joke_mockitoed_entirely(ULTI_JOKE):
     the patch to `get_joke()` would persist through the rest of your tests.
     * `mockito` allows you to implicitly `unstub()` by using the context
     manager `with`.
+
+:::
 
 :::
 
@@ -584,7 +596,9 @@ def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
 
 ```
 
-**Notes**:
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * The return value of `requests.get()` will be a response object. We need
@@ -597,6 +611,8 @@ def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
     * As we have set an appropriate value for the mocked response's `_content`
     attribute, the mocked joke will be returned for both JSON and plain text
     formats - very convenient!
+
+:::
 
 ### Condition 1: Test JSON
 
@@ -673,7 +689,9 @@ def test_get_joke_json_monkeypatched(monkeypatch, _mock_response, ULTI_JOKE):
 
 ```
 
-**Notes**:
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * We need to define a fixture to serve a mocked class instance that has the
@@ -688,6 +706,8 @@ As you may appreciate, this does not appear to be the most straight forward
 implementation, but it will allow us to test when the user asks for JSON,
 plain text or HTML formats. In the above test, we assert against JSON format
 only.
+
+:::
 
 #### MagicMock
 
@@ -715,7 +735,9 @@ def test_get_joke_json_magicmocked(ULTI_JOKE):
 
 ```
 
-**Notes**:
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * `MagicMock()` can return a mock object with a specification designed to
@@ -724,6 +746,7 @@ def test_get_joke_json_magicmocked(ULTI_JOKE):
     need for an intermediate class.
     * In comparison to the `monkeypatch` approach, this appears to be more
     straight forward and maintainable.
+:::
 
 #### mockito
 
@@ -752,7 +775,9 @@ def test_get_joke_json_mockitoed(ULTI_JOKE):
 
 ```
 
-**Notes**:
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * In order to encode the expected joke for JSON format, we need a
@@ -769,6 +794,7 @@ def test_get_joke_json_mockitoed(ULTI_JOKE):
     * Being able to specify values passed in place of `...` will allow you to
     set different return values depending on argument values received by
     `get()`.
+:::
 
 :::
 
@@ -810,12 +836,15 @@ def test_get_joke_text_monkeypatched(monkeypatch, _mock_response, ULTI_JOKE):
 
 ```
 
-**Notes**
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * We can use the same mock class as for testing
     [Condition 1](#monkey-fixture), due to the content of the `HEADERS_MAP`
     dictionary.
+:::
 
 #### MagicMock
 
@@ -913,7 +942,9 @@ def test_get_joke_not_implemented_monkeypatched(
 
 ```
 
-**Notes**
+:::{.callout-note}
+
+##### Notes
 
 * **Step 1**
     * We can use the same mock class as for testing
@@ -925,6 +956,7 @@ def test_get_joke_not_implemented_monkeypatched(
     * The asserted `match` argument can take a regular expression, so that
     wildcard patterns can be used. This allows matching of part of the
     exception message.
+:::
 
 #### MagicMock
 
