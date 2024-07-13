@@ -409,7 +409,7 @@ use when using `get_joke()` will expect this string to be returned. If some
 other joke is returned, then we have not mocked correctly and an HTTP request
 was sent to the API.
 
-### Mocking `get_joke()`
+### Mocking Everything
 
 I'll start with an example of how to mock `get_joke()` completely. This is an
 intentionally bad idea. In doing this, the test won't actually be executing any
@@ -598,7 +598,7 @@ def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
     attribute, the mocked joke will be returned for both JSON and plain text
     formats - very convenient!
 
-### Testing JSON Format (with OOP)
+### Condition 1: Test JSON
 
 In this example, we demonstrate the same functionality as above, but with an
 object-oriented design pattern. This approach more closely follows that of
@@ -614,6 +614,7 @@ specifies a json format.
 
 ```{python}
 #| eval: false
+#| label: monkey-fixture
 import pytest
 import requests
 
@@ -771,7 +772,7 @@ def test_get_joke_json_mockitoed(ULTI_JOKE):
 
 :::
 
-### Testing Plain Text Format
+### Condition 2: Test Plain Text
 
 The purpose of this test is to check the outcome when the user specifies a
 plain/text format while using `get_joke()`.
@@ -808,6 +809,13 @@ def test_get_joke_text_monkeypatched(monkeypatch, _mock_response, ULTI_JOKE):
     assert j_txt == ULTI_JOKE, f"Expected:\n'{ULTI_JOKE}\nFound:\n{j_txt}'"
 
 ```
+
+**Notes**
+
+* **Step 1**
+    * We can use the same mock class as for testing
+    [Condition 1](#monkey-fixture), due to the content of the `HEADERS_MAP`
+    dictionary.
 
 #### MagicMock
 
@@ -857,6 +865,116 @@ def test_get_joke_text_mockitoed(ULTI_JOKE):
     joke = example_pkg.only_joking.get_joke(f="text/plain")
     # step 4: Assert
     assert joke == ULTI_JOKE
+    unstub()
+
+```
+
+:::
+
+### Condition 3: Test Not Implemented
+
+This test will check the outcome of what happens when the user asks for a
+format other than text of JSON format. As the webAPI also offers image or HTML
+formats, a response 200 (ok) would be returned from the service. But I was too
+busy (lazy) to extract the text from those formats. 
+
+:::{.panel-tabset}
+
+#### monkeypatch
+
+```{python}
+#| eval: false
+import pytest
+import requests
+
+from example_pkg.only_joking import get_joke
+
+
+@pytest.fixture
+def _mock_response(ULTI_JOKE):
+    """The same fixture as was used for testing JSON format"""
+    ...
+
+
+def test_get_joke_not_implemented_monkeypatched(
+    monkeypatch, _mock_response):
+    """Test behaviour when user asked for HTML response."""
+    #  step 1: Mock
+    def _mock_get_good_resp(*args, **kwargs):
+        f = kwargs["headers"]["Accept"]
+        return _mock_response(f)
+    # step 2: Patch
+    monkeypatch.setattr(requests, "get", _mock_get_good_resp)
+    # step 3 & 4 Use (try to but exception is raised) & Assert
+    with pytest.raises(
+        NotImplementedError,
+        match="This client accepts 'application/json' or 'text/plain' format"):
+        get_joke(f="text/html")
+
+```
+
+**Notes**
+
+* **Step 1**
+    * We can use the same mock class as for testing
+    [Condition 1](#monkey-fixture), due to the content of the `HEADERS_MAP`
+    dictionary.
+* **Step 4**
+    * We use a context manager (`with pytest.raises`) which catches the raised
+    exception and stops it from terminating our `pytest` session. 
+    * The asserted `match` argument can take a regular expression, so that
+    wildcard patterns can be used. This allows matching of part of the
+    exception message.
+
+#### MagicMock
+
+```{python}
+#| eval: false
+import pytest
+import requests
+from unittest.mock import MagicMock, patch
+
+from example_pkg.only_joking import get_joke
+def test__handle_response_not_implemented_magicmocked():
+    """Test behaviour when user asked for HTML response."""
+    # step 1: Mock
+    mock_response = MagicMock(spec=requests.models.Response)
+    mock_response.ok = True
+    mock_response.headers = {"Content-Type": "text/html"}
+    #  step 2: Patch
+    with patch("requests.get", return_value=mock_response):
+        # step 3 & 4 Use (try to but exception is raised) & Assert
+        with pytest.raises(
+            NotImplementedError,
+            match="client accepts 'application/json' or 'text/plain' format"):
+            get_joke(f="text/html")
+
+```
+
+#### mockito
+
+```{python}
+#| eval: false
+from mockito import when, unstub
+import requests
+
+import example_pkg.only_joking
+
+def test_get_joke_not_implemented_mockitoed():
+    """Test behaviour when user asked for HTML response."""
+    # step 1: Mock
+    mock_response = requests.models.Response()
+    mock_response.status_code = 200
+    mock_response.headers = {"Content-Type": "text/html"}
+    # step 2: Patch
+    when(
+        example_pkg.only_joking
+        )._query_endpoint(...).thenReturn(mock_response)
+    # step 3 & 4 Use (try to but exception is raised) & Assert
+    with pytest.raises(
+        NotImplementedError,
+        match="This client accepts 'application/json' or 'text/plain' format"):
+        example_pkg.only_joking.get_joke(f="text/html")
     unstub()
 
 ```
