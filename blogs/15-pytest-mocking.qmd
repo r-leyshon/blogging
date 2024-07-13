@@ -603,12 +603,15 @@ def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
     attribute, the mocked joke will be returned for both JSON and plain text
     formats - very convenient!
 
-### Testing JSON format (with OOP)
+### Testing JSON Format (with OOP)
 
 In this example, we demonstrate the same functionality as above, but with an
 object-oriented design pattern. This approach more closely follows that of
 the `pytest` documentation. As before, `MagicMock` and `mockito` examples will
 be included. 
+
+The purpose of this test is to test the outcome of `get_joke()` when the user
+specifies a json format.
 
 :::{.panel-tabset}
 
@@ -676,7 +679,7 @@ def test_get_joke_json_monkeypatched(monkeypatch, _mock_response, ULTI_JOKE):
 **Notes**:
 
 * **Step 1**
-    * We need to define a class instance to serve a mocked class that has the
+    * We need to define a fixture to serve a mocked class instance that has the
     necessary properties expected by `_handle_response()`.
     * The mocked response is served to our test as a `pytest` fixture.
     * Within the test, we need another function, which will be able to take
@@ -769,6 +772,98 @@ def test_get_joke_json_mockitoed(ULTI_JOKE):
     * Being able to specify values passed in place of `...` will allow you to
     set different return values depending on argument values received by
     `get()`.
+
+:::
+
+### Testing Plain Text Format
+
+The purpose of this test is to check the outcome when the user specifies a
+plain/text format while using `get_joke()`.
+
+:::{.panel-tabset}
+
+#### monkeypatch
+
+```{python}
+#| eval: false
+import pytest
+import requests
+
+from example_pkg.only_joking import get_joke
+
+
+@pytest.fixture
+def _mock_response(ULTI_JOKE):
+    """The same fixture as was used for testing JSON format"""
+    ...
+
+
+def test_get_joke_text_monkeypatched(monkeypatch, _mock_response, ULTI_JOKE):
+    """Test behaviour when user asked for plain text joke."""
+    # step 1: Mock
+    def _mock_get_good_resp(*args, **kwargs):
+        f = kwargs["headers"]["Accept"]
+        return _mock_response(f)
+    # step 2: Patch
+    monkeypatch.setattr(requests, "get", _mock_get_good_resp)
+    # step 3: Use
+    j_txt = get_joke(f="text/plain")
+    # step 4: Assert
+    assert j_txt == ULTI_JOKE, f"Expected:\n'{ULTI_JOKE}\nFound:\n{j_txt}'"
+
+```
+
+#### MagicMock
+
+```{python}
+#| eval: false
+from unittest.mock import MagicMock, patch
+import requests
+
+from example_pkg.only_joking import get_joke
+
+
+def test_get_joke_text_magicmocked(ULTI_JOKE):
+    """Test behaviour when user asked for plain text joke."""
+    # step 1: Mock
+    mock_response = MagicMock(spec=requests.models.Response)
+    mock_response.ok = True
+    mock_response.headers = {"Content-Type": "text/plain"}
+    mock_response.text = ULTI_JOKE
+    # step 2: Patch
+    with patch("requests.get", return_value=mock_response):
+        # step 3: Use
+        joke = get_joke(f="text/plain")
+        # step 4: Assert
+        assert joke == ULTI_JOKE
+
+```
+
+#### mockito
+
+```{python}
+#| eval: false
+from mockito import when, unstub
+import requests
+
+import example_pkg.only_joking
+
+def test_get_joke_text_mockitoed(ULTI_JOKE):
+    """Test behaviour when user asked for plain text joke."""
+    # step 1: Mock
+    mock_response = requests.models.Response()
+    mock_response.status_code = 200
+    mock_response._content = ULTI_JOKE.encode("utf-8")
+    mock_response.headers = {"Content-Type": "text/plain"}
+    # step 2: Patch
+    when(requests).get(...).thenReturn(mock_response)
+    # step 3: Use
+    joke = example_pkg.only_joking.get_joke(f="text/plain")
+    # step 4: Assert
+    assert joke == ULTI_JOKE
+    unstub()
+
+```
 
 :::
 
