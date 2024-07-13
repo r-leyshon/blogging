@@ -428,9 +428,6 @@ text.
 
 ```{python}
 #| eval: false
-"""Test only_joking.py using monkeypatch to mock api calls."""
-import pytest
-
 import example_pkg.only_joking
 
 
@@ -480,7 +477,6 @@ def test_get_joke_monkeypatched_entirely(monkeypatch, ULTI_JOKE):
 
 ```{python}
 #| eval: false
-import pytest
 from unittest.mock import MagicMock, patch
 
 import example_pkg.only_joking
@@ -562,10 +558,9 @@ This first example will mock the value of `requests.get` without using classes.
 
 ```{python}
 #| eval: false
-import pytest
 import requests
 
-from example_pkg.only_joking import get_joke, _handle_response
+from example_pkg.only_joking import get_joke
 
 
 def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
@@ -619,9 +614,10 @@ specifies a json format.
 
 ```{python}
 #| eval: false
+import pytest
 import requests
 
-from example_pkg.only_joking import get_joke, _handle_response
+from example_pkg.only_joking import get_joke
 
 
 @pytest.fixture
@@ -699,7 +695,7 @@ only.
 from unittest.mock import MagicMock, patch
 import requests
 
-from example_pkg.only_joking import _query_endpoint, _handle_response, get_joke
+from example_pkg.only_joking import get_joke
 
 
 def test_get_joke_json_magicmocked(ULTI_JOKE):
