@@ -201,6 +201,17 @@ def get_joke(
     return _handle_response(r)
 ```
 
+::: {.callout-caution}
+
+The jokes are provided by <https://icanhazdadjoke.com/> and are not curated by
+me. In my testing of the service I have found the jokes to be harmless fun, but
+I cannot guarantee that. If an offensive joke is returned, this is
+unintentional but
+[let me know about it](https://github.com/r-leyshon/blogging/issues) and I will
+generate new jokes.
+
+:::
+
 ```{python}
 for _ in range(3):
     print(get_joke(f="application/json"))
