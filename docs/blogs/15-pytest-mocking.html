@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2024-07-10">
+<meta name="dcterms.date" content="2024-07-14">
 <meta name="description" content="Plain English Comparison of Mocking Approaches in Python">
 
 <title>The Data Savvy Corner - Mocking With Pytest in Plain English</title>
@@ -223,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 10, 2024</p>
+      <p class="date">July 14, 2024</p>
     </div>
   </div>
   
@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figure class="center figure">
 <img class="shaded_box figure-img" width="400px" src="https://i.imgur.com/K0mxjuF.jpeg">
 <figcaption>
-Soul singer with Joker makeup.
+The Joker sings the Green Green Grass of Home.
 </figcaption>
 </figure>
 <blockquote class="blockquote">
@@ -246,7 +246,7 @@ Soul singer with Joker makeup.
 </blockquote>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses the dark art of mocking, why you should do it and the nuts and bolts of implementing mocked tests. This blog is the fourth in a series of blogs called <a href="../../index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
+<p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses the dark art of mocking, why you should do it and the nuts and bolts of implementing mocked tests. This blog is the fourth in a series of blogs called <a href="../blogs/index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
 <p>For a wealth of documentation, guides and how-tos, please consult the <a href="https://docs.pytest.org/en/8.0.x/" target="_blank"><code>pytest</code> documentation</a>.</p>
 <section id="what-does-mocking-mean" class="level3">
 <h3 class="anchored" data-anchor-id="what-does-mocking-mean">What does Mocking Mean?</h3>
@@ -254,11 +254,12 @@ Soul singer with Joker makeup.
 <ul>
 <li>Web APIs (as in this article)</li>
 <li>Websites (if scraping / crawling)</li>
-<li>External code (importing libraries)</li>
+<li>External code (importing packages)</li>
 <li>Data feeds and databases</li>
 <li>Environment variables</li>
 </ul>
 <p>As developers cannot control the behaviour of those dependencies, they would not write tests dependent upon them. In order to test their source code that depends on these services, developers need to replace the properties of these services when the test suite runs. Injecting replacement values into the code at runtime is generally referred to as mocking. Mocking these values means that developers can feed dependable results to their code and make reliable assertions about the code’s behaviour, without changes in the ‘outside world’ affecting outcomes in the system under test.</p>
+<p>Developers who write unit tests may also mock their own code. The “unit” in the term “unit test” implies complete isolation from external dependencies. Mocking is an indispensible tool in achieving that isolation within a test suite. It ensures that code can be efficiently verified in any order, without dependencies on other elements in your codebase. However, mocking also adds to code complexity, increasing cognitive load and generally making things harder to debug.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -300,11 +301,11 @@ A Note on the Purpose (Click to expand)
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>Mocking is one of the trickier elements of testing. It’s a bit niche and is often perceived to be too hacky to be worth the effort. The options for mocking in python are numerous and this adds to the complexity of many example implementations you will find online.</p>
-<p>There is also a compromise in simplicity versus flexibility. Some of the options available are quite involved and can be adapted to the nichest of cases, but may not be the best option for those new to mocking. With this in mind, I present 3 alternative methods for mocking python source code:</p>
+<p>There is also a compromise in simplicity versus flexibility. Some of the options available are quite involved and can be adapted to the nichest of cases, but may not be the best option for those new to mocking. With this in mind, I present 3 alternative methods for mocking python source code. So if you’ll forgive me, this is the first of the <a href="../blogs/index.html#category=pytest-in-plain-english"><code>pytest</code> in plain English</a> series where I introduce alternative testing practices from beyond the <code>pytest</code> package.</p>
 <ol type="1">
-<li><strong>monkeypatch</strong>: The <code>pytest</code> fixture designed for mocking. The origin of the fixture’s name is debated but potentially arose from the term ‘guerrilla patch’ which may have been misinterpreted as ‘gorilla patch’. This is the concept of modifying source code at runtime, otherwise known as ‘monkeying around’.</li>
-<li><strong>MagicMock</strong>: This is the mocking object provided by python3’s builtin <code>unittest</code> library.</li>
-<li><strong>mockito</strong>: This library is based upon the popular Java framework of the same name. Despite having a user-friendly syntax, <code>mockito</code> is robust and secure.</li>
+<li><a href="https://docs.pytest.org/en/stable/how-to/monkeypatch.html"><strong>monkeypatch</strong></a>: The <code>pytest</code> fixture designed for mocking. The origin of the fixture’s name is debated but potentially arose from the term ‘guerrilla patch’ which may have been misinterpreted as ‘gorilla patch’. This is the concept of modifying source code at runtime, which probably sounds a bit like ‘monkeying with the code’.</li>
+<li><a href="https://docs.python.org/3/library/unittest.mock.html"><strong>MagicMock</strong></a>: This is the mocking object provided by python3’s builtin <code>unittest</code> package.</li>
+<li><a href="https://mockito-python.readthedocs.io/en/latest/walk-through.html"><strong>mockito</strong></a>: This package is based upon the popular Java framework of the same name. Despite having a user-friendly syntax, <code>mockito</code> is robust and secure.</li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
@@ -371,8 +372,17 @@ A note on the language
 </section>
 <section id="mocking-in-python" class="level2">
 <h2 class="anchored" data-anchor-id="mocking-in-python">Mocking in Python</h2>
-<p>This section will walk through some code that uses HTTP requests and how we can go about testing the code’s behaviour without relying on the service being available. Feel free to clone the repository and check out to the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/mocking">example code</a> branch to run the examples.</p>
+<p>This section will walk through some code that uses HTTP requests to an external service and how we can go about testing the code’s behaviour without relying on that service being available. Feel free to clone the repository and check out to the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/mocking">example code</a> branch to run the examples.</p>
 <p>The purpose of the code is to retrieve jokes from <a href="https://icanhazdadjoke.com/" class="uri">https://icanhazdadjoke.com/</a> like so:</p>
+<div id="ddd5bf31" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(get_joke(f<span class="op">=</span><span class="st">"application/json"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>How do robots eat guacamole? With computer chips.
+I was thinking about moving to Moscow but there is no point Russian into things.
+Why do fish live in salt water? Because pepper makes them sneeze!</code></pre>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -386,15 +396,6 @@ Caution
 <p>The jokes are provided by <a href="https://icanhazdadjoke.com/" class="uri">https://icanhazdadjoke.com/</a> and are not curated by me. In my testing of the service I have found the jokes to be harmless fun, but I cannot guarantee that. If an offensive joke is returned, this is unintentional but <a href="https://github.com/r-leyshon/blogging/issues">let me know about it</a> and I will generate new jokes.</p>
 </div>
 </div>
-<div id="09b5a8c6" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(get_joke(f<span class="op">=</span><span class="st">"application/json"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>How do you make a water bed more bouncy. You use Spring Water
-Why didn’t the orange win the race? It ran out of juice.
-Why didn’t the skeleton cross the road? Because he had no guts.</code></pre>
-</div>
-</div>
 <section id="define-the-source-code" class="level3">
 <h3 class="anchored" data-anchor-id="define-the-source-code">Define the Source Code</h3>
 <p>The function <code>get_joke()</code> uses 2 internals:</p>
@@ -402,7 +403,7 @@ Why didn’t the skeleton cross the road? Because he had no guts.</code></pre>
 <li><code>_query_endpoint()</code> Used to construct the HTTP request with required headers and user agent.</li>
 <li><code>_handle_response()</code> Used to catch HTTP errors, or to pull the text out of the various response formats.</li>
 </ol>
-<div id="39a276bc" class="cell" data-execution_count="3">
+<div id="16733e20" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Retrieve dad jokes available."""</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -418,14 +419,14 @@ Why didn’t the skeleton cross the road? Because he had no guts.</code></pre>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(endp, headers<span class="op">=</span>HEADERS)</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Keeping the part of the codebase that you wish to replace with mocking is often the simplest way to get things tested. The target for our mocking will be the command that integrates with the external service, so <code>requests.get()</code> here.</p>
-<p>As you can see, the use of <code>requests.get()</code> expects a few things:</p>
+<p>Keeping separate, the part of the codebase that you wish to target for mocking is often the simplest way to go about things. The target for our mocking will be the command that integrates with the external service, so <code>requests.get()</code> here.</p>
+<p>The use of <code>requests.get()</code> in the code above depends on a few things:</p>
 <ol type="1">
 <li>An endpoint string.</li>
 <li>A dictionary with string values for the keys “User-Agent” and “Accept”.</li>
 </ol>
-<p>We’ll need to consider those dependencies when mocking.</p>
-<div id="3cfb2c45" class="cell" data-execution_count="4">
+<p>We’ll need to consider those dependencies when mocking. Once we return a response from the external service, we need a utility to handle the various statuses of that response:</p>
+<div id="49415e6c" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Retrieve dad jokes available."""</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -468,14 +469,14 @@ Why didn’t the skeleton cross the road? Because he had no guts.</code></pre>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> content</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Once <code>_query_endpoint()</code> gets us a response, we can feed it into <code>_handle_response()</code>, where different logic is executed depending on the responses properties. Specifically, any response we want to mock would need the following properties:</p>
+<p>Once <code>_query_endpoint()</code> gets us a response, we can feed it into <code>_handle_response()</code>, where different logic is executed depending on the response’s properties. Specifically, any response we want to mock would need the following:</p>
 <ol type="1">
 <li>headers, containing a dictionary eg: <code>{"content_type": "plain/text"}</code></li>
 <li>A <code>json()</code> method.</li>
 <li><code>text</code>, <code>status_code</code> and <code>reason</code> attributes.</li>
 </ol>
 <p>Finally, the above functions get wrapped in the <code>get_joke()</code> function below:</p>
-<div id="9d942e7d" class="cell" data-execution_count="5">
+<div id="459f0941" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Retrieve dad jokes available."""</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -530,7 +531,7 @@ Why didn’t the skeleton cross the road? Because he had no guts.</code></pre>
 <li><code>get_joke()</code> raises a <code>HTTPError</code> if the response from the API was not ok.</li>
 </ol>
 <p>Note that the event that we wish to target for mocking is highlighted in blue - we don’t want our tests to execute any real requests.</p>
-<p>The strategy for testing this function without making requests to the web API is composed of 4 similar steps, regardless of the library used to implement the mocking.</p>
+<p>The strategy for testing this function without making requests to the web API is composed of 4 similar steps, regardless of the package used to implement the mocking.</p>
 <p><img style=" display: block; margin-left: auto; margin-right: auto; width: 800px;" src="https://i.imgur.com/6XJH7R9.png" alt="4 step mocking strategy"></p>
 <ol type="1">
 <li><strong>Mock:</strong> Define the object or property that you wish to use as a replacement. This could be a static value or something a bit more involved, like a mock class that can return dynamic values depending upon the values it receives.</li>
@@ -542,8 +543,8 @@ Why didn’t the skeleton cross the road? Because he had no guts.</code></pre>
 </section>
 <section id="the-ultimate-joke" class="level3">
 <h3 class="anchored" data-anchor-id="the-ultimate-joke">The “Ultimate Joke”</h3>
-<p>What hard-coded text shall I use for my expected joke? I’ll <a href="../docs/blogs/11-fiddly-bits-of-pytest.html">create a fixture</a> that will serve up this joke text to all of the test modules used below. I’m only going to define it once and then refer to it throughout several examples below. So it needs to be a pretty memorable, awesome joke.</p>
-<div id="bf3e3155" class="cell" data-execution_count="6">
+<p>What hard-coded text shall I use for my expected joke? I’ll <a href="../blogs/11-fiddly-bits-of-pytest.html">create a fixture</a> that will serve up this joke text to all of the test modules used below. I’m only going to define it once and then refer to it throughout several examples below. So it needs to be a pretty memorable, awesome joke.</p>
+<div id="2d8a6491" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -562,7 +563,7 @@ Why didn’t the skeleton cross the road? Because he had no guts.</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">monkeypatch</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">MagicMock</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">mockito</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="2b8bd285" class="cell" data-execution_count="7">
+<div id="08ca2e13" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> example_pkg.only_joking</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -618,7 +619,7 @@ Notes
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="09dde31b" class="cell" data-execution_count="8">
+<div id="997002bb" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> MagicMock, patch</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> example_pkg.only_joking</span>
@@ -663,7 +664,7 @@ Notes
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="baaeb1f0" class="cell" data-execution_count="9">
+<div id="59a30ec3" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mockito <span class="im">import</span> when, unstub</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> example_pkg.only_joking</span>
@@ -717,7 +718,7 @@ Notes
 <section id="monkeypatch-without-oop" class="level3">
 <h3 class="anchored" data-anchor-id="monkeypatch-without-oop"><code>monkeypatch()</code> without OOP</h3>
 <p>Something I’ve noticed about the <code>pytest</code> documentation for <code>monkeypatch</code>, is that it gets straight into mocking with Object Oriented Programming (OOP). While this may be a bit more convenient, it is certainly not a requirement of using <code>monkeypatch</code> and definitely adds to the cognitive load for new users. This first example will mock the value of <code>requests.get</code> without using classes.</p>
-<div id="9af63baa" class="cell" data-execution_count="10">
+<div id="ae5e80c2" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.only_joking <span class="im">import</span> get_joke</span>
@@ -844,7 +845,7 @@ Notes
 <ul>
 <li><strong>Step 1</strong>
 <ul>
-<li>We need to define a fixture to serve a mocked class instance that has the necessary properties expected by <code>_handle_response()</code>.</li>
+<li>We define a mocked class instance with the necessary properties expected by <code>_handle_response()</code>.</li>
 <li>The mocked response is served to our test as a <code>pytest</code> fixture.</li>
 <li>Within the test, we need another function, which will be able to take the arguments passed to <code>requests.get()</code>. This will allow our class instance to retrieve the appropriate header from the <code>HEADERS_MAP</code> dictionary.</li>
 </ul></li>
@@ -854,7 +855,7 @@ Notes
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div id="e5de317d" class="cell" data-execution_count="12">
+<div id="3ae7ec2f" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> MagicMock, patch</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -897,7 +898,7 @@ Notes
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div id="2afe7b14" class="cell" data-execution_count="13">
+<div id="b34a65e2" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mockito <span class="im">import</span> when, unstub</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -933,7 +934,7 @@ Notes
 <li><strong>Step 1</strong>
 <ul>
 <li>In order to encode the expected joke for JSON format, we need a dictionary encoded within a bytestring. This bit is a little tricky.</li>
-<li>Alternatively, define the expected dictionary and use the <code>json</code> library. <code>json.dumps(dict).encode("UTF8")</code> will format the content dictionary in the required way.</li>
+<li>Alternatively, define the expected dictionary and use the <code>json</code> package. <code>json.dumps(dict).encode("UTF8")</code> will format the content dictionary in the required way.</li>
 </ul></li>
 <li><strong>Step 2</strong>
 <ul>
@@ -955,7 +956,7 @@ Notes
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">monkeypatch</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">MagicMock</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">mockito</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="c3a1bb0d" class="cell" data-execution_count="14">
+<div id="c3dd90d2" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1001,7 +1002,7 @@ Notes
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div id="5fcf0ee9" class="cell" data-execution_count="15">
+<div id="e7771f9f" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> MagicMock, patch</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1024,7 +1025,7 @@ Notes
 </div>
 </div>
 <div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
-<div id="c491893e" class="cell" data-execution_count="16">
+<div id="c82d0fcd" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mockito <span class="im">import</span> when, unstub</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1051,12 +1052,12 @@ Notes
 </section>
 <section id="condition-3-test-not-implemented" class="level3">
 <h3 class="anchored" data-anchor-id="condition-3-test-not-implemented">Condition 3: Test Not Implemented</h3>
-<p>This test will check the outcome of what happens when the user asks for a format other than text of JSON format. As the webAPI also offers image or HTML formats, a response 200 (ok) would be returned from the service. But I was too busy (lazy) to extract the text from those formats.</p>
+<p>This test will check the outcome of what happens when the user asks for a format other than text or JSON format. As the webAPI also offers image or HTML formats, a response 200 (ok) would be returned from the service. But I was too busy (lazy) to extract the text from those formats.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">monkeypatch</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">MagicMock</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false">mockito</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div id="88d6aa4d" class="cell" data-execution_count="17">
+<div id="f8ee246e" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1109,7 +1110,7 @@ Notes
 </div>
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div id="a7cefe11" class="cell" data-execution_count="18">
+<div id="56d09b58" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> MagicMock, patch</span>
@@ -1131,7 +1132,7 @@ Notes
 </div>
 </div>
 <div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
-<div id="0ed37968" class="cell" data-execution_count="19">
+<div id="9965fac2" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mockito <span class="im">import</span> when, unstub</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1171,7 +1172,7 @@ Notes
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">monkeypatch</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">MagicMock</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false">mockito</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div id="8a09a7ad" class="cell" data-execution_count="20">
+<div id="ed4883c7" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1223,7 +1224,7 @@ Notes
 </div>
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div id="43e1150c" class="cell" data-execution_count="21">
+<div id="67bda446" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> MagicMock, patch</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -1246,7 +1247,7 @@ Notes
 </div>
 </div>
 <div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
-<div id="9e05df70" class="cell" data-execution_count="22">
+<div id="ed4c1ed4" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mockito <span class="im">import</span> when, unstub</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1274,9 +1275,9 @@ Notes
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>We have thoroughly tested our code. We have also seen how to implement the tests with 3 different strategies.</p>
-<p>I hope that this has provided you with enough introductory material to begin mocking tests if you have not done so before. If you find that your specific use case for mocking is quite nuanced and fiddly (it’s likely to be that way), then hopefully the alternative implementations presented here can help you to understand how to solve your specific mocking dilemma.</p>
-<p>I hope you’ve enjoyed the article and the cheesy dad jokes. One final quote for those developers having their patience tested by errors attempting to implement mocking:</p>
+<p>We have thoroughly tested our code using approaches that mock the behaviour of an external webAPI. We have also seen how to implement those tests with 3 different packages.</p>
+<p>I hope that this has provided you with enough introductory material to begin mocking tests if you have not done so before. If you find that your specific use case for mocking is quite nuanced and fiddly (it’s likely to be that way), then the alternative implementations presented here can help you to understand how to solve your specific mocking dilemma.</p>
+<p>One final quote for those developers having their patience tested by errors attempting to implement mocking:</p>
 <blockquote class="blockquote">
 <p>“He who laughs last, laughs loudest.”</p>
 </blockquote>
@@ -1286,7 +1287,7 @@ Notes
 </section>
 <section id="acknowledgements" class="level2">
 <h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
-<p>To past and present colleagues who have helped to discuss pros and cons, establishing practice and firming-up some opinions. Thanks specifically to Edward for bringing <code>mockito</code> to my attention.</p>
+<p>To past and present colleagues who have helped to discuss pros and cons, establishing practice and firming-up some opinions. Special thanks to Edward for bringing <code>mockito</code> to my attention.</p>
 <p>The diagrams used in this article were produced with the excellent <a href="https://excalidraw.com/">Excalidraw</a>.</p>
 <p id="fin">
 <i>fin!</i>
