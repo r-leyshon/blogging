@@ -14,6 +14,7 @@ categories:
 image: "https://i.imgur.com/dCJBh9w.jpeg"
 image-alt: "Planet composed of croissants"
 toc: true
+toc-depth: 4
 jupyter: 
   kernelspec:
     name: "conda-env-mocking-env-py"
@@ -279,8 +280,362 @@ def goofy_wrapper(url:str, timeout:int=5) -> str:
 
 ### Let's Get Testing
 
+Initially, I will define a test that does nothing other than pass. This will
+be a placeholder, unmarked test. 
+
+```{python, filename="tests/test_do_something.py"}
+def test_nothing():
+    pass
+```
+
+Next, I import `croissant()` and assert that it returns `True`. As you may
+recall from above, `croissant()` will do so ~50 % of the time.
+
+```{python, filename="tests/test_do_something.py"}
+#| eval: false
+
+from example_pkg.do_something import (
+    croissant,
+    )
+
+
+def test_nothing():
+    pass
+
+
+def test_croissant():
+    assert croissant()
+
+```
+
+Now running `pytest -v` will print the test results, reporting test outcomes
+for each test separately (`-v` means verbose).
+
+```{.abc}
+...% pytest -v
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 2 items                                                             
+tests/test_do_something.py::test_nothing PASSED                          [ 50%]
+tests/test_do_something.py::test_croissant PASSED                        [100%]
+============================== 2 passed in 0.05s ==============================
+
+```
+
+But note that half the time, I will also get the following output:
+
+```{.abc}
+...% pytest -v
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 2 items                         
+
+tests/test_do_something.py::test_nothing PASSED                          [ 50%]
+tests/test_do_something.py::test_croissant FAILED                        [100%]
+
+================================== FAILURES ==================================
+_______________________________ test_croissant ________________________________
+    @pytest.mark.flaky
+    def test_croissant():
+>       assert croissant()
+tests/test_do_something.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+    def croissant():
+        """A very flaky function."""
+        if round(random.uniform(0, 1)) == 1:
+            return True
+        else:
+>           raise Exception("Flaky test detected!")
+E           Exception: Flaky test detected!
+
+src/example_pkg/do_something.py:13: Exception
+============================short test summary info ===========================
+FAILED ...::test_croissant - Exception: Flaky test detected!
+========================= 1 failed, 1 passed in 0.07s =========================
+```
+
+To prevent this flaky test from failing the test suite in cour CU runners, we
+can choose to mark it as flaky, and optionally skip it when invoking `pytest`.
+To go about that, we first need to register a new marker. To do that, let's
+update out project's `pyproject.toml` to include additional options for a
+`flaky` mark:
+
+```{.abc}
+# `pytest` configurations
+[tool.pytest.ini_options]
+markers = [
+    "flaky: tests that can randomly fail through no change to the code",
+]
+```
+
+Note that when registering a marker in this way, text after the colon is an
+optional mark description. Saving the document and running `pytest --markers`
+should show that a new custom marker is available to our project:
+
+```{.abc}
+... % pytest --markers
+@pytest.mark.flaky: tests that can randomly fail through no change to the code
 ...
 
+```
+Now that we have confirmed our marker is available for use, we can use it to
+mark `test_croissant()` as flaky, as below:
+
+```{python, filename="tests/test_do_something.py"}
+#| eval: false
+import pytest
+
+from example_pkg.do_something import (
+    croissant,
+    )
+
+
+def test_nothing():
+    pass
+
+
+@pytest.mark.flaky
+def test_croissant():
+    assert croissant()
+
+```
+
+Note that we need to import `pytest` to our test module in order to use the
+`pytest.mark.<MARK_NAME>` decorator. 
+
+#### Selecting a Single Mark
+
+Now that we have registered and marked a test as `flaky`, we can adapt our
+`pytest` call to execute tests with that mark only. The pattern we will use is:
+
+> `pytest -k -m "<INSERT_MARK_NAME>"`
+
+```{.abc}
+... % pytest -v -m "flaky"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 2 items / 1 deselected / 1 selected                                 
+
+tests/test_do_something.py::test_croissant PASSED                        [100%]
+
+======================= 1 passed, 1 deselected in 0.05s =======================
+
+```
+
+Now we see that `test_croissant()` was executed, while teh unmarked
+`test_nothing()` was not. 
+
+#### Deselecting a Single Mark
+
+More useful than selectively running a flaky test is to deselect it. In this
+way, it cannot fail our test suite. This is achieved with the following
+pattern:
+
+> `pytest -v -m "not <INSERT_MARK_NAME>"`
+
+
+```{.abc}
+... % pytest -v -m "not flaky"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 2 items / 1 deselected / 1 selected                                  
+
+tests/test_do_something.py::test_nothing PASSED                          [100%]
+
+======================= 1 passed, 1 deselected in 0.05s =======================
+
+```
+
+Note that this time, `test_flaky()` was not executed. 
+
+#### Selecting Multiple Marks
+
+In this section, we will introduce another, differently marked test to
+illustrate the syntax for running multiple marks. For this example, we'll test
+`take_a_nap()`:
+
+```{python}
+#| eval: false
+import pytest
+
+from example_pkg.do_something import (
+    croissant,
+    take_a_nap,
+    )
+
+
+def test_nothing():
+    pass
+
+
+@pytest.mark.flaky
+def test_croissant():
+    assert croissant()
+
+
+@pytest.mark.slow
+def test_take_a_nap():
+    out = take_a_nap(how_many_seconds=3)
+    assert isinstance(out, str), f"a string was not returned: {type(out)}"
+    assert out == "Rise and shine!", f"unexpected string pattern: {out}"
+
+```
+
+Our new test just makes some simple assertions about the srting `take_a_nap()`
+returns after snoozing. But notice what happens when running `pytest -v` now:
+
+```{.abc}
+... % pytest -v
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 3 items                                                             
+
+tests/test_do_something.py::test_nothing PASSED                          [ 33%]
+tests/test_do_something.py::test_croissant PASSED                        [ 66%]
+tests/test_do_something.py::test_take_a_nap PASSED                       [100%]
+
+============================== 3 passed in 3.07s ==============================
+
+``` 
+
+The test suite now takes in excess of 3 seconds to execute, as we are telling
+`take_a_nap()` to sleep for that period. Let's update our `pyproject.toml` and
+register a new mark:
+
+```{.abc}
+# `pytest` configurations
+[tool.pytest.ini_options]
+markers = [
+    "flaky: tests that can randomly fail through no change to the code",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+```
+
+Note that the nested speechmarks within the description of the `slow` mark were
+escaped. `pytest` would have complained that the toml file was not valid unless
+we ensured it was valid [toml syntax](https://toml.io/en/).
+
+In order to run tests marked with either `flaky` or `slow`, we can use `or`:
+
+> `pytest -v -m "<INSERT_MARK_1> or <INSERT_MARK_2>"`
+
+```{.abc}
+... % pytest -v -m "flaky or slow"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 3 items / 1 deselected / 2 selected                                 
+
+tests/test_do_something.py::test_croissant PASSED                        [ 50%]
+tests/test_do_something.py::test_take_a_nap PASSED                       [100%]
+
+======================= 2 passed, 1 deselected in 3.06s =======================
+
+```
+
+Note that anything not marked with `flaky` or `slow` (eg `test_nothing()`) was
+not run. Also, `test_croissant()` failed 3 times in a row while I tried to get
+a pass, so that the ugly looking console output didn't mess up my article. 
+
+<div class="tenor-gif-embed center" data-postid="24035134" data-share-method="host" data-aspect-ratio="1.22605" data-width="50%"><a href="https://tenor.com/view/glitter-gif-24035134">Glitter GIF</a>from <a href="https://tenor.com/search/glitter-gifs">Glitter GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+
+#### Complex Selection Rules
+
+By adding an additional mark, we can display more complex selection and
+deselection rules for invoking `pytest`. Let's write an integration test that
+checks whether the domain for this blogsite can be reached.
+
+```{python}
+#| eval: false
+import pytest
+
+from example_pkg.do_something import (
+    croissant,
+    take_a_nap,
+    check_site_available,
+    )
+
+
+def test_nothing():
+    pass
+
+
+@pytest.mark.flaky
+def test_croissant():
+    assert croissant()
+
+
+@pytest.mark.slow
+def test_take_a_nap():
+    out = take_a_nap(how_many_seconds=3)
+    assert isinstance(out, str), f"a string was not returned: {type(out)}"
+    assert out == "Rise and shine!", f"unexpected string pattern: {out}"
+
+
+@pytest.mark.integration
+def test_check_site_available():
+    url = "https://thedatasavvycorner.com/"
+    assert check_site_available(url), f"site {url} is down..."
+
+```
+
+Now updating our `pyproject.toml` like so:
+
+```{.abc}
+# `pytest` configurations
+[tool.pytest.ini_options]
+markers = [
+    "flaky: tests that can randomly fail through no change to the code",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: tests that require external resources",
+]
+```
+
+Now we can combine `and` and `not` statements when calling `pytest` to execute
+just the tests we need to. In the below, I choose to run the `slow` and
+`integration` tests while excluding that pesky `flaky` test.
+
+```{.abc}
+... % pytest -v -m "slow or integration and not flaky"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 4 items / 2 deselected / 2 selected                                 
+
+tests/test_do_something.py::test_take_a_nap PASSED                       [ 50%]
+tests/test_do_something.py::test_check_site_available PASSED             [100%]
+
+======================= 2 passed, 2 deselected in 3.29s =======================
+```
+
+Note that both `test_nothing()` (unmarked) and `test_croissant()` (deselected)
+were not run.
 
 ## Summary
 
