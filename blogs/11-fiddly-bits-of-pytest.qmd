@@ -29,7 +29,7 @@ jupyter:
 `pytest` is a testing package for the python framework. It is broadly used to
 quality assure code logic. This article discusses using test data as fixtures
 with `pytest` and is the first in a series of blogs called
-[pytest in plain English](/../index.html#category=pytest-in-plain-english),
+[pytest in plain English](/blogs/index.qmd#category=pytest-in-plain-english),
 favouring accessible language and simple examples to explain the more intricate
 features of the `pytest` package.
 

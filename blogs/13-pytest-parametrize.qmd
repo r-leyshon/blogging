@@ -31,7 +31,7 @@ css: /www/13-pytest-parametrize/styles.css
 quality assure code logic. This article discusses what parametrized tests mean
 and how to implement them with `pytest`. This blog is the third in a series of
 blogs called
-[pytest in plain English](/../index.html#category=pytest-in-plain-english),
+[pytest in plain English](/blogs/index.qmd#category=pytest-in-plain-english),
 favouring accessible language and simple examples to explain the more intricate
 features of the `pytest` package.
 
