@@ -124,30 +124,28 @@ from marking.
 
 | **Category**                | **Cause**                   | **Explanation**                                                         |
 |-----------------------------|-----------------------------|-------------------------------------------------------------------------|
-| Timing Issues               | Race Conditions             | Tests depend on the order of execution of threads or processes.         |
-|                             | Timeouts                    | Hardcoded or too-short timeouts causing failures due to slower systems. |
-|                             | Async Operations            | Improperly awaited asynchronous code.                                   |
-| External Dependencies       | Network                     | Network latency, outages, or DNS issues.                                |
-|                             | APIs                        | External API changes, rate limits, or outages.                          |
+| External Dependencies       | Network                     | Network latency, outages, or Domain Name System (DNS) issues.           |
+|                             | Web APIs                    | Breaking changes, rate limits, or outages.                              |
 |                             | Databases                   | Concurrency issues, data changes, or connection problems.               |
+|                             | Timeouts                    | Hardcoded or too-short timeouts cause failures.                         |
 | Environment Dependencies    | Environment Variables       | Incorrectly set environment variables.                                  |
 |                             | File System                 | File locks, permissions, or missing files.                              |
 |                             | Resource Limits             | Insufficient CPU, memory, or disk space.                                |
 | State Dependencies          | Shared State                | Interference between tests sharing state.                               |
 |                             | Order Dependency            | Tests relying on execution order.                                       |
-| Test Data                   | Random Data                 | Different results on each run due to random data.                       |
-|                             | Hardcoded Data              | Failures due to data changes or not being reset.                        |
+| Test Data                   | Random Data                 | Different results on each run due to random data and seed not set.      |
 | Concurrency Issues          | Parallel Execution          | Tests not designed for parallel execution.                              |
 |                             | Locks                       | Deadlocks or timeouts involving locks or semaphores.                    |
-| Hardware and System Issues  | Differences in Hardware     | Variations in performance across hardware.                              |
+|                             | Race Conditions             | Tests depend on the order of execution of threads or processes.         |
+|                             | Async Operations            | Improperly awaited asynchronous code.                                   |
+| Hardware and System Issues  | Differences in Hardware     | Variations in performance across hardware or operating systems.         |
 |                             | System Load                 | Failures under high system load due to resource contention.             |
 | Non-deterministic Inputs    | Time                        | Variations in current time affecting test results.                      |
 |                             | User Input                  | Non-deterministic user input causing flaky behavior.                    |
 |                             | Filepaths                   | CI runner filepaths may be hard to predict.                             |
 | Test Implementation Issues  | Assertions                  | Incorrect or overly strict assertions.                                  |
 |                             | Setup and Teardown          | Inconsistent state due to improper setup or teardown.                   |
-: {.striped .hover}
-
+: {.light .hover .responsive-md}
 
 :::
 
@@ -163,8 +161,15 @@ a compromise.
 > "*Le mieux est l'ennemi du bien.*" (The best is the enemy of the good),
 Voltaire
 
+Marking allows us to have greater control over which of our tests are executed
+when we invoke `pytest`. Conveniently, this is done in the following way
+(presuming you have already written your source and test code):
 
-## Custom Marks in Python
+1. Register a custom marker
+2. Assign the new marker name to the target test
+3. Invoke `pytest` with the `-m` (MARKEXPR) flag.
+
+## Custom Marks in `pytest`
 
 ...
 
