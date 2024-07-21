@@ -1,0 +1,136 @@
+---
+title: "Custom Marks With Pytest in Plain English"
+author: "Rich Leyshon"
+date: "July 21 2024"
+description: "Selectively running tests with marks"
+categories:
+    - Explanation
+    - pytest
+    - Unit tests
+    - marks
+    - custom marks
+    - markers
+    - pytest-in-plain-english
+image: "https://i.imgur.com/dCJBh9w.jpeg"
+image-alt: "Planet composed of croissants"
+toc: true
+jupyter: 
+  kernelspec:
+    name: "conda-env-mocking-env-py"
+    language: "python"
+    display_name: "blog-mocking-env"
+css: /www/13-pytest-parametrize/styles.css
+---
+
+<figure class=center >
+  <img class="shaded_box" width=400px src="https://i.imgur.com/dCJBh9w.jpeg"></img>
+  <figcaption>Planet composed of croissants.</figcaption>
+</figure>
+
+> "The only flake I want is that of a croissant." Mariel Feldman.
+
+## Introduction
+
+`pytest` is a testing package for the python framework. It is broadly used to
+quality assure code logic. This article discusses custom marks, use cases and
+patterns for selecting and deselecting marked tests. This blog is the fifth and
+final in a series of blogs called
+[pytest in plain English](/blogs/index.qmd#category=pytest-in-plain-english),
+favouring accessible language and simple examples to explain the more intricate
+features of the `pytest` package.
+
+For a wealth of documentation, guides and how-tos, please consult the
+<a href="https://docs.pytest.org/en/8.0.x/" target="_blank">`pytest` documentation</a>.
+
+### What are `pytest` Custom Marks?
+
+Marks are a way to conditionally run specified tests. There are a few marks
+that come with the `pytest` package. To view these, run `pytest --markers` from
+the command line. This will print a list of the pre-registered marks available
+within the `pytest` package. However, it is extremely easy to register your own
+markers, allowing greater control over which tests get executed.
+
+This article will cover:
+
+* Reasons for marking tests
+* Registering marks with `pytest`
+* Marking tests
+* Including or excluding markers from the command line
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose (Click to expand)
+
+This article intends to discuss clearly. It doesn't aim to be clever or
+impressive. Its aim is to extend understanding without overwhelming the reader.
+The code may not always be optimal, favouring a simplistic approach wherever
+possible.
+
+:::
+
+### Intended Audience
+
+Programmers with a working knowledge of python and some familiarity with
+`pytest` and packaging. The type of programmer who has wondered about how to
+follow best practice in testing python code.
+
+### What You'll Need:
+
+- [ ] Preferred python environment manager (eg `conda`)
+- [ ] `pip install pytest==8.1.1`
+- [ ] Git
+- [ ] GitHub account
+- [ ] Command line access
+
+### Preparation
+
+This blog is accompanied by code in
+[this repository](https://github.com/r-leyshon/pytest-fiddly-examples). The
+main branch provides a template with the minimum structure and requirements
+expected to run a `pytest` suite. The repo branches contain the code used in
+the examples of the following sections.
+
+Feel free to fork or clone the repo and checkout to the example branches as
+needed.
+
+The example code that accompanies this article is available in the
+[marks branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/marks)
+of the repo.
+
+## Overview
+
+...
+
+
+## Custom Marks in Python
+
+...
+
+### Define the Source Code
+
+...
+
+### Let's Get Testing
+
+...
+
+
+## Summary
+
+...
+
+If you spot an error with this article, or have a suggested improvement then
+feel free to
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+Happy testing!
+
+## Acknowledgements
+
+To past and present colleagues who have helped to discuss pros and cons,
+establishing practice and firming-up some opinions. Particularly:
+
+* Ethan
+* Sergio
+
+<p id=fin><i>fin!</i></p>
