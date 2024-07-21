@@ -47,7 +47,7 @@ For a wealth of documentation, guides and how-tos, please consult the
 
 Code often has external dependencies:
 
-*  Web APIs (as in this article)
+* Web APIs (as in this article)
 * Websites (if scraping / crawling)
 * External code (importing packages)
 * Data feeds and databases
