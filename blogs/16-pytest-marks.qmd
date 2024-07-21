@@ -162,20 +162,120 @@ a compromise.
 Voltaire
 
 Marking allows us to have greater control over which of our tests are executed
-when we invoke `pytest`. Conveniently, this is done in the following way
+when we invoke `pytest`. 
+
+## Custom Marks in `pytest`
+
+Marking is conveniently implemented in the following way
 (presuming you have already written your source and test code):
 
 1. Register a custom marker
 2. Assign the new marker name to the target test
 3. Invoke `pytest` with the `-m` (MARKEXPR) flag.
 
-## Custom Marks in `pytest`
-
-...
+This section uses code available in the
+[marks branch](https://github.com/r-leyshon/pytest-fiddly-examples/tree/marks)
+of the GitHub repository.
 
 ### Define the Source Code
 
-...
+I have a motley crew of functions to consider. A sort of homage to Sergio
+Leone's 'The Good, The Bad & the Ugly', although I'll let you figure out which
+is which.
+
+<figure class=center >
+  <img class="shaded_box" width=400px src="https://i.imgur.com/uO3DaTH.jpeg"></img>
+  <figcaption>The Flaky, The Slow & The Needy</figcaption>
+</figure>
+
+
+#### The Flaky Function
+
+Here we define a function that will fail half the time. What a terrible test to
+have. The root of this unpredictable behaviour should be diagnosed as a
+priority as a matter of sanity.
+```{python filename="src/example_pkg/do_something.py"}
+import random
+
+
+def croissant():
+    """A very flaky function."""
+    if round(random.uniform(0, 1)) == 1:
+        return True
+    else:
+        raise Exception("Flaky test detected!")
+
+```
+
+#### The Slow Function
+
+This function is going to be pretty slow. Slow test suites throttle our
+productivity. Once it finishes waiting for a specified number of seconds, it
+will return a string.
+
+```{python, filename="src/example_pkg/do_something.py"}
+
+import time
+from typing import Union
+
+
+def take_a_nap(how_many_seconds:Union[int, float]) -> str:
+    """Mimic a costly function by just doing nothing for a specified time."""
+    time.sleep(float(how_many_seconds))
+    return "Rise and shine!"
+
+```
+
+
+#### The Needy Function
+
+Finally, the needy function will have an external dependency on a website. This
+test will simply check whether we get a HTTP status code of 200 (ok) when we
+request any URL. 
+
+```{python filename="src/example_pkg/do_something.py"}
+import requests
+
+
+def check_site_available(url:str, timeout:int=5) -> bool:
+    """Checks if a site is available."""
+    try:
+        response = requests.get(url, timeout=timeout)
+        return True if response.status_code == 200 else False
+    except requests.RequestException:
+        return False
+
+```
+
+#### The Wrapper
+
+Finally, I'll introduce a wrapper that will act as an opportunity for an
+integration test. This is a bit awkward, as none of the above functions are
+particularly related to each other. 
+
+This function will execute the `check_site_available()` and `take_a_nap()`
+together. A pretty goofy example, I admit. Based on the status of the url
+request, a string will be returned.
+
+```{python, filename="src/example_pkg/do_something.py"}
+import time
+from typing import Union
+
+import requests
+
+def goofy_wrapper(url:str, timeout:int=5) -> str:
+    """Check a site is available, pause for no good reason before summarising
+    outcome with a string."""
+    msg = f"Napping for {timeout} seconds.\n"
+    msg = msg + take_a_nap(timeout)
+    if check_site_available(url):
+        msg = msg + "\nYour site is up!"
+    else:
+        msg = msg + "\nYour site is down!"
+
+    return msg
+```
+
 
 ### Let's Get Testing
 
