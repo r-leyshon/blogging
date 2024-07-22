@@ -45,9 +45,9 @@ For a wealth of documentation, guides and how-tos, please consult the
 
 ### What are `pytest` Custom Marks?
 
-Marks are a way to conditionally run specified tests. There are a few marks
-that come with the `pytest` package. To view these, run `pytest --markers` from
-the command line. This will print a list of the pre-registered marks available
+Marks are a way to conditionally run specific tests. There are a few marks that
+come with the `pytest` package. To view these, run `pytest --markers` from the
+command line. This will print a list of the pre-registered marks available
 within the `pytest` package. However, it is extremely easy to register your own
 markers, allowing greater control over which tests get executed.
 
@@ -110,7 +110,7 @@ external dependencies do not provide reliable inputs.
 There are multiple ways to handle these kinds of tests, including mocking, as
 discussed in [my previous blog](/blogs/15-pytest-mocking.qmd). Mocking can
 often take a bit of time, and developers don't always have that precious
-commodity. So instead, they may mark the test as 'temperemental', ensuring that
+commodity. So instead, they may mark the test as 'temperamental', ensuring that
 it doesn't get run on continuous integration (CI) checks when merging changes
 to the main branch. This would involve flagging the flaky test as
 "technical debt" to be resolved later.
@@ -142,7 +142,7 @@ from marking.
 | Hardware and System Issues  | Differences in Hardware     | Variations in performance across hardware or operating systems.         |
 |                             | System Load                 | Failures under high system load due to resource contention.             |
 | Non-deterministic Inputs    | Time                        | Variations in current time affecting test results.                      |
-|                             | User Input                  | Non-deterministic user input causing flaky behavior.                    |
+|                             | User Input                  | Non-deterministic user input causing flaky behaviour.                   |
 |                             | Filepaths                   | CI runner filepaths may be hard to predict.                             |
 | Test Implementation Issues  | Assertions                  | Incorrect or overly strict assertions.                                  |
 |                             | Setup and Teardown          | Inconsistent state due to improper setup or teardown.                   |
@@ -434,7 +434,7 @@ tests/test_do_something.py::test_croissant PASSED                        [100%]
 
 ```
 
-Now we see that `test_croissant()` was executed, while teh unmarked
+Now we see that `test_croissant()` was executed, while the unmarked
 `test_nothing()` was not. 
 
 #### Deselecting a Single Mark
@@ -497,7 +497,7 @@ def test_take_a_nap():
 
 ```
 
-Our new test just makes some simple assertions about the srting `take_a_nap()`
+Our new test just makes some simple assertions about the string `take_a_nap()`
 returns after snoozing. But notice what happens when running `pytest -v` now:
 
 ```{.abc}
@@ -531,9 +531,9 @@ markers = [
 ]
 ```
 
-Note that the nested speechmarks within the description of the `slow` mark were
-escaped. `pytest` would have complained that the toml file was not valid unless
-we ensured it was valid [toml syntax](https://toml.io/en/).
+Note that the nested speech marks within the description of the `slow` mark
+were escaped. `pytest` would have complained that the toml file was not valid
+unless we ensured it was valid [toml syntax](https://toml.io/en/).
 
 In order to run tests marked with either `flaky` or `slow`, we can use `or`:
 
@@ -568,7 +568,7 @@ frustrating flaky tests can be!
 
 By adding an additional mark, we can display more complex selection and
 deselection rules for invoking `pytest`. Let's write an integration test that
-checks whether the domain for this blogsite can be reached.
+checks whether the domain for this blog site can be reached.
 
 ```{python}
 #| eval: false
@@ -710,7 +710,7 @@ class TestGoofyWrapper:
 
 ```
 
-Note that targetting either the `classy` or `subclassy` mark results in the
+Note that targeting either the `classy` or `subclassy` mark results in the
 same output - all tests within this test class are executed:
 
 ```{.abc}
@@ -754,7 +754,7 @@ class TestGoofyWrapper:
 
 ```
 
-This test class can now be exclusively targetted by specifying all of its marks
+This test class can now be exclusively targeted by specifying all of its marks
 with `and`:
 
 >  `pytest -v -m "<INSERT_MARK_1> and <INSERT_MARK2>... and <INSERT_MARK_N>"`
@@ -778,7 +778,7 @@ TestGoofyWrapper::test_goofy_wrapper_url_does_not_exist PASSED           [100%]
 ```
 
 Note that even though there are other tests marked with `integration` and
-`classy` seperately, they are excluded on the basis that `and` expects them to
+`classy` separately, they are excluded on the basis that `and` expects them to
 be marked with both.
 
 #### Deselecting All Marks
