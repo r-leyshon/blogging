@@ -21,6 +21,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/16-pytest-marks.html",
       "/blogs/15-pytest-mocking.html",
       "/blogs/14-gh-actions-security.html",
       "/blogs/13-pytest-parametrize.html",
@@ -41,6 +42,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blogs/16-pytest-marks.html",
       "/blogs/15-pytest-mocking.html",
       "/book-reviews/04-dark-data.html",
       "/blogs/14-gh-actions-security.html",

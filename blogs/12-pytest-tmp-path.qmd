@@ -32,7 +32,7 @@ jupyter:
 quality assure code logic. This article discusses why and how we use pytest's
 temporary fixtures `tmp_path` and `tmp_path_factory`. This blog is the second
 in a series of blogs called
-[pytest in plain English](/../index.html#category=pytest-in-plain-english),
+[pytest in plain English](/blogs/index.qmd#category=pytest-in-plain-english),
 favouring accessible language and simple examples to explain the more intricate
 features of the `pytest` package.
 

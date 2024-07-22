@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Rich Leyshon">
+<meta name="dcterms.date" content="2024-07-22">
+<meta name="description" content="Selectively running tests with marks">
+
+<title>The Data Savvy Corner - Custom Marks With Pytest in Plain English</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="..//./favicon.ico" rel="icon">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../www/styles.css">
+<link rel="stylesheet" href="../www/13-pytest-parametrize/styles.css">
+<meta property="og:title" content="The Data Savvy Corner - Custom Marks With Pytest in Plain English">
+<meta property="og:description" content="Selectively running tests with marks">
+<meta property="og:image" content="https://i.imgur.com/dCJBh9w.jpeg">
+<meta property="og:site_name" content="The Data Savvy Corner">
+<meta property="og:image:alt" content="Planet composed of croissants">
+<meta name="twitter:title" content="The Data Savvy Corner - Custom Marks With Pytest in Plain English">
+<meta name="twitter:description" content="Selectively running tests with marks">
+<meta name="twitter:image" content="https://i.imgur.com/dCJBh9w.jpeg">
+<meta name="twitter:site" content="@Rich_L1984">
+<meta name="twitter:image:alt" content="Planet composed of croissants">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">The Data Savvy Corner</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blogs/index.html"> 
+<span class="menu-text">Byte-Wise Musings</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../music-reviews/index.html"> 
+<span class="menu-text">Productivity Pulse</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../book-reviews/index.html"> 
+<span class="menu-text">Bookmarked Insights</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools tools-wide">
+    <a href="https://twitter.com/Rich_L1984" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-twitter-x"></i></a>
+    <a href="https://github.com/r-leyshon" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/richard-leyshon-316121163/" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul>
+  <li><a href="#what-are-pytest-custom-marks" id="toc-what-are-pytest-custom-marks" class="nav-link" data-scroll-target="#what-are-pytest-custom-marks">What are <code>pytest</code> Custom Marks?</a></li>
+  <li><a href="#intended-audience" id="toc-intended-audience" class="nav-link" data-scroll-target="#intended-audience">Intended Audience</a></li>
+  <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What You’ll Need:</a></li>
+  <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
+  </ul></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#custom-marks-in-pytest" id="toc-custom-marks-in-pytest" class="nav-link" data-scroll-target="#custom-marks-in-pytest">Custom Marks in <code>pytest</code></a>
+  <ul>
+  <li><a href="#define-the-source-code" id="toc-define-the-source-code" class="nav-link" data-scroll-target="#define-the-source-code">Define the Source Code</a>
+  <ul class="collapse">
+  <li><a href="#the-flaky-function" id="toc-the-flaky-function" class="nav-link" data-scroll-target="#the-flaky-function">The Flaky Function</a></li>
+  <li><a href="#the-slow-function" id="toc-the-slow-function" class="nav-link" data-scroll-target="#the-slow-function">The Slow Function</a></li>
+  <li><a href="#the-needy-function" id="toc-the-needy-function" class="nav-link" data-scroll-target="#the-needy-function">The Needy Function</a></li>
+  <li><a href="#the-wrapper" id="toc-the-wrapper" class="nav-link" data-scroll-target="#the-wrapper">The Wrapper</a></li>
+  </ul></li>
+  <li><a href="#lets-get-testing" id="toc-lets-get-testing" class="nav-link" data-scroll-target="#lets-get-testing">Let’s Get Testing</a>
+  <ul class="collapse">
+  <li><a href="#selecting-a-single-mark" id="toc-selecting-a-single-mark" class="nav-link" data-scroll-target="#selecting-a-single-mark">Selecting a Single Mark</a></li>
+  <li><a href="#deselecting-a-single-mark" id="toc-deselecting-a-single-mark" class="nav-link" data-scroll-target="#deselecting-a-single-mark">Deselecting a Single Mark</a></li>
+  <li><a href="#selecting-multiple-marks" id="toc-selecting-multiple-marks" class="nav-link" data-scroll-target="#selecting-multiple-marks">Selecting Multiple Marks</a></li>
+  <li><a href="#complex-selection-rules" id="toc-complex-selection-rules" class="nav-link" data-scroll-target="#complex-selection-rules">Complex Selection Rules</a></li>
+  <li><a href="#marks-and-test-classes" id="toc-marks-and-test-classes" class="nav-link" data-scroll-target="#marks-and-test-classes">Marks and Test Classes</a></li>
+  <li><a href="#tests-with-multiple-marks" id="toc-tests-with-multiple-marks" class="nav-link" data-scroll-target="#tests-with-multiple-marks">Tests with Multiple Marks</a></li>
+  <li><a href="#deselecting-all-marks" id="toc-deselecting-all-marks" class="nav-link" data-scroll-target="#deselecting-all-marks">Deselecting All Marks</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Custom Marks With Pytest in Plain English</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Explanation</div>
+    <div class="quarto-category">pytest</div>
+    <div class="quarto-category">Unit tests</div>
+    <div class="quarto-category">marks</div>
+    <div class="quarto-category">custom marks</div>
+    <div class="quarto-category">markers</div>
+    <div class="quarto-category">pytest-in-plain-english</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Selectively running tests with marks
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Rich Leyshon </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 22, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<figure class="center figure">
+<img class="shaded_box figure-img" width="400px" src="https://i.imgur.com/dCJBh9w.jpeg">
+<figcaption>
+Planet composed of croissants.
+</figcaption>
+</figure>
+<blockquote class="blockquote">
+<p>“The only flake I want is that of a croissant.” Mariel Feldman.</p>
+</blockquote>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses custom marks, use cases and patterns for selecting and deselecting marked tests. This blog is the fifth and final in a series of blogs called <a href="../blogs/index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
+<p>For a wealth of documentation, guides and how-tos, please consult the <a href="https://docs.pytest.org/en/8.0.x/" target="_blank"><code>pytest</code> documentation</a>.</p>
+<section id="what-are-pytest-custom-marks" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-pytest-custom-marks">What are <code>pytest</code> Custom Marks?</h3>
+<p>Marks are a way to conditionally run specific tests. There are a few marks that come with the <code>pytest</code> package. To view these, run <code>pytest --markers</code> from the command line. This will print a list of the pre-registered marks available within the <code>pytest</code> package. However, it is extremely easy to register your own markers, allowing greater control over which tests get executed.</p>
+<p>This article will cover:</p>
+<ul>
+<li>Reasons for marking tests</li>
+<li>Registering marks with <code>pytest</code></li>
+<li>Marking tests</li>
+<li>Including or excluding markers from the command line</li>
+</ul>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A Note on the Purpose (Click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This article intends to discuss clearly. It doesn’t aim to be clever or impressive. Its aim is to extend understanding without overwhelming the reader. The code may not always be optimal, favouring a simplistic approach wherever possible.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="intended-audience" class="level3">
+<h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
+<p>Programmers with a working knowledge of python and some familiarity with <code>pytest</code> and packaging. The type of programmer who has wondered about how to follow best practice in testing python code.</p>
+</section>
+<section id="what-youll-need" class="level3">
+<h3 class="anchored" data-anchor-id="what-youll-need">What You’ll Need:</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Preferred python environment manager (eg <code>conda</code>)</label></li>
+<li><label><input type="checkbox"><code>pip install pytest==8.1.1</code></label></li>
+<li><label><input type="checkbox">Git</label></li>
+<li><label><input type="checkbox">GitHub account</label></li>
+<li><label><input type="checkbox">Command line access</label></li>
+</ul>
+</section>
+<section id="preparation" class="level3">
+<h3 class="anchored" data-anchor-id="preparation">Preparation</h3>
+<p>This blog is accompanied by code in <a href="https://github.com/r-leyshon/pytest-fiddly-examples">this repository</a>. The main branch provides a template with the minimum structure and requirements expected to run a <code>pytest</code> suite. The repo branches contain the code used in the examples of the following sections.</p>
+<p>Feel free to fork or clone the repo and checkout to the example branches as needed.</p>
+<p>The example code that accompanies this article is available in the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/marks">marks branch</a> of the repo.</p>
+</section>
+</section>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Occasionally, we write tests that are a bit distinct to the rest of our test suite. They could be integration tests, calling on elements of our code from multiple modules. They could be end to end tests, executing a pipeline from start to finish. Or they could be a flaky or brittle sort of test, a test that is prone to failure on specific operating systems, architectures or when external dependencies do not provide reliable inputs.</p>
+<p>There are multiple ways to handle these kinds of tests, including mocking, as discussed in <a href="../blogs/15-pytest-mocking.html">my previous blog</a>. Mocking can often take a bit of time, and developers don’t always have that precious commodity. So instead, they may mark the test, ensuring that it doesn’t get run on continuous integration (CI) checks. This may involve flagging any flaky test as “technical debt” to be investigated and fixed later.</p>
+<p>In fact, there are a number of reasons that we may want to selectively run elements of a test suite. Here is a selection of scenarios that could benefit from marking.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Flaky Tests: Common Causes
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="table-responsive-md">
+<table class="table-light table-hover table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Category</strong></th>
+<th><strong>Cause</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>External Dependencies</td>
+<td>Network</td>
+<td>Network latency, outages, or Domain Name System (DNS) issues.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Web APIs</td>
+<td>Breaking changes, rate limits, or outages.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Databases</td>
+<td>Concurrency issues, data changes, or connection problems.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Timeouts</td>
+<td>Hardcoded or too-short timeouts cause failures.</td>
+</tr>
+<tr class="odd">
+<td>Environment Dependencies</td>
+<td>Environment Variables</td>
+<td>Incorrectly set environment variables.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>File System</td>
+<td>File locks, permissions, or missing files.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Resource Limits</td>
+<td>Insufficient CPU, memory, or disk space.</td>
+</tr>
+<tr class="even">
+<td>State Dependencies</td>
+<td>Shared State</td>
+<td>Interference between tests sharing state.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Order Dependency</td>
+<td>Tests relying on execution order.</td>
+</tr>
+<tr class="even">
+<td>Test Data</td>
+<td>Random Data</td>
+<td>Different results on each run due to random data and seed not set.</td>
+</tr>
+<tr class="odd">
+<td>Concurrency Issues</td>
+<td>Parallel Execution</td>
+<td>Tests not designed for parallel execution.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Locks</td>
+<td>Deadlocks or timeouts involving locks or semaphores.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Race Conditions</td>
+<td>Tests depend on the order of execution of threads or processes.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Async Operations</td>
+<td>Improperly awaited asynchronous code.</td>
+</tr>
+<tr class="odd">
+<td>Hardware and System Issues</td>
+<td>Differences in Hardware</td>
+<td>Variations in performance across hardware or operating systems.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>System Load</td>
+<td>Failures under high system load due to resource contention.</td>
+</tr>
+<tr class="odd">
+<td>Non-deterministic Inputs</td>
+<td>Time</td>
+<td>Variations in current time affecting test results.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>User Input</td>
+<td>Non-deterministic user input causing flaky behaviour.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Filepaths</td>
+<td>CI runner filepaths may be hard to predict.</td>
+</tr>
+<tr class="even">
+<td>Test Implementation Issues</td>
+<td>Assertions</td>
+<td>Incorrect or overly strict assertions.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Setup and Teardown</td>
+<td>Inconsistent state due to improper setup or teardown.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>In the case of integration tests, one approach may be to group them all together and have them execute within a dedicated CI workflow. This is common practice as developers may want to stay alert to problems with external resources that their code depends upon, while not failing ‘core’ CI checks about changes to the source code. If your code relies on a web API; for instance; you’re probably less concerned about temporary outages in that service. However, a breaking change to that service would require our source code to be adapted. Once more, life is a compromise.</p>
+<blockquote class="blockquote">
+<p>“<em>Le mieux est l’ennemi du bien.</em>” (The best is the enemy of the good), Voltaire</p>
+</blockquote>
+</section>
+<section id="custom-marks-in-pytest" class="level2">
+<h2 class="anchored" data-anchor-id="custom-marks-in-pytest">Custom Marks in <code>pytest</code></h2>
+<p>Marking allows us to have greater control over which of our tests are executed when we invoke <code>pytest</code>. Marking is conveniently implemented in the following way (presuming you have already written your source and test code):</p>
+<ol type="1">
+<li>Register a custom marker</li>
+<li>Assign the new marker name to the target test</li>
+<li>Invoke <code>pytest</code> with the <code>-m</code> (MARKEXPR) flag.</li>
+</ol>
+<p>This section uses code available in the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/marks">marks branch</a> of the GitHub repository.</p>
+<section id="define-the-source-code" class="level3">
+<h3 class="anchored" data-anchor-id="define-the-source-code">Define the Source Code</h3>
+<p>I have a motley crew of functions to consider. A sort of homage to Sergio Leone’s ‘The Good, The Bad &amp; the Ugly’, although I’ll let you figure out which is which.</p>
+<figure class="center figure">
+<img class="shaded_box figure-img" width="400px" src="https://i.imgur.com/uO3DaTH.jpeg">
+<figcaption>
+The Flaky, The Slow &amp; The Needy
+</figcaption>
+</figure>
+<section id="the-flaky-function" class="level4">
+<h4 class="anchored" data-anchor-id="the-flaky-function">The Flaky Function</h4>
+<p>Here we define a function that will fail half the time. What a terrible test to have. The root of this unpredictable behaviour should be diagnosed as a priority as a matter of sanity.</p>
+<div id="e4677b5f" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> croissant():</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A very flaky function."""</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">round</span>(random.uniform(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"Flaky test detected!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-slow-function" class="level4">
+<h4 class="anchored" data-anchor-id="the-slow-function">The Slow Function</h4>
+<p>This function is going to be pretty slow. Slow test suites throttle our productivity. Once it finishes waiting for a specified number of seconds, it will return a string.</p>
+<div id="e736f07b" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> take_a_nap(how_many_seconds:Union[<span class="bu">int</span>, <span class="bu">float</span>]) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Mimic a costly function by just doing nothing for a specified time."""</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="bu">float</span>(how_many_seconds))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Rise and shine!"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-needy-function" class="level4">
+<h4 class="anchored" data-anchor-id="the-needy-function">The Needy Function</h4>
+<p>Finally, the needy function will have an external dependency on a website. This test will simply check whether we get a HTTP status code of 200 (ok) when we request any URL.</p>
+<div id="39c60cc1" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_site_available(url:<span class="bu">str</span>, timeout:<span class="bu">int</span><span class="op">=</span><span class="dv">5</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Checks if a site is available."""</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url, timeout<span class="op">=</span>timeout)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span> <span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span> <span class="cf">else</span> <span class="va">False</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.RequestException:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-wrapper" class="level4">
+<h4 class="anchored" data-anchor-id="the-wrapper">The Wrapper</h4>
+<p>Finally, I’ll introduce a wrapper that will act as an opportunity for an integration test. This is a bit awkward, as none of the above functions are particularly related to each other.</p>
+<p>This function will execute the <code>check_site_available()</code> and <code>take_a_nap()</code> together. A pretty goofy example, I admit. Based on the status of the url request, a string will be returned.</p>
+<div id="712d9659" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> goofy_wrapper(url:<span class="bu">str</span>, timeout:<span class="bu">int</span><span class="op">=</span><span class="dv">5</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Check a site is available, pause for no good reason before summarising</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">    outcome with a string."""</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    msg <span class="op">=</span> <span class="ss">f"Napping for </span><span class="sc">{</span>timeout<span class="sc">}</span><span class="ss"> seconds.</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    msg <span class="op">=</span> msg <span class="op">+</span> take_a_nap(timeout)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> check_site_available(url):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        msg <span class="op">=</span> msg <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">Your site is up!"</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        msg <span class="op">=</span> msg <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">Your site is down!"</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> msg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="lets-get-testing" class="level3">
+<h3 class="anchored" data-anchor-id="lets-get-testing">Let’s Get Testing</h3>
+<p>Initially, I will define a test that does nothing other than pass. This will be a placeholder, unmarked test.</p>
+<div id="d6766c37" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_nothing():</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, I import <code>croissant()</code> and assert that it returns <code>True</code>. As you may recall from above, <code>croissant()</code> will do so ~50 % of the time.</p>
+<div id="29189e47" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    croissant,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_nothing():</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_croissant():</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> croissant()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now running <code>pytest -v</code> will print the test results, reporting test outcomes for each test separately (<code>-v</code> means verbose).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>...<span class="co">% pytest -v</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>collected 2 items                                                             </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_nothing</span> PASSED                          <span class="ch">[</span> 50<span class="co">%]</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_</span>croissant PASSED                        <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>============================== 2 passed in 0.05s ==============================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But note that half the time, I will also get the following output:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>...<span class="co">% pytest -v</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>collected 2 items                         </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_nothing</span> PASSED                          <span class="ch">[</span> 50<span class="co">%]</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_</span>croissant FAILED                        <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>================================== FAILURES ==================================</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>_______________________________ test_croissant ________________________________</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    @pytest.mark.flaky</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    def test_croissant<span class="dt">()</span><span class="ch">:</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>&gt;       assert croissant<span class="dt">()</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">:1</span>7<span class="ch">:</span> </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    def croissant<span class="dt">()</span><span class="ch">:</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"""A very flaky function."""</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        if round<span class="dt">(</span>random.uniform<span class="dt">(</span>0, 1<span class="dt">))</span> == 1<span class="ch">:</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>            return True</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        else<span class="ch">:</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>&gt;           raise Exception<span class="dt">(</span><span class="st">"Flaky test detected!"</span><span class="dt">)</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>E           Exception<span class="ch">:</span> Flaky test detected!</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>src/example_pkg/do_something.py<span class="ch">:1</span>3<span class="ch">:</span> Exception</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>============================short test summary info ===========================</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>FAILED ...<span class="ch">::test_</span>croissant - Exception<span class="ch">:</span> Flaky test detected!</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>========================= 1 failed, 1 passed in 0.07s =========================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To prevent this flaky test from failing the test suite, we can choose to mark it as flaky, and optionally skip it when invoking <code>pytest</code>. To go about that, we first need to register a new marker. To do that, let’s update out project’s <code>pyproject.toml</code> to include additional options for a <code>flaky</code> mark:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a># `pytest` configurations</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ch">[tool.pytest.ini_options]</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>markers = <span class="ch">[</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flaky: tests that can randomly fail through no change to the code"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ch">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that when registering a marker in this way, text after the colon is an optional mark description. Saving the document and running <code>pytest --markers</code> should show that a new custom marker is available to our project:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest --markers</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>@pytest.mark.flaky<span class="ch">:</span> tests that can randomly fail through no change to the code</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now that we have confirmed our marker is available for use, we can use it to mark <code>test_croissant()</code> as flaky:</p>
+<div id="0f3c1eeb" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    croissant,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_nothing():</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.flaky</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_croissant():</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> croissant()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that we need to import <code>pytest</code> to our test module in order to use the <code>pytest.mark.&lt;MARK_NAME&gt;</code> decorator.</p>
+<section id="selecting-a-single-mark" class="level4">
+<h4 class="anchored" data-anchor-id="selecting-a-single-mark">Selecting a Single Mark</h4>
+<p>Now that we have registered and marked a test as <code>flaky</code>, we can adapt our <code>pytest</code> call to execute tests with that mark only. The pattern we will use is:</p>
+<blockquote class="blockquote">
+<p><code>pytest -k -m "&lt;INSERT_MARK_NAME&gt;"</code></p>
+</blockquote>
+<div class="sourceCode" id="cb12"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "flaky"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>collected 2 items / 1 deselected / 1 selected                                 </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_</span>croissant PASSED                        <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>======================= 1 passed, 1 deselected in 0.05s =======================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we see that <code>test_croissant()</code> was executed, while the unmarked <code>test_nothing()</code> was not.</p>
+</section>
+<section id="deselecting-a-single-mark" class="level4">
+<h4 class="anchored" data-anchor-id="deselecting-a-single-mark">Deselecting a Single Mark</h4>
+<p>More useful than selectively running a flaky test is to deselect it. In this way, it cannot fail our test suite. This is achieved with the following pattern:</p>
+<blockquote class="blockquote">
+<p><code>pytest -v -m "not &lt;INSERT_MARK_NAME&gt;"</code></p>
+</blockquote>
+<div class="sourceCode" id="cb13"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "not flaky"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>collected 2 items / 1 deselected / 1 selected                                  </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_nothing</span> PASSED                          <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>======================= 1 passed, 1 deselected in 0.05s =======================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that this time, <code>test_flaky()</code> was not executed.</p>
+</section>
+<section id="selecting-multiple-marks" class="level4">
+<h4 class="anchored" data-anchor-id="selecting-multiple-marks">Selecting Multiple Marks</h4>
+<p>In this section, we will introduce another, differently marked test to illustrate the syntax for running multiple marks. For this example, we’ll test <code>take_a_nap()</code>:</p>
+<div id="b75c4842" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    croissant,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    take_a_nap,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_nothing():</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.flaky</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_croissant():</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> croissant()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.slow</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_take_a_nap():</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> take_a_nap(how_many_seconds<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">isinstance</span>(out, <span class="bu">str</span>), <span class="ss">f"a string was not returned: </span><span class="sc">{</span><span class="bu">type</span>(out)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out <span class="op">==</span> <span class="st">"Rise and shine!"</span>, <span class="ss">f"unexpected string pattern: </span><span class="sc">{</span>out<span class="sc">}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our new test just makes some simple assertions about the string <code>take_a_nap()</code> returns after snoozing. But notice what happens when running <code>pytest -v</code> now:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>collected 3 items                                                             </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_nothing</span> PASSED                          <span class="ch">[</span> 33<span class="co">%]</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_</span>croissant PASSED                        <span class="ch">[</span> 66<span class="co">%]</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_take_</span>a_nap PASSED                       <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>============================== 3 passed in 3.07s ==============================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The test suite now takes in excess of 3 seconds to execute, as the test specified for <code>take_a_nap()</code> to sleep for that period. Let’s update our <code>pyproject.toml</code> and register a new mark:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a># `pytest` configurations</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ch">[tool.pytest.ini_options]</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>markers = <span class="ch">[</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flaky: tests that can randomly fail through no change to the code"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"slow: marks tests as slow (deselect with '-m \"</span>not slow\<span class="st">"')"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ch">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that the nested speech marks within the description of the <code>slow</code> mark were escaped. <code>pytest</code> would have complained that the toml file was not valid unless we ensured it was valid <a href="https://toml.io/en/">toml syntax</a>.</p>
+<p>In order to run tests marked with either <code>flaky</code> or <code>slow</code>, we can use <code>or</code>:</p>
+<blockquote class="blockquote">
+<p><code>pytest -v -m "&lt;INSERT_MARK_1&gt; or &lt;INSERT_MARK_2&gt;"</code></p>
+</blockquote>
+<div class="sourceCode" id="cb17"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "flaky or slow"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>collected 3 items / 1 deselected / 2 selected                                 </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_</span>croissant PASSED                        <span class="ch">[</span> 50<span class="co">%]</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_take_</span>a_nap PASSED                       <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>======================= 2 passed, 1 deselected in 3.06s =======================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that anything not marked with <code>flaky</code> or <code>slow</code> (eg <code>test_nothing()</code>) was not run. Also, <code>test_croissant()</code> failed 3 times in a row while I tried to get a passing run. I didn’t want the flaky exception to carry on presenting itself. While I may be sprinkling glitter, I do not want to misrepresent how frustrating flaky tests can be!</p>
+<div class="tenor-gif-embed center" data-postid="24035134" data-share-method="host" data-aspect-ratio="1.22605" data-width="50%">
+<a href="https://tenor.com/view/glitter-gif-24035134">Glitter GIF</a>from <a href="https://tenor.com/search/glitter-gifs">Glitter GIFs</a>
+</div>
+<script type="text/javascript" async="" src="https://tenor.com/embed.js"></script>
+</section>
+<section id="complex-selection-rules" class="level4">
+<h4 class="anchored" data-anchor-id="complex-selection-rules">Complex Selection Rules</h4>
+<p>By adding an additional mark, we can illustrate more complex selection and deselection rules for invoking <code>pytest</code>. Let’s write an integration test that checks whether the domain for this blog site can be reached.</p>
+<div id="77c0b75a" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    croissant,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    take_a_nap,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    check_site_available,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_nothing():</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.flaky</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_croissant():</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> croissant()</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.slow</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_take_a_nap():</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> take_a_nap(how_many_seconds<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">isinstance</span>(out, <span class="bu">str</span>), <span class="ss">f"a string was not returned: </span><span class="sc">{</span><span class="bu">type</span>(out)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out <span class="op">==</span> <span class="st">"Rise and shine!"</span>, <span class="ss">f"unexpected string pattern: </span><span class="sc">{</span>out<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_check_site_available():</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">"https://thedatasavvycorner.com/"</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> check_site_available(url), <span class="ss">f"site </span><span class="sc">{</span>url<span class="sc">}</span><span class="ss"> is down..."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now updating our <code>pyproject.toml</code> like so:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a># `pytest` configurations</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ch">[tool.pytest.ini_options]</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>markers = <span class="ch">[</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flaky: tests that can randomly fail through no change to the code"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"slow: marks tests as slow (deselect with '-m \"</span>not slow\<span class="st">"')"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"integration: tests that require external resources"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="ch">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we can combine <code>and</code> and <code>not</code> statements when calling <code>pytest</code> to execute just the tests we need to. In the below, I choose to run the <code>slow</code> and <code>integration</code> tests while excluding that pesky <code>flaky</code> test.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "slow or integration and not flaky"</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>collected 4 items / 2 deselected / 2 selected                                 </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_take_</span>a_nap PASSED                       <span class="ch">[</span> 50<span class="co">%]</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_</span>check_site_available PASSED             <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>======================= 2 passed, 2 deselected in 3.29s =======================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that both <code>test_nothing()</code> (unmarked) and <code>test_croissant()</code> (deselected) were not run.</p>
+</section>
+<section id="marks-and-test-classes" class="level4">
+<h4 class="anchored" data-anchor-id="marks-and-test-classes">Marks and Test Classes</h4>
+<p>Note that so far, we have applied marks to test functions only. But we can also apply marks to an entire test class, or even target specific test modules. For this section, I will introduce the wrapper function introduced earlier and use a test class to group its tests together. I will mark those tests with 2 new marks, <code>classy</code> and <code>subclassy</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a># `pytest` configurations</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ch">[tool.pytest.ini_options]</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>markers = <span class="ch">[</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flaky: tests that can randomly fail through no change to the code"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"slow: marks tests as slow (deselect with '-m \"</span>not slow\<span class="st">"')"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"integration: tests that require external resources"</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"classy: tests arranged in a class"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"subclassy: test methods"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="ch">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Updating our test module to include <code>test_goofy_wrapper()</code>:</p>
+<div id="db1a7f0a" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    croissant,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    take_a_nap,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    check_site_available,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    goofy_wrapper</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_nothing():</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.flaky</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_croissant():</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> croissant()</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.slow</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_take_a_nap():</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> take_a_nap(how_many_seconds<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">isinstance</span>(out, <span class="bu">str</span>), <span class="ss">f"a string was not returned: </span><span class="sc">{</span><span class="bu">type</span>(out)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out <span class="op">==</span> <span class="st">"Rise and shine!"</span>, <span class="ss">f"unexpected string pattern: </span><span class="sc">{</span>out<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_check_site_available():</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">"https://thedatasavvycorner.com/"</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> check_site_available(url), <span class="ss">f"site </span><span class="sc">{</span>url<span class="sc">}</span><span class="ss"> is down..."</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.classy</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestGoofyWrapper:</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">@pytest.mark.subclassy</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_goofy_wrapper_url_exists(<span class="va">self</span>):</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> goofy_wrapper(</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>            <span class="st">"https://thedatasavvycorner.com/"</span>, <span class="dv">1</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>            ).endswith(<span class="st">"Your site is up!"</span>), <span class="st">"The site wasn't up."</span></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">@pytest.mark.subclassy</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_goofy_wrapper_url_does_not_exist(<span class="va">self</span>):</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> goofy_wrapper(</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>            <span class="st">"https://thegoofycorner.com/"</span>, <span class="dv">1</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>            ).endswith(<span class="st">"Your site is down!"</span>), <span class="st">"The site wasn't down."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that targeting either the <code>classy</code> or <code>subclassy</code> mark results in the same output - all tests within this test class are executed:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "classy"</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>collected 6 items / 4 deselected / 2 selected                                 </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>TestGoofyWrapper<span class="ch">::test_</span>goofy_wrapper_url_exists PASSED                   <span class="ch">[</span> 50<span class="co">%]</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>TestGoofyWrapper<span class="ch">::test_</span>goofy_wrapper_url_does_not_exist PASSED           <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>======================= 2 passed, 4 deselected in 2.30s =======================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nobody created the domain <code>https://thegoofycorner.com/</code> yet, such a shame.</p>
+</section>
+<section id="tests-with-multiple-marks" class="level4">
+<h4 class="anchored" data-anchor-id="tests-with-multiple-marks">Tests with Multiple Marks</h4>
+<p>Note that we can use multiple marks with any test or test class. Let’s update <code>TestGoofyWrapper</code> to be marked as <code>integration</code> &amp; <code>slow</code>:</p>
+<div id="fc008b5f" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.slow</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.classy</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestGoofyWrapper:</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">@pytest.mark.subclassy</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_goofy_wrapper_url_exists(<span class="va">self</span>):</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> goofy_wrapper(</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"https://thedatasavvycorner.com/"</span>, <span class="dv">1</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>            ).endswith(<span class="st">"Your site is up!"</span>),<span class="st">"The site wasn't up."</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">@pytest.mark.subclassy</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_goofy_wrapper_url_does_not_exist(<span class="va">self</span>):</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> goofy_wrapper(</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"https://thegoofycorner.com/"</span>, <span class="dv">1</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>            ).endswith(<span class="st">"Your site is down!"</span>), <span class="st">"The site wasn't down."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This test class can now be exclusively targeted by specifying multiple marks with <code>and</code>:</p>
+<blockquote class="blockquote">
+<p><code>pytest -v -m "&lt;INSERT_MARK_1&gt; and &lt;INSERT_MARK2&gt;... and &lt;INSERT_MARK_N&gt;"</code></p>
+</blockquote>
+<div class="sourceCode" id="cb25"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "integration and slow"   </span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>collected 6 items / 4 deselected / 2 selected                                 </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>TestGoofyWrapper<span class="ch">::test_</span>goofy_wrapper_url_exists PASSED                   <span class="ch">[</span> 50<span class="co">%]</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>TestGoofyWrapper<span class="ch">::test_</span>goofy_wrapper_url_does_not_exist PASSED           <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>======================= 2 passed, 4 deselected in 2.30s =======================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that even though there are other tests marked with <code>integration</code> and <code>slow</code> separately, they are excluded on the basis that <code>and</code> expects them to be marked with both.</p>
+</section>
+<section id="deselecting-all-marks" class="level4">
+<h4 class="anchored" data-anchor-id="deselecting-all-marks">Deselecting All Marks</h4>
+<p>Now that we have introduced multiple custom markers to our test suite, what if we want to exclude all of these marked tests, just running the ‘core’ test suite? Unfortunately, there is not a way to specify ‘unmarked’ tests. There is an old <code>pytest</code> plugin called <a href="https://pypi.org/project/pytest-unmarked/"><code>pytest-unmarked</code></a> that allowed this functionality. Unfortunately, this plugin is not being actively maintained and is not compatible with <code>pytest</code> v8.0.0+. You could introduce a ‘standard’ or ‘core’ marker, but you’d need to remember to mark every unmarked test within your test suite with it.</p>
+<p>Alternatively, what we can do is exclude each of the marks that have been registered. There are 2 patterns for achieving this:</p>
+<blockquote class="blockquote">
+<ol type="1">
+<li><code>pytest -v -m "not &lt;INSERT_MARK_1&gt; ... or not &lt;INSERT_MARK_N&gt;"</code></li>
+<li><code>pytest -v -m "not (&lt;INSERT_MARK_1&gt; ... or &lt;INSERT_MARK_N&gt;)"</code></li>
+</ol>
+</blockquote>
+<div class="sourceCode" id="cb26"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "not (flaky or slow or integration)"</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- ...</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>cachedir<span class="ch">:</span> .pytest_cache</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>rootdir<span class="ch">:</span> /...</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>configfile<span class="ch">:</span> pyproject.toml</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>testpaths<span class="ch">:</span> ./tests</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>collected 6 items / 5 deselected / 1 selected                                 </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>tests/test_do_something.py<span class="ch">::test_nothing</span> PASSED                          <span class="ch">[1</span>00<span class="co">%]</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>======================= 1 passed, 5 deselected in 0.05s =======================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that using <code>or</code> has greedily excluded any test marked with at least one of the specified marks.</p>
+</section>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>Registering marks with <code>pytest</code> is very easy and is useful for controlling which tests are executed. We have illustrated:</p>
+<ul>
+<li>registering marks</li>
+<li>marking tests and test classes</li>
+<li>the use of the <code>pytest -m</code> flag</li>
+<li>selection of multiple marks</li>
+<li>deselection of multiple marks</li>
+</ul>
+<p>Overall, this feature of <code>pytest</code> is simple and intuitive. There are more options for marking tests. I recommend reading the <a href="https://docs.pytest.org/en/7.1.x/example/markers.html"><code>pytest</code> custom markers</a> examples for more information.</p>
+<p>As mentioned earlier, this is the final in the <a href="../blogs/index.html#category=pytest-in-plain-english">pytest in plain English</a> series. I will be taking a break from blogging about testing for a while. But colleagues have asked about articles on property-based testing and some of the more useful <code>pytest</code> plug-ins. I plan to cover these topics at a later date.</p>
+<p>If you spot an error with this article, or have a suggested improvement then feel free to <a href="https://github.com/r-leyshon/blogging/issues">raise an issue on GitHub</a>.</p>
+<p>Happy testing!</p>
+</section>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>To past and present colleagues who have helped to discuss pros and cons, establishing practice and firming-up some opinions. Particularly:</p>
+<ul>
+<li>Ethan</li>
+<li>Sergio</li>
+</ul>
+<p id="fin">
+<i>fin!</i>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
