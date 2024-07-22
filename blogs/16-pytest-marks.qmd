@@ -1,7 +1,7 @@
 ---
 title: "Custom Marks With Pytest in Plain English"
 author: "Rich Leyshon"
-date: "July 21 2024"
+date: "July 22 2024"
 description: "Selectively running tests with marks"
 categories:
     - Explanation
