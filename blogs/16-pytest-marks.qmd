@@ -558,7 +558,9 @@ tests/test_do_something.py::test_take_a_nap PASSED                       [100%]
 
 Note that anything not marked with `flaky` or `slow` (eg `test_nothing()`) was
 not run. Also, `test_croissant()` failed 3 times in a row while I tried to get
-a pass, so that the ugly looking console output didn't mess up my article. 
+a passing run. I didn't want the flaky exception to carry on presenting itself.
+While I may be sprinkling glitter, I do not want to misrepresent how
+frustrating flaky tests can be!
 
 <div class="tenor-gif-embed center" data-postid="24035134" data-share-method="host" data-aspect-ratio="1.22605" data-width="50%"><a href="https://tenor.com/view/glitter-gif-24035134">Glitter GIF</a>from <a href="https://tenor.com/search/glitter-gifs">Glitter GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 
@@ -636,6 +638,182 @@ tests/test_do_something.py::test_check_site_available PASSED             [100%]
 
 Note that both `test_nothing()` (unmarked) and `test_croissant()` (deselected)
 were not run.
+
+#### Marks and Test Classes
+
+Note that so far, we have applied marks to test functions only. But we can also
+apply marks to an entire test class, or even target specific test modules. For
+this section, I will introduce the wrapper function introduced earlier and mark
+it with 2 new marks, `classy` and `subclassy`.
+
+```{.abc}
+# `pytest` configurations
+[tool.pytest.ini_options]
+markers = [
+    "flaky: tests that can randomly fail through no change to the code",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: tests that require external resources",
+    "classy: tests arranged in a class",
+    "subclassy: test methods",
+]
+```
+
+Updating our test module to include `test_goofy_wrapper()`:
+
+```{python}
+#| eval: false
+
+import pytest
+
+from example_pkg.do_something import (
+    croissant,
+    take_a_nap,
+    check_site_available,
+    goofy_wrapper
+    )
+
+
+def test_nothing():
+    pass
+
+
+@pytest.mark.flaky
+def test_croissant():
+    assert croissant()
+
+
+@pytest.mark.slow
+def test_take_a_nap():
+    out = take_a_nap(how_many_seconds=3)
+    assert isinstance(out, str), f"a string was not returned: {type(out)}"
+    assert out == "Rise and shine!", f"unexpected string pattern: {out}"
+
+
+@pytest.mark.integration
+def test_check_site_available():
+    url = "https://thedatasavvycorner.com/"
+    assert check_site_available(url), f"site {url} is down..."
+
+
+@pytest.mark.classy
+class TestGoofyWrapper:
+    @pytest.mark.subclassy
+    def test_goofy_wrapper_url_exists(self):
+        assert goofy_wrapper(
+            "https://thedatasavvycorner.com/", 1
+            ).endswith("Your site is up!"), "The site wasn't up."
+    @pytest.mark.subclassy
+    def test_goofy_wrapper_url_does_not_exist(self):
+        assert goofy_wrapper(
+            "https://thegoofycorner.com/", 1
+            ).endswith("Your site is down!"), "The site wasn't down."
+
+```
+
+Note that targetting either the `classy` or `subclassy` mark results in the
+same output - all tests within this test class are executed:
+
+```{.abc}
+... % pytest -v -m "classy"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 6 items / 4 deselected / 2 selected                                 
+
+TestGoofyWrapper::test_goofy_wrapper_url_exists PASSED                   [ 50%]
+TestGoofyWrapper::test_goofy_wrapper_url_does_not_exist PASSED           [100%]
+
+======================= 2 passed, 4 deselected in 2.30s =======================
+
+```
+
+#### Tests with Multiple Marks
+
+Note that we can use multiple marks with any test or test class. Let's update
+`TestGoofyWrapper` to be marked as `integration` & `slow`:
+
+```{python}
+#| eval: false
+@pytest.mark.slow
+@pytest.mark.integration
+@pytest.mark.classy
+class TestGoofyWrapper:
+    @pytest.mark.subclassy
+    def test_goofy_wrapper_url_exists(self):
+        assert goofy_wrapper(
+            "https://thedatasavvycorner.com/", 1
+            ).endswith("Your site is up!"),"The site wasn't up."
+    @pytest.mark.subclassy
+    def test_goofy_wrapper_url_does_not_exist(self):
+        assert goofy_wrapper(
+            "https://thegoofycorner.com/", 1
+            ).endswith("Your site is down!"), "The site wasn't down."
+
+```
+
+This test class can now be exclusively targetted by specifying all of its marks
+with `and`:
+
+>  `pytest -v -m "<INSERT_MARK_1> and <INSERT_MARK2>... and <INSERT_MARK_N>"`
+
+```{.abc}
+
+... % pytest -v -m "integration and classy"   
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- /...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 6 items / 4 deselected / 2 selected                                 
+
+TestGoofyWrapper::test_goofy_wrapper_url_exists PASSED                   [ 50%]
+TestGoofyWrapper::test_goofy_wrapper_url_does_not_exist PASSED           [100%]
+
+======================= 2 passed, 4 deselected in 2.30s =======================
+
+```
+
+Note that even though there are other tests marked with `integration` and
+`classy` seperately, they are excluded on the basis that `and` expects them to
+be marked with both.
+
+#### Deselecting All Marks
+
+Now that we have introduced multiple custom markers to our test suite, what if
+we want to exclude all of these marked tests, just running the 'core' test
+suite? Unfortunately, there is not a way to specify 'unmarked' tests. There is
+an old `pytest` plugin called
+[`pytest-unmarked`](https://pypi.org/project/pytest-unmarked/) that allowed
+this functionality. Unfortunately, this plugin is not being actively maintained
+and is not compatible with `pytest` v8.0.0+. 
+
+Instead, what we need to do is exclude each of the marks that have been
+registered. There are 2 patterns for achieving this:
+
+> 1. `pytest -v -m "not <INSERT_MARK_1> ... or not <INSERT_MARK_N>"`
+> 2. `pytest -v -m "not (<INSERT_MARK_1> ... or <INSERT_MARK_N>)"`
+
+```{.abc}
+... % pytest -v -m "not (flaky or slow or integration)"
+============================= test session starts =============================
+platform darwin -- Python 3.12.3, pytest-8.1.1, pluggy-1.5.0 -- ...
+cachedir: .pytest_cache
+rootdir: /...
+configfile: pyproject.toml
+testpaths: ./tests
+collected 6 items / 5 deselected / 1 selected                                 
+
+tests/test_do_something.py::test_nothing PASSED                          [100%]
+
+======================= 1 passed, 5 deselected in 0.05s =======================
+
+```
+Note that using `or` has greedily excluded any test marked with at least one of
+the specified marks. 
 
 ## Summary
 
