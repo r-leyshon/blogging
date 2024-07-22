@@ -817,7 +817,25 @@ the specified marks.
 
 ## Summary
 
-...
+Registering marks with `pytest` is very easy and is useful for controlling
+which tests are executed. We have illustrated:
+
+* registering marks
+* marking tests and test classes
+* the use of the `pytest -m` flag
+* selection of multiple marks
+* deselection of multiple marks
+
+Overall, this feature of `pytest` is simple and intuitive. There are more
+options for marking tests. I recommend reading the
+[`pytest` custom markers](https://docs.pytest.org/en/7.1.x/example/markers.html)
+examples for more information.
+
+As mentioned earlier, this is the final in the
+[pytest in plain English](/blogs/index.qmd#category=pytest-in-plain-english)
+series. I will be taking a break from blogging about testing for a while. But
+colleagues have asked about articles on property-based testing and some of the
+more useful `pytest` plug-ins. I plan to cover these topics at a later date.
 
 If you spot an error with this article, or have a suggested improvement then
 feel free to
