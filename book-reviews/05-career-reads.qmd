@@ -1,6 +1,6 @@
 ---
 title: "4 Books That Shaped my Civil Service Career"
-subtitle: "Recommendations for Public Sector Analysts"
+description: "Recommendations for Public Sector Analysts"
 author: "Rich Leyshon"
 date: July 24 2024
 categories:        
@@ -8,10 +8,9 @@ categories:
     - Career
     - Productivity
     - Programming
-    - Data Science
-    - Software Developer
     - Analyst
     - Public Sector
+    - Civil Service
 image: https://i.imgur.com/MiCmAtN.jpeg
 
 image-alt: "Staircase composed of books ascends a mountain"
@@ -37,9 +36,10 @@ kinds of books that I would benefit from reading.
 As I anticipate starting in my new role, I'd like to take the opportunity to
 pay some of these thoughtful recommendations forward. If you're starting out in
 the public sector, or considering it, then you may find some of these texts to
-be helpful. Three of the four are open source and free to anyone with internet
-access. The books would appeal to distinct audiences, so I'll try to set out
-my interpretation of the audience.
+be helpful. 
+
+Some of the books will be useful to a broad audience of civil servants, though
+others may be more relevant to those who program as part of their job.
 
 ## The Recommendations
 
@@ -53,7 +53,10 @@ and integrated into my working practice to some extent.
 :::
 
 I will work through a recommendation for each year of service in roughly
-chronological order - no ranking implied. 
+chronological order - no ranking implied. Three of the four recommendations are
+open source and free to anyone with internet access. The books appeal to
+distinct audiences, so I'll try to set out who I think will find the content
+useful.
 
 ### 1. 7 Habits of Highly Effective People
 
@@ -71,7 +74,48 @@ applied to your everyday life, too.
 
 :::
 
+I have a bit of a long history with this book. I was initially recommended it
+when working as a high school science teacher as part of a training event. For
+some curious reason I found myself resistant to picking it up. I think I felt
+too busy to dedicate myself to much reading in general at that point in my
+career and in retrospect, that was a mistake. This book has lots of really
+useful, actionable guidance for doing more of what matters most.
 
+Starting from a point of personal effectiveness will set you up for success in
+the civil service, particularly as you develop proficiency in this skill, you
+may be expected to extend this effectiveness to others through the management
+of people and projects. 
+
+The highlight of the book for me is the famous Covey Quadrant:
+
+<img alt="Covey quadrant, creative commons." src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/7_habits_decision-making_matrix.png/596px-7_habits_decision-making_matrix.png?20181120003806" width="400" class="center">
+
+This was adapted from the Eisenhower Matrix, named after the former president
+who had devised the rubrik. Covey's guidance on the matter was to spend time
+at the start of the day (or even better, at the end of the previous day)
+triaging your tasks against the dimensions of urgency and importance. And to be
+mindful that the everyday pressures may push you towards quadrant 1, while the
+most effective use of your time is generally within quadrant 2.
+
+This approach seemed revalatory to me at the time of reading and would have
+certainly helped during the early stages in my education career. I readily
+applied this approach from the outset of my civil service career as a financial
+analyst and then later data science lecturer. As I progressed to managing a
+faculty of data science lecturers, I had spotted a team in another government
+department using an interactive team Covey Quadrant. This was a great
+opportunity to trial the approach with the faculty, who were extremely busy
+delivering technical training across public sector bodies while also needing to
+iterate and improve on the service offering. 
+
+`<INSERT IFRAME OF DUMMY BI TOOL>`
+
+This tool was exceptionally useful in helping manage demand on the team.
+Conversations about feasible turnaround and how incoming priorities compared to
+pre-existing work were well-informed by a quick weekly update to the
+dashboard's data (nothing more than updating a couple of columns in an Excel
+spreadsheet). This tool became my indespensible buddy during that period of
+high demand and I would thoroughly recommend taking the time to put something
+similar together if you find your team is in a similar situation.
 
 ### 2. Agile DSDM Project Framework
 
