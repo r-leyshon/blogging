@@ -1,0 +1,192 @@
+---
+title: "4 Books That Shaped my Civil Service Career"
+subtitle: "Recommendations for Public Sector Analysts"
+author: "Rich Leyshon"
+date: July 24 2024
+categories:        
+    - Non-fiction
+    - Career
+    - Productivity
+    - Programming
+    - Data Science
+    - Software Developer
+    - Analyst
+    - Public Sector
+image: https://i.imgur.com/MiCmAtN.jpeg
+
+image-alt: "Staircase composed of books ascends a mountain"
+toc: true
+toc-depth: 3
+---
+
+<figure class=center>
+ <img class=shaded_box src=https://i.imgur.com/MiCmAtN.jpeg alt="Staircase composed of books ascends a mountain." width=400px>
+</figure>
+
+## Introduction
+
+4 years into my career in the UK civil service, I am about to move to a new
+department and am taking the time to consider successes, challenges and lessons
+learned along the way. It's been an incredible journey. I've been lucky to have
+worked with some of the most talented people and on some fantastic projects. 
+
+One of my most valued opportunities to learn is in the form of a great book
+recommendation, especially when someone has taken the time to get to know the
+kinds of books that I would benefit from reading. 
+
+As I anticipate starting in my new role, I'd like to take the opportunity to
+pay some of these thoughtful recommendations forward. If you're starting out in
+the public sector, or considering it, then you may find some of these texts to
+be helpful. Three of the four are open source and free to anyone with internet
+access. The books would appeal to distinct audiences, so I'll try to set out
+my interpretation of the audience.
+
+## The Recommendations
+
+:::{.callout-note}
+
+### Product Placement
+
+This article is not sponsored by anyone. All of the books here have been read
+and integrated into my working practice to some extent. 
+
+:::
+
+I will work through a recommendation for each year of service in roughly
+chronological order - no ranking implied. 
+
+### 1. 7 Habits of Highly Effective People
+
+<img src="https://www.franklincovey.com/wp-content/uploads/2023/11/book_7-habits_600x600.png" data-src="https://www.franklincovey.com/wp-content/uploads/2023/11/book_7-habits_600x600.png" alt="7 habits of highly effective people" class="center" data-ll-status="loaded">
+
+The Seven Habits of Highly Effective People by Stephen R. Covey @Covey.
+
+:::{.callout-tip collapse="true"}
+
+#### Who Is It For? (Click to expand)
+
+Just about anyone. But particularly, anyone whose job affords them the
+responsibility of directing their own time. Though there is also a lot to be
+applied to your everyday life, too.
+
+:::
+
+
+
+### 2. Agile DSDM Project Framework
+
+<img src="https://products.agilebusiness.org/static/343b69ec-37c5-45da-90fc10a0ee471b55/137a12af-29e5-4ed8-b4cf7ac05b1baf06/agile-pm-square.png" alt="agile-pm-square.png" class="center" width=50%>
+
+The Dynamic Systems Development Method @dsdm, now more broadly known as the
+agile method, published by the Agile Business Consortium Ltd.
+
+:::{.callout-tip collapse="true"}
+
+#### Who Is It For? (Click to expand)
+
+Anyone who needs to design, build or ship products, particularly software. So
+any of the following (not an exhaustive list):
+
+* Data Scientist
+* Data Engineer
+* Data Analyst
+* Software Developer
+* Agile Coach
+* Project Manager
+* Scrum Master
+* Product Owner
+* Development Team Lead
+* Software Developer
+* QA/Test Manager
+* Change Manager
+* IT Manager
+* Program Manager
+* Business Architect
+* Business Analyst
+* System Architect
+* Technical Architect
+* Solution Architect
+* UX/UI Designer
+* User Researcher
+* Interaction Designer
+* Graphic Designer
+* Portfolio Manager
+* Digital Marketing Specialist
+* Security Architect
+
+:::
+
+### 3. The Turing Way
+
+<img src="https://book.the-turing-way.org/_static/logo-detail-with-text.svg" class="center" alt="Turing Way logo" width=50%>  
+
+The Turing Way @turing-way published by the Turing Way Community and a flagship
+product of the
+[Alan Turing Institute](https://www.turing.ac.uk/turing-way-practitioners-hub).
+
+:::{.callout-tip collapse="true"}
+
+#### Who Is It For? (Click to expand)
+
+Helpfully, the book authors have considered the learning personas of their key
+audience:
+
+* Researchers
+* Project Leads
+* Software Developers
+
+Though there is a lot to be gained for anyone involved in research or analysis.
+
+:::
+
+### 4. ONS Duck Book
+
+<img src="https://best-practice-and-impact.github.io/qa-of-code-guidance/_static/duck_book_logo.svg" class="center" alt="Quality Assurance of Code for Analysis and Research - logo" width=50%>  
+
+The Duck Book @quac is the warmly regarded pseudonym for Quality Assurance of
+Code for Analysis & Research (QuAC!), published by the
+[UK Statistics Authority](https://dataingovernment.blog.gov.uk/2021/03/24/software-engineering-in-analysis/).
+
+:::{.callout-tip collapse="true"}
+
+#### Who Is It For? (Click to expand)
+
+Anyone undertaking analysis in Government, here's a non-exhaustive list:
+
+* Economist
+* Operational Research Analyst
+* Social Researcher
+* Statistician
+* Data Scientist
+* Data Analyst
+* Data Engineer
+* Digital, Data and Technology Analyst
+* Policy Analyst
+* Evaluation Specialist
+* Behavioural Scientist
+* Demographer
+* Geospatial Analyst
+* Intelligence Analyst
+* Risk Analyst
+* Performance Analyst
+* Financial Analyst
+* Business Intelligence Analyst
+* Market Analyst
+* Health Analyst
+* Education Analyst
+* Environmental Analyst
+
+:::
+
+### Special Mentions
+
+These books are also great but perhaps have a more specialist readership or I
+am still in the process of reading and assimilating their concepts:
+
+* AQUA book @aqua by Government Analysis Function & H.M. Treasury.
+* Deep Work by Cal Newport @DeepWork. 
+* Data Visualisation: A Handbook for Data Driven Design by Andy Kirk @kirk-viz.
+* Complexity Economics and Sustainable Development: A Computational Framework
+for Policy Priority Inference by Omar Guerrero and Gonzalo Castañeda @ppi.
+
+## In Summary
