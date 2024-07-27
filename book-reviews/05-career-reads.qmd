@@ -121,7 +121,8 @@ similar together if you find your team is in a similar situation.
 <img src="https://products.agilebusiness.org/static/343b69ec-37c5-45da-90fc10a0ee471b55/137a12af-29e5-4ed8-b4cf7ac05b1baf06/agile-pm-square.png" alt="agile-pm-square.png" class="center" width=50%>
 
 The Dynamic Systems Development Method @dsdm, an agile project management
-framework, published by the Agile Business Consortium Ltd.
+framework, published by the Agile Business Consortium Ltd and is available to
+read for free on their website.
 
 :::{.callout-tip collapse="true"}
 
