@@ -11,15 +11,14 @@ categories:
     - Analyst
     - Public Sector
     - Civil Service
-image: https://i.imgur.com/MiCmAtN.jpeg
+image: https://i.imgur.com/Yay92uO.jpg
 
-image-alt: "Staircase composed of books ascends a mountain"
+image-alt: "A man ascends a staircase of books"
 toc: true
 toc-depth: 3
 ---
-
 <figure class=center>
- <img class=shaded_box src=https://i.imgur.com/MiCmAtN.jpeg alt="Staircase composed of books ascends a mountain." width=400px>
+ <img class=shaded_box src=https://i.imgur.com/Yay92uO.jpg alt="A man ascends a staircase of books" width=400px>
 </figure>
 
 ## Introduction
