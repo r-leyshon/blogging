@@ -120,8 +120,8 @@ similar together if you find your team is in a similar situation.
 
 <img src="https://products.agilebusiness.org/static/343b69ec-37c5-45da-90fc10a0ee471b55/137a12af-29e5-4ed8-b4cf7ac05b1baf06/agile-pm-square.png" alt="agile-pm-square.png" class="center" width=50%>
 
-The Dynamic Systems Development Method @dsdm, now more broadly known as the
-agile method, published by the Agile Business Consortium Ltd.
+The Dynamic Systems Development Method @dsdm, an agile project management
+framework, published by the Agile Business Consortium Ltd.
 
 :::{.callout-tip collapse="true"}
 
@@ -158,6 +158,58 @@ any of the following (not an exhaustive list):
 * Security Architect
 
 :::
+
+A few years back, agile seemed to be the in-vogue project management (PM)
+system, especially for digital products. Its always had its vocal critics, but
+recently I sense it has now crested its wave.
+
+In my opinion, that's a shame. The core principles of agile I consider to be
+worth the effort:
+
+* Customer-centric development
+* Iterative delivery.
+* Flat development structure - succeed or fail together.
+
+A whole industry of consultation has grown around the popularity of agile DSDM.
+Finding objective guidance on its implementation can be tricky to find,
+particularly if you wish to compare and contrast it with other PM frameworks.
+
+> There's no **right** way to do agile. It's whatever you can make work with
+the resources at your disposal.
+
+In some guidance, the guiding agile principles become a bit obscured by
+process. An organisation's interpretation of how agile works often boils down
+to a vague understanding of role definitions and sprint ceremonies. If enough
+of your 'agile champions' leave, you may find yourself with all the process and
+none of the benefits. I once heard that "Agile simply produces rubbish
+quickly". I'd say that if an organisation is careless about its practice,
+that's a definite possibility.
+
+The reason I found Agile DSDM so influential, is that I benefitted from working
+with people who really championed it. Colleagues who had grasped the pros and
+cons and were keen to help the rest of the team navigate the implementation of
+the agile philosophy. I had benefitted from taking this experience with me to
+other organisations that had not practised agile, and enjoying the benefits and
+impact these simple rules, particularly for our customers. Bringing this
+experience with me to the civil service was definitely advantageous,
+particularly in customer-centric delivery.
+
+<img src="https://www.agilebusiness.org/static/f0e0abae-c39d-4e20-93b6fd6c84fab5f4/800x456_highestperformance__4a7c7e45a350/3b-projectvariables-trad.png" alt="Project demands payoff." style="display:block;margin-left:auto;margin-right:auto;width:70%;">
+Image © Agile Business Consortium Limited.
+
+I recall one of my directors stating something to the effect of,
+
+"You can have something built quickly and with quality, but have to pay for it.
+Or it can be built with quality and cheaply, but you'll have to wait for it. Or
+it could be built quickly and on a shoe string budget, but it'll be rubbish."
+
+I'd say that's a good interpretation of the agile priorities. The best agile
+teams and practitioners are brutally exact with timescales. The agile process
+involving phases of development punctuated by mini evaluation cycles with the
+customers, prior to entering into the next development phase. This frequent
+feedback to and from the customer keeps them highly engaged and giving them
+greater input into the quality of the final product. When managed well, Agile
+really works and your customers tell others that it works, too!
 
 ### 3. The Turing Way
 
