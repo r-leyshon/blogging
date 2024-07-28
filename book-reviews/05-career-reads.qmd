@@ -14,8 +14,7 @@ categories:
 image: https://i.imgur.com/Yay92uO.jpg
 
 image-alt: "A man ascends a staircase of books"
-toc: true
-toc-depth: 3
+toc: false
 ---
 <figure class=center>
  <img class=shaded_box src=https://i.imgur.com/Yay92uO.jpg alt="A man ascends a staircase of books" width=400px>
@@ -212,28 +211,60 @@ feedback to and from the customer keeps them highly engaged and giving them
 greater input into the quality of the final product. When managed well, Agile
 really works and your customers tell others that it works, too!
 
-### 3. The Turing Way
+### 3. Data Visualisation: A Handbook for Data Driven Design
 
-<img src="https://book.the-turing-way.org/_static/logo-detail-with-text.svg" class="center" alt="Turing Way logo" width=50%>  
+Data Visualisation: A Handbook for Data Driven Design by Andy Kirk @kirk-viz.
 
-The Turing Way @turing-way published by the Turing Way Community and a flagship
-product of the
-[Alan Turing Institute](https://www.turing.ac.uk/turing-way-practitioners-hub).
+<img src="https://r3e826.n3cdn2.secureserver.net/wp-content/uploads/2023/02/Book.jpg?time=1721908621" class="center" alt="Data Visualisation Book shot">  
+Image © Data Viz Excellence, Everywhere Ltd
 
 :::{.callout-tip collapse="true"}
 
 #### Who Is It For? (Click to expand)
 
-Helpfully, the book authors have considered the learning personas of their key
-audience:
-
 * Researchers
-* Project Leads
+* Data Analysts
+* Data Scientists
+* Data Journalists
 * Software Developers
-
-Though there is a lot to be gained for anyone involved in research or analysis.
+* Business Intelligence Analysts
+* Statisticians
+* Graphic Designers
+* Communications Professionals
+* UX/UI Designers
+* Marketing Analysts
+* Educators and Trainers
 
 :::
+
+I had been recommended this book during my time as a financial analyst working
+in a multidisciplinary team, some years before joining the civil service. A
+very talented graphic designer had recommended the book and lent it to me for
+a period. Some years later, I picked up my own copy of the second edition of
+the book.
+
+This is a fantastic gift for anyone interested in data visualisation. Analysts
+can become a bit blinkard to thinking that great data visualisation is nothing
+more than learning your organisation's house style. In fact, this
+'done in a day' attitude can be quite prevalent and quality assurance of charts
+can be extremely opinionated, placing increasingly narrow guardrails around the
+kinds of visualisation an organisation would consider publishing. 5 minutes of
+flicking through this book is enough to blow any conservatism in this space out
+of the water. 
+
+This was the first book that I read where the 'authoritative view from above'
+that can so often be implicit in many visualisations was challenged. From
+representing uncertainty to discussing the creative process and intended
+outcomes of a visualisation effort. This book collates a rich, evocative
+compendium of fantastic visualisations that invites the reader to learn,
+question and wonder about the various topics they present.
+
+<div style="text-align: center;">
+  <iframe style="overflow:hidden;border:0;margin:0;padding:0;width:50em" src="https://pudding.cool/2018/10/city_3d"></iframe>
+</div>
+
+Straddling the intersection of art, design and analytics, this book provokes
+analysts to challenge tautologies and to think creatively.
 
 ### 4. ONS Duck Book
 
@@ -307,9 +338,10 @@ appreciated.
 These books are also great but perhaps have a more specialist readership or I
 am still in the process of reading and assimilating their concepts:
 
+* The Turing Way @turing-way for championing open source and reproducible data
+science.
 * AQUA book @aqua by Government Analysis Function & H.M. Treasury.
 * Deep Work by Cal Newport @DeepWork. 
-* Data Visualisation: A Handbook for Data Driven Design by Andy Kirk @kirk-viz.
 * Complexity Economics and Sustainable Development: A Computational Framework
 for Policy Priority Inference by Omar Guerrero and Gonzalo Castañeda @ppi.
 
