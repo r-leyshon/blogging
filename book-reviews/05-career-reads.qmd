@@ -88,13 +88,13 @@ The highlight of the book for me is the famous Covey Quadrant:
 <img alt="Covey quadrant, creative commons." src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/7_habits_decision-making_matrix.png/596px-7_habits_decision-making_matrix.png?20181120003806" width="40%" class="center">
 
 This was adapted from the Eisenhower Matrix, named after the former president
-who had devised the rubrik. Covey's guidance was to spend time at the start of
+who had devised the rubric. Covey's guidance was to spend time at the start of
 the day (or even better, at the end of the previous day) triaging your tasks
 against the dimensions of urgency and importance. And to be mindful that the
 everyday pressures may push you towards quadrant 1, while the most effective
 use of your time is generally within quadrant 2.
 
-This approach seemed revalatory to me at the time of reading and would have
+This approach seemed revelatory to me at the time of reading and would have
 certainly helped during the early stages in my education career. I readily
 applied this approach from the outset of my civil service career as a financial
 analyst and then later as a data science lecturer. As I progressed to managing
@@ -110,7 +110,7 @@ This tool was exceptionally useful in helping manage demand. Conversations
 about feasible turnaround and how incoming priorities compared to pre-existing
 work were well-informed by a quick weekly update to the dashboard's data
 (nothing more than updating a couple of columns in an Excel spreadsheet). This
-tool became my indespensible buddy during that period of high demand and I
+tool became my indispensible buddy during that period of high demand and I
 would thoroughly recommend putting something similar together if you find your
 team need help managing competing demands.
 
@@ -184,10 +184,10 @@ the benefits. I once heard that "Agile simply produces rubbish quickly". I'd
 say that if an organisation is careless about its practice, that's a definite
 possibility.
 
-The reason I found Agile DSDM so influential, is that I benefitted from working
+The reason I found Agile DSDM so influential, is that I benefited from working
 with people who really championed it. Colleagues who had grasped the pros and
 cons and were keen to help the rest of the team navigate the implementation of
-the Agile philosophy. I had benefitted from taking this experience with me to
+the Agile philosophy. I had benefited from taking this experience with me to
 other organisations that had not discovered Agile, and enjoying the benefits
 of these simple rules.
 
@@ -198,7 +198,7 @@ I recall one of my directors stating something to the effect of,
 
 "You can have something built quickly and with quality, but have to pay for it.
 Or it can be built with quality and cheaply, but you'll have to wait for it. Or
-it could be built quickly and on a shoe string budget, but it'll be rubbish."
+it could be built quickly and on a shoestring budget, but it'll be rubbish."
 
 I'd say that's a good interpretation of the Agile priorities. It was very
 motivating to hear this unsolicited endorsement of Agile principles from the
@@ -324,10 +324,10 @@ Joining the civil service meant greater collaboration on analytical products.
 This book became my bible for 12 months while I got to grips with git, GitHub
 & best practice for collaborative development. It does a great job of giving a
 high level overview of all the important aspects and quality standards that a
-government analalyst needs to have awareness of, without being overwhelming.
-You can read it quickly in an hour, yet its guidance is something that I have
-continually referred back to for myself and others. Any developer new to the
-civil service would benefit from taking the time with this document.
+government analyst needs to have awareness of, without being overwhelming. You
+can read it quickly in an hour, yet its guidance is something that I have
+continually referred. Any developer new to the civil service would benefit from
+taking the time with this document.
 
 I couldn't discuss the Duck book without giving a special mention to the
 curated xkcd comic strips that the team have included at relevant points. It's
@@ -354,6 +354,6 @@ for Policy Priority Inference by Omar Guerrero and Gonzalo Castañeda @ppi.
 
 In this article, I shared four books that influenced my journey in the UK civil
 service. These books provide a well-rounded toolkit for analysts, offering
-guidance on personal effectiveness, project management, data visualization, and
+guidance on personal effectiveness, project management, data visualisation, and
 code quality assurance. They have been instrumental in shaping my career, and I
 hope they offer similar value to others embarking on a similar path.
