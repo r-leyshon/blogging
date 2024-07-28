@@ -333,16 +333,24 @@ appreciated.
 
 <img alt="Comic demonstrating poor file naming." src="https://imgs.xkcd.com/comics/documents.png" style="display:block;margin-left:auto;margin-right:auto;width:30%;">
 
-### Special Mentions
+## Special Mentions
 
 These books are also great but perhaps have a more specialist readership or I
 am still in the process of reading and assimilating their concepts:
 
 * The Turing Way @turing-way for championing open source and reproducible data
 science.
-* AQUA book @aqua by Government Analysis Function & H.M. Treasury.
-* Deep Work by Cal Newport @DeepWork. 
+* AQUA book @aqua by Government Analysis Function & H.M. Treasury, guidance on
+producing quality analysis for government.
+* Deep Work by Cal Newport: @DeepWork Be more intentional with how you allocate
+your working day. 
 * Complexity Economics and Sustainable Development: A Computational Framework
 for Policy Priority Inference by Omar Guerrero and Gonzalo Castañeda @ppi.
 
 ## In Summary
+
+In this article, I shared four books that incluenced my journey in the UK civil
+service. These books provide a well-rounded toolkit for analysts, offering
+guidance on personal effectiveness, project management, data visualization, and
+code quality assurance. They have been instrumental in shaping my career, and I
+hope they offer similar value to others embarking on a similar path.
