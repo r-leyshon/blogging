@@ -168,8 +168,8 @@ In my opinion, that's a shame. The core principles of agile I consider to be
 worth the effort:
 
 * Customer-centric development
-* Iterative delivery.
-* Flat development structure - succeed or fail together.
+* Iterative delivery
+* Flat development structure - succeed or fail together
 
 A whole industry of consultation has grown around the popularity of agile DSDM.
 Finding objective guidance on its implementation can be tricky to find,
@@ -273,6 +273,34 @@ Anyone undertaking analysis in Government, here's a non-exhaustive list:
 * Environmental Analyst
 
 :::
+
+The duck book is a fantastic resource that continues to evolve. It has
+changed considerably since I first read it in 2020 and now has information
+relevant to managers of development teams, too. 
+
+This book was incredibly useful to me when starting to develop code for the
+civil service. I had come from smaller development teams in wider public sector
+organisations. Constraints in those organisations meant that lone-wolf
+development was commonplace. No code review and too much trust placed on
+individual analysts to judge the proportionate risk management for multiple
+projects. 
+
+Joining the civil service meant greater collaboration on analytical products.
+This book became my bible for 12 months while I got to grips with git, GitHub
+& best practice for collaborative development. It does a great job of giving a
+high level overview of all the important aspects and quality standards that a
+government analalyst needs to have awareness of, without being overwhelming.
+You can read it quickly in an hour, yet its guidance is something that I have
+continually referred back to for myself and others. In fact, I think any
+developer new to civil service expectations would benefit from taking the time
+with this document.
+
+I couldn't discuss the Duck book without giving a special mention to the
+curated xkcd comic strips that the team have included at relevant points. It's
+rare to get a sense of humour in a civil service publication and very much
+appreciated.
+
+<img alt="Comic demonstrating poor file naming." src="https://imgs.xkcd.com/comics/documents.png" style="display:block;margin-left:auto;margin-right:auto;width:30%;">
 
 ### Special Mentions
 
