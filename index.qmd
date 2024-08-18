@@ -33,21 +33,21 @@ these things somewhere.
 
 ## Site Overview
 
-* [Byte-Wise Musings](blogs/index.qmd) : Technical blogs, Explanations,
+* [Technical Blogs](blogs/index.qmd) : Technical blogs, Explanations,
 tutorials, how-to guides. All articles are categorised according to the
 excellent [diataxis framework](https://diataxis.fr/).
 
-* [Productivity Pulse](music-reviews/index.qmd) : Music reviews. I listen to
+* [Music Reviews](music-reviews/index.qmd) : Mostly album reviews. I listen to
 strictly non-verbal music when programming. This was a habit that I developed
 while working within a busy office environment. Instrumental music of several
 genres has helped me efficiently establish a state of mental flow required for
 deep concentration. I'll include reviews of some of my favourite albums here,
 categorised by genre.
 
-* [Bookmarked Insights](book-reviews/index.qmd) : Book reviews. Much of my
-casual reading is non-fiction tangential to programming. I'll review material
-here that I have found to be supportive of my work in various aspects,
-categorised by genre.
+* [Book Reviews](book-reviews/index.qmd) : Much of my casual reading is
+non-fiction tangential to programming. I'll review material here that I
+have found to be supportive of my work in various aspects, categorised
+by genre.
 
 ## Recent Articles
 

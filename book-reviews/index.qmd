@@ -1,5 +1,5 @@
 ---
-title: Bookmarked Insights
+title: Books
 listing:
     type: grid
     contents:
