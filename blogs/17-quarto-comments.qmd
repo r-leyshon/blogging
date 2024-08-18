@@ -1,0 +1,39 @@
+---
+title: "Quarto Comments"
+author: "Rich Leyshon"
+date: "August 18 2024"
+description: "Comparing Hypothes.is, Utterances & Giscus."
+categories:
+    - Explanation
+    - Quarto
+    - Comments
+    - Hypothes.is
+    - GitHub
+    - Utterances
+    - Giscus
+image: /./www/17-quarto-comments/speech-bubbles.png
+image-alt: "Speech bubbles with emojis"
+toc: true
+toc-depth: 4
+---
+
+<figure class=center >
+  <img class="shaded_box" width=400px src="/./www/17-quarto-comments/speech-bubbles.png"></img>
+  <figcaption>Speech bubbles with emojis.</figcaption>
+</figure>
+
+> "It takes humility to seek feedback. It takes wisdom to understand it, analyze it and appropriately act on it." Stephen Covey.
+
+## Introduction
+
+...
+
+
+## Summary
+
+If you spot an error with this article, or have a suggested improvement then
+feel free to leave a comment (GitHub login required) or
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+
+<p id=fin><i>fin!</i></p>
