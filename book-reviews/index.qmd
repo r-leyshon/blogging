@@ -1,5 +1,6 @@
 ---
 title: Books
+comments: false
 listing:
     type: grid
     contents:

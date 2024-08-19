@@ -49,7 +49,7 @@ format:
         category: Announcements
         category-id: DIC_kwDOJ7xM-84Chxs3
         mapping: url
-        theme: preferred_color_scheme
+        theme: cobalt
 bibliography: ./bibliography/references.bib
 biblio-title: ""
 csl: ./bibliography/ieee.csl

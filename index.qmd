@@ -2,6 +2,7 @@
 title: "Welcome to The Data Savvy Corner!"
 author: "Rich Leyshon"
 date-modified: today
+comments: false
 resources:
   - .nojekyll
 listing:

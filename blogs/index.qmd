@@ -1,5 +1,6 @@
 ---
 title: Technical Blogs
+comments: false
 listing:
     type: grid
     contents:
