@@ -64,8 +64,8 @@ commenting features yourself. Click on the arrow in the top-right hand corner to
 expand the Hypothesis user interface (UI). Code for the site is available on
 [GitHub](https://github.com/r-leyshon/quarto-hypothesis).
 
-<div style="text-align:center;">
-  <iframe class=iframey src="https://r-leyshon.github.io/quarto-hypothesis/"></iframe>
+<div style="text-align:center;padding-left:10%;">
+  <iframe class=iframey src="https://r-leyshon.github.io/quarto-hypothesis/" style="overflow:hidden;margin:0;padding:0;width:80%"></iframe>
 </div>
 
 ***
@@ -109,8 +109,8 @@ Utterances UI will appear on your site but will not function correctly. Code for
 site with Utterances is
 [available on GitHub](https://github.com/r-leyshon/quarto-utterances). The site can be viewed below.
 
-<div style="text-align:center;">
-  <iframe class=iframey src="https://r-leyshon.github.io/quarto-utterances/"></iframe>
+<div style="text-align:center;padding-left:10%;">
+  <iframe class=iframey src="https://r-leyshon.github.io/quarto-utterances/" style="overflow:hidden;margin:0;padding:0;width:80%"></iframe>
 </div>
 
 ***
@@ -153,12 +153,8 @@ In the same way as Utterances, you will need to give the
 [Giscus GitHub app](https://github.com/apps/giscus) permissions to read and write repo metadata.
 Users will also require a GitHub account in order to authenticate. Code for A minimal quarto site
 with Giscus is [available on GitHub](https://github.com/r-leyshon/quarto-giscus).
-The site can be viewed below.
-
-
-<div style="text-align:center;">
-  <iframe class=iframey src="https://r-leyshon.github.io/quarto-giscus/"></iframe>
-</div>
+The [site can be viewed here](https://r-leyshon.github.io/quarto-giscus/)
+(the Giscus interface will not render correctly within an iframe).
 
 ***
 
