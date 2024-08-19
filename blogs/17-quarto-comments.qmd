@@ -32,11 +32,11 @@ with your site, leaving text or emoji feedback. Quarto currently offers built-in
 support for three commenting widgets. This article compares their functionality,
 linking to minimal implementations of each.
 
-For full details on how to implement each commenting solution, please consult the
+For full details on how to implement each solution, please consult the
 [Quarto commenting documentation](https://quarto.org/docs/output-formats/html-basics.html#commenting).
 
-This article was written with Quarto 1.5.56. Some of the commenting solutions explored
-in this article are in development and may change in the future.
+This article was written with Quarto 1.5.56. The solutions explored in this article are
+in development and may change in the future.
 
 
 ### Intended Audience
@@ -51,7 +51,7 @@ adding commenting features to their site.
 
 ## Hypothesis
 
-Hypothesis is a great new, feature-rich social annotation solution. It has a strong
+Hypothesis is a great new, feature-rich, social annotation solution. It has a strong
 [commitment to open source](https://web.hypothes.is/about/). After exploring its main
 features, I would suggest it is aimed at a broad audience with strong features for academic
 audiences, particularly cohorts of students that will benefit from group analysis
@@ -103,10 +103,10 @@ Utterances uses GitHub Issues to store comment data. If you are deploying your s
 and are not making good use of the repo issues, this could be a viable option. It's important to
 note that your users will need a GitHub account and to authenticate in order to post comments on
 your site. Please consult the [Utterances documentation](https://utteranc.es/)
-for more information. In order to read and write issues on your repo, you do need to allow the
-[Utterances GitHub app](https://github.com/apps/utterances) permission. Without doing this, the
-Utterances UI will appear on your site but will not function correctly. Code for A minimal Quarto
-site with Utterances is
+for more information. In order to read and write issues on your repo, you do need to give the
+[Utterances GitHub app](https://github.com/apps/utterances) permission to read and write repo
+metadata. Without doing this, the Utterances UI will appear on your site but will not function
+correctly. Code for A minimal Quarto site with Utterances is
 [available on GitHub](https://github.com/r-leyshon/quarto-utterances). The site can be viewed below.
 
 <div style="text-align:center;padding-left:10%;">
@@ -123,7 +123,6 @@ site with Utterances is
 | Markdown compatibility as per usual GitHub issues.                                             |
 | First comment on a page creates an issue, subsequent comments are added to the same issue.     |
 | Reactions to comments with emojis.                                                             |
-| Revisions are possible though are not achievable through the website UI. By navigating to the repo issues, you can edit any comment that was authored by your account.                                          |
 
 : Pros {#tbl-first .striped .hover .tabley}
 
@@ -133,7 +132,8 @@ site with Utterances is
 | Marking issues as closed does not remove them from the site.                                   |
 | Deleting the issue from the repo will remove the comment but may also mess up the mapping of comments to pages. May cause issues moderating.                                                                     |
 | Couldn't get the labels feature to work, despite creating the issue label of the same name, as the documentation suggested.                                                                                       |
-| Cannot respond to a comment with text.                                                          |
+| Cannot respond to a comment with text.                                                         |
+| Revisions are possible though are not achievable through the website UI. By navigating to the repo issues, you can edit any comment that was authored by your account.                                          |
 
 : Cons {#tbl-second .striped .hover .tabley}
 
@@ -189,17 +189,17 @@ will already have access to GitHub accounts and therefore one of the GitHub-spec
 solutions may present less of a barrier to your audience engaging with your content.
 
 Comparing GitHub Utterances with Giscus, I considered the greater functionality
-and look of Giscus to be just a little better than Utterances. Therefore I opted
-for this solution, though will keep it under review incase of breaking changes.
+and look of the Giscus UI to be just a little better than Utterances. Therefore I
+opted for this solution for this site, though I'll keep it under review incase of
+breaking changes.
 
 It's great that the Quarto development team have implemented support for several
 commenting widgets. Although there are a great variety of alternative solutions
-available to site maintainers and implementing any of these solutions should be
-possible as quarto document metadata is fully customisable.
+available and implementing any of these solutions should be possible as quarto
+document metadata is fully customisable.
 
 If you spot an error with this article, or have a suggested improvement then
 feel free to leave a comment (GitHub login required) or
 [raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
-
 
 <p id=fin><i>fin!</i></p>
