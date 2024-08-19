@@ -10,39 +10,9 @@
     ]
   },
   {
-    "listing": "/book-reviews/index.html",
-    "items": [
-      "/book-reviews/05-career-reads.html",
-      "/book-reviews/04-dark-data.html",
-      "/book-reviews/03-amusing-ourselves-to-death.html",
-      "/book-reviews/02-algorithms-to-live-by.html",
-      "/book-reviews/01-deep-work.html"
-    ]
-  },
-  {
-    "listing": "/blogs/index.html",
-    "items": [
-      "/blogs/16-pytest-marks.html",
-      "/blogs/15-pytest-mocking.html",
-      "/blogs/14-gh-actions-security.html",
-      "/blogs/13-pytest-parametrize.html",
-      "/blogs/12-pytest-tmp-path.html",
-      "/blogs/11-fiddly-bits-of-pytest.html",
-      "/blogs/10-pydeck-with-gpd.html",
-      "/blogs/09-cycling-network-r5py.html",
-      "/blogs/08-quarto-conda-env.html",
-      "/blogs/07-schedule-deploy-shinyapps.html",
-      "/blogs/06-working-with-ONS-open-geo-portal.html",
-      "/blogs/05-signed-commits.html",
-      "/blogs/04-starfield-resources.html",
-      "/blogs/03-quarto-github-actions.html",
-      "/blogs/01-state-of-pyshiny.html",
-      "/blogs/02-getting-started-pyshiny.html"
-    ]
-  },
-  {
     "listing": "/index.html",
     "items": [
+      "/blogs/17-quarto-comments.html",
       "/book-reviews/05-career-reads.html",
       "/blogs/16-pytest-marks.html",
       "/blogs/15-pytest-mocking.html",
@@ -69,6 +39,38 @@
       "/book-reviews/01-deep-work.html",
       "/blogs/01-state-of-pyshiny.html",
       "/blogs/02-getting-started-pyshiny.html"
+    ]
+  },
+  {
+    "listing": "/blogs/index.html",
+    "items": [
+      "/blogs/17-quarto-comments.html",
+      "/blogs/16-pytest-marks.html",
+      "/blogs/15-pytest-mocking.html",
+      "/blogs/14-gh-actions-security.html",
+      "/blogs/13-pytest-parametrize.html",
+      "/blogs/12-pytest-tmp-path.html",
+      "/blogs/11-fiddly-bits-of-pytest.html",
+      "/blogs/10-pydeck-with-gpd.html",
+      "/blogs/09-cycling-network-r5py.html",
+      "/blogs/08-quarto-conda-env.html",
+      "/blogs/07-schedule-deploy-shinyapps.html",
+      "/blogs/06-working-with-ONS-open-geo-portal.html",
+      "/blogs/05-signed-commits.html",
+      "/blogs/04-starfield-resources.html",
+      "/blogs/03-quarto-github-actions.html",
+      "/blogs/01-state-of-pyshiny.html",
+      "/blogs/02-getting-started-pyshiny.html"
+    ]
+  },
+  {
+    "listing": "/book-reviews/index.html",
+    "items": [
+      "/book-reviews/05-career-reads.html",
+      "/book-reviews/04-dark-data.html",
+      "/book-reviews/03-amusing-ourselves-to-death.html",
+      "/book-reviews/02-algorithms-to-live-by.html",
+      "/book-reviews/01-deep-work.html"
     ]
   }
 ]

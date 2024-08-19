@@ -1,127 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
-    <lastmod>2023-12-28T08:50:10.216Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/music-reviews/04-triads.html</loc>
-    <lastmod>2024-04-19T14:38:35.097Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/music-reviews/02-zelda-and-chill.html</loc>
-    <lastmod>2024-02-01T08:36:54.609Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/legal.html</loc>
-    <lastmod>2024-02-13T07:02:24.409Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/book-reviews/index.html</loc>
-    <lastmod>2023-12-28T08:50:10.182Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/book-reviews/04-dark-data.html</loc>
-    <lastmod>2024-07-02T11:25:41.019Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</loc>
-    <lastmod>2023-12-31T08:34:23.474Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
-    <lastmod>2023-12-28T08:50:10.181Z</lastmod>
-  </url>
-  <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/15-pytest-mocking.html</loc>
-    <lastmod>2024-07-22T05:24:43.154Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/13-pytest-parametrize.html</loc>
-    <lastmod>2024-07-22T05:24:43.154Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/11-fiddly-bits-of-pytest.html</loc>
-    <lastmod>2024-07-22T05:24:43.153Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/09-cycling-network-r5py.html</loc>
-    <lastmod>2024-02-13T07:12:28.383Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/07-schedule-deploy-shinyapps.html</loc>
-    <lastmod>2024-07-01T15:40:56.765Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
-    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
-    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
-    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
-    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
-    <lastmod>2023-12-31T08:34:23.473Z</lastmod>
+    <lastmod>2024-08-18T11:30:22.633Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/06-working-with-ONS-open-geo-portal.html</loc>
-    <lastmod>2024-02-19T08:53:29.623Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/08-quarto-conda-env.html</loc>
-    <lastmod>2024-07-02T11:56:24.723Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/10-pydeck-with-gpd.html</loc>
-    <lastmod>2024-02-19T08:53:29.623Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/12-pytest-tmp-path.html</loc>
-    <lastmod>2024-07-22T05:24:43.154Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/blogs/14-gh-actions-security.html</loc>
-    <lastmod>2024-07-01T15:40:56.765Z</lastmod>
+    <lastmod>2024-08-18T11:30:22.623Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/blogs/16-pytest-marks.html</loc>
-    <lastmod>2024-07-22T05:24:43.155Z</lastmod>
+    <lastmod>2024-08-18T11:30:22.641Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
-    <lastmod>2023-12-31T08:34:23.474Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/10-pydeck-with-gpd.html</loc>
+    <lastmod>2024-08-18T11:30:22.631Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/book-reviews/03-amusing-ourselves-to-death.html</loc>
-    <lastmod>2023-12-31T08:34:23.474Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/07-schedule-deploy-shinyapps.html</loc>
+    <lastmod>2024-08-18T11:30:22.623Z</lastmod>
   </url>
   <url>
-    <loc>https://thedatasavvycorner.netlify.app/book-reviews/05-career-reads.html</loc>
-    <lastmod>2024-07-29T16:04:50.691Z</lastmod>
+    <loc>https://thedatasavvycorner.netlify.app/music-reviews/04-triads.html</loc>
+    <lastmod>2024-08-18T11:30:23.291Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/music-reviews/02-zelda-and-chill.html</loc>
+    <lastmod>2024-08-18T11:30:23.286Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/01-state-of-pyshiny.html</loc>
+    <lastmod>2024-08-18T11:30:22.613Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/11-fiddly-bits-of-pytest.html</loc>
+    <lastmod>2024-08-18T11:30:22.633Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
+    <lastmod>2024-08-18T12:18:18.561Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/index.html</loc>
-    <lastmod>2024-02-01T08:36:36.245Z</lastmod>
+    <lastmod>2024-08-18T12:21:57.093Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/book-reviews/05-career-reads.html</loc>
+    <lastmod>2024-08-18T11:30:22.651Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/book-reviews/02-algorithms-to-live-by.html</loc>
+    <lastmod>2024-08-18T11:30:22.641Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/index.html</loc>
+    <lastmod>2024-08-18T12:19:57.535Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/14-gh-actions-security.html</loc>
+    <lastmod>2024-08-18T11:30:22.633Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/04-starfield-resources.html</loc>
+    <lastmod>2024-08-18T11:30:22.621Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/03-quarto-github-actions.html</loc>
+    <lastmod>2024-08-18T11:30:22.621Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/05-signed-commits.html</loc>
+    <lastmod>2024-08-18T11:30:22.623Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/17-quarto-comments.html</loc>
+    <lastmod>2024-08-19T20:09:02.754Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/book-reviews/01-deep-work.html</loc>
+    <lastmod>2024-08-18T11:30:22.641Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/book-reviews/03-amusing-ourselves-to-death.html</loc>
+    <lastmod>2024-08-18T11:30:22.649Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/book-reviews/index.html</loc>
+    <lastmod>2024-08-18T12:18:29.359Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/legal.html</loc>
+    <lastmod>2024-08-18T11:30:23.281Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/08-quarto-conda-env.html</loc>
+    <lastmod>2024-08-18T11:30:22.623Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/book-reviews/04-dark-data.html</loc>
+    <lastmod>2024-08-18T11:30:22.651Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/01-ghostrunner-ost.html</loc>
-    <lastmod>2023-12-31T08:34:23.517Z</lastmod>
+    <lastmod>2024-08-18T11:30:23.286Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/03-dk-county-piano.html</loc>
-    <lastmod>2024-02-01T08:36:36.245Z</lastmod>
+    <lastmod>2024-08-18T11:30:23.291Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/05-when-worlds-collide.html</loc>
-    <lastmod>2024-05-19T16:41:14.764Z</lastmod>
+    <lastmod>2024-08-18T11:30:23.296Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/02-getting-started-pyshiny.html</loc>
+    <lastmod>2024-08-18T11:30:22.617Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/12-pytest-tmp-path.html</loc>
+    <lastmod>2024-08-18T11:30:22.633Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/13-pytest-parametrize.html</loc>
+    <lastmod>2024-08-18T11:30:22.633Z</lastmod>
+  </url>
+  <url>
+    <loc>https://thedatasavvycorner.netlify.app/blogs/09-cycling-network-r5py.html</loc>
+    <lastmod>2024-08-18T11:30:22.631Z</lastmod>
   </url>
 </urlset>
