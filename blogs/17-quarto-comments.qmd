@@ -119,7 +119,7 @@ correctly. Code for A minimal Quarto site with Utterances is
 |                                                                                                |
 |------------------------------------------------------------------------------------------------|
 | Either give it global access to all repos or selected repos.                                   |
-| User must sign into GitHub and authorize the Utterances app.                                   |
+| User must sign into GitHub and authorise the Utterances app.                                   |
 | Markdown compatibility as per usual GitHub issues.                                             |
 | First comment on a page creates an issue, subsequent comments are added to the same issue.     |
 | Reactions to comments with emojis.                                                             |
@@ -128,7 +128,7 @@ correctly. Code for A minimal Quarto site with Utterances is
 
 |                                                                                                |
 |------------------------------------------------------------------------------------------------|
-| Every comment creates a GitHub issue on the repo – 1 per page of your site. May be a bit noisy for some. |
+| Every comment creates a GitHub issue on the repo – 1 per page of your site. Maybe a bit noisy for some. |
 | Marking issues as closed does not remove them from the site.                                   |
 | Deleting the issue from the repo will remove the comment but may also mess up the mapping of comments to pages. May cause issues moderating.                                                                     |
 | Couldn't get the labels feature to work, despite creating the issue label of the same name, as the documentation suggested.                                                                                       |
@@ -162,7 +162,7 @@ The [site can be viewed here](https://r-leyshon.github.io/quarto-giscus/)
 |                                                                                                |
 |------------------------------------------------------------------------------------------------|
 | Activate discussions on your repo or give it global access to all repos.                       |
-| User must sign into GitHub and authorize the Giscus app.                                       |
+| User must sign into GitHub and authorise the Giscus app.                                       |
 | Allows emoji reactions to articles or comments on articles.                                    |
 | Allows text responses to specific comments.                                                    |
 | Markdown compatibility as per usual GitHub issues.                                             |
