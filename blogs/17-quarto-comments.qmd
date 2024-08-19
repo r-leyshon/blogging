@@ -2,12 +2,12 @@
 title: "Quarto Comments"
 author: "Rich Leyshon"
 date: "August 18 2024"
-description: "Comparing Hypothes.is, Utterances & Giscus."
+description: "Comparing Hypothesis, Utterances & Giscus."
 categories:
     - Explanation
     - Quarto
     - Comments
-    - Hypothes.is
+    - Hypothesis
     - GitHub
     - Utterances
     - Giscus
@@ -49,19 +49,19 @@ adding commenting features to their site.
 - [ ] [Quarto CLI](https://quarto.org/docs/download/index.html)
 - [ ] Command line access
 
-## Hypothes.is
+## Hypothesis
 
-Hypothes.is is a great new, feature-rich social annotation solution. It has a strong
+Hypothesis is a great new, feature-rich social annotation solution. It has a strong
 [commitment to open source](https://web.hypothes.is/about/). After exploring its main
 features, I would suggest it is aimed at a broad audience with strong features for academic
 audiences, particularly cohorts of students that will benefit from group analysis
 of documents.
 
-For users to interact with the Hypothes.is interface, they will need to create an
+For users to interact with the Hypothesis interface, they will need to create an
 account and login, though this is not a painful process and will prevent excess spam on your site.
-An example of a minimal quarto website with hypothes.is enabled is below - feel free to test the
+An example of a minimal quarto website with Hypothesis enabled is below - feel free to test the
 commenting features yourself. Click on the arrow in the top-right hand corner to
-expand the Hypothes.is user interface. Code for the site is available on
+expand the Hypothesis user interface (UI). Code for the site is available on
 [GitHub](https://github.com/r-leyshon/quarto-hypothesis).
 
 <div style="text-align:center;">
@@ -102,11 +102,11 @@ Hypothesis Observations
 Utterances uses GitHub Issues to store comment data. If you are deploying your site from GitHub
 and are not making good use of the repo issues, this could be a viable option. It's important to
 note that your users will need a GitHub account and to authenticate in order to post comments on
-your site. For more on utterances, please consult the
-[utteranc.es documentation](https://utteranc.es/). In order to read and write issues on your repo,
-you do need to allow the [Utterances GitHub app](https://github.com/apps/utterances) permission.
-Without doing this, the Utterances UI will appear on your site but will not function correctly.
-Code for A minimal Quarto site with Utterances is
+your site. Please consult the [Utterances documentation](https://utteranc.es/)
+for more information. In order to read and write issues on your repo, you do need to allow the
+[Utterances GitHub app](https://github.com/apps/utterances) permission. Without doing this, the
+Utterances UI will appear on your site but will not function correctly. Code for A minimal Quarto
+site with Utterances is
 [available on GitHub](https://github.com/r-leyshon/quarto-utterances). The site can be viewed below.
 
 <div style="text-align:center;">
@@ -119,26 +119,21 @@ Code for A minimal Quarto site with Utterances is
 |                                                                                                |
 |------------------------------------------------------------------------------------------------|
 | Either give it global access to all repos or selected repos.                                   |
-| User must sign into GitHub and authorize the utterances app.                                   |
+| User must sign into GitHub and authorize the Utterances app.                                   |
 | Markdown compatibility as per usual GitHub issues.                                             |
-| User must sign into GitHub and authorize the utterances app.                                   |
 | First comment on a page creates an issue, subsequent comments are added to the same issue.     |
 | Reactions to comments with emojis.                                                             |
-| Revisions are possible though are not achievable through the website UI. By navigating to the  |
-| repo issues, you can edit any comment that was authored by your account.                       |
-| User must sign into GitHub and authorize the utterances app.                                   |
+| Revisions are possible though are not achievable through the website UI. By navigating to the repo issues, you can edit any comment that was authored by your account.                                          |
 
 : Pros {#tbl-first .striped .hover .tabley}
 
 |                                                                                                |
 |------------------------------------------------------------------------------------------------|
-| Every comment creates a GitHub issue on the repo – 1 per page of your site. May be a bit noisy |
+| Every comment creates a GitHub issue on the repo – 1 per page of your site. May be a bit noisy for some. |
 | Marking issues as closed does not remove them from the site.                                   |
-| Deleting the issue from the repo will remove the comment but may also mess up the mapping of   |
-| comments to pages. May cause issues moderating.                                                |
-| Couldn't get the labels feature to work, despite creating the issue label of the same name, as |
-| the documentation suggested.                                                                   |
-| Cannot respond to a comment with text                                                          |
+| Deleting the issue from the repo will remove the comment but may also mess up the mapping of comments to pages. May cause issues moderating.                                                                     |
+| Couldn't get the labels feature to work, despite creating the issue label of the same name, as the documentation suggested.                                                                                       |
+| Cannot respond to a comment with text.                                                          |
 
 : Cons {#tbl-second .striped .hover .tabley}
 
@@ -150,11 +145,16 @@ Utterances Observations
 Giscus emulates the Utterances functionality, but by using the new(ish) GitHub Discussions feature
 as the comment database, instead of the repo issues. The [Giscus documentation](https://giscus.app/)
 currently states the widget is in development, as well as the GitHub API that it relies on, so
-expect some changes with this solution. In the same way as Utterances, you will need to give the
+expect some changes with this solution. The Giscus documentation also provides a really useful tool
+that checks whether Giscus has been configured correctly on the target repo. This same tool was very
+useful in configuring the YAML metadata for my site correctly.
+
+In the same way as Utterances, you will need to give the
 [Giscus GitHub app](https://github.com/apps/giscus) permissions to read and write repo metadata.
 Users will also require a GitHub account in order to authenticate. Code for A minimal quarto site
 with Giscus is [available on GitHub](https://github.com/r-leyshon/quarto-giscus).
 The site can be viewed below.
+
 
 <div style="text-align:center;">
   <iframe class=iframey src="https://r-leyshon.github.io/quarto-giscus/"></iframe>
@@ -166,18 +166,18 @@ The site can be viewed below.
 |                                                                                                |
 |------------------------------------------------------------------------------------------------|
 | Activate discussions on your repo or give it global access to all repos.                       |
+| User must sign into GitHub and authorize the Giscus app.                                       |
 | Allows emoji reactions to articles or comments on articles.                                    |
 | Allows text responses to specific comments.                                                    |
+| Markdown compatibility as per usual GitHub issues.                                             |
+| First comment on a page creates a GitHub Discussion, subsequent comments are added to the same Discussion.                                                                                      |
 
 : Pros {#tbl-first .striped .hover .tabley}
 
 |                                                                                                |
 |------------------------------------------------------------------------------------------------|
-| Like utterances, Giscus revisions are possible only through the GitHub UI. By navigating to    |
-| the GitHub repo discussions tab, you can edit any post authored by your account.               |
-| Changing configuration (e.g., mapping: pathname to mapping: URL) will cause old Giscus         |
-| comments to be lost from your site. Though they are still available in the repo under the      |
-| discussions tab.                                                                               |
+| Like Utterances, Giscus revisions are possible only through the GitHub UI. By navigating to the GitHub repo discussions tab, you can edit any post authored by your account.                                 |
+| Changing configuration (e.g., mapping: pathname to mapping: URL) will cause old Giscus comments to be lost from your site. Though they are still available in the repo under the discussions tab.                                                                                             |
 
 : Cons {#tbl-second .striped .hover .tabley}
 
@@ -186,20 +186,20 @@ Giscus Observations
 
 ## Summary
 
-Overall, I felt that hypothesis offered the greatest functionality. However,
+Overall, I felt that Hypothesis offered the greatest functionality. However,
 it also presents a new service for your audience to subscribe to. If like me,
 your target audience consists mainly of programmers, then it is likely they
-will already have access to GitHub accounts. 
+will already have access to GitHub accounts and therefore one of the GitHub-specific
+solutions may present less of a barrier to your audience engaging with your content.
 
 Comparing GitHub Utterances with Giscus, I considered the greater functionality
 and look of Giscus to be just a little better than Utterances. Therefore I opted
-for this solution, though will keep it under review incase breaking changes make
-things less helpful.
+for this solution, though will keep it under review incase of breaking changes.
 
 It's great that the Quarto development team have implemented support for several
-commenting solutions. Although there are a great variety of solutions available
-to site maintainers and implementing any of these solutions should be possible
-as quarto document metadata is fully customisable.
+commenting widgets. Although there are a great variety of alternative solutions
+available to site maintainers and implementing any of these solutions should be
+possible as quarto document metadata is fully customisable.
 
 If you spot an error with this article, or have a suggested improvement then
 feel free to leave a comment (GitHub login required) or
