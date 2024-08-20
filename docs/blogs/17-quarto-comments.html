@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Rich Leyshon">
+<meta name="dcterms.date" content="2024-08-18">
+<meta name="description" content="Comparing Hypothesis, Utterances &amp; Giscus.">
+
+<title>Quarto Comments – The Data Savvy Corner</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="..//./favicon.ico" rel="icon">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../www/styles.css">
+<link rel="stylesheet" href=".././www/17-quarto-comments/styles.css">
+<meta property="og:title" content="Quarto Comments – The Data Savvy Corner">
+<meta property="og:description" content="Comparing Hypothesis, Utterances &amp; Giscus.">
+<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/17-quarto-comments/speech-bubbles.png">
+<meta property="og:site_name" content="The Data Savvy Corner">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:alt" content="Speech bubbles with emojis">
+<meta name="twitter:title" content="Quarto Comments – The Data Savvy Corner">
+<meta name="twitter:description" content="Comparing Hypothesis, Utterances &amp; Giscus.">
+<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/17-quarto-comments/speech-bubbles.png">
+<meta name="twitter:site" content="@Rich_L1984">
+<meta name="twitter:image-height" content="1024">
+<meta name="twitter:image-width" content="1024">
+<meta name="twitter:image:alt" content="Speech bubbles with emojis">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">The Data Savvy Corner</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blogs/index.html"> 
+<span class="menu-text">Technical Blogs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../music-reviews/index.html"> 
+<span class="menu-text">Music</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../book-reviews/index.html"> 
+<span class="menu-text">Books</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools tools-wide">
+    <a href="https://twitter.com/Rich_L1984" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-twitter-x"></i></a>
+    <a href="https://github.com/r-leyshon" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/richard-leyshon-316121163/" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Quarto Comments</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Explanation</div>
+    <div class="quarto-category">Quarto</div>
+    <div class="quarto-category">Comments</div>
+    <div class="quarto-category">Hypothesis</div>
+    <div class="quarto-category">GitHub</div>
+    <div class="quarto-category">Utterances</div>
+    <div class="quarto-category">Giscus</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Comparing Hypothesis, Utterances &amp; Giscus.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Rich Leyshon </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 18, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<figure style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="figure">
+<img class="shaded_box figure-img" src=".././www/17-quarto-comments/speech-bubbles.png" width="200rem">
+<figcaption>
+Speech bubbles with emojis.
+</figcaption>
+</figure>
+<blockquote class="blockquote">
+<p>“It takes humility to seek feedback. It takes wisdom to understand it, analyze it and appropriately act on it.” Stephen Covey.</p>
+</blockquote>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>For people who use Quarto to build their websites, there are a few options for adding commenting functionality to their site. This allows your readers to engage with your site, leaving text or emoji feedback. Quarto currently offers built-in support for three commenting widgets. This article compares their functionality, linking to minimal implementations of each.</p>
+<p>For full details on how to implement each solution, please consult the <a href="https://quarto.org/docs/output-formats/html-basics.html#commenting">Quarto commenting documentation</a>.</p>
+<p>This article was written with Quarto 1.5.56. The solutions explored in this article are in development and may change in the future.</p>
+<section id="intended-audience" class="level3">
+<h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
+<p>Programmers with a working knowledge of quarto websites, considering options for adding commenting features to their site.</p>
+</section>
+<section id="what-youll-need" class="level3">
+<h3 class="anchored" data-anchor-id="what-youll-need">What You’ll Need</h3>
+<ul class="task-list">
+<li><label><input type="checkbox"><a href="https://quarto.org/docs/download/index.html">Quarto CLI</a></label></li>
+<li><label><input type="checkbox">Command line access</label></li>
+</ul>
+</section>
+</section>
+<section id="hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="hypothesis">Hypothesis</h2>
+<p>Hypothesis is a great new, feature-rich, social annotation solution. It has a strong <a href="https://web.hypothes.is/about/">commitment to open source</a>. After exploring its main features, I would suggest it is aimed at a broad audience with strong features for academic audiences, particularly cohorts of students that will benefit from group analysis of documents.</p>
+<p>For users to interact with the Hypothesis interface, they will need to create an account and login, though this is not a painful process and will prevent excess spam on your site. An example of a minimal quarto website with Hypothesis enabled is below - feel free to test the commenting features yourself. Click on the arrow in the top-right hand corner to expand the Hypothesis user interface (UI). Code for the site is available on <a href="https://github.com/r-leyshon/quarto-hypothesis">GitHub</a>.</p>
+<div style="text-align:center;padding-left:10%;">
+<p><iframe class="iframey" src="https://r-leyshon.github.io/quarto-hypothesis/" style="overflow:hidden;margin:0;padding:0;width:80%"></iframe></p>
+</div>
+<hr>
+<div id="tbl-panel" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Hypothesis Observations
+</figcaption>
+<div aria-describedby="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-first" class="striped hover tabley quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Pros
+</figcaption>
+<div aria-describedby="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped table-hover tabley caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Simple setup, just include the Hypothesis portion in your site’s YAML &amp; render.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Private highlighting.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Private notetaking if you create a private group. Other members can be invited to participate.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Toggle on/off highlights and comments separately.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Annotations - linked specifically to a region of text in the article.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Page notes - applied to an entire page.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Annotations and page notes can be tagged with additional metadata.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Revisions are easy and built into the UI.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Collapsible UI is neat, reducing clutter.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Browser extension available.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Compatible with sites deployed from other repo-hosting solutions, eg GitLab, BitBucket.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-second" class="striped hover tabley quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Cons
+</figcaption>
+<div aria-describedby="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped table-hover tabley caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">I couldn’t get the embedding options to work (eg theme etc).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">No emoji reactions.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</section>
+<section id="utterances" class="level2">
+<h2 class="anchored" data-anchor-id="utterances">Utterances</h2>
+<p>Utterances uses GitHub Issues to store comment data. If you are deploying your site from GitHub and are not making good use of the repo issues, this could be a viable option. It’s important to note that your users will need a GitHub account and to authenticate in order to post comments on your site. Please consult the <a href="https://utteranc.es/">Utterances documentation</a> for more information. In order to read and write issues on your repo, you do need to give the <a href="https://github.com/apps/utterances">Utterances GitHub app</a> permission to read and write repo metadata. Without doing this, the Utterances UI will appear on your site but will not function correctly. Code for A minimal Quarto site with Utterances is <a href="https://github.com/r-leyshon/quarto-utterances">available on GitHub</a>. The site can be viewed below.</p>
+<div style="text-align:center;padding-left:10%;">
+<p><iframe class="iframey" src="https://r-leyshon.github.io/quarto-utterances/" style="overflow:hidden;margin:0;padding:0;width:80%"></iframe></p>
+</div>
+<hr>
+<div id="tbl-panel" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Utterances Observations
+</figcaption>
+<div aria-describedby="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-first" class="striped hover tabley quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Pros
+</figcaption>
+<div aria-describedby="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped table-hover tabley caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Either give it global access to all repos or selected repos.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">User must sign into GitHub and authorise the Utterances app.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Markdown compatibility as per usual GitHub issues.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">First comment on a page creates an issue, subsequent comments are added to the same issue.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reactions to comments with emojis.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-second" class="striped hover tabley quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Cons
+</figcaption>
+<div aria-describedby="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped table-hover tabley caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Every comment creates a GitHub issue on the repo – 1 per page of your site. Maybe a bit noisy for some.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Marking issues as closed does not remove them from the site.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Deleting the issue from the repo will remove the comment but may also mess up the mapping of comments to pages. May cause issues moderating.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Couldn’t get the labels feature to work, despite creating the issue label of the same name, as the documentation suggested.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cannot respond to a comment with text.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Revisions are possible though are not achievable through the website UI. By navigating to the repo issues, you can edit any comment that was authored by your account.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</section>
+<section id="giscus" class="level2">
+<h2 class="anchored" data-anchor-id="giscus">Giscus</h2>
+<p>Giscus emulates the Utterances functionality, but by using the new(ish) GitHub Discussions feature as the comment database, instead of the repo issues. The <a href="https://giscus.app/">Giscus documentation</a> currently states the widget is in development, as well as the GitHub API that it relies on, so expect some changes with this solution. The Giscus documentation also provides a really useful tool that checks whether Giscus has been configured correctly on the target repo. This same tool was very useful in configuring the YAML metadata for my site correctly.</p>
+<p>In the same way as Utterances, you will need to give the <a href="https://github.com/apps/giscus">Giscus GitHub app</a> permissions to read and write repo metadata. Users will also require a GitHub account in order to authenticate. Code for A minimal quarto site with Giscus is <a href="https://github.com/r-leyshon/quarto-giscus">available on GitHub</a>. The <a href="https://r-leyshon.github.io/quarto-giscus/">site can be viewed here</a> (the Giscus interface will not render correctly within an iframe).</p>
+<hr>
+<div id="tbl-panel" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Giscus Observations
+</figcaption>
+<div aria-describedby="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-first" class="striped hover tabley quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Pros
+</figcaption>
+<div aria-describedby="tbl-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped table-hover tabley caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Activate discussions on your repo or give it global access to all repos.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">User must sign into GitHub and authorise the Giscus app.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Allows emoji reactions to articles or comments on articles.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Allows text responses to specific comments.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Markdown compatibility as per usual GitHub issues.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">First comment on a page creates a GitHub Discussion, subsequent comments are added to the same Discussion.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-second" class="striped hover tabley quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Cons
+</figcaption>
+<div aria-describedby="tbl-second-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped table-hover tabley caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Like Utterances, Giscus revisions are possible only through the GitHub UI. By navigating to the GitHub repo discussions tab, you can edit any post authored by your account.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Changing configuration (e.g., mapping: pathname to mapping: URL) will cause old Giscus comments to be lost from your site. Though they are still available in the repo under the discussions tab.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>Overall, I felt that Hypothesis offered the greatest functionality. However, it also presents a new service for your audience to subscribe to. If like me, your target audience consists mainly of programmers, then it is likely they will already have access to GitHub accounts and therefore one of the GitHub-specific solutions may present less of a barrier to your audience engaging with your content.</p>
+<p>Comparing GitHub Utterances with Giscus, I considered the greater functionality and look of the Giscus UI to be just a little better than Utterances. Therefore I opted for this solution for this site, though I’ll keep it under review incase of breaking changes.</p>
+<p>It’s great that the Quarto development team have implemented support for several commenting widgets. Although there are a great variety of alternative solutions available and implementing any of these solutions should be possible as quarto document metadata is fully customisable.</p>
+<p>If you spot an error with this article, or have a suggested improvement then feel free to leave a comment (GitHub login required) or <a href="https://github.com/r-leyshon/blogging/issues">raise an issue on GitHub</a>.</p>
+<p id="fin">
+<i>fin!</i>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/thedatasavvycorner\.netlify\.app\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="r-leyshon/blogging" data-repo-id="R_kgDOJ7xM-w" data-category="Announcements" data-category-id="DIC_kwDOJ7xM-84Chxs3" data-mapping="url" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="cobalt" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="cobalt">
+<input type="hidden" id="giscus-alt-theme" value="cobalt">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

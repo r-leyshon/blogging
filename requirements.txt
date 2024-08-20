@@ -5,4 +5,5 @@ matplotlib
 nbclient
 nbformat
 pandas
+pyprojroot
 requests

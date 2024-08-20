@@ -42,6 +42,14 @@ format:
       dark: superhero
     css: /www/styles.css
     toc: true
+    comments:
+      giscus: 
+        repo: r-leyshon/blogging
+        repo-id: R_kgDOJ7xM-w
+        category: Announcements
+        category-id: DIC_kwDOJ7xM-84Chxs3
+        mapping: url
+        theme: cobalt
 bibliography: ./bibliography/references.bib
 biblio-title: ""
 csl: ./bibliography/ieee.csl
