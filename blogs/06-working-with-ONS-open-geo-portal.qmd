@@ -90,9 +90,7 @@ Boundaries EW BFC"
 4. This will bring you to the data asset that you need. It should look like the
 webpage below.
 
-<div class=centerdiv>
-  <iframe src="https://geoportal.statistics.gov.uk/datasets/bb427d36197443959de8a1462c8f1c55_0/explore" title="LSOA 2021 Boundaries for England & Wales"></iframe>
-</div>
+<img src="https://i.imgur.com/izZZjt4.png"/ width=40% alt="ONS Open Geography Portal, LSOA 2021 boundaries interface.">
 
 ### Finding the Endpoint
 Now that we have the correct data asset, let's find the endpoint. This is the
@@ -416,18 +414,14 @@ One tip I have for troubleshooting queries is to open up the web interface for
 the `ENDPOINT`, by pasting it into your web browser. You should get an
 interface like below:
 
-<div class=centerdiv>
-  <iframe src="https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query" title="LSOA 2021 Endpoint Interface"></iframe>
-</div>
+<img src="https://i.imgur.com/oCkMdHW.png" width=40% alt="LSOA 2021 Endpoint Interface.">
 
 By using the fields to test out your query parameters and clicking the "Query
 (GET)" button at the bottom of the page, you can get an indication of whether
 your query is valid. This is a good place to test out more complex SQL
 statements for the `where` parameter:
 
-<div class=centerdiv>
-  <iframe src="https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_2021_EW_BFC_V8/FeatureServer/0/query?where=FID+BETWEEN+35290+AND+35300&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=true&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=html&token=" title="LSOA 2021 Endpoint Custom Query"></iframe>
-</div>
+<img src="https://i.imgur.com/D1eyR0U.png" width=40% alt="LSOA 2021 Endpoint Interface.">
 
 ## Conclusion
 
