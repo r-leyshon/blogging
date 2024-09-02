@@ -22,15 +22,30 @@ toc-depth: 4
 
 ## Book Summary
 
-Introduce book and author...
+Building a Second Brain by Tiago Forte is a productivity book that teaches
+how to take and organise effective notes in a digital format. Collating
+these records with your own synthesis within a cohesive software ecosystem
+in order to improve productivity and support creative work.
 
-> "..."
-[@source, p.]
+> "Those who learn how to leverage technology and master the flow of
+information through their lives will be empowered to accomplish anything
+they set their minds to."
+[@2ndBrain, p.7]
 
 
 ## On the Author
 
-...
+Tiago Forte is a productivity expert known for his work on personal
+knowledge management. He studied international business and worked in
+various roles, including the Peace Corps in Ukraine, where he taught
+productivity techniques. His career in innovation consulting introduced him
+to the world of Personal Knowledge Management (PKM), leading to the
+creation of his training venture,
+<a href="https://fortelabs.com/" target="_blank">Forte Labs</a>. This has
+since grown into a successful online education company, with Forte
+emphasising the integration of personal and professional growth. His work
+focuses on helping individuals manage information overload to enhance
+creativity and productivity.
 
 ## Three Takeaway Ideas
 
