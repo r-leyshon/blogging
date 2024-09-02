@@ -1,0 +1,54 @@
+---
+title: "Building a Second Brain"
+subtitle: "A Proven Method to Organise Your Digital Life and Unlock Your Creative Potential."
+author: "Rich Leyshon"
+date: September 02 2024
+description: "Systematize what you're already probably doing."
+categories:        
+    - Non-fiction
+    - Data
+    - Science
+    - Mathematics
+    - Statistics
+image: https://i.imgur.com/nQ4qFP4.png
+image-alt: "An image of A digital brain built from circuitry."
+toc: true
+toc-depth: 4
+---
+
+<figure class=center>
+ <img class=shaded_box src=https://i.imgur.com/nQ4qFP4.png alt="An image of a digital brain built from circuitry." width=100%>
+</figure>
+
+## Book Summary
+
+Introduce book and author...
+
+> "..."
+[@source, p.]
+
+
+## On the Author
+
+...
+
+## Three Takeaway Ideas
+
+### 1
+
+...
+
+
+### 2
+
+...
+
+### 3
+
+...
+
+
+## In Summary
+
+...
+
