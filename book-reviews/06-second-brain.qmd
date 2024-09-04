@@ -49,10 +49,54 @@ creativity and productivity.
 
 ## Three Takeaway Ideas
 
-### 1
+### 1. Consolidation. 
 
-...
+What I liked best about this book was that it didn't feel completely new to
+me. It discussed concepts that I had intuited and practised in less formal
+ways prior to reading. Therefore, adaptation to a centralised digital
+notekeeping  solution would present a minor attitude adjustment, rather
+than a complete transformation.
 
+Back in 2015 I had attended a training course on how to get the
+most out of Microsoft OneNote, with low expectations and even less interest.
+Previously, OneNote had been the perplexing default option for printing
+documents - a minor annoyance while I swiftly found the printer I needed.
+The training session did a lot to demistify the software and highlighted
+some great features which at the time felt quite revolutionary, notably
+audio transcription and video embedding within your notes. I proceeded to
+use OneNote to record meeting outcomes, transcribe user-testing sessions,
+scribble ideas over papers and policy documents and so on. Some of my
+colleagues started to notice and asked me about it. I remember saying these
+words:
+
+> If I need to find something, I can 'CTRL + F' the software, whereas I
+can't do that with a notebook or stack of post-it notes. 
+
+Over time, my digital ecosystem has diversified a bit. Sometimes
+because of me and software compatibility with the devices that I use, and
+at other times because of preferences of my team. This book made a great
+case for favouring interoperable software to achieve a unified notetaking
+system. Software that cannot work together is not serving your ability to
+retrieve information when it's needed. 
+
+> "Research from Microsoft shows that the average US employee spends 76
+hours per year looking for misplaced notes, items, or files. And a report
+from the International Data Corporation found that 26 percent of a typical
+knowledge worker's day is spent looking for and consolidating information
+spread across a variety of systems."
+[@2ndBrain, p.16]
+
+This must be achingly familiar to most modern workers, especially
+programmers. Those times when you find yourself Googling for solutions that
+you once knew, following purple links that you've already visited. Or trying
+to find that salient programming meme in a newly refreshed social media
+feed. Surely, everyone has experienced this? Tiago Forte's book suggests
+that if we 'get our digital act together', we don't have to rely on our
+biological brain for recall. We can farm that job out to a digital
+notetaking system which will perform better, recall faster and with greater
+accuracy. Instead, we can shift our efforts to synthesis - spotting
+connections between notes, adding our interpretations to them and
+extracting relevance in the process. 
 
 ### 2
 
