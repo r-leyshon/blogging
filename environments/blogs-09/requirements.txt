@@ -1,6 +1,7 @@
 contextily
 geopandas
 haversine
+jupyter
 folium
 mapclassify
 matplotlib

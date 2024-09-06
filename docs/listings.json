@@ -12,6 +12,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/book-reviews/06-second-brain.html",
       "/blogs/17-quarto-comments.html",
       "/book-reviews/05-career-reads.html",
       "/blogs/16-pytest-marks.html",
@@ -66,6 +67,7 @@
   {
     "listing": "/book-reviews/index.html",
     "items": [
+      "/book-reviews/06-second-brain.html",
       "/book-reviews/05-career-reads.html",
       "/book-reviews/04-dark-data.html",
       "/book-reviews/03-amusing-ourselves-to-death.html",
