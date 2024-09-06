@@ -187,9 +187,21 @@ brief explanation for each of the criteria, supported by examples. I am
 currently trying these criteria on for size and have included a
 highlighting key within my notetaking app to help me remember to use them.
 
-
-
 ## In Summary
 
-...
+Overall, I would recommend this book to anyone interested in the personal
+efficacy space. It is full of practical advice and encouragement to get
+started or to refine your digital notetaking system. The book contains
+plenty of examples that illustrate exactly how to put the ideas into
+action, catering for a range of preferred learning styles. Additionally,
+the author's system is extremely well-supported and debated online. Check
+out the <a href="https://fortelabs.com" target="_blank">Forte Labs</a>
+website and the
+<a href="https://www.youtube.com/@TiagoForte" target="_blank">Tiago Forte YouTube channel</a>
+for more information.
+
+## Acknowledgements
+
+I would like to thank Beth for a fantastic book recommendation - this was
+a great read.
 
