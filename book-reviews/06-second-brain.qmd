@@ -2,14 +2,18 @@
 title: "Building a Second Brain"
 subtitle: "A Proven Method to Organise Your Digital Life and Unlock Your Creative Potential."
 author: "Rich Leyshon"
-date: September 02 2024
+date: September 06 2024
 description: "Systematize what you're already probably doing."
 categories:        
     - Non-fiction
-    - Data
-    - Science
-    - Mathematics
-    - Statistics
+    - Self-Help
+    - Productivity
+    - Personal Knowledge Management
+    - Personal Development
+    - Business
+    - Psychology
+    - Technology
+    - Notetaking
 image: https://i.imgur.com/nQ4qFP4.png
 image-alt: "An image of A digital brain built from circuitry."
 toc: true
@@ -199,6 +203,10 @@ out the <a href="https://fortelabs.com" target="_blank">Forte Labs</a>
 website and the
 <a href="https://www.youtube.com/@TiagoForte" target="_blank">Tiago Forte YouTube channel</a>
 for more information.
+
+If this book inspired you to start your own digital notetaking system, you
+may find my review of Cal Newport's
+[Deep Work](/book-reviews/01-deep-work.qmd) book useful. 
 
 ## Acknowledgements
 
