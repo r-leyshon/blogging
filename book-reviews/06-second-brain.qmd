@@ -3,7 +3,7 @@ title: "Building a Second Brain"
 subtitle: "A Proven Method to Organise Your Digital Life and Unlock Your Creative Potential."
 author: "Rich Leyshon"
 date: September 06 2024
-description: "Systematize what you're already probably doing."
+description: "Systematise what you're already probably doing."
 categories:        
     - Non-fiction
     - Self-Help
@@ -13,7 +13,7 @@ categories:
     - Business
     - Psychology
     - Technology
-    - Notetaking
+    - Note Taking
 image: https://i.imgur.com/nQ4qFP4.png
 image-alt: "An image of A digital brain built from circuitry."
 toc: true
@@ -65,7 +65,7 @@ Back in 2015 I had attended a training course on how to get the
 most out of Microsoft OneNote, with low expectations and even less interest.
 Previously, OneNote had been the perplexing default option for printing
 documents - a minor annoyance while I swiftly found the printer I needed.
-The training session did a lot to demistify the software and highlighted
+The training session did a lot to demystify the software and highlighted
 some great features which at the time felt quite revolutionary, notably
 audio transcription, apply and search notes by tag and video embedding. I
 proceeded to use OneNote to record meeting outcomes, transcribe
@@ -80,7 +80,7 @@ Over time, my digital ecosystem has diversified a bit. Sometimes
 because of me and software compatibility with the devices that I use, and
 at other times because of the preferences of my team. This book made a
 great case for favouring interoperable software to achieve a unified
-notetaking system. Software that cannot work together is not serving your
+note taking system. Software that cannot work together is not serving your
 ability to retrieve information when you need it most. 
 
 > "Research from Microsoft shows that the average US employee spends 76
@@ -97,7 +97,7 @@ to find that salient programming meme or inspirational quote in a newly
 refreshed social media feed. Surely, everyone has experienced this? Tiago
 Forte's book suggests that if we 'get our digital act together', we don't
 have to rely on our biological brain for recall. We can farm that job out
-to a digital notetaking system which will perform better, recall faster and
+to a digital note taking system which will perform better, recall faster and
 with greater accuracy. Instead, we can shift our efforts to synthesis -
 spotting connections between notes, adding our interpretation to them and
 extracting relevance in the process. 
@@ -109,11 +109,11 @@ with no specific reason in mind, other than in a futile attempt to try to
 remember everything (guilty as charged), Forte's C.O.D.E. recipe can offer
 clarity:
 
-<img src="https://fortelabs.com/wp-content/uploads/2024/05/CODE.001.jpeg" alt="Tiago Forte's recipe for success: Capture, Organise, Distill & Express." width=80% class="center"/>
+<img src="https://fortelabs.com/wp-content/uploads/2024/05/CODE.001.jpeg" alt="Tiago Forte's recipe for success: Capture, Organise, Distil & Express." width=80% class="center"/>
 
 My interpretation of the recipe is as follows:
 
-<strong style="font-size:24px">C</strong>apture: Your notetaking app should be ready to go at all
+<strong style="font-size:24px">C</strong>apture: Your note taking app should be ready to go at all
 times. With the capability to sync across all of your devices and backed up
 in the cloud, you should never miss an opportunity to make a record of an
 important piece of information, whenever and wherever it presents itself to
@@ -133,7 +133,7 @@ notes and realigning them to new project folders or bringing old notes out
 of cold storage can play an important part in the creative process - never
 start from scratch again! Every time you initiate a new project, a great
 starting point would be to consult existing notes for relevant content.
-Most modern notetaking applications also allow you to create internal
+Most modern note taking applications also allow you to create internal
 links, allowing you to build connections across topics in your digital
 notes, or to group notes together under an index page.
 
@@ -147,7 +147,7 @@ habit of reflecting upon the studied content, leaving helpful summaries
 that will aid your future self in retrieving what was important. 
 
 <strong style="font-size:24px">E</strong>xpress: Evaluate. Share the
-products of your notetaking efforts and seek feedback from others. Find
+products of your note taking efforts and seek feedback from others. Find
 opportunities to help those around you in professional communities and
 consider how to refine your notes or your note-taking practice. Forte
 introduces the concept of "intermediate packets" - over time, projects may
@@ -191,13 +191,13 @@ These criteria can be used to help filter the information that you capture,
 allowing you to focus on that which is most important. The author offers a
 brief explanation for each of the criteria, supported by examples. I am
 currently trying these criteria on for size and have included a
-highlighting key within my notetaking app to help me remember to use them.
+highlighting key within my note taking app to help me remember to use them.
 
 ## In Summary
 
 Overall, I would recommend this book to anyone interested in the personal
 efficacy space. It is full of practical advice and encouragement to get
-started or to refine your digital notetaking system. The book contains
+started or to refine your digital note taking system. The book contains
 plenty of examples that illustrate exactly how to put the ideas into
 action, catering for a range of preferred learning styles. Additionally,
 the author's system is extremely well-supported and debated online. Check
@@ -206,7 +206,7 @@ website and the
 <a href="https://www.youtube.com/@TiagoForte" target="_blank">Tiago Forte YouTube channel</a>
 for more information.
 
-If this book inspired you to start your own digital notetaking system, you
+If this book inspired you to start your own digital note taking system, you
 may find my review of Cal Newport's
 [Deep Work](/book-reviews/01-deep-work.qmd) book useful. 
 
