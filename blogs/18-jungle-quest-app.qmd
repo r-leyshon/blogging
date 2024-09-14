@@ -1,0 +1,91 @@
+---
+title: "Choose Your Own Adventure with ChatGPT"
+author: "Rich Leyshon"
+date: "September 14 2024"
+description: "Iteratively Building an LLM-Powered Shiny Application."
+categories:
+    - Tutorial
+    - Python Shiny
+    - ChatGPT
+    - LLMs
+    - Large Language Models
+    - GenAI
+    - Generative AI
+    - Front End Dev
+image: https://i.imgur.com/z9Xm9Lf.jpeg
+image-alt: "Adventurer reading a large book within a mysterious jungle temple."
+toc: false
+---
+
+<figure style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
+  <img class="shaded_box" src="https://i.imgur.com/z9Xm9Lf.jpeg" width=400rem class=center></img>
+  <figcaption>Adventurer reading within a jungle temple.</figcaption>
+</figure>
+
+> "ChatGPT amplifies human potential, turning thoughts into creation. It reminds us that imagination, when paired with technology, can shape the future." ChatGPT on the creative potential of ChatGPT.
+
+## Introduction
+- Brief overview
+- Mention that this post will cover the entire journey, from concept to deployment.
+
+## 1. Concept and Idea
+- **Why this project?**
+  - The inspiration behind using Python Shiny and the OpenAI API.
+  - Target audience
+
+## 2. Setting up the Development Environment
+- **Tools & Libraries**
+  - Python, Shiny for Python, OpenAI API, and any other dependencies.
+
+- **Connecting to OpenAI API**
+  - Brief explanation on obtaining an API key and making your first API call.
+
+## 3. Planning
+
+- Wireframe (with Figma?)
+- Reactive flow
+
+## 4. Development
+
+- Query openai with python client
+
+- Initial prompt
+
+- System prompt
+
+- Basic App: iteration1: Basic UI - chat interface.
+
+- Iteration 2: Server appends stream.
+
+- Iteration 3: Add accordion for collapsible manu for key entry.
+
+- Iteration 4: Add a submit button & message.
+
+- Iteration 5: Add utility for checking API key validity.
+
+- Iteration 6: Add moderations utility.
+
+- Iteration 7: Instructions & styling.
+
+
+## 8. Final Touches and Deployment
+- **Polishing the app**
+  - Any last steps before deploying: Testing, UI tweaks, refining the game logic.
+- **Deploying the App**
+  - Link to deployment file and backlink t deploying to shinyapps.io blog.
+
+## Conclusion
+- Recap the journey of building the app, from idea to deployment.
+- Mention potential future improvements (e.g., adding more complex storylines, user authentication, etc.).
+- Invite readers to try out the app or explore the code on GitHub.
+
+## Call to Action
+- **GitHub Link**: Provide a link to the source code repository.
+- **Demo Link**: If applicable, include a link to a live version of the app.
+- **Invitation for Feedback**: Encourage readers to share their thoughts or improvements in the comments.
+
+If you spot an error with this article, or have a suggested improvement then
+feel free to leave a comment (GitHub login required) or
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+<p id=fin><i>fin!</i></p>
