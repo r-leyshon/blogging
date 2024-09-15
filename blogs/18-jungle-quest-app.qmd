@@ -17,9 +17,8 @@ image-alt: "Adventurer reading a large book within a mysterious jungle temple."
 toc: false
 ---
 
-<figure style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
-  <img class="shaded_box" src="https://i.imgur.com/z9Xm9Lf.jpeg" width=400rem class=center></img>
-  <figcaption>Adventurer reading within a jungle temple.</figcaption>
+<figure class=center>
+ <img class=shaded_box src=https://i.imgur.com/z9Xm9Lf.jpeg alt="Adventurer reading within a jungle temple." width=120%>
 </figure>
 
 > "ChatGPT amplifies human potential, turning thoughts into creation. It reminds us that imagination, when paired with technology, can shape the future." ChatGPT on the creative potential of ChatGPT.
