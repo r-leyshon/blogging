@@ -14,7 +14,8 @@ categories:
     - Front End Dev
 image: https://i.imgur.com/z9Xm9Lf.jpeg
 image-alt: "Adventurer reading a large book within a mysterious jungle temple."
-toc: false
+toc: true
+css: /./www/17-quarto-comments/styles.css
 ---
 
 <figure class=center>
@@ -26,8 +27,66 @@ reminds us that imagination, when paired with technology, can shape the
 future." ChatGPT on the creative potential of ChatGPT.
 
 ## Introduction
-- Brief overview
-- Mention that this post will cover the entire journey, from concept to deployment.
+
+This article will guide you through the process of building a Choose Your
+Own Adventure game using ChatGPT and Python Shiny. We'll walk through the
+entire journey, from concept to deployment, with a focus on the iterative
+development process and the use of ChatGPT for generating storylines.
+
+Choose Your Own Adventure is a classic storytelling format where the reader
+is presented with a series of choices that guide the story in different
+directions. The game is interactive, allowing the reader to make decisions
+that affect the outcome of the story. They were popular in the 1980s and
+early 1990s, widely available as graphic novels and comics with a fantasy
+or adventure theme.
+
+The aim of this project is to produce an interactive application that will
+put the OpenAI GPT-3.5-turbo model to work. The model will generate the
+branching outcomes depending on the choices made by the user. We will
+provide the user with an introduction to the theme and we will provide the
+model with the rules for the game. Each game will play out differently
+depending on the creative interplay between the user and the model.
+
+::: {.callout-note collapse=true}
+
+### Inspiration for This Project (Click to expand)
+
+The application concept was heavily influenced by the YouTube video by 
+Tech with Tim called
+<a href="https://www.youtube.com/watch?v=nhYcTh6vw9A" target="_blank">Python AI Choose Your Own Adventure Game - Tutorial</a>.
+This tutorial uses a more complicated stack behind the scenes and resulted
+in a game that solved itself - essentially the model would also generate
+'imagined' user responses through to completion. The tutorial was published
+only 11 months ago at the time of writing, though the code would not run
+without significant wiggling, due to a raft of breaking changes within
+langchain.
+
+I was inspired by the playful use of generative AI but could see that a few
+things could be done to improve the reproducibility of the code. Also, by 
+simplifying the stack required to generate the game responses, it is hoped
+that the risk of deprecation and breaking changes will be reduced,
+increasing the longevity of the code. Finally, an application would be
+needed in order to allow the human player and model to take turns in
+playing the game. I have opted to use 
+<a href="https://shiny.posit.co/py/" target="_blank">Shiny for Python</a>
+in order to achieve this, though the same functionality could be achieved
+with many other dashboarding solutions.
+
+:::
+
+The final application is presented below, hosted with
+<a href="https://www.shinyapps.io/" target="_blank">shinyapps.io</a>. You
+will need an OpenAI API key in order to prompt the model. The app has a
+link to the sign up page if you would like to give it a try. If you would
+prefer to read the source code for the application before proceeding with
+the article, then please click on the GitHub icon at the top-right of the
+application. If you would prefer to interact with the application in a
+full-sized window, then visit the
+<a href="https://richleysh84.shinyapps.io/choose-adventure/" target="_blank">Jungle Quest app on shinyapps.io</a>.
+
+<div style="text-align:center;padding-left:10%;">
+  <iframe class=iframey src="https://richleysh84.shinyapps.io/choose-adventure/" style="overflow:hidden;margin:0;padding:0;width:100%"></iframe>
+</div>
 
 ## 1. Concept and Idea
 - **Why this project?**
