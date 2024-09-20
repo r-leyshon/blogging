@@ -49,7 +49,7 @@ depending on the creative interplay between the user and the model.
 
 ::: {.callout-note collapse=true}
 
-### Inspiration for This Project (Click to expand)
+### Inspiration for This Blog (Click to expand)
 
 The application concept was heavily influenced by the YouTube video by 
 Tech with Tim called
@@ -74,18 +74,46 @@ with many other dashboarding solutions.
 
 :::
 
+### Intended Audience
+
+Python programmers who are curious about building LLM-enabled applications.
+Some familiarity with Shiny may be assumed. For an overview and intro to
+building Shiny apps with Python, chack out my other blogs:
+
+- [The State of Python Shiny](/blogs/01-state-of-pyshiny.qmd)
+- [Let's Build a Basic Python Shiny App](/blogs/02-getting-started-pyshiny.qmd)
+
+### What You'll Need
+
+- [ ] Command line access
+- [ ] Python know-how
+  - [ ] Configure a virtual environment
+  - [ ] Dependency management
+- [ ] Basic knowledge of Python Shiny
+- [ ] An OpenAI API key
+
+```{.abc filename=requirements.txt}
+openai==1.30.4
+shiny==1.1.0
+shinyswatch==0.7.0
+
+```
+
 The final application is presented below, hosted with
 <a href="https://www.shinyapps.io/" target="_blank">shinyapps.io</a>. You
 will need an OpenAI API key in order to prompt the model. The app has a
 link to the sign up page if you would like to give it a try. If you would
 prefer to read the source code for the application before proceeding with
 the article, then please click on the GitHub icon at the top-right of the
-application. If you would prefer to interact with the application in a
+application. If you would rather interact with the application in a
 full-sized window, then visit the
 <a href="https://richleysh84.shinyapps.io/choose-adventure/" target="_blank">Jungle Quest app on shinyapps.io</a>.
+This app is set up to query the gpt-3.5-turbo model, but as you proceed
+through the tutorial, feel free to experiment with other available models
+(they can behave quite differently).
 
 <div style="text-align:center;padding-left:10%;">
-  <iframe class=iframey src="https://richleysh84.shinyapps.io/choose-adventure/" style="overflow:hidden;margin:0;padding:0;width:100%"></iframe>
+  <iframe class=iframey src="https://richleysh84.shinyapps.io/choose-adventure/" style="overflow:hidden;margin:0;padding:0;width:100%;height:50rem"></iframe>
 </div>
 
 ## 1. Concept and Idea
