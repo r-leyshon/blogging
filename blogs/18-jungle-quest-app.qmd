@@ -16,6 +16,7 @@ image: https://i.imgur.com/z9Xm9Lf.jpeg
 image-alt: "Adventurer reading a large book within a mysterious jungle temple."
 toc: true
 css: /./www/17-quarto-comments/styles.css
+code-annotations: hover
 ---
 
 <figure class=center>
@@ -131,13 +132,105 @@ dependencies listed in the `requirements.txt` file, and finally ensure that
 VSCode is configured to
 <a href="https://code.visualstudio.com/docs/python/environments" target="_blank">use the virtual environment</a>.
 
+## Iterative Development
 
-## 3. Planning
+::: {.panel-tabset #iterations}
 
-- Wireframe (with Figma?)
-- Reactive flow
+### Iteration 1
 
-## 4. Development
+In this early prototype, we will focus on using the openai python client
+to send a basic prompt to the gpt-3.5-turbo model.
+
+```{.python filename=app.py}
+"""Iteration 1: How to query the OpenAI API."""
+import openai
+
+API_KEY = "<INSERT_YOUR_KEY_HERE>"                                    # <1>
+
+
+def query_openai(prompt: str, api_key: str) -> str:
+    """Query the chat completions endpoint.
+
+    Parameters
+    ----------
+    prompt: str
+        The prompt to query the chat completions endpoint with.
+    api_key: str
+        The API key to use to query the chat completions endpoint.
+
+    Returns
+    -------
+    str
+        The response from the chat completions endpoint.
+    """
+
+    client = openai.OpenAI(api_key=api_key)                           # <2>
+    # need to handle cases where queries go wrong.
+    try:                                                              # <3>
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[                                                # <4>
+                {"role": "user", "content": prompt}                   # <4>
+            ]                                                         # <4>
+        )
+        return response.choices[0].message.content
+    # in cases where the API key is invalid.
+    except openai.AuthenticationError as e:
+        raise ValueError(f"Is your API key valid?:\n {e}")
+
+
+
+model_response = query_openai(
+  prompt="What is the capital of the moon?", api_key=API_KEY
+  )
+
+```
+1. Insert your API key into the API_KEY variable.
+2. Create a new OpenAI client with the api_key.
+3. This will only pass if the key provided is valid.
+4. Note the format of the messages - a list of dictionaries. The value for
+role can be "user", "system" or "assistant".
+
+The model responds with:
+
+> The moon does not have a capital as it is not a sovereign nation or
+political entity.
+
+Let's summarise the process with a diagram:
+
+![Process diagram for iteration 1](https://i.imgur.com/t15T2J3.png)
+
+So far we have a basic `query_openai()` function that we can feed in a
+prompt and our api key. We then receive a response back from the openai
+model with the expected content.
+
+Although this is an extremely simple process, it's great to start off with
+the fundamentals. Understanding the structure of what's being sent and
+received is useful when we begin embedding this logic into our Shiny app.
+
+### Iteration 2
+
+### Iteration 3
+
+### Iteration 4
+
+### Iteration 5
+
+### Iteration 6
+
+### Iteration 7
+
+### Iteration 8
+
+### Iteration 9
+
+
+:::
+
+[Click to return to the start of iteration tabsets](#iterations)
+
+
+### Iteration 1
 
 - Query openai with python client
 
