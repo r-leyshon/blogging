@@ -116,17 +116,21 @@ through the tutorial, feel free to experiment with other available models
   <iframe class=iframey src="https://richleysh84.shinyapps.io/choose-adventure/" style="overflow:hidden;margin:0;padding:0;width:100%;height:50rem"></iframe>
 </div>
 
-## 1. Concept and Idea
-- **Why this project?**
-  - The inspiration behind using Python Shiny and the OpenAI API.
-  - Target audience
+## Setting up the Development Environment
 
-## 2. Setting up the Development Environment
-- **Tools & Libraries**
-  - Python, Shiny for Python, OpenAI API, and any other dependencies.
+I'd recommend using VSCode with the
+<a href="https://marketplace.visualstudio.com/items?itemName=Posit.shiny" target="_blank">Shiny extension</a>
+to help run and debug the app. It has a super handy utility for launching
+your app within the VSCode interface or expanding it to full screen in your
+default browser. This is priceless when testing your User Interface's (UI)
+appearance on different browsers.
 
-- **Connecting to OpenAI API**
-  - Brief explanation on obtaining an API key and making your first API call.
+You'll need to create and activate a virtual environment of your choice, I
+have used python 3.12 in the examples without any issues. install the
+dependencies listed in the `requirements.txt` file, and finally ensure that
+VSCode is configured to
+<a href="https://code.visualstudio.com/docs/python/environments" target="_blank">use the virtual environment</a>.
+
 
 ## 3. Planning
 
