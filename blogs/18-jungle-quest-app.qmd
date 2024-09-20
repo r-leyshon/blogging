@@ -296,7 +296,6 @@ many dangers.                                                               # <3
 """                                                                         # <3>
 
 
-
 def query_openai(
         prompt: str,
         api_key: str,

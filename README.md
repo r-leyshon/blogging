@@ -17,6 +17,10 @@ build from this directory, instead of root.
 gitignores will blanket ignore a docs folder.
 * Quarto deletes any markdown file with the extension `.MD` on render, but not
 files with the extension `.md`.
+* Create a prefixed conda env called blogging-env, using python 3.11 and
+dependencies from the requirements.txt file. Install nb_conda_kernels with
+conda install. This allows you to select specific environments for each
+qmd.
 
 ## Secrets
 
