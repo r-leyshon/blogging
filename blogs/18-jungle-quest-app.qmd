@@ -16,7 +16,7 @@ image: https://i.imgur.com/z9Xm9Lf.jpeg
 image-alt: "Adventurer reading a large book within a mysterious jungle temple."
 toc: true
 css: /./www/17-quarto-comments/styles.css
-code-annotations: hover
+code-annotations: select
 ---
 
 <figure class=center>
@@ -185,7 +185,12 @@ model_response = query_openai(
   )
 
 ```
-1. Insert your API key into the API_KEY variable.
+1. Insert your API key into the API_KEY variable. Note - it's not advisable
+to include your secret credentials in your python scripts like this, but
+for simplicity's sake, I'm showing that here. I'd advise storing them in a
+git-ignored secrets file or using the `python-dotenv` package to handle
+keeping them safe. Take care not to accidentally commit these
+credentials and expose them on GitHub.
 2. Create a new OpenAI client with the api_key.
 3. This will only pass if the key provided is valid.
 4. Note the format of the messages - a list of dictionaries. The value for
@@ -209,6 +214,146 @@ the fundamentals. Understanding the structure of what's being sent and
 received is useful when we begin embedding this logic into our Shiny app.
 
 ### Iteration 2
+
+In this iteration, we are going to introduce a system message to help
+guide the behaviour of the model - we will want it to act as the guide on
+an adventure. We'll also need it to follow a few rules such as how to
+indicate the game is over.
+
+```{.python filename=app.py}
+"""Iteration 2: Add system & welcome prompts."""
+import openai
+
+API_KEY = "<INSERT_YOUR_KEY_HERE>"
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing  # <1>
+any choices. Never provide the player's input yourself. This is most        # <1>
+important.                                                                  # <1>
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must   # <2>
+include the text "The End...", I will search for this text to end the game. # <2>
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the   # <3>
+lost Crown of Quetzalcoatl.                                                 # <3>
+However, many challenges stand in your way. Are you brave enough, strong    # <3>
+enough and clever enough to overcome the perils of the jungle and secure    # <3>
+the crown?                                                                  # <3>
+                                                                            # <3>
+Before we begin our journey, choose your name, gender and race. Choose a    # <3>
+weapon to bring with you. Choose wisely, as the way ahead is filled with    # <3>
+many dangers.                                                               # <3>
+"""                                                                         # <3>
+
+
+
+def query_openai(
+        prompt: str,
+        api_key: str,
+        sys_prompt:str = _SYSTEM_MSG,
+        start_prompt:str = WELCOME_MSG,
+        ) -> str:
+    """Query the chat completions endpoint.
+
+    Parameters
+    ----------
+    prompt: str
+        The prompt to query the chat completions endpoint with.
+    api_key: str
+        The API key to use to query the chat completions endpoint.
+    sys_prompt: str
+        The system prompt to help guide the model behaviour. By default,
+        the system prompt is set to _SYSTEM_MSG.
+    start_prompt: str
+        The start prompt which will be presented to the user as the app
+        begins. By default, the start prompt is set to WELCOME_MSG.
+
+    Returns
+    -------
+    str
+        The response from the chat completions endpoint.
+    """
+
+    client = openai.OpenAI(api_key=api_key)
+    # need to handle cases where queries go wrong.
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[                                                      # <4>
+                {"role": "system", "content": sys_prompt},                  # <4>
+                {"role": "assistant", "content": start_prompt},             # <4>
+                {"role": "user", "content": prompt},                        # <4>
+            ]                                                               # <4>
+        )
+        return response.choices[0].message.content
+    # in cases where the API key is invalid.
+    except openai.AuthenticationError as e:
+        raise ValueError(f"Is your API key valid?:\n {e}")
+
+
+model_response = query_openai(
+    prompt="What is the capital of the moon?",
+    api_key=API_KEY
+    )
+
+```
+1. Certain models can get a bit over-zealous and start providing imagined
+user input, ultimately playing the game thorugh to completion on their own.
+As games go, that's not that fun, so let's try to safeguard against that
+behaviour with these explicit instructions.
+2. The gpt-3.5-turbo model seems to be pretty reliable at ending the game
+with the required pattern "The end...". We'll later search for this pattern
+to exit the app and return a message indicating game over. Interestingly, 
+I found gpt-4 models to be fairly unreliable in following this instruction.
+All of the models can be configured to stream their responses too, in which
+case they rarely gave the specified game over pattern. I'd be interested in
+others' opinions as to why this may be the case. Please feel free to leave
+a comment at the end of the article if you have an opinion.
+3. This welcome message will be used to introduce the game context for our
+users when the app launches. We will append this into the message stream
+and simulate our LLM greeting our user. We will also include this message
+when querying the model, where it will serve as what's known as a one-shot
+prompt to help guide the model's behaviour. A one-shot prompt is an example
+of how you'd like the model to behave.
+4. We now update the messages stream with our hard-coded prompt. This helps
+to guide both the model and the user, setting context and modelling the
+desired behaviour.
+
+Thanks to the guidance in the hard-coded prompts, our model now behaves a
+bit differently:
+
+> I'm afraid the Moon doesn't have a capital city like countries on Earth
+do! Let's focus on our adventure in the Amazon Rainforest. To begin, please
+choose your name, gender, and race. Additionally, select a weapon to arm
+yourself with on this mystical journey. The fate of finding the lost Crown
+of Quetzalcoatl awaits your choices!
+
+Notice that the model still answers the question, but guides the user back
+to the purpose of the app. In a later iteration, we will see how to
+introduce moderations as a safeguard against the user passing inappropriate
+content.
+
+Finally, updating our process diagram to include the additional prompts, I
+have emphasised the changes implemented within this iteration. As we
+proceed, the diagram's complexity will increase and therefore I'll try to
+emphasise the changes implemented over the previous iteration only:
+
+![Process diagram for iteration 2](https://i.imgur.com/6vuOSp5.png)
 
 ### Iteration 3
 
