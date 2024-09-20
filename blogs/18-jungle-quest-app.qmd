@@ -100,6 +100,19 @@ shinyswatch==0.7.0
 
 ```
 
+:::{.callout collapse="true"}
+
+### A Note on the Purpose (Click to expand)
+
+This article intends to discuss clearly. It doesn't aim to be clever or
+impressive. Its aim is to extend understanding without overwhelming the
+reader. The code may not always be optimal, favouring a simplistic approach
+wherever possible. The application may not be to your liking. The purpose
+is to introduce how to get started with AI-drivven applications rather than
+how to master it.
+
+:::
+
 The final application is presented below, hosted with
 <a href="https://www.shinyapps.io/" target="_blank">shinyapps.io</a>. You
 will need an OpenAI API key in order to prompt the model. The app has a
@@ -134,12 +147,34 @@ VSCode is configured to
 
 ## Iterative Development
 
+::: {.callout-caution}
+
+Take care with your OpenAI APi credentials. I demonstrate hard-coding these
+credentials within python scripts for simplicity. I'd advise storing them
+in a git-ignored secrets file or using the
+<a src=https://pypi.org/project/python-dotenv/ target="_blank">`python-dotenv`</a>
+package to handle keeping them safe. Take care not to accidentally commit
+these credentials and expose them on GitHub. Leakage of OpenAI credentials
+is the fastest-growing type of secret leak, according to
+<a src=https://www.gitguardian.com/state-of-secrets-sprawl-report-2024 target="_blank">Git Guardian's State of Secret Sprawl 2024</a>.
+
+:::
+
+::: {.callout-tip}
+
+### Code Annotations
+
+By clicking on the numbered points within the code blocks, you should see
+tooltips with additional explanations as to what the code is doing.
+
+:::
+
 ::: {.panel-tabset #iterations}
 
 ### Iteration 1
 
 In this early prototype, we will focus on using the openai python client
-to send a basic prompt to the gpt-3.5-turbo model.
+to send a basic prompt to the gpt-3.5-turbo model. 
 
 ```{.python filename=app.py}
 """Iteration 1: How to query the OpenAI API."""
