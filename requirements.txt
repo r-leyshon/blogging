@@ -1,9 +1,3 @@
-folium
-geopandas
-mapclassify
-matplotlib
+jupyter
 nbclient
 nbformat
-pandas
-pyprojroot
-requests
