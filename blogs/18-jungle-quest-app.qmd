@@ -1083,16 +1083,220 @@ the model! It's likely that passing greater context to the moderations
 endpoint (such as more of the message stream) may be able to overcome this,
 though that has not been implemented for this tutorial.
 
-:::{.callout-caution}
+```{.python filename="app.py"}
+"""Iteration 7: Implement prompt moderation."""
+import openai
+from shiny import App, reactive, ui
 
-Use of your API credentials are subject to the OpenAI usage policy, please
-remember this while using the app. In the video, I use the most benign
-example of a statement that reliably violates OpenAI's moderations service:
-"kill, kill, kill".
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),
+        ui.input_action_button(
+            id=f"{id}_btn",
+            label=button_label,
+            style="margin-top:28px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;"
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(
+            id="key_input",
+            label="Enter your OpenAI API key",
+            button_label="Submit",
+            placeholder="Enter key here"
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+
+
+    @reactive.Effect
+    @reactive.event(input.key_input_btn)
+    async def handle_api_key_submit():
+        """Update the UI with a notification when user submits key.
+        
+        Checks the validity of the API key by querying the models list
+        endpoint."""
+        api_key = input.key_input_text()
+        client = openai.AsyncOpenAI(api_key=api_key)
+        try:
+            resp = await client.models.list()
+            if resp:
+                ui.notification_show(
+                    f"API key validated: {api_key[:5]}...")
+        except openai.AuthenticationError as e:
+            ui.notification_show(
+                "Bad key provided. Please try again.", type="warning")
+    
+
+    async def check_moderation(prompt:str) -> str:                          # <1>
+        """Check if prompt is flagged by OpenAI's moderation endpoint.
+
+        Parameters
+        ----------
+        prompt : str
+            The user's prompt to check.
+
+        Returns
+        -------
+        str
+            The category violations if flagged, otherwise "good prompt".
+        """
+        client = openai.AsyncOpenAI(api_key=input.key_input_text())         # <2>
+        response = await client.moderations.create(
+            input=prompt)
+        content = response.results[0].to_dict()
+        if content["flagged"]:                                              # <3>
+            infringements = []
+            for key, val in content["categories"].items():
+                if val:
+                    infringements.append(key)
+            return " & ".join(infringements)                                # <4>
+        else:
+            return "good prompt"                                            # <5>
+
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message."""
+        # Get the user's input
+        usr_prompt = chat.user_input()
+
+        # Check moderations endpoint incase openai policies are violated
+        flag_check = await check_moderation(prompt=usr_prompt)
+        if flag_check != "good prompt":                                     # <6>
+            await chat.append_message({                                     # <6>
+                "role": "assistant",                                        # <6>
+                "content": f"Your message may violate OpenAI's usage policy, categories: {flag_check}. Please rephrase your input and try again." # <6>
+            })                                                              # <6>
+        else:
+            #  update the stream list
+            stream.append({"role": "user", "content": usr_prompt})
+            # Append a response to the chat
+            client = openai.AsyncOpenAI(api_key=input.key_input_text())
+            response = await client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=stream,
+                temperature=0.7, # increase to make the model more creative
+                )
+            model_response = response.choices[0].message.content
+            await chat.append_message(model_response)
+            #  if the model indicates game over, end game with a message.
+            if "the end..." in model_response.lower():
+                await chat.append_message(
+                    {
+                        "role": "assistant",
+                        "content": "Game Over! Refresh to play again."
+                        })
+                exit()
+            else:
+                stream.append(
+                    {"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. We define a new function that will query the OpenAI moderations
+endpoint.
+2. Notice that we create a third openai client in order to handle the
+communication with the service. In the next iteration we will refactor
+this.
+3. If the prompt has violated any category, then the value of the `flagged`
+key will be `True`.
+4. In cases where multiple categories are violated, we will include each
+breached category in a message to the user.
+5. The return value in the case of a prompt that passes the moderation
+check.
+6. We implement some control flow to only query the chat.completions
+endpoint if the moderations check passes.
+
+The updated process diagram clarifies the reactive flow of the app. Now
+prompts from the user pass through `check_moderations()` first. The outcome
+of check moderations is then passed along within the `respond()` function,
+determining whether the prompt would be passed along to the
+`chat.completions` endpoint.
+
+![Process diagram for iteration 7](https://i.imgur.com/h51HPSw.png)
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application
+working. Note that I have since revoked this key and it will no longer
+work. You should not share your secret keys with anyone.
 
 :::
 
-- ** Note about decreased performance**
+When using this iteration of the app, you can see that certain prompts may
+now be flagged as inappropriate. Note that this also reduces the
+performance of our app, as we need to send and process 2 queries for each
+prompt that the user enters.
+
+<iframe title="Iteration 7 recording" src="https://player.vimeo.com/video/1010112083?h=dc49a29e07" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
 
 ### Iteration 8
 
