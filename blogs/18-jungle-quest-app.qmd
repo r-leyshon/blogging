@@ -1512,7 +1512,229 @@ the moderations and chat.completions endpoints.
 ### Iteration 9
 
 In this final stage, we introduce some aesthetic changes - adding a theme
-and an image to add to the theme of the adventure. 
+and an image to chat UI, adding to the feel of the app. It's always nice to
+leave some of the styling towards the end of a build, a bit like adding the
+cherry to a cake.
+
+```{.python filename="app.py"}
+"""Iteration 9: Styling."""
+import openai
+from shiny import App, reactive, ui
+from shinyswatch import theme                                               # <1>
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl:\n
+<div style="display: grid; place-items: center;"><img src="https://i.imgur.com/Fxa7p1D.jpeg" width=60%/></div>\n # <2>
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),
+        ui.input_action_button(
+            id=f"{id}_btn",
+            label=button_label,
+            style="margin-top:32px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;"
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(
+            id="key_input",
+            label="Enter your OpenAI API key",
+            button_label="Submit",
+            placeholder="Enter key here"
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+    theme=theme.darkly,                                                     # <3>
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+    #  define a reactive value that will store the openai client
+    openai_client = reactive.Value(None)
+
+
+    @reactive.Effect
+    @reactive.event(input.key_input_btn)
+    async def handle_api_key_submit():
+        """Update the UI with a notification when user submits key.
+        
+        Checks the validity of the API key by querying the models list
+        endpoint."""
+        api_key = input.key_input_text()
+        client = openai.AsyncOpenAI(api_key=api_key)
+        try:
+            resp = await client.models.list()
+            if resp:
+                openai_client.set(client)
+                ui.notification_show(
+                    f"API key validated: {api_key[:5]}...")
+        except openai.AuthenticationError as e:
+            ui.notification_show(
+                "Bad key provided. Please try again.", type="warning")
+    
+
+    async def check_moderation(
+            prompt:str, reactive_client:reactive.Value
+            ) -> str:
+        """Check if prompt is flagged by OpenAI's moderation endpoint.
+
+        Parameters
+        ----------
+        prompt : str
+            The user's prompt to check.
+        reactive_client : reactive.Value
+            A reactive value that stores the openai client.
+
+        Returns
+        -------
+        str
+            The category violations if flagged, otherwise "good prompt".
+        """
+        client = reactive_client.get()
+        response = await client.moderations.create(
+            input=prompt)
+        content = response.results[0].to_dict()
+        if content["flagged"]:
+            infringements = []
+            for key, val in content["categories"].items():
+                if val:
+                    infringements.append(key)
+            return " & ".join(infringements)
+        else:
+            return "good prompt"
+    
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message.
+        
+        First check that OpenAI's usage policies are not moderated. If this
+        passes, then respond with a message from the model. If the model
+        has ended the game, then exit the game."""
+        # Get the user's input
+        usr_prompt = chat.user_input()
+
+        # Check moderations endpoint incase openai policies are violated
+        flag_check = await check_moderation(
+            prompt=usr_prompt, reactive_client=openai_client)
+        if flag_check != "good prompt":
+            await chat.append_message({
+                "role": "assistant",
+                "content": f"Your message may violate OpenAI's usage policy, categories: {flag_check}. Please rephrase your input and try again."
+            })
+        else:
+            #  update the stream list
+            stream.append({"role": "user", "content": usr_prompt})
+            # Append a response to the chat
+            response = await openai_client.get().chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=stream,
+                temperature=0.7, # increase to make the model more creative
+                )
+            model_response = response.choices[0].message.content
+            await chat.append_message(model_response)
+            #  if the model indicates game over, end game with a message.
+            if "the end..." in model_response.lower():
+                await chat.append_message(
+                    {
+                        "role": "assistant",
+                        "content": "Game Over! Refresh to play again."
+                        })
+                exit()
+            else:
+                stream.append(
+                    {"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. In order to set a theme we import
+<a href=https://github.com/posit-dev/py-shinyswatch target="_blank">`shinyswatch`</a>.
+2. Markdown or HTML that you pass to the chat interface will get rendered.
+This includes images, links and even emojis. In fact, one of the gpt-4o
+models I tested decided to respond with its own emojis.
+3. Popping this one-liner in your UI will apply the theme styling to your
+application. Feel free to select any of the available options, see the
+interactive theme selector app below for all available themes.
+
+`shinyswatch` is a great utility that allows for effificent styling of
+python shiny apps. Check out this shinylive app from the package
+maintainers that allows you to easily toggle between the different themes
+available.
+
+<iframe src=https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXAAjFADugdOgnmAGlQGMB7CAFzkqVQDMAnUmZAZwAsBLCXZTmdKQYVkAQUxEAkhHQBXCqyIB5eXIVEAynFatO5Ig2oATOAyKzOAHQjX+g4Wy49WAdygVi7a9YzoA+hbIALzIFjhQAOZwfnQANhZGABTWyKmO3Liu7p5YFOxw8H7onMQA1qYBnIkAlETIAMTIADwAtGJGRsh5cF358MjFZabIAKqSXaTIuKSyDMi+KWlh3Gp+rLGcJgzJkLIwloTIBwByewBGpogHRDDcQQCMAAw3UAAeD4-PyABuUPFwQQAzI9aotUmEZhRVlRXhQ-N9TGd3PwdutNhVfrEDqCIGlegUARwMlkPOxcn04FgAF5wdDsXBmVKNVrIADC7FIpFYPSguO4nAonD++P6iVI6EF5D+1WsMps8pMdDYpgR2xW8hQ0jUimQkLUKBUUPkOu5Oj0EBQWjN5GqV1xaUaAFkoOU2LMetNZsqGKrkHRZBBiJLccQ-rFWPiRT1BuU5tyfcN-YHg2D0s43KTyQSiiVY2sVaYat57akAAJ6+Sp0uGCBbXJwWGpxVsDZbeF-Gp2vF4wwUWa4ugHEDqihYCB7GoAXwOxZ8mGCYkwiV8lSI8dVcsOYAouHQCBQ24bFDAk6I4Gg8FoYEMAEcLIZ4JRWLlYVuyJRqMeD0SeNYf5kM08awtx3PcrxhY9JwAXSAA class=iframey style="overflow:hidden;margin:0;padding:0;width:100%;height:30rem"></iframe>
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application
+working. Note that I have since revoked this key and it will no longer
+work. You should not share your secret keys with anyone.
+
+:::
+
+The final app is demonstrated in full below.
+
+<iframe title="Iteration 9 recording" src="https://player.vimeo.com/video/1010112202?h=273164945d" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
 
 :::
 
@@ -1521,10 +1743,10 @@ and an image to add to the theme of the adventure.
 Finally, we have arrived at the end of the application development and we
 have a fully functional game with some additional safeguards against
 intentional misuse. If you've stuck with it this far - well done, I'd say
-you've earned yourself a pat on the back!
+you've earned yourself a pat on the back! {{< fa hands-clapping >}}
 
-If you'd like to consider how to continue improving the app, then here are
-some suggestions:
+If you'd like to continue improving the app, then here are some
+suggestions:
 
 * Pass more context to the moderations endpoint to minimise false
 positives.
