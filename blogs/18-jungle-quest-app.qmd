@@ -1740,36 +1740,38 @@ The final app is demonstrated in full below.
 
 [Click to return to the start of the iteration tabsets](#iterations)
 
-Finally, we have arrived at the end of the application development and we
-have a fully functional game with some additional safeguards against
-intentional misuse. If you've stuck with it this far - well done, I'd say
-you've earned yourself a pat on the back! {{< fa hands-clapping >}}
+## Conclusion
+
+Finally, we have arrived at the end of the application development! We
+started out with a basic little script that demonstrated how to use the
+`openai` python client and have arrived at a fully functional game with
+some additional safeguards against misuse. If you've stuck with it this far
+- well done, I'd say you've earned yourself a pat on the back! 
+
+<div hidden>{{< fa hands-clapping >}}</div><i class="fa-solid fa-hands-clapping fa-beat fa-2xl" style="color:#ffa53d;text-align:center;display:inline-block;width:100%;"></i>
 
 If you'd like to continue improving the app, then here are some
 suggestions:
 
-* Pass more context to the moderations endpoint to minimise false
+- Pass more context to the moderations endpoint to minimise false
 positives.
-* Add a temperature control, so that the user can adjust how creative the
+- Add a temperature control, so that the user can adjust how creative the
 models can be.
-* Add a model selection widget so that the user can try out responses with
+- Add a model selection widget so that the user can try out responses with
 different openai models.
-* Experiment with
+- Experiment with
 <a href=https://github.com/r-leyshon/adventure-app/tree/stream-example target="_blanks">streaming the responses</a>
 for a more responsive design.
-* Restructure your app to make use of
+- Restructure your app to make use of
 <a href=https://shiny.posit.co/py/docs/modules.html target="_blank">shiny modules</a>,
 increasing the application's maintainability.
 
-## Conclusion
-- Recap the journey of building the app, from idea to deployment.
-- Mention potential future improvements (e.g., adding more complex storylines, user authentication, etc.).
-- Invite readers to try out the app or explore the code on GitHub.
-
-## Call to Action
-- **GitHub Link**: Provide a link to the source code repository.
-- **Demo Link**: If applicable, include a link to a live version of the app.
-- **Invitation for Feedback**: Encourage readers to share their thoughts or improvements in the comments.
+I hope you've enjoyed the tutorial and learned something new. If you're
+able to riff off this with our own designs I would be really interested to
+take a look - please feel free to post links to your own creations in the
+comments at the end of the blog. If you'd like to consider how to share
+your app with others, take a look at my article on
+[Deployment to Shinyapps.io](/blogs/07-schedule-deploy-shinyapps.qmd).
 
 If you spot an error with this article, or have a suggested improvement then
 feel free to leave a comment (GitHub login required) or
