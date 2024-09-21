@@ -1094,17 +1094,36 @@ example of a statement that reliably violates OpenAI's moderations service:
 
 ### Iteration 8
 
+We have nearly arrived at our final design. In this stage, we refactor the
+application to ensure we use a single openai client to query the seperate
+endpoints. 
+
 ### Iteration 9
+
+In this final stage, we introduce some aesthetic changes - adding a theme
+and an image to add to the theme of the adventure. 
 
 :::
 
 [Click to return to the start of iteration tabsets](#iterations)
 
-## 8. Final Touches and Deployment
-- **Polishing the app**
-  - Any last steps before deploying: Testing, UI tweaks, refining the game logic.
-- **Deploying the App**
-  - Link to deployment file and backlink t deploying to shinyapps.io blog.
+Finally, we have arrived at the end of the application development and we
+have a fully functional game with some additional safeguards against
+intentional misuse. If you've stuck with it this far - well done, I'd say
+you've earned yourself a pat on the back!
+
+If you'd like to consider how to continue improving the app, then here are
+some suggestions:
+
+* Pass more context to the moderations endpoint to minimise false
+positives.
+* Add a temperature control, so that the user can adjust how creative the
+models can be.
+* Add a model selection widget so that the user can try out responses with
+different openai models.
+* Experiment with streaming the responses for a more responsive design.
+* Restructure your app to make use of shiny modules, increasing the
+application's maintainability.
 
 ## Conclusion
 - Recap the journey of building the app, from idea to deployment.
