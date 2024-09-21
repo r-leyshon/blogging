@@ -526,7 +526,7 @@ installations.
 
 The process diagram for our app so far looks like this:
 
-![Process diagram for iteration 2](https://i.imgur.com/ToBp4iQ.png)
+![Process diagram for iteration 3](https://i.imgur.com/ToBp4iQ.png)
 
 Our logic for talking to the OpenAI model has not yet been coupled with our
 UI. We'll fold that logic into our shiny server in the next iteration.
@@ -670,9 +670,12 @@ rule. But when I tested streaming the model responses, no models would end
 the game as requested. This is definitely the most flaky element of this
 app and is part of the fun of working with these models.
 
-Now adding in the server logic for our process diagram:
+Now adding in the server logic for our process diagram, note that I have
+added a key that illustrates wherever we instantiate an openai client in
+the app. As we continue to build, handling the client becomes a bit
+involved so let's start paying attention to wherever we're using it:
 
-![Process diagram for iteration 1](https://i.imgur.com/46mqCrY.png)
+![Process diagram for iteration 4](https://i.imgur.com/46mqCrY.png)
 
 You can see that the `respond()` function has become the busiest unit in
 the app. It takes the api key value from our UI, combines the users's
@@ -700,6 +703,194 @@ But we should think about handling cases where the key is bad and giving a
 more accessible notification to the user. 
 
 ### Iteration 5
+
+In this version, we build on our working app to improve the user
+experience. We'll add a 'submit' button, which the user can use when
+they're ready to use their key. We also provide some notifications to the
+user when they submit their key, but we won't be checking whether the key
+is valid until the next iteration.
+
+```{.python filename="app.py"}
+"""Iteration 5: Submit button & notifications for the user."""
+import openai
+from shiny import App, reactive, ui
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):        # <1>
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),         # <2>
+        ui.input_action_button(                                             # <2>
+            id=f"{id}_btn",                                                 # <2>
+            label=button_label,
+            style="margin-top:28px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;" # <3>
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(                                             # <4>
+            id="key_input",                                                 # <4>
+            label="Enter your OpenAI API key",                              # <4>
+            button_label="Submit",                                          # <4>
+            placeholder="Enter key here"                                    # <4>
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+
+
+    @reactive.Effect                                                        # <5>
+    @reactive.event(input.key_input_btn)                                    # <5>
+    def handle_api_key_submit():                                            # <5>
+        """Update the UI with a notification when user submits key."""      # <5>
+        api_key = input.key_input_text()                                    # <5>
+        if api_key:                                                         # <5>
+            ui.notification_show(f"API key submitted: {api_key[:5]}...")    # <5>
+        else:                                                               # <5>
+            ui.notification_show("Please enter an API key", type="warning") # <5>
+
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message.
+        
+        We use async here because:
+        1. It allows the function to perform I/O operations
+        (like API calls) without blocking the entire application.
+        2. It improves responsiveness, especially when dealing with
+        potentially slow network requests to the OpenAI API.
+        3. It works well with Shiny's event-driven architecture, allowing
+        other parts of the app to remain interactive while waiting for the
+        API response.
+        """
+        # Get the user's input
+        user = chat.user_input()
+        #  update the stream list
+        stream.append({"role": "user", "content": user})
+        # Append a response to the chat
+        client = openai.AsyncOpenAI(api_key=input.key_input_text())
+        response = await client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=stream,
+            temperature=0.7, # increase to make the model more creative
+            )
+        model_response = response.choices[0].message.content
+        await chat.append_message(model_response)
+        #  if the model indicates game over, end the game with a message.
+        if "the end..." in model_response.lower():
+            await chat.append_message(
+                {
+                    "role": "assistant",
+                    "content": "Game Over! Refresh the page to play again."
+                    })
+            exit()
+        else:
+            stream.append({"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. Here we define a new function that's used to conveniently return a text
+field and an action button together. This is what we'll use for the key
+input going forward.
+2. Notice that the `id` value that we'll pass into
+`input_text_with_button()` will return seperate unique `id values` for the
+text field and action button.
+3. Feel free to experiment with styling any elements with CSS. If you'd
+rather not have inline CSS, you can move the styling into a dedicated CSS
+file and apply it with classes or IDs to the elements in your UI.
+4. We replace the text field of previous iterations with our new
+`input_text_with_button()` text field action button combo.
+5. In the server, we define a new function that will run whenever the
+action button with `id=input.key_input_btn` is clicked by the user. If
+there's a value that's been submitted we're going to place a confirmation
+notification on the UI. If not, we'll raise a warning to the user to remind
+them to submit their key.
+
+I've added a marker in the process diagram to remind us that
+`handle_api_key_submit()` will run as a reactive event when the key is
+submitted. This is going to update the UI with feedback notifications.
+
+![Process diagram for iteration 5](https://i.imgur.com/lU743ra.png)
+
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application
+working. Note that I have since revoked this key and it will no longer
+work. You should not share your secret keys with anyone.
+
+:::
+
+In the recording below you can see the new action button and the UI
+notifications being erturned by the server. However, note that I still get
+that nasty red error when I pass an invalid key. In the next iteration,
+we'll determine whether the user has used a valid key.
+
+<iframe title="Iteration 5 recording" src="https://player.vimeo.com/video/1010111488?h=f74e808099" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
 
 ### Iteration 6
 
