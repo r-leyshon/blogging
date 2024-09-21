@@ -80,7 +80,7 @@ with many other dashboarding solutions.
 
 Python programmers who are curious about building AI-enabled applications.
 Some familiarity with `shiny` may be assumed. For an overview and intro to
-building `shiny` apps with Python, chack out my other blogs:
+building `shiny` apps with Python, check out my other blogs:
 
 - [The State of Python `shiny`](/blogs/01-state-of-pyshiny.qmd)
 - [Let's Build a Basic Python `shiny` App](/blogs/02-getting-started-pyshiny.qmd)
@@ -233,7 +233,7 @@ model_response = query_openai(
 to include your secret credentials in your python scripts like this, but
 for simplicity's sake, I'm showing that here. Take care not to accidentally
 commit these credentials and expose them on GitHub.
-2. Creates a new OpenAI client with the api_key. This client can be re-used
+2. Creates a new OpenAI client with the api_key. This client can be reused
 to send queries to the different service endpoints.
 3. This will only pass if the key provided is valid.
 4. Note the format of the messages - a list of dictionaries. The value for
@@ -354,7 +354,7 @@ model_response = query_openai(
     )
 
 ```
-1. Certain models can get a bit over-zealous and start providing imagined
+1. Certain models can get a bit overzealous and start providing imagined
 user input, ultimately playing the game through to completion on their own.
 As games go, that's not particularly fun, so let's try to safeguard against
 that behaviour with these explicit instructions.
@@ -673,7 +673,7 @@ let's start paying attention to wherever we're using it:
 ![Process diagram for iteration 4](https://i.imgur.com/46mqCrY.png)
 
 You can see that the `respond()` function has become the busiest unit in
-the app. It takes the api key value from our UI, combines the users's
+the app. It takes the api key value from our UI, combines the user's
 messages sent from the chat UI, adds these to the chat stream and
 communicates with the OpenAI model. Now these components are all wired up
 we get a running application. If you've made it this far - well done!
@@ -842,7 +842,7 @@ app = App(ui=app_ui, server=server)
 field and an action button together. This is what we'll use for the key
 input going forward.
 2. Notice that the `id` value that we'll pass into
-`input_text_with_button()` will return seperate unique `id` values for the
+`input_text_with_button()` will return separate unique `id` values for the
 text field and action button.
 3. Feel free to experiment with styling any elements with CSS. If you'd
 rather not have inline CSS, you can move the styling into a dedicated CSS
@@ -1294,7 +1294,7 @@ prompt that the user enters.
 ### Iteration 8
 
 We have nearly arrived at our final design. In this stage, we refactor the
-application to ensure we use a single openai client to query the seperate
+application to ensure we use a single openai client to query the separate
 endpoints. 
 
 ```{.python filename="app.py"}
@@ -1705,7 +1705,7 @@ app = App(ui=app_ui, server=server)
 <a href=https://github.com/posit-dev/py-shinyswatch target="_blank">`shinyswatch`</a>.
 2. Markdown or HTML that you pass to the chat interface will get rendered.
 This includes images, links and even emojis. In fact, one of the gpt-4o
-models I tested decided to respond with its own emojis.
+models I tested decided to respond with emojis.
 3. Popping this one-liner in your UI will apply the theme styling to your
 application. Feel free to select any of the available options, see the
 interactive theme selector app below for all available themes.
