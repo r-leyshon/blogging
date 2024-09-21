@@ -154,10 +154,14 @@ Take care with your OpenAI APi credentials. I demonstrate hard-coding these
 credentials within python scripts for simplicity. I'd advise storing them
 in a git-ignored secrets file or using the
 <a href=https://pypi.org/project/python-dotenv/ target="_blank">`python-dotenv`</a>
-package to handle keeping them safe. Take care not to accidentally commit
-these credentials and expose them on GitHub. Leakage of OpenAI credentials
-is the fastest-growing type of secret leak, according to
+package to keep them safe. Take care not to accidentally commit these
+credentials and expose them on GitHub. Leakage of OpenAI credentials is the
+fastest-growing type of secret leak, according to
 <a href=https://www.gitguardian.com/state-of-secrets-sprawl-report-2024 target="_blank">Git Guardian's State of Secret Sprawl 2024</a>.
+
+Finally, please note that usage of the openai service associated with your
+is associated to your account via your API key and should conform to the
+service's usage policy.
 
 :::
 
@@ -166,7 +170,7 @@ is the fastest-growing type of secret leak, according to
 ### Code Annotations
 
 By clicking on the numbered points within the code blocks, you should see
-tooltips with additional explanations as to what the code is doing.
+tooltips with additional explanations.
 
 :::
 
@@ -1065,6 +1069,28 @@ return a warning to the user if the submitted key was not valid.
 <iframe title="Iteration 6 recording" src="https://player.vimeo.com/video/1010111977?h=b625a6f9ef" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
 
 ### Iteration 7
+
+Now we introduce a moderations feature that will check that the prompts
+being passed from the user to the OpenAI service comply with the service's
+usage policies. Forewarned - this is far from perfect!
+
+In general, it's pretty good but if you're intentionally trying to test it
+like I did when implementing this feature, you can find some funny quirks.
+British expletives tend to sail through unchallenged and at times my test
+prompts were raised as violations for stating things like "Let's fight!"
+(category: harassment) when that was one of the options provided to me by
+the model! It's likely that passing greater context to the moderations
+endpoint (such as more of the message stream) may be able to overcome this,
+though that has not been implemented for this tutorial.
+
+:::{.callout-caution}
+
+Use of your API credentials are subject to the OpenAI usage policy, please
+remember this while using the app. In the video, I use the most benign
+example of a statement that reliably violates OpenAI's moderations service:
+"kill, kill, kill".
+
+:::
 
 ### Iteration 8
 
