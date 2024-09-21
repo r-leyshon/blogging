@@ -2,7 +2,7 @@
 title: "Scheduled Deployment to Shinyapps.io"
 author: "Rich Leyshon"
 date: December 31 2023
-description: "How to ingest data using Python requests & ArcGIS REST API."
+description: "Using GitHub Actions to Automate Python Shiny App Deployments."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - How-to
     - Python Shiny

@@ -1,3 +1,4 @@
-jupyterq
+jupyter
 nbclient
 nbformat
+pyprojroot # dep for site_health,py
