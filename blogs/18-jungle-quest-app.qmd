@@ -161,7 +161,7 @@ fastest-growing type of secret leak, according to
 
 Finally, please note that usage of the openai service associated with your
 is associated to your account via your API key and should conform to the
-service's usage policy.
+<a href="https://openai.com/policies/" target="_blank">service's usage policy.</a>
 
 :::
 
@@ -1092,6 +1092,8 @@ example of a statement that reliably violates OpenAI's moderations service:
 
 :::
 
+- ** Note about decreased performance**
+
 ### Iteration 8
 
 We have nearly arrived at our final design. In this stage, we refactor the
@@ -1121,9 +1123,12 @@ positives.
 models can be.
 * Add a model selection widget so that the user can try out responses with
 different openai models.
-* Experiment with streaming the responses for a more responsive design.
-* Restructure your app to make use of shiny modules, increasing the
-application's maintainability.
+* Experiment with
+<a href=https://github.com/r-leyshon/adventure-app/tree/stream-example target="_blanks">streaming the responses</a>
+for a more responsive design.
+* Restructure your app to make use of
+<a href=https://shiny.posit.co/py/docs/modules.html target="_blank">shiny modules</a>,
+increasing the application's maintainability.
 
 ## Conclusion
 - Recap the journey of building the app, from idea to deployment.
