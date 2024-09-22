@@ -27,10 +27,9 @@ listing:
 
 ## Intro
 
-A site to store blogs about programming concepts, software development and data
-science. Generally things that future me will be thankful that I've recorded
-these things somewhere.
-
+A site to store blogs about programming concepts, software development and
+data science. Generally things that future me will be thankful that I've
+recorded.
 
 ## Site Overview
 
@@ -38,17 +37,15 @@ these things somewhere.
 tutorials, how-to guides. All articles are categorised according to the
 excellent [diataxis framework](https://diataxis.fr/).
 
-* [Music Reviews](music-reviews/index.qmd) : Mostly album reviews. I listen to
-strictly non-verbal music when programming. This was a habit that I developed
-while working within a busy office environment. Instrumental music of several
-genres has helped me efficiently establish a state of mental flow required for
-deep concentration. I'll include reviews of some of my favourite albums here,
-categorised by genre.
+* [Music Reviews](music-reviews/index.qmd) : Mostly album reviews. I listen
+to instrumental music when programming. This was a habit that I developed
+while working within a busy office environment. This has helped me
+efficiently establish a state of mental flow required for deep
+concentration. I'll include reviews of some of my favourite albums here.
 
 * [Book Reviews](book-reviews/index.qmd) : Much of my casual reading is
-non-fiction tangential to programming. I'll review material here that I
-have found to be supportive of my work in various aspects, categorised
-by genre.
+non-fiction and tangential to programming. I'll review material here that I
+have found to be supportive of my work in various aspects.
 
 ## Recent Articles
 
@@ -61,8 +58,11 @@ by genre.
 
 
 
-I am a Senior Data Scientist at the Office for National Statistics Data Science
-Campus. I enjoy programming & [automation](https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/) and an advocate for the standards outlined in
-[Quality Assurance of Code for Analysis & Research](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html). For more detail regarding my professional experience, please follow this
-[link to my resumé](https://r-leyshon.github.io/resume/). And to collaborate
-with me, here's [my GitHub profile](https://github.com/r-leyshon).
+I am a Senior Developer at the the Ministry of Justice, UK. I enjoy
+programming &
+[automation](https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/)
+and an advocate for the standards outlined in
+[Quality Assurance of Code for Analysis & Research](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html).
+For more detail regarding my professional experience, please follow this
+[link to my resumé](https://r-leyshon.github.io/resume/). To collaborate,
+reach out at [my GitHub profile](https://github.com/r-leyshon).
