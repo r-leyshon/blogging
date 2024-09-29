@@ -1,0 +1,68 @@
+---
+title: "GitHub Keeps Your Commit History Readable."
+author: "Rich Leyshon"
+date: "September 28 2024"
+description: "Let GitHub Nudge You Towards a Better Audit Trail."
+categories:
+    - Explanation
+    - GitHub
+    - Git
+    - Version Control
+    - Software Development
+image: https://i.imgur.com/iwVPwPG.png
+image-alt: "A cute cat-like character inspects code with a magnifying glass."
+toc: true
+css: /./www/17-quarto-comments/styles.css
+---
+
+ <img class=shaded_box src=https://i.imgur.com/iwVPwPG.png alt="A cute cat-like character inspects code with a magnifying glass." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
+
+> "You don't need version control any more than a trapese [sic] artist
+needs a safety net." Mark Cidade, <a href=https://stackoverflow.com/posts/250991/revisions target="_blank">Stack Overflow</a>
+
+## Introduction
+
+...
+
+
+### Intended Audience
+
+...
+
+## Commit Style
+
+### What?
+
+### Why?
+
+### How?
+
+## Comparing Commits
+
+### What?
+
+### Why?
+
+### How?
+
+## Link PRs with Issues
+
+### What?
+
+### Why?
+
+### How?
+
+## Squash Merge Feature Branches
+
+### What?
+
+### Why?
+
+### How?
+
+
+## Summary
+
+
+<p id=fin><i>fin!</i></p>
