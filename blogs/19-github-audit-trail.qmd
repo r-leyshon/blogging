@@ -22,8 +22,31 @@ needs a safety net." Mark Cidade, <a href=https://stackoverflow.com/posts/250991
 
 ## Introduction
 
-...
+Most developers spend time reading other people's code - for Pull
+Reviews (PRs) or to learn more about an Application Programming Interface
+(API), for example. Every so often, a developer may need to review an
+entire repository and possibly even its commit history. This can happen
+when publishing a mature codebase.
 
+Making sennse of other peoples' commit histories can be challenging,
+especially if that work is exploratory. Understanding the myriad reasons
+for any single change after the fact is reliant upon whether the developer
+had time to document their reasons for their implementation. Even if you work alone, perhaps that other developer
+will be yourself at times. Needing to pick through your code's commit
+history in order to find a bug-free version. 
+
+The good news is that there are a few tools that GitHub can provide us, and
+one or two easy habits that will greatly assist your colleagues' in
+comprehending your Git activity. In fact, the GitHub User Interface (UI) is
+designed in subtle ways, to nudge you towards some of these behaviours. The
+sort of things that are not required but are incredibly helpful to others - 
+including your future self. 
+
+<iframe src="https://giphy.com/embed/TtlYafuP93f5FxemDU" style="display:block;margin-left:auto;margin-right:auto;width:60%;height:16rem;border:none;" class="iframey shaded_box" allowFullScreen></iframe>
+<br>
+In my opinion, Jerry really should have included "...your future self..."
+in there, too. Read on for more on how to be kind to yourself, and those
+poor souls who need to read your work - GitHub has your back.
 
 ### Intended Audience
 
