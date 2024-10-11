@@ -156,15 +156,55 @@ line `Fixes #71` in a comment within the PR will link the issue. Several
 issues can be linked in this way, eg `Fixes #71, Resolves #72` and so on.
 
 If you have a GitHub project set up with automation rules, that ticket is
-moved from the column it previously lived in to the 'Done' column. 
+moved from the column it previously lived in to the 'Done' column.
 
-## Squash Merge Feature Branches
+## Consider Your Merge Strategy 
 
-### What?
+When merging a PR in the GitHub UI, 3 options are presented:
 
-### Why?
+![](INSERT IMG)
 
-### How?
+These options are a little involved and I would recommend reading
+[GitHub's merge docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
+on the matter for a more detailed breakdown. A brief summary can be seen
+in the table below.
+
+| **Merge Type**       | **What Happens** | **How It Looks** | **Best For**     | **Downside**     |
+|----------------------|------------------|------------------|------------------|------------------|
+| **Merge Commit**     | A new commit is created to merge the PR, keeping all individual commits intact. | A merge commit is added, and you can see all the individual commits from the PR.| Keeping a detailed history with all commits preserved. | Can clutter the commit history with many small or trivial commits. |
+| **Squash and Merge** | All commits in the PR are combined into one single commit before merging. | Only one commit appears in the history, representing all changes from the PR. | Keeping the commit history clean and concise. | Loses the individual commit details from the PR. |
+| **Rebase and Merge** | The commits from the PR are applied directly on top of the main branch, maintaining their original structure but without a merge commit. | The history looks linear, with the PR commits applied after the latest main branch commit, with no merge commit in between. | Keeping a linear, clean commit history without merge commits. | Can be tricky with conflicts, especially for complex histories. |
+
+To help visualise the differences in these approaches, here is a graph that
+succinctly demonstrates the differences:
+
+![](<INSERT GIT GRAPH>)
+
+Inspecting the main branch histories after merging edits to a poem:
+
+
+
+
+Understanding which strategy is for the best depends on the context in
+which you're working. Your 2 options for maintining a full commit history
+are either merge commit or rebase and merge. If you would rather summarise
+the commit history, then squash commit is the right approach. If I'm
+working on a solo project, I tend to merge commit. If I'm working in a
+team, I tend to squash commit in order to keep the version history
+manageable. 
+
+Some people bemoan the squash commit approach, with 2 main complaints that
+I've encountered:
+
+1. The full commit history is not preserved.
+2. It decreases their apparent GitHub activity.
+
+My responses follow:
+
+1. Deleted branches can be restored.
+2. GitHub activity is a poor proxy for impact.
+
+
 
 ## Bonus: Tips for Auditing 
 
