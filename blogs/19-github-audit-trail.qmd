@@ -48,19 +48,84 @@ In my opinion, Jerry really should have included "...your future self..."
 in there, too. Read on for more on how to be kind to yourself, and those
 poor souls who need to read your work - GitHub has your back.
 
+:::{.callout-note collapsed="true"}
+
+### Acknowledgements (click to expand)
+
+Every Git user has their own way of doing things. Many experts on the
+matter have diverging opinions on pretty much everything Git has to offer.
+In this article, I am offering a medley of advice from colleagues, trial,
+error and pain incurred. I'd bet that not all the advice here will chime
+with you. If you're able to properly consider, compare and discard any of
+these suggested practices
+
+:::
+
 ### Intended Audience
 
-...
+Programmers who use GitHub to share code. The kind of Porgrammers who:
 
-## Commit Style
+- may not have used GitHhub to collaborate in teams (previously me).
+- pride themselves on knowing 'just enough Git to survive' (me).
+- have been using GitHub for a few years and wonder if their views are becoming entrenched (future me).
 
-### What?
+This article will include a fair amount of opinion & appreciation for how
+GitHub helps promote sustainable behaviours. You are most welcome to disagree
+and share your own opinions. There is a comments section at the bottom of
+the page to facilitate that.
 
-### Why?
 
-### How?
+## Commit Messages
 
-## Comparing Commits
+One of the most 'freeing' style guide rules an organisation can institute
+are rules for what it considers to be good commit messages. Having enough
+rules to help take the pondering out of writing your message content will
+help get you back onto the development work quicker. 
+
+Having well-structured commit messages also helps others to quickly understand 
+the types of changes that have been implemented in a pull request (PR).
+Some of my previous colleagues took the time to put together a
+<a href=https://datasciencecampus.github.io/coding-standards/version-control.html target="_blank">style guide</a>
+with a specific pattern for commit messages:
+
+> "
+> `<type>: <subject>`
+> 
+> type
+> 
+> Must be one of the following:
+> 
+> * feat: A new feature
+> * fix: A bug fix
+> * doc: Documentation only changes
+> * style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+> * refactor: A code change that neither fixes a bug or adds a feature
+> * perf: A code change that improves performance
+> * test: Adding missing tests
+> * chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+> Do not capitalise the first letter.
+> 
+> subject
+> 
+> The subject contains succinct description of the change:
+> 
+> * use the imperative, present tense: “Change” not “Changed” nor “Changes”
+> * do capitalise first letter
+> * no dot (.) at the end"
+
+Many thanks to those unmet colleagues who took the time to write this
+guidance.
+
+This has been super useful for 99% of my commit messages that are one-liners.
+On the odd occasion I've felt a multi-line message was required, having the
+guidance for that written down has been a priceless time-saver. Using a
+commit type has also helped in moving backwards through the version
+history - helping my future self to target specific refactoring diffs
+or taking a rummage through a feature that introduced some newly discovered
+bug. 
+
+Considering the commit subject, I would subscribe to
+<a href=https://best-practice-and-impact.github.io/qa-of-code-guidance/version_control.html#write-short-and-informative-commits target="_blank">ONS Duck Book's advice</a> - aspire to short and informative messages. 
 
 ### What?
 
@@ -84,6 +149,13 @@ poor souls who need to read your work - GitHub has your back.
 
 ### How?
 
+## Bonus: Tips for Auditing 
+
+### Assign BLAME
+
+### Grep FTW
+
+### Comparing Commits
 
 ## Summary
 
