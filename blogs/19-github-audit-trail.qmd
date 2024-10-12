@@ -357,6 +357,37 @@ That pattern takes regular expressions so it can be quite flexible in
 combination with wildcards. This is super useful if you need to check
 whether a specific secret was ever added to the commit history.
 
+### GitHub & VSCode
+
+The previous tip is a feature of Git rather than GitHub. In order to
+execute the commands, you'll need a Command Line Interface and a local
+clone of the repository. That might not always be convenient. Did you know
+that since the low(ish) key Microsoft takeover of GitHub, you can now
+access VSCode directly from the GitHub UI?
+
+By simply typing `.`
+(full stop or period, depending on what side of the Atlantic you learned English)
+you will open your repository within VSCode directly within your browser
+window. If you'd prefer to open VSCode in a new browser window, type `>`
+instead. This interface is handy for adding in new files or adjusting the
+content of existing files.
+
+If you'd like an interactive terminal, or to test out code, you'll need to
+switch over to GitHub Codespaces. Again, this is a free service that GitHub
+provide that provisions some compute for you. To launch a 'live' version of
+VSCode in your browser, click on the burger icon in in the ribbon to the
+left, then `Terminal` -> `New Terminal`. You will be presented with options
+in the terminal asking you to launch GitHub Codespaces or to continue in a
+local clone of the repo. 
+
+![Launching Codespaces. Click to expand.](https://i.imgur.com/ZnqzMi2.png){.lightbox}
+
+Once Codespaces is launched, you have an interactive terminal to carry out
+your favourite operations. Here I'm displaying the `git grep` command in
+my browser with Codespaces.
+
+![Running terminal operations with Codespaces. Click to expand.](https://i.imgur.com/jRigeEl.png){.lightbox}
+
 ### Comparing Commits
 
 ## Summary
