@@ -162,18 +162,13 @@ moved from the column it previously lived in to the 'Done' column.
 
 When merging a PR in the GitHub UI, 3 options are presented:
 
-![](INSERT IMG)
+* Merge commit (the default)
+* Squash and merge
+* Rebase and merge
 
 These options are a little involved and I would recommend reading
 [GitHub's merge docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
-on the matter for a more detailed breakdown. A brief summary can be seen
-in the table below.
-
-| **Merge Type**       | **What Happens** | **How It Looks** | **Best For**     | **Downside**     |
-|----------------------|------------------|------------------|------------------|------------------|
-| **Merge Commit**     | A new commit is created to merge the PR, keeping all individual commits intact. | A merge commit is added, and you can see all the individual commits from the PR.| Keeping a detailed history with all commits preserved. | Can clutter the commit history with many small or trivial commits. |
-| **Squash and Merge** | All commits in the PR are combined into one single commit before merging. | Only one commit appears in the history, representing all changes from the PR. | Keeping the commit history clean and concise. | Loses the individual commit details from the PR. |
-| **Rebase and Merge** | The commits from the PR are applied directly on top of the main branch, maintaining their original structure but without a merge commit. | The history looks linear, with the PR commits applied after the latest main branch commit, with no merge commit in between. | Keeping a linear, clean commit history without merge commits. | Can be tricky with conflicts, especially for complex histories. |
+on the matter for a more detailed breakdown. 
 
 To help visualise the differences in these approaches, here is a ghelpful
 diagram:
@@ -191,12 +186,12 @@ When a rebase merge is used, new commits that mirror those in the
 feature branch are created in the main branch. You keep every commit and
 maintain a linear commit history. In the diagram below, I compare commits
 in a repository with an example rebase merge,
-[code available here](https://github.com/r-leyshon/rebase-merge-example).
+<a href=https://github.com/r-leyshon/rebase-merge-example target="_blank">code available here</a>.
 Note that there are 2 commits with content from the feature branch with
 commit messages like "FEATURE: ...". The new commits to main contain all
 the file edits in the feature branch but the commits have different hashes.
 
-![Comparing `main` and `feature` following rebase merge.](https://i.imgur.com/M7ZMT4i.png)
+![Comparing `main` and `feature` following rebase merge. Click to enlarge.](https://i.imgur.com/M7ZMT4i.png){.lightbox}
 
 ### Squash and Merge
 
@@ -204,11 +199,11 @@ On selecting "Squash and merge" in the GitHub UI, A new "summary commit"
 is created in the main branch. This condenses all of the file changes
 within `feature` branch into a single, new commit. You can see that even in
 the trivial example
-[squash merge repository](https://github.com/r-leyshon/squash-commit-example),
+<a href=https://github.com/r-leyshon/squash-commit-example target="_blank">squash merge repository</a>,
 the outcome is that `main` branch will be much more succinct than in the
 other merge strategies. 
 
-![Comparing `main` and `feature` following a squash merge.](https://i.imgur.com/NbfJjZD.png)
+![Comparing `main` and `feature` following a squash merge. Click to enlarge.](https://i.imgur.com/NbfJjZD.png){.lightbox}
 
 Inspecting the automated squash merge commit message demonstrates how
 GitHub summarises the activity in `feature` branch.
@@ -226,18 +221,26 @@ resolve.
 ### Merge Commit
 
 Finally, we consider the dedfault merge behaviour - the
-[merge commit](https://github.com/r-leyshon/merge-commit-example). This
-behaviour will create a new commit in `main` that introduces the changes
-in `feature`. Notice that in this scenario, the commits in `main` and
-`feature` share the same content and commit hashes, as opposed to a rebase
-merge which "pretends" those commits happened in `main`. 
+<a href=https://github.com/r-leyshon/merge-commit-example target="_blank">merge commit</a>.
+This behaviour will create a new commit in `main` that introduces the
+changes in `feature`. Notice that in this scenario, the commits in `main`
+and `feature` share the same content and commit hashes, as opposed to a
+rebase merge which "pretends" those commits happened in `main`. 
 
-![Comparing `main` and `feature` following a merge commit.](https://i.imgur.com/BiuYZAv.png)
+![Comparing `main` and `feature` following a merge commit. Click to enlarge.](https://i.imgur.com/BiuYZAv.png){.lightbox}
 
 This is perhaps the noisiest merge strategy, as the commits of each feature
 branch are all merged to main, plus an additional commit that marks the
 merge. Use this scenario if you consider it really important to be able to
 revisit  the commit history. 
+
+### Overview of Merge Strategies
+
+| **Merge Type**       | **What Happens** | **How It Looks** | **Best For**     | **Downside**     |
+|----------------------|------------------|------------------|------------------|------------------|
+| **Merge Commit**     | A new commit is created to merge the PR, keeping all individual commits intact. | A merge commit is added, and you can see all the individual commits from the PR.| Keeping a detailed history with all commits preserved. | Can clutter the commit history with many small or trivial commits. |
+| **Squash and Merge** | All commits in the PR are combined into one single commit before merging. | Only one commit appears in the history, representing all changes from the PR. | Keeping the commit history clean and concise. | Loses the individual commit details from the PR. |
+| **Rebase and Merge** | The commits from the PR are applied directly on top of the main branch, maintaining their original structure but without a merge commit. | The history looks linear, with the PR commits applied after the latest main branch commit, with no merge commit in between. | Keeping a linear, clean commit history without merge commits. | Can be tricky with conflicts, especially for complex histories. |
 
 ### Selecting a Merge Strategy
 
@@ -260,7 +263,18 @@ My responses follow:
 1. Deleted branches can be restored.
 2. GitHub activity is a poor proxy for impact.
 
+Admittedly, the squash merge approach works best for projects where there
+is a disciplined approach to PRs. If PRs represent a tangible unit of work,
+such as a bug is fixed or a new feature is implemented, then squash merge
+works really well in my experience. Individual branches are short-lived and
+the risk of merge conflicts are minimised. 
 
+However, some projects are not like that. Particularly in exploratory work
+where some PRs become sprawling, long-lived with diffs numbering
+tens-of-thousands of lines. It may be advisable to merge commit in those
+scenarios. Personally,
+<a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing#_rebase_peril" target="_blank">I never rebase</a>
+when working with others.
 
 ## Bonus: Tips for Auditing 
 
