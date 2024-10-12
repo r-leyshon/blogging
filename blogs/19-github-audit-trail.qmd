@@ -175,15 +175,71 @@ in the table below.
 | **Squash and Merge** | All commits in the PR are combined into one single commit before merging. | Only one commit appears in the history, representing all changes from the PR. | Keeping the commit history clean and concise. | Loses the individual commit details from the PR. |
 | **Rebase and Merge** | The commits from the PR are applied directly on top of the main branch, maintaining their original structure but without a merge commit. | The history looks linear, with the PR commits applied after the latest main branch commit, with no merge commit in between. | Keeping a linear, clean commit history without merge commits. | Can be tricky with conflicts, especially for complex histories. |
 
-To help visualise the differences in these approaches, here is a graph that
-succinctly demonstrates the differences:
+To help visualise the differences in these approaches, here is a ghelpful
+diagram:
 
-![](<INSERT GIT GRAPH>)
+![Source: https://matt-rickard.com/squash-merge-or-rebase](https://matt-rickard.com/static/image/squash-merge-or-rebase/1.webp)
 
-Inspecting the main branch histories after merging edits to a poem:
+In the following scenarios, I will walk through commit history following
+the three different merges. In all examples, I will refer to the target
+branch receiving the commits as `main` and the topic branch containing the
+commits as `feature`.
 
+### Rebase Merge
 
+When a rebase merge is used, new commits that mirror those in the
+feature branch are created in the main branch. You keep every commit and
+maintain a linear commit history. In the diagram below, I compare commits
+in a repository with an example rebase merge,
+[code available here](https://github.com/r-leyshon/rebase-merge-example).
+Note that there are 2 commits with content from the feature branch with
+commit messages like "FEATURE: ...". The new commits to main contain all
+the file edits in the feature branch but the commits have different hashes.
 
+![Comparing `main` and `feature` following rebase merge.](https://i.imgur.com/M7ZMT4i.png)
+
+### Squash and Merge
+
+On selecting "Squash and merge" in the GitHub UI, A new "summary commit"
+is created in the main branch. This condenses all of the file changes
+within `feature` branch into a single, new commit. You can see that even in
+the trivial example
+[squash merge repository](https://github.com/r-leyshon/squash-commit-example),
+the outcome is that `main` branch will be much more succinct than in the
+other merge strategies. 
+
+![Comparing `main` and `feature` following a squash merge.](https://i.imgur.com/NbfJjZD.png)
+
+Inspecting the automated squash merge commit message demonstrates how
+GitHub summarises the activity in `feature` branch.
+
+![Squash commit generated commit message.](https://i.imgur.com/KBznXhf.png)
+
+The squash merge strategy is a good candidate for busy projects with many
+contributors. It's also a neat way to avoid noise in your version history,
+such as experimental 'cruft' or benign changes that you'd rather summarise.
+It is important to note that once merged to `main`, you should go ahead and
+delete the `feature` branch. If you continue to work in `feature`, there is
+a likelihood of diverging with `main`, ending up in merge conflicts to
+resolve.
+
+### Merge Commit
+
+Finally, we consider the dedfault merge behaviour - the
+[merge commit](https://github.com/r-leyshon/merge-commit-example). This
+behaviour will create a new commit in `main` that introduces the changes
+in `feature`. Notice that in this scenario, the commits in `main` and
+`feature` share the same content and commit hashes, as opposed to a rebase
+merge which "pretends" those commits happened in `main`. 
+
+![Comparing `main` and `feature` following a merge commit.](https://i.imgur.com/BiuYZAv.png)
+
+This is perhaps the noisiest merge strategy, as the commits of each feature
+branch are all merged to main, plus an additional commit that marks the
+merge. Use this scenario if you consider it really important to be able to
+revisit  the commit history. 
+
+### Selecting a Merge Strategy
 
 Understanding which strategy is for the best depends on the context in
 which you're working. Your 2 options for maintining a full commit history
