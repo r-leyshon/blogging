@@ -333,6 +333,30 @@ that can bring the Git blame into your IDE.
 
 ### Grep FTW
 
+If you need to check all occurences of a specific pattern anywhere within
+a repository, there's a great little tool called `git grep` that will help.
+In an interactive terminal, run `git grep <INSERT_PATTERN>` and all
+occurences of that pattern within any file contents will be returned. If
+the pattern has spaces, just wrap the pattern in speech marks.
+
+If there are loads of files and you want to search for a pattern in the
+filenames, then use:
+
+`git ls-files | grep <INSERT_PATTERN>`.
+
+If you'd like to search for specific patterns in commit messages:
+
+`git log --grep=<INSERT_PATTERN>`
+
+If you need to scan an entire commit history for the presence of a pattern
+in the contents of the files, then this is achieved with
+
+`git log -G <INSERT_PATTERN>`
+
+That pattern takes regular expressions so it can be quite flexible in
+combination with wildcards. This is super useful if you need to check
+whether a specific secret was ever added to the commit history.
+
 ### Comparing Commits
 
 ## Summary
