@@ -309,12 +309,27 @@ The nested issues feature adds even more flexibility in grouping units of
 work together. This feature is in public beta at time of writing.
 <a href=https://github.com/features/issues/signup target="_blank">Join the waitlist here</a>.
 
-## Bonus: Tips for Auditing 
+## Tips for Auditing 
+
+If you are tasked with making sense of someone else's code for PR or commit
+history for a release, then there are a few tools & tricks that can help
+make your life a bit easier. I'll cover soem of them here.
 
 ### Assign BLAME
 
 > "It is ill to praise, and worse to blame, the thing which you do not
-understand." Leonardo da Vinci (2013). “Life, art and science, the thoughts of Leonardo”, p.67, Lulu.com
+understand." Leonardo da Vinci (2013). “Life, art and science, the thoughts
+of Leonardo”, p.67, Lulu.com
+
+At times, it may be useful to identify the person who wrote some code. It's
+not completely obvious, but by viewing a file and toggling from `Preview`
+to `Blame`, you get a line-by-line view of who commited what and when.
+
+![GitHub blame view. Click to expand.](https://i.imgur.com/17wmNNG.png){.lightbox}
+
+Note that there are also handy tools such as
+[GitLens for VSCode](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+that can bring the Git blame into your IDE. 
 
 ### Grep FTW
 
