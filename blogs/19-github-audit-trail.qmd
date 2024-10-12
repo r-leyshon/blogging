@@ -277,9 +277,44 @@ scenarios. Personally,
 <a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing#_rebase_peril" target="_blank">I never rebase</a>
 when working with others.
 
+## Organising Issues
+
+Issues provide the context for PRs. Understanding why a PR is necessary is
+very helpful to collabroators and will be appreciated by anyone who needs
+to look back over your version history. 
+
+A feature that I consider to be under-utilised in GitHub are
+<a href=https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones target="_blank">milestones</a>.
+The milestone feature allows you to group related work, such as grouping
+issues and PRs with an epic. These milestones can then be added to GitHub
+projects to coordinate burn-down effort. Find the milestones interface
+under the issues tab. 
+
+![GitHub Milestone interface. Click to expand.](https://i.imgur.com/eJuzMcX.png"){.lightbox}
+
+Adding this sort of structure can be great in helping collaborators
+understand where your work fits into more tangible delivery, and your
+product managers will thank you for it. Below I show how with a few clicks,
+the milestone can be used to create an informative delivery roadmap.
+
+![Milestone on a GitHub roadmap. Click to expand.](https://i.imgur.com/fEwDSUB.png){.lightbox}
+
+You can see in the project that I have grouped the issues by milestone on
+the left hand-side. Also, by adding the milestone to the date fields, you
+get the blue date line appearing on the roadmap to the right of the screen.
+
+Recently, GitHub has unveiled some significant
+<a href=https://github.blog/changelog/2024-10-01-evolving-github-issues-public-beta/ target="_blank">changes to its issues</a>.
+The nested issues feature adds even more flexibility in grouping units of
+work together. This feature is in public beta at time of writing.
+<a href=https://github.com/features/issues/signup target="_blank">Join the waitlist here</a>.
+
 ## Bonus: Tips for Auditing 
 
 ### Assign BLAME
+
+> "It is ill to praise, and worse to blame, the thing which you do not
+understand." Leonardo da Vinci (2013). “Life, art and science, the thoughts of Leonardo”, p.67, Lulu.com
 
 ### Grep FTW
 
