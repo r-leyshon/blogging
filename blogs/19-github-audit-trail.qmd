@@ -113,8 +113,9 @@ with a specific pattern for commit messages:
 > * do capitalise first letter
 > * no dot (.) at the end"
 
-Many thanks to those unmet colleagues who took the time to write this
-guidance.
+Many thanks to those Predeleagues
+(Predecessor Colleagues, my own portmanteau) who took the time to write
+that guidance.
 
 This has been super useful for 99% of my commit messages that are one-liners.
 On the odd occasion I've felt a multi-line message was required, having the
