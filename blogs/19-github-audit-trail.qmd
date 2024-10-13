@@ -28,7 +28,7 @@ Reviews (PRs) or to learn more about an Application Programming Interface
 entire repository and possibly even its commit history. This can happen
 when publishing a mature codebase.
 
-Making sennse of other peoples' commit histories can be challenging,
+Making sense of other peoples' commit histories can be challenging,
 especially if that work is exploratory. Understanding the myriad reasons
 for any single change after the fact is reliant upon whether the developer
 had time to document their reasons for their implementation. Even if you work alone, perhaps that other developer
@@ -63,9 +63,9 @@ these suggested practices
 
 ### Intended Audience
 
-Programmers who use GitHub to share code. The kind of Porgrammers who:
+Programmers who use GitHub to share code. The kind of Programmers who:
 
-- may not have used GitHhub to collaborate in teams (previously me).
+- may not have used GitHub to collaborate in teams (previously me).
 - pride themselves on knowing 'just enough Git to survive' (me).
 - have been using GitHub for a few years and wonder if their views are becoming entrenched (future me).
 
@@ -171,7 +171,7 @@ These options are a little involved and I would recommend reading
 [GitHub's merge docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
 on the matter for a more detailed breakdown. 
 
-To help visualise the differences in these approaches, here is a ghelpful
+To help visualise the differences in these approaches, here is a helpful
 diagram:
 
 ![Source: https://matt-rickard.com/squash-merge-or-rebase](https://matt-rickard.com/static/image/squash-merge-or-rebase/1.webp)
@@ -183,23 +183,22 @@ commits as `feature`.
 
 ### Rebase Merge
 
-When a rebase merge is used, new commits that mirror those in the
-feature branch are created in the main branch. You keep every commit and
-maintain a linear commit history. In the diagram below, I compare commits
-in a repository with an example rebase merge,
-<a href=https://github.com/r-leyshon/rebase-merge-example target="_blank">code available here</a>.
-Note that there are 2 commits with content from the feature branch with
-commit messages like "FEATURE: ...". The new commits to main contain all
-the file edits in the feature branch but the commits have different hashes.
+When a rebase merge is used, new commits that mirror those in `feature`
+branch are created in `main`. You keep every commit and maintain a linear
+commit history. In the diagram below, I compare commits in
+<a href=https://github.com/r-leyshon/rebase-merge-example target="_blank">a repo with an example rebase merge</a>.
+Note that there are 2 commits from `feature` branch with commit messages
+like "FEATURE: ...". Merging the PR creates new commits to `main`, which
+have all the file edits from `feature. However, note that these new commits
+have different hashes to those in `feature`.
 
 ![Comparing `main` and `feature` following rebase merge. Click to enlarge.](https://i.imgur.com/M7ZMT4i.png){.lightbox}
 
 ### Squash and Merge
 
 On selecting "Squash and merge" in the GitHub UI, A new "summary commit"
-is created in the main branch. This condenses all of the file changes
-within `feature` branch into a single, new commit. You can see that even in
-the trivial example
+is created in `main`. This condenses all of the file changes from `feature`
+into a single, new commit. You can see that even in the trivial example
 <a href=https://github.com/r-leyshon/squash-commit-example target="_blank">squash merge repository</a>,
 the outcome is that `main` branch will be much more succinct than in the
 other merge strategies. 
@@ -207,7 +206,7 @@ other merge strategies.
 ![Comparing `main` and `feature` following a squash merge. Click to enlarge.](https://i.imgur.com/NbfJjZD.png){.lightbox}
 
 Inspecting the automated squash merge commit message demonstrates how
-GitHub summarises the activity in `feature` branch.
+GitHub summarises the activity from `feature` branch.
 
 ![Squash commit generated commit message.](https://i.imgur.com/KBznXhf.png)
 
@@ -221,7 +220,7 @@ resolve.
 
 ### Merge Commit
 
-Finally, we consider the dedfault merge behaviour - the
+Finally, we consider the default merge behaviour - the
 <a href=https://github.com/r-leyshon/merge-commit-example target="_blank">merge commit</a>.
 This behaviour will create a new commit in `main` that introduces the
 changes in `feature`. Notice that in this scenario, the commits in `main`
@@ -246,7 +245,7 @@ revisit  the commit history.
 ### Selecting a Merge Strategy
 
 Understanding which strategy is for the best depends on the context in
-which you're working. Your 2 options for maintining a full commit history
+which you're working. Your 2 options for maintaining a full commit history
 are either merge commit or rebase and merge. If you would rather summarise
 the commit history, then squash commit is the right approach. If I'm
 working on a solo project, I tend to merge commit. If I'm working in a
@@ -280,7 +279,7 @@ when working with others.
 ## Organising Issues
 
 Issues provide the context for PRs. Understanding why a PR is necessary is
-very helpful to collabroators and will be appreciated by anyone who needs
+very helpful to collaborators and will be appreciated by anyone who needs
 to look back over your version history. 
 
 A feature that I consider to be under-utilised in GitHub are
@@ -313,7 +312,7 @@ work together. This feature is in public beta at time of writing.
 
 If you are tasked with making sense of someone else's code for PR or commit
 history for a release, then there are a few tools & tricks that can help
-make your life a bit easier. I'll cover soem of them here.
+make your life a bit easier. I'll cover some of them here.
 
 ### Assign BLAME
 
@@ -333,10 +332,10 @@ that can bring the Git blame into your IDE.
 
 ### Grep FTW
 
-If you need to check all occurences of a specific pattern anywhere within
+If you need to check all occurrences of a specific pattern anywhere within
 a repository, there's a great little tool called `git grep` that will help.
 In an interactive terminal, run `git grep <INSERT_PATTERN>` and all
-occurences of that pattern within any file contents will be returned. If
+occurrences of that pattern within any file contents will be returned. If
 the pattern has spaces, just wrap the pattern in speech marks.
 
 If there are loads of files and you want to search for a pattern in the
