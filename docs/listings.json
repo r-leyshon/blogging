@@ -12,6 +12,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blogs/19-github-audit-trail.html",
       "/blogs/18-jungle-quest-app.html",
       "/book-reviews/06-second-brain.html",
       "/blogs/17-quarto-comments.html",
@@ -46,6 +47,7 @@
   {
     "listing": "/blogs/index.html",
     "items": [
+      "/blogs/19-github-audit-trail.html",
       "/blogs/18-jungle-quest-app.html",
       "/blogs/17-quarto-comments.html",
       "/blogs/16-pytest-marks.html",
