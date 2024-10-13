@@ -44,7 +44,7 @@ designed in subtle ways, to nudge you towards some of these behaviours. The
 sort of things that are not required but are incredibly helpful to others - 
 including your future self. 
 
-<iframe src="https://giphy.com/embed/TtlYafuP93f5FxemDU" style="display:block;margin-left:auto;margin-right:auto;width:60%;height:16rem;border:none;" class="iframey shaded_box" allowFullScreen></iframe>
+<iframe src="https://giphy.com/embed/TtlYafuP93f5FxemDU" style="display:block;margin-left:auto;margin-right:auto;width:60%;height:275px;border:none;" class="iframey shaded_box" allowFullScreen></iframe>
 <br>
 Read on for more on how to be kind to yourself, and those poor souls who
 need to read your work - GitHub has your back.
@@ -147,7 +147,7 @@ Notice that there is an option on the right hand side, under `Development`
 to `Create a branch` for this issue. Click this and GitHub will create
 a branch with a naming convention that links the branch to the issue.
 
-<img src=https://i.imgur.com/2EOE623.png alt="Creating a new branch from an issue in GitHub" style="display:block;margin-left:auto;margin-right:auto;" width=400rem>
+<img src=https://i.imgur.com/2EOE623.png alt="Creating a new branch from an issue in GitHub" style="display:block;margin-left:auto;margin-right:auto;" width=50%>
 
 Once finished with the branch, we raise a PR. To link the PR with the issue,
 ensure to use one of <a href=https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/using-keywords-in-issues-and-pull-requests#linking-a-pull-request-to-an-issue target="_blank">GitHub's keywords</a>
@@ -238,6 +238,8 @@ revisit  the commit history.
 | **Merge Commit**     | A new commit is created to merge the PR, keeping all individual commits intact. | A merge commit is added, and you can see all the individual commits from the PR.| Keeping a detailed history with all commits preserved. | Can clutter the commit history with many small or trivial commits. |
 | **Squash and Merge** | All commits in the PR are combined into one single commit before merging. | Only one commit appears in the history, representing all changes from the PR. | Keeping the commit history clean and concise. | Loses the individual commit details from the PR. |
 | **Rebase and Merge** | The commits from the PR are applied directly on top of the main branch, maintaining their original structure but without a merge commit. | The history looks linear, with the PR commits applied after the latest main branch commit, with no merge commit in between. | Keeping a linear, clean commit history without merge commits. | Can be tricky with conflicts, especially for complex histories. |
+
+: {tbl-colwidths="[20,20,20,20,20]"}
 
 ### Selecting a Merge Strategy
 
