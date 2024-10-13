@@ -2,7 +2,7 @@
 title: "Commit with Clarity"
 author: "Rich Leyshon"
 date: "October 13 2024"
-description: "Building a Better Audit Trail on GitHub"
+description: "Building a Better Audit Trail with GitHub"
 categories:
     - Explanation
     - GitHub
