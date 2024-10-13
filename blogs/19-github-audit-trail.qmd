@@ -388,9 +388,27 @@ my browser with Codespaces.
 
 ![Running terminal operations with Codespaces. Click to expand.](https://i.imgur.com/jRigeEl.png){.lightbox}
 
-### Comparing Commits
-
 ## Summary
 
+In this article we covered considerate git practice and how GitHub helps to
+nudge us toward these behaviours. Specifically:
+
+- **Commit Messages**: The value of having well-structured commit messages.
+- **Linking PRs with Issues**: The importance of linking pull requests to
+issues to provide necessary context for reviewers.
+- **Merge Strategies**: Explains the different merge strategies available
+in GitHub (Merge Commit, Squash and Merge, Rebase and Merge) and their
+respective advantages and disadvantages.
+- **Organising Issues**: Introduces the use of milestones to group related
+work, enhancing coordination in projects.
+- **Tips for Auditing**: Offers tools and techniques for auditing code and
+commit history, including the use of Git blame and grep commands.
+- **GitHub & VSCode Integration**: Describes how to access VSCode directly
+from GitHub for streamlined code management.
+
+Please feel free to share your own thoughts and ideas in the comment
+section below (GitHub login required)! If you spot an error with this
+article, or have a suggested improvement then feel free to 
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues). 
 
 <p id=fin><i>fin!</i></p>
