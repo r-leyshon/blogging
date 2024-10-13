@@ -1,8 +1,8 @@
 ---
-title: "GitHub Keeps Your Commit History Readable."
+title: "Commit with Clarity"
 author: "Rich Leyshon"
-date: "September 28 2024"
-description: "Let GitHub Nudge You Towards a Better Audit Trail."
+date: "October 13 2024"
+description: "Building a Better Audit Trail on GitHub"
 categories:
     - Explanation
     - GitHub
