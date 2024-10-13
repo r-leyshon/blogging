@@ -9,6 +9,9 @@ categories:
     - Git
     - Version Control
     - Software Development
+    - Blame
+    - VSCode
+    - Git Grep
 image: https://i.imgur.com/iwVPwPG.png
 image-alt: "A cute cat-like character inspects code with a magnifying glass."
 toc: true
@@ -23,10 +26,9 @@ needs a safety net." Mark Cidade, <a href=https://stackoverflow.com/posts/250991
 ## Introduction
 
 Most developers spend time reading other people's code - for Pull
-Reviews (PRs) or to learn more about an Application Programming Interface
-(API), for example. Every so often, a developer may need to review an
-entire repository and possibly even its commit history. This can happen
-when publishing a mature codebase.
+Reviews (PRs) or to learn more about a software package, for example. Every
+so often, a developer may need to review an entire repository and possibly
+even its commit history. This can happen when publishing a mature codebase.
 
 Making sense of other peoples' commit histories can be challenging,
 especially if that work is exploratory. Understanding the myriad reasons
@@ -35,8 +37,8 @@ had time to document their reasons for their implementation. Even if you work al
 will be yourself at times. Needing to pick through your code's commit
 history in order to find a bug-free version. 
 
-The good news is that there are a few tools that GitHub can provide us, and
-one or two easy habits that will greatly assist your colleagues' in
+The good news is that there are a few tools that Git and GitHub can provide
+us, and one or two easy habits that will greatly assist your colleagues in
 comprehending your Git activity. In fact, the GitHub User Interface (UI) is
 designed in subtle ways, to nudge you towards some of these behaviours. The
 sort of things that are not required but are incredibly helpful to others - 
@@ -44,20 +46,23 @@ including your future self.
 
 <iframe src="https://giphy.com/embed/TtlYafuP93f5FxemDU" style="display:block;margin-left:auto;margin-right:auto;width:60%;height:16rem;border:none;" class="iframey shaded_box" allowFullScreen></iframe>
 <br>
-In my opinion, Jerry really should have included "...your future self..."
-in there, too. Read on for more on how to be kind to yourself, and those
-poor souls who need to read your work - GitHub has your back.
+Read on for more on how to be kind to yourself, and those poor souls who
+need to read your work - GitHub has your back.
 
-:::{.callout-note collapsed="true"}
+::: {.callout-note collapse=true}
 
-### Acknowledgements (click to expand)
+### Opinions Ahead... (click to expand)
 
 Every Git user has their own way of doing things. Many experts on the
 matter have diverging opinions on pretty much everything Git has to offer.
 In this article, I am offering a medley of advice from colleagues, trial,
 error and pain incurred. I'd bet that not all the advice here will chime
-with you. If you're able to properly consider, compare and discard any of
-these suggested practices
+with you.
+
+This article will include a fair amount of opinion & appreciation for how
+GitHub helps promote considerate behaviours. You are most welcome to
+disagree and share your own opinions. There is a comments section at the
+bottom of the page to facilitate that.
 
 :::
 
@@ -67,13 +72,8 @@ Programmers who use GitHub to share code. The kind of Programmers who:
 
 - may not have used GitHub to collaborate in teams (previously me).
 - pride themselves on knowing 'just enough Git to survive' (me).
-- have been using GitHub for a few years and wonder if their views are becoming entrenched (future me).
-
-This article will include a fair amount of opinion & appreciation for how
-GitHub helps promote sustainable behaviours. You are most welcome to disagree
-and share your own opinions. There is a comments section at the bottom of
-the page to facilitate that.
-
+- have been using GitHub for many years and wonder if their behaviours can
+be adjusted to be more helpful to others (future me).
 
 ## Commit Messages
 
@@ -84,9 +84,8 @@ help get you back onto the development work quicker.
 
 Having well-structured commit messages also helps others to quickly understand 
 the types of changes that have been implemented in a pull request (PR).
-Some of my previous colleagues took the time to put together a
-<a href=https://datasciencecampus.github.io/coding-standards/version-control.html target="_blank">style guide</a>
-with a specific pattern for commit messages:
+Some of my previous colleagues took the time to put together
+<a href=https://datasciencecampus.github.io/coding-standards/version-control.html target="_blank">guidance on such matters</a>.
 
 > "
 > `<type>: <subject>`
@@ -155,9 +154,7 @@ ensure to use one of <a href=https://docs.github.com/en/get-started/writing-on-g
 to automatically close the issue on merge. In this example, including the
 line `Fixes #71` in a comment within the PR will link the issue. Several
 issues can be linked in this way, eg `Fixes #71, Resolves #72` and so on.
-
-If you have a GitHub project set up with automation rules, that ticket is
-moved from the column it previously lived in to the 'Done' column.
+In this way, we have given an issue, branch and PR a clear identity.
 
 ## Consider Your Merge Strategy 
 
@@ -171,15 +168,15 @@ These options are a little involved and I would recommend reading
 <a href=https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges target="_blank">GitHub's merge docs</a>
 on the matter for a more detailed breakdown. 
 
-To help visualise the differences in these approaches, here is a helpful
-diagram:
+To help visualise the differences in these approaches, consider the
+following diagram:
 
 ![Source: <a href=https://matt-rickard.com/squash-merge-or-rebase target="blank">matt-rickard.com</a>](https://matt-rickard.com/static/image/squash-merge-or-rebase/1.webp)
 
 In the following scenarios, I will walk through commit history following
 the three different merges. In all examples, I will refer to the target
 branch receiving the commits as `main` and the topic branch containing the
-commits as `feature`.
+additions as `feature`.
 
 ### Rebase Merge
 
@@ -189,7 +186,7 @@ commit history. In the diagram below, I compare commits in
 <a href=https://github.com/r-leyshon/rebase-merge-example target="_blank">a repo with an example rebase merge</a>.
 Note that there are 2 commits from `feature` branch with commit messages
 like "FEATURE: ...". Merging the PR creates new commits to `main`, which
-have all the file edits from `feature. However, note that these new commits
+have all the file edits from `feature`. However, note that these new commits
 have different hashes to those in `feature`.
 
 ![Comparing `main` and `feature` following rebase merge. Click to enlarge.](https://i.imgur.com/M7ZMT4i.png){.lightbox}
@@ -256,7 +253,7 @@ Some people bemoan the squash commit approach, with 2 main complaints that
 I've encountered:
 
 1. The full commit history is not preserved.
-2. It decreases their apparent GitHub activity.
+2. It decreases contributors' apparent GitHub activity.
 
 My responses follow:
 
@@ -317,8 +314,8 @@ make your life a bit easier. I'll cover some of them here.
 ### Assign BLAME
 
 > "It is ill to praise, and worse to blame, the thing which you do not
-understand." Leonardo da Vinci (2013). “Life, art and science, the thoughts
-of Leonardo”, p.67, Lulu.com
+understand." Leonardo da Vinci, “Life, art and science, the thoughts
+of Leonardo”, p.67, 2013, Lulu.com
 
 At times, it may be useful to identify the person who wrote some code. It's
 not completely obvious, but by viewing a file and toggling from `Preview`
@@ -341,7 +338,7 @@ the pattern has spaces, just wrap the pattern in speech marks.
 If there are loads of files and you want to search for a pattern in the
 filenames, then use:
 
-`git ls-files | grep <INSERT_PATTERN>`.
+`git ls-files | grep <INSERT_PATTERN>`
 
 If you'd like to search for specific patterns in commit messages:
 
@@ -389,19 +386,17 @@ my browser with Codespaces.
 
 ## Summary
 
-In this article we covered considerate git practice and how GitHub helps to
+In this article we covered considerate Git practice and how GitHub helps to
 nudge us toward these behaviours. Specifically:
 
 - **Commit Messages**: The value of having well-structured commit messages.
-- **Linking PRs with Issues**: The importance of linking pull requests to
-issues to provide necessary context for reviewers.
-- **Merge Strategies**: Explains the different merge strategies available
-in GitHub (Merge Commit, Squash and Merge, Rebase and Merge) and their
-respective advantages and disadvantages.
-- **Organising Issues**: Introduces the use of milestones to group related
-work, enhancing coordination in projects.
-- **Tips for Auditing**: Offers tools and techniques for auditing code and
-commit history, including the use of Git blame and grep commands.
+- **Linking PRs with Issues**: Providing necessary context for reviewers.
+- **Merge Strategies**: Advantages and disadvantages of the options GitHub
+provides in their UI.
+- **Organising Issues**: Using milestones to group related work, enhancing
+coordination in projects.
+- **Tips for Auditing**: Tools and techniques for inspecting a commit
+history, including the use of Git blame and grep commands.
 - **GitHub & VSCode Integration**: Describes how to access VSCode directly
 from GitHub for streamlined code management.
 
