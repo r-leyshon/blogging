@@ -411,4 +411,14 @@ section below (GitHub login required)! If you spot an error with this
 article, or have a suggested improvement then feel free to 
 [raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues). 
 
+## Acknowledgements
+
+To past and present colleagues who have helped to discuss pros and cons,
+establishing practice and firming-up some opinions. Particularly:
+
+* Ian
+* Rob
+* Adrian
+* <a href=https://www.youtube.com/watch?v=BCQHnlnPusY target="_blank">Dan Shiffman</a>
+
 <p id=fin><i>fin!</i></p>
