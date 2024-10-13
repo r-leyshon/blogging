@@ -1,0 +1,420 @@
+---
+title: "Commit with Clarity"
+author: "Rich Leyshon"
+date: "October 13 2024"
+description: "Building a Better Audit Trail with GitHub"
+categories:
+    - Explanation
+    - GitHub
+    - Git
+    - Version Control
+    - Software Development
+    - Blame
+    - VSCode
+    - Git Grep
+image: https://i.imgur.com/iwVPwPG.png
+image-alt: "A cute cat-like character inspects code with a magnifying glass."
+toc: true
+css: /./www/17-quarto-comments/styles.css
+---
+
+ <img class=shaded_box src=https://i.imgur.com/iwVPwPG.png alt="A cute cat-like character inspects code with a magnifying glass." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
+
+> "You don't need version control any more than a trapese [sic] artist
+needs a safety net." Mark Cidade, <a href=https://stackoverflow.com/posts/250991/revisions target="_blank">Stack Overflow</a>
+
+## Introduction
+
+Most developers spend time reading other people's code - for Pull
+Reviews (PRs) or to learn more about a software package, for example. Every
+so often, a developer may need to review an entire repository and possibly
+even its commit history. This can happen when publishing a mature codebase.
+
+Making sense of other peoples' commit histories can be challenging,
+especially if that work is exploratory. Understanding the myriad reasons
+for any single change after the fact is reliant upon whether the developer
+had time to document their reasons for their implementation. Even if you work alone, perhaps that other developer
+will be yourself at times. Needing to pick through your code's commit
+history in order to find a bug-free version. 
+
+The good news is that there are a few tools that Git and GitHub can provide
+us, and one or two easy habits that will greatly assist your colleagues in
+comprehending your Git activity. In fact, the GitHub User Interface (UI) is
+designed in subtle ways, to nudge you towards some of these behaviours. The
+sort of things that are not required but are incredibly helpful to others - 
+including your future self. 
+
+<iframe src="https://giphy.com/embed/TtlYafuP93f5FxemDU" style="display:block;margin-left:auto;margin-right:auto;width:60%;height:275px;border:none;" class="iframey shaded_box" allowFullScreen></iframe>
+<br>
+Read on for more on how to be kind to yourself, and those poor souls who
+need to read your work - GitHub has your back.
+
+::: {.callout-note collapse=true}
+
+### Opinions Ahead... (click to expand)
+
+Every Git user has their own way of doing things. Many experts on the
+matter have diverging opinions on pretty much everything Git has to offer.
+In this article, I am offering a medley of advice from colleagues, trial,
+error and pain incurred. I'd bet that not all the advice here will chime
+with you.
+
+This article will include a fair amount of opinion & appreciation for how
+GitHub helps promote considerate behaviours. You are most welcome to
+disagree and share your own opinions. There is a comments section at the
+bottom of the page to facilitate that.
+
+:::
+
+### Intended Audience
+
+Programmers who use GitHub to share code. The kind of Programmers who:
+
+- may not have used GitHub to collaborate in teams (previously me).
+- pride themselves on knowing 'just enough Git to survive' (me).
+- have been using GitHub for many years and wonder if their behaviours can
+be adjusted to be more helpful to others (future me).
+
+## Commit Messages
+
+One of the most 'freeing' style guide rules an organisation can institute
+are rules for what it considers to be good commit messages. Having enough
+rules to help take the pondering out of writing your message content will
+help get you back onto the development work quicker. 
+
+Having well-structured commit messages also helps others to quickly understand 
+the types of changes that have been implemented in a pull request (PR).
+Some of my previous colleagues took the time to put together
+<a href=https://datasciencecampus.github.io/coding-standards/version-control.html target="_blank">guidance on such matters</a>.
+
+> "
+> `<type>: <subject>`
+> 
+> type
+> 
+> Must be one of the following:
+> 
+> * feat: A new feature
+> * fix: A bug fix
+> * doc: Documentation only changes
+> * style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+> * refactor: A code change that neither fixes a bug or adds a feature
+> * perf: A code change that improves performance
+> * test: Adding missing tests
+> * chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+> Do not capitalise the first letter.
+> 
+> subject
+> 
+> The subject contains succinct description of the change:
+> 
+> * use the imperative, present tense: “Change” not “Changed” nor “Changes”
+> * do capitalise first letter
+> * no dot (.) at the end"
+
+Many thanks to those Predeleagues
+(Predecessor Colleagues, my own portmanteau) who took the time to write
+that guidance.
+
+This has been super useful for 99% of my commit messages that are one-liners.
+On the odd occasion I've felt a multi-line message was required, having the
+guidance for that written down has been a priceless time-saver. Using a
+commit type has also helped in moving backwards through the version
+history - helping my future self to target specific refactoring diffs
+or taking a rummage through a feature that introduced some newly discovered
+bug. 
+
+Considering the commit subject, I would subscribe to
+<a href=https://best-practice-and-impact.github.io/qa-of-code-guidance/version_control.html#write-short-and-informative-commits target="_blank">ONS Duck Book's advice</a> - aspire to short and informative messages. 
+
+## Link PRs with Issues
+
+To those poor souls who have jobs that involve reading through commit logs 
+- we salute you.
+
+Oftentimes understanding the **reason** for a commit can become a mystery.
+Trying to understand the purpose of some contextless diff can become a real
+chore. By ensuring that each PR is linked with an issue (or issues), we can
+help provide the context needed to anyone who needs to pick through or pick
+apart our code. 
+
+The GitHub UI helps to nudge us in the right direction. Below I create a
+new issue in the repo for this blog:
+
+![Creating an issue in GitHub](https://i.imgur.com/kvkwrW0.png)
+
+Notice that there is an option on the right hand side, under `Development`
+to `Create a branch` for this issue. Click this and GitHub will create
+a branch with a naming convention that links the branch to the issue.
+
+<img src=https://i.imgur.com/2EOE623.png alt="Creating a new branch from an issue in GitHub" style="display:block;margin-left:auto;margin-right:auto;" width=50%>
+
+Once finished with the branch, we raise a PR. To link the PR with the issue,
+ensure to use one of <a href=https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/using-keywords-in-issues-and-pull-requests#linking-a-pull-request-to-an-issue target="_blank">GitHub's keywords</a>
+to automatically close the issue on merge. In this example, including the
+line `Fixes #71` in a comment within the PR will link the issue. Several
+issues can be linked in this way, eg `Fixes #71, Resolves #72` and so on.
+In this way, we have given an issue, branch and PR a clear identity.
+
+## Consider Your Merge Strategy 
+
+When merging a PR in the GitHub UI, 3 options are presented:
+
+* Merge commit (the default)
+* Squash and merge
+* Rebase and merge
+
+These options are a little involved and I would recommend reading
+<a href=https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges target="_blank">GitHub's merge docs</a>
+on the matter for a more detailed breakdown. 
+
+To help visualise the differences in these approaches, consider the
+following diagram:
+
+![Source: <a href=https://matt-rickard.com/squash-merge-or-rebase target="blank">matt-rickard.com</a>](https://matt-rickard.com/static/image/squash-merge-or-rebase/1.webp)
+
+In the following scenarios, I will walk through commit history following
+the three different merges. In all examples, I will refer to the target
+branch receiving the commits as `main` and the topic branch containing the
+additions as `feature`.
+
+### Rebase Merge
+
+When a rebase merge is used, new commits that mirror those in `feature`
+branch are created in `main`. You keep every commit and maintain a linear
+commit history. In the diagram below, I compare commits in
+<a href=https://github.com/r-leyshon/rebase-merge-example target="_blank">a repo with an example rebase merge</a>.
+Note that there are 2 commits from `feature` branch with commit messages
+like "FEATURE: ...". Merging the PR creates new commits to `main`, which
+have all the file edits from `feature`. However, note that these new commits
+have different hashes to those in `feature`.
+
+![Comparing `main` and `feature` following rebase merge. Click to enlarge.](https://i.imgur.com/M7ZMT4i.png){.lightbox}
+
+### Squash and Merge
+
+On selecting "Squash and merge" in the GitHub UI, A new "summary commit"
+is created in `main`. This condenses all of the file changes from `feature`
+into a single, new commit. You can see that even in the trivial example
+<a href=https://github.com/r-leyshon/squash-commit-example target="_blank">squash merge repository</a>,
+the outcome is that `main` branch will be much more succinct than in the
+other merge strategies. 
+
+![Comparing `main` and `feature` following a squash merge. Click to enlarge.](https://i.imgur.com/NbfJjZD.png){.lightbox}
+
+Inspecting the automated squash merge commit message demonstrates how
+GitHub summarises the activity from `feature` branch.
+
+![Squash commit generated commit message.](https://i.imgur.com/KBznXhf.png)
+
+The squash merge strategy is a good candidate for busy projects with many
+contributors. It's also a neat way to avoid noise in your version history,
+such as experimental 'cruft' or benign changes that you'd rather summarise.
+It is important to note that once merged to `main`, you should go ahead and
+delete the `feature` branch. If you continue to work in `feature`, there is
+a likelihood of diverging with `main`, ending up in merge conflicts to
+resolve.
+
+### Merge Commit
+
+Finally, we consider the default merge behaviour - the
+<a href=https://github.com/r-leyshon/merge-commit-example target="_blank">merge commit</a>.
+This behaviour will create a new commit in `main` that introduces the
+changes in `feature`. Notice that in this scenario, the commits in `main`
+and `feature` share the same content and commit hashes, as opposed to a
+rebase merge which "pretends" those commits happened in `main`. 
+
+![Comparing `main` and `feature` following a merge commit. Click to enlarge.](https://i.imgur.com/BiuYZAv.png){.lightbox}
+
+This is perhaps the noisiest merge strategy, as the commits of each feature
+branch are all merged to main, plus an additional commit that marks the
+merge. Use this scenario if you consider it really important to be able to
+revisit  the commit history. 
+
+### Overview of Merge Strategies
+
+| **Merge Type**       | **What Happens** | **How It Looks** | **Best For**     | **Downside**     |
+|----------------------|------------------|------------------|------------------|------------------|
+| **Merge Commit**     | A new commit is created to merge the PR, keeping all individual commits intact. | A merge commit is added, and you can see all the individual commits from the PR.| Keeping a detailed history with all commits preserved. | Can clutter the commit history with many small or trivial commits. |
+| **Squash and Merge** | All commits in the PR are combined into one single commit before merging. | Only one commit appears in the history, representing all changes from the PR. | Keeping the commit history clean and concise. | Loses the individual commit details from the PR. |
+| **Rebase and Merge** | The commits from the PR are applied directly on top of the main branch, maintaining their original structure but without a merge commit. | The history looks linear, with the PR commits applied after the latest main branch commit, with no merge commit in between. | Keeping a linear, clean commit history without merge commits. | Can be tricky with conflicts, especially for complex histories. |
+
+: {tbl-colwidths="[20,20,20,20,20]"}
+
+### Selecting a Merge Strategy
+
+Understanding which strategy is for the best depends on the context in
+which you're working. Your 2 options for maintaining a full commit history
+are either merge commit or rebase and merge. If you would rather summarise
+the commit history, then squash commit is the right approach. If I'm
+working on a solo project, I tend to merge commit. If I'm working in a
+team, I tend to squash commit in order to keep the version history
+manageable. 
+
+Some people bemoan the squash commit approach, with 2 main complaints that
+I've encountered:
+
+1. The full commit history is not preserved.
+2. It decreases contributors' apparent GitHub activity.
+
+My responses follow:
+
+1. Deleted branches can be restored.
+2. GitHub activity is a poor proxy for impact.
+
+Admittedly, the squash merge approach works best for projects where there
+is a disciplined approach to PRs. If PRs represent a tangible unit of work,
+such as a bug is fixed or a new feature is implemented, then squash merge
+works really well in my experience. Individual branches are short-lived and
+the risk of merge conflicts are minimised. 
+
+However, some projects are not like that. Particularly in exploratory work
+where some PRs become sprawling, long-lived with diffs numbering
+tens-of-thousands of lines. It may be advisable to merge commit in those
+scenarios. Personally,
+<a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing#_rebase_peril" target="_blank">I never rebase</a>
+when working with others.
+
+## Organising Issues
+
+Issues provide the context for PRs. Understanding why a PR is necessary is
+very helpful to collaborators and will be appreciated by anyone who needs
+to look back over your version history. 
+
+A feature that I consider to be under-utilised in GitHub are
+<a href=https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones target="_blank">milestones</a>.
+The milestone feature allows you to group related work, such as grouping
+issues and PRs with an epic. These milestones can then be added to GitHub
+projects to coordinate burn-down effort. Find the milestones interface
+under the issues tab. 
+
+![GitHub Milestone interface. Click to expand.](https://i.imgur.com/eJuzMcX.png"){.lightbox}
+
+Adding this sort of structure can be great in helping collaborators
+understand where your work fits into more tangible delivery, and your
+product managers will thank you for it. Below I show how with a few clicks,
+the milestone can be used to create an informative delivery roadmap.
+
+![Milestone on a GitHub roadmap. Click to expand.](https://i.imgur.com/fEwDSUB.png){.lightbox}
+
+You can see in the project that I have grouped the issues by milestone on
+the left hand-side. Also, by adding the milestone to the date fields, you
+get the blue date line appearing on the roadmap to the right of the screen.
+
+Recently, GitHub has unveiled some significant
+<a href=https://github.blog/changelog/2024-10-01-evolving-github-issues-public-beta/ target="_blank">changes to its issues</a>.
+The nested issues feature adds even more flexibility in grouping units of
+work together. This feature is in public beta at time of writing.
+<a href=https://github.com/features/issues/signup target="_blank">Join the waitlist here</a>.
+
+## Tips for Auditing 
+
+If you are tasked with making sense of someone else's code for PR or commit
+history for a release, then there are a few tools & tricks that can help
+make your life a bit easier. I'll cover some of them here.
+
+### Assign BLAME
+
+> "It is ill to praise, and worse to blame, the thing which you do not
+understand." Leonardo da Vinci, “Life, art and science, the thoughts
+of Leonardo”, p.67, 2013, Lulu.com
+
+At times, it may be useful to identify the person who wrote some code. It's
+not completely obvious, but by viewing a file and toggling from `Preview`
+to `Blame`, you get a line-by-line view of who commited what and when.
+
+![GitHub blame view. Click to expand.](https://i.imgur.com/17wmNNG.png){.lightbox}
+
+Note that there are also handy tools such as
+<a href=https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens target="_blank">GitLens for VSCode</a>
+that can bring the Git blame into your IDE. 
+
+### Grep FTW
+
+If you need to check all occurrences of a specific pattern anywhere within
+a repository, there's a great little tool called `git grep` that will help.
+In an interactive terminal, run `git grep <INSERT_PATTERN>` and all
+occurrences of that pattern within any file contents will be returned. If
+the pattern has spaces, just wrap the pattern in speech marks.
+
+If there are loads of files and you want to search for a pattern in the
+filenames, then use:
+
+`git ls-files | grep <INSERT_PATTERN>`
+
+If you'd like to search for specific patterns in commit messages:
+
+`git log --grep=<INSERT_PATTERN>`
+
+If you need to scan an entire commit history for the presence of a pattern
+in the contents of the files, then this is achieved with
+
+`git log -G <INSERT_PATTERN>`
+
+That pattern takes regular expressions so it can be quite flexible in
+combination with wildcards. This is super useful if you need to check
+whether a specific secret was ever added to the commit history.
+
+### GitHub & VSCode
+
+The previous tip is a feature of Git rather than GitHub. In order to
+execute the commands, you'll need a Command Line Interface and a local
+clone of the repository. That might not always be convenient. Did you know
+that since the low(ish) key Microsoft takeover of GitHub, you can now
+access VSCode directly from the GitHub UI?
+
+By simply typing `.`
+(full stop or period, depending on what side of the Atlantic you learned English)
+you will open your repository within VSCode directly within your browser
+window. If you'd prefer to open VSCode in a new browser window, type `>`
+instead. This interface is handy for adding in new files or adjusting the
+content of existing files.
+
+If you'd like an interactive terminal, or to test out code, you'll need to
+switch over to GitHub Codespaces. Again, this is a free service that GitHub
+provide that provisions some compute for you. To launch a 'live' version of
+VSCode in your browser, click on the burger icon in in the ribbon to the
+left, then `Terminal` -> `New Terminal`. You will be presented with options
+in the terminal asking you to launch GitHub Codespaces or to continue in a
+local clone of the repo. 
+
+![Launching Codespaces. Click to expand.](https://i.imgur.com/ZnqzMi2.png){.lightbox}
+
+Once Codespaces is launched, you have an interactive terminal to carry out
+your favourite operations. Here I'm displaying the `git grep` command in
+my browser with Codespaces.
+
+![Running terminal operations with Codespaces. Click to expand.](https://i.imgur.com/jRigeEl.png){.lightbox}
+
+## Summary
+
+In this article we covered considerate Git practice and how GitHub helps to
+nudge us toward these behaviours. Specifically:
+
+- **Commit Messages**: The value of having well-structured commit messages.
+- **Linking PRs with Issues**: Providing necessary context for reviewers.
+- **Merge Strategies**: Advantages and disadvantages of the options GitHub
+provides in their UI.
+- **Organising Issues**: Using milestones to group related work, enhancing
+coordination in projects.
+- **Tips for Auditing**: Tools and techniques for inspecting a commit
+history, including the use of Git blame and grep commands.
+- **GitHub & VSCode Integration**: Describes how to access VSCode directly
+from GitHub for streamlined code management.
+
+Please feel free to share your own thoughts and ideas in the comment
+section below (GitHub login required)! If you spot an error with this
+article, or have a suggested improvement then feel free to 
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues). 
+
+## Acknowledgements
+
+To past and present colleagues who have helped to discuss pros and cons,
+establishing practice and firming-up some opinions. Particularly:
+
+* Ian
+* Rob
+* Adrian
+* <a href=https://www.youtube.com/watch?v=BCQHnlnPusY target="_blank">Dan Shiffman</a>
+
+<p id=fin><i>fin!</i></p>
