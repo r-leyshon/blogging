@@ -168,13 +168,13 @@ When merging a PR in the GitHub UI, 3 options are presented:
 * Rebase and merge
 
 These options are a little involved and I would recommend reading
-[GitHub's merge docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
+<a href=https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges target="_blank">GitHub's merge docs</a>
 on the matter for a more detailed breakdown. 
 
 To help visualise the differences in these approaches, here is a helpful
 diagram:
 
-![Source: https://matt-rickard.com/squash-merge-or-rebase](https://matt-rickard.com/static/image/squash-merge-or-rebase/1.webp)
+![Source: <a href=https://matt-rickard.com/squash-merge-or-rebase target="blank">matt-rickard.com</a>](https://matt-rickard.com/static/image/squash-merge-or-rebase/1.webp)
 
 In the following scenarios, I will walk through commit history following
 the three different merges. In all examples, I will refer to the target
@@ -327,7 +327,7 @@ to `Blame`, you get a line-by-line view of who commited what and when.
 ![GitHub blame view. Click to expand.](https://i.imgur.com/17wmNNG.png){.lightbox}
 
 Note that there are also handy tools such as
-[GitLens for VSCode](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+<a href=https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens target="_blank">GitLens for VSCode</a>
 that can bring the Git blame into your IDE. 
 
 ### Grep FTW
