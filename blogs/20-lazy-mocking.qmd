@@ -110,7 +110,7 @@ POEM = {
 @mock.patch("poem.get_poem_line_for_day")                                       # <1>
 def test_poem_line_forever_thursday(patched_poem):                              # <2>
     """Uses immediate instantiation"""
-    
+
     def mock_poem(day, poem=POEM):                                              # <3>
         return poem[day]
 
@@ -226,7 +226,13 @@ after the alias we used for `mock.patch`, due to the decorator.
 
 ## Summary
 
-...
+We've summarised a basic implementation of how to defer evaluation of a
+`pytest` fixture by using a factory function, by:
+
+1. Demonstrating how to achieve a straightforward mock:patch combo with a local
+utility.
+2. Demonstrating that the same approach does not work for a `pytest` fixture.
+3. Updating the fixture to use lazy evaluation.
 
 Please feel free to share your own thoughts and ideas in the comment
 section below (GitHub login required)! If you spot an error with this
