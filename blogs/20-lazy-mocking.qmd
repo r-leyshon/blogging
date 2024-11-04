@@ -16,6 +16,7 @@ image: https://i.imgur.com/H2ljge8.jpeg
 image-alt: "The Joker Taking a Nap."
 toc: true
 css: /./www/17-quarto-comments/styles.css
+code-annotations: select
 ---
  <img class=shaded_box src=https://i.imgur.com/H2ljge8.jpeg alt="The Joker Taking a Nap." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
 
@@ -29,7 +30,9 @@ css: /./www/17-quarto-comments/styles.css
 ## Introduction
 
 A simple approach to sharing a fixture across multiple tests where mocking is a
-requirement.
+requirement. After comparing implementations with `pytest`'s `monkeypatch` and
+`mockito`, `unittest.patch` was selected because it's straightforward and
+succinct. 
 
 ### Intended Audience
 
@@ -65,7 +68,7 @@ get_poem_line_for_day()
 
 ::: {.callout collapse="true"}
 
-### Why would this be hard to test without mocking? (Click for the answer)
+### Why would this be hard to test without mocking? (Click to reveal)
 
 * The function will return different strings depending on the day the test is
 run.
@@ -76,6 +79,56 @@ the current day of the week and basing your test predicates off of that. Nope.
 * Let's instead patch the values...
 
 :::
+
+## Let's Test...
+
+This is very easy to mock using local-scoped utility functions.
+
+```{python filename=test_poem.py}
+#| eval: false
+from unittest import mock
+
+import pytest
+
+import poem
+
+POEM = {
+        "Monday": "Monday's child is fair of face",
+        "Tuesday": "Tuesday's child is full of grace",
+        "Wednesday": "Wednesday's child is full of woe",
+        "Thursday": "Thursday's child has far to go",
+        "Friday": "Friday's child is loving and giving",
+        "Saturday": "Saturday's child works hard for his living",
+        "Sunday": "And the child that is born on the Sabbath day is bonny and blithe, and good and gay",
+    }
+
+
+@mock.patch("poem.get_poem_line_for_day")                                       # <1>
+def test_poem_line_forever_thursday(patched_poem):                              # <2>
+    """Uses immediate instantiation"""
+    def mock_poem(day, poem=POEM):                                              # <3>
+        return poem[day]
+
+    patched_poem.return_value = mock_poem(day="Thursday")                       # <4>
+    result = poem.get_poem_line_for_day()                                       # <5>
+    assert result == "Thursday's child has far to go"                           # <6>
+
+```
+
+1. Specify the target that we wish to patch.
+2. Define a name for the patch as `patched_poem`. We'll need to refer to this
+when implementing the patch in the test.
+3. Define a locally-scoped function that will serve the line of the poem
+depending on the day that **you ask for**.
+4. Set the return value of the patch we specified to be equal to the line for a
+hard-coded day of the week. Note that we could go ahead and make multiple
+assertions re-using the `mock_poem` utility.
+5. Use the System Under Test (SUT). Note that in a real test suite, we would
+likely target the component of the SUT that we need to control, rather than the
+entire source code. Eg - target `datetime.today` rather than
+`get_poem_line_for_day`.
+6. Whatever day the test is executed on, the resulting value will be patched in
+the way we specified.
 
 ## Summary
 
