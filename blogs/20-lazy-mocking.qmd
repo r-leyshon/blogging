@@ -4,7 +4,7 @@ author: "Rich Leyshon"
 date: "November 04 2024"
 description: "Using Fixtures to Mock With Deferred Evaluation"
 categories:
-    - Explanation
+    - How-to
     - pytest
     - Unit tests
     - mocking
@@ -31,14 +31,14 @@ code-annotations: select
 
 A simple approach to sharing a fixture across multiple tests where mocking is a
 requirement. After comparing implementations with `pytest`'s `monkeypatch` and
-`mockito`, `unittest.patch` was selected because it's straightforward and
+`mockito`, `unittest.patch` was selected because it is straightforward and
 succinct. The code in this article is
 <a href=https://gist.github.com/r-leyshon/817e19438380eb9df638dfb1cd4c242e target=_blank>available in this gist</a>
 for those pushed for time.
 
 ### Intended Audience
 
-Python Developers, test engineers & the intersection of the two.
+Python Developers, test engineers & any intersection of the two.
 
 ### Requirements
 
@@ -110,6 +110,7 @@ POEM = {
 @mock.patch("poem.get_poem_line_for_day")                                       # <1>
 def test_poem_line_forever_thursday(patched_poem):                              # <2>
     """Uses immediate instantiation"""
+    
     def mock_poem(day, poem=POEM):                                              # <3>
         return poem[day]
 
@@ -148,12 +149,14 @@ import pytest
 
 import poem
 
+
 @pytest.fixture(scope="function")                                               # <1>
 def mock_poem(day, poem=POEM):                                                  # <2>
     return poem[day]
 
+
 @mock.patch("poem.get_poem_line_for_day")                                       # <3>
-def test_poem_line_any_day_we_like(patched_poem, mock_poem):
+def test_IS_BROKEN_(patched_poem, mock_poem):
     """Uses deferred instantiation."""
     patched_poem.return_value = mock_poem(day_name="Wednesday")
     result = poem.get_poem_line_for_day()                                       
@@ -170,6 +173,56 @@ mutliple tests.
 2. `pytest` fixtures will eagerly evaluate the arguments to the fixture and
 raise an exception, as a value for `day` has not been set. 
 3. The test is not run due to the above exception.
+
+### Mock with Fixture - Fixed
+
+We need to implement some minor tweaks to the broken fixture in order to delay
+evaluation of the parameters. In this way, we make the fixture "lazy" by using
+a factory function to instantiate the poem line within the test, rather than
+before it.
+
+```{python filename=test_poem.py}
+#| eval: false
+from unittest import mock
+
+import pytest
+
+import poem
+
+
+@pytest.fixture(scope="function")
+def mock_poem_line_factory():                                                   # <1>
+    """Factory function that mocks expected return values."""
+    def _get_poem_line(day_name: str, poem: dict = POEM) -> str:                # <2>
+        return poem[day_name]                                                   # <2>
+    
+    return _get_poem_line                                                       # <3>
+
+@mock.patch("poem.get_poem_line_for_day")
+def test_poem_line_any_day_we_like(patched_poem, mock_poem_line_factory):       # <4>
+    """Uses deferred instantiation."""
+    patched_poem.return_value = mock_poem_line_factory(day_name="Wednesday")
+    result = poem.get_poem_line_for_day()                                       # <5>
+    assert result == "Wednesday's child is full of woe"
+
+    patched_poem.return_value = mock_poem_line_factory(day_name="Friday")
+    result = poem.get_poem_line_for_day()
+    assert result == "Friday's child is loving and giving"
+
+```
+
+1. The fixture will now act as a factory function, encapsulating the
+instantiation of the values we wish to return. This gives us more control over
+when the `day_name` parameter is evaluated. Note that the fixture signature
+takes no arguments, though you could pass it other `pytest` fixtures if you
+needed to.
+2. The internal `_get_poem_line` signature defines the arguments needed to
+control which poem lines you wish to return.
+3. Note the factory function should return the internal itself, rather than its
+value - we need to delay evaluation.
+4. Don't forget to pass in the fixture to the test signature. It must come
+after the alias we used for `mock.patch`, due to the decorator.
+5. The mock fixture gets evaluated when we attempt to patch the SUT. 
 
 ## Summary
 
