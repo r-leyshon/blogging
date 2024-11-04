@@ -38,7 +38,11 @@ for those pushed for time.
 
 ### Intended Audience
 
-Python Developers, test engineers & any intersection of the two.
+Experienced python Developers, test engineers & any intersection of the two.
+This tutorial is not for those new to mocking. Please refer to
+[Mocking With Pytest in Plain English](/./blogs/15-pytest-mocking.qmd) for a
+more comprehensive introduction to that. This blog is part of a series called
+[pytest in plain English](/blogs/index.qmd#category=pytest-in-plain-english).
 
 ### Requirements
 
