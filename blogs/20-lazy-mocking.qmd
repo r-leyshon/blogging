@@ -28,16 +28,54 @@ css: /./www/17-quarto-comments/styles.css
 
 ## Introduction
 
-A simple approach to patching expected values with `pytest` fixtures.
+A simple approach to sharing a fixture across multiple tests where mocking is a
+requirement.
 
 ### Intended Audience
 
-Python Developers that need to share a fixture across multiple tests
-where mocking is a requirement.
+Python Developers, test engineers & the intersection of the two.
 
 ### Requirements
 
 `pip install pytest`
+
+## Some Source Code
+
+This little function would cause a problem when writing your test suite:
+```{python filename=poem.py}
+from datetime import datetime
+
+def get_poem_line_for_day():
+    """Returns the line of the poem based on the current day of the week."""
+    day_of_week = datetime.today().strftime('%A')
+    POEM = {
+        "Monday": "Monday's child is fair of face",
+        "Tuesday": "Tuesday's child is full of grace",
+        "Wednesday": "Wednesday's child is full of woe",
+        "Thursday": "Thursday's child has far to go",
+        "Friday": "Friday's child is loving and giving",
+        "Saturday": "Saturday's child works hard for his living",
+        "Sunday": "And the child that is born on the Sabbath day is bonny and blithe, and good and gay",
+    }
+    return POEM.get(day_of_week, "Unknown day")
+
+get_poem_line_for_day()
+
+```
+
+::: {.callout collapse="true"}
+
+### Why would this be hard to test without mocking? (Click for the answer)
+
+* The function will return different strings depending on the day the test is
+run.
+* Without mocking `get_poem_line_for_day`, you would have to update hard-coded
+test predicates to match the current day of the week. Nope.
+* In CI, avoiding mocking would likely result in setting a variable equal to
+the current day of the week and basing your test predicates off of that. Nope.
+* Let's instead patch the values...
+
+:::
 
 ## Summary
 
