@@ -1,0 +1,51 @@
+---
+title: "Lazy Mocking"
+author: "Rich Leyshon"
+date: "November 04 2024"
+description: "Using Fixtures to Mock With Deferred Evaluation"
+categories:
+    - Explanation
+    - pytest
+    - Unit tests
+    - mocking
+    - pytest-in-plain-english
+    - patching
+    - lazy
+    - lazy evaluation
+image: https://i.imgur.com/H2ljge8.jpeg
+image-alt: "The Joker Taking a Nap."
+toc: true
+css: /./www/17-quarto-comments/styles.css
+---
+ <img class=shaded_box src=https://i.imgur.com/H2ljge8.jpeg alt="The Joker Taking a Nap." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
+
+> "Time to live  
+> Time to lie  
+> Time to laugh  
+> Time to die  
+> Take it easy, baby  
+> Take it as it comes" Take It As It Comes, The Doors.
+
+## Introduction
+
+A simple approach to patching expected values with `pytest` fixtures.
+
+### Intended Audience
+
+Python Developers that need to share a fixture across multiple tests
+where mocking is a requirement.
+
+### Requirements
+
+`pip install pytest`
+
+## Summary
+
+...
+
+Please feel free to share your own thoughts and ideas in the comment
+section below (GitHub login required)! If you spot an error with this
+article, or have a suggested improvement then feel free to 
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues). 
+
+<p id=fin><i>fin!</i></p>
