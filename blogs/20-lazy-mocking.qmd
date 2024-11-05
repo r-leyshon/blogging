@@ -139,11 +139,11 @@ entire source code. Eg - target `datetime.today` rather than
 6. Whatever day the test is executed on, the resulting value will be patched in
 the way we specified.
 
-### Mock with Fixture - Broken
+### Broken Mock with Fixture
 
 It is common to start with a [locally-scoped mock](#local-scoped-mock) and then
-later need to share that across multiple tests. You may naively try to use the
-same `mock_poem` as a `pytest` fixture.
+, as the test suite grows, need to share that across multiple tests. You may
+naively try to use the same `mock_poem` as a `pytest` fixture.
 
 ```{python filename=test_poem.py}
 #| eval: false
@@ -155,18 +155,18 @@ import poem
 
 
 @pytest.fixture(scope="function")                                               # <1>
-def mock_poem(day, poem=POEM):                                                  # <2>
+def BROKEN_mock_poem(day, poem=POEM):                                                  # <2>
     return poem[day]
 
 
 @mock.patch("poem.get_poem_line_for_day")                                       # <3>
-def test_IS_BROKEN_(patched_poem, mock_poem):
+def test_IS_BROKEN_(patched_poem, BROKEN_mock_poem):
     """Uses deferred instantiation."""
-    patched_poem.return_value = mock_poem(day_name="Wednesday")
+    patched_poem.return_value = BROKEN_mock_poem(day_name="Wednesday")
     result = poem.get_poem_line_for_day()                                       
     assert result == "Wednesday's child is full of woe"
 
-    patched_poem.return_value = mock_poem(day_name="Friday")
+    patched_poem.return_value = BROKEN_mock_poem(day_name="Friday")
     result = poem.get_poem_line_for_day()
     assert result == "Friday's child is loving and giving"
 
@@ -177,6 +177,11 @@ mutliple tests.
 2. `pytest` fixtures will eagerly evaluate the arguments to the fixture and
 raise an exception, as a value for `day` has not been set. 
 3. The test is not run due to the above exception.
+
+The problem with the above code is that `pytest` fixtures expect other
+fixtures, not placeholder arguments. As part of their dependency injection
+process, `pytest` fixtures will evaluate all arguments passed to the fixture
+before tests are run.
 
 ### Mock with Fixture - Fixed
 
@@ -230,8 +235,7 @@ after the alias we used for `mock.patch`, due to the decorator.
 
 ## Summary
 
-We've summarised a basic implementation of how to defer evaluation of a
-`pytest` fixture by using a factory function, by:
+We've demonstrated how to go from a locally scoped mock to a fixture mock:
 
 1. Demonstrating how to achieve a straightforward mock:patch combo with a local
 utility.
