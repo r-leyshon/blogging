@@ -1,0 +1,250 @@
+---
+title: "Lazy Mocking"
+author: "Rich Leyshon"
+date: "November 05 2024"
+description: "Mocking with Fixtures: Deferred Evaluation"
+categories:
+    - How-to
+    - pytest
+    - Unit tests
+    - mocking
+    - pytest-in-plain-english
+    - patching
+    - lazy
+    - lazy evaluation
+image: https://i.imgur.com/H2ljge8.jpeg
+image-alt: "The Joker Taking a Nap."
+toc: true
+css: /./www/17-quarto-comments/styles.css
+code-annotations: select
+---
+ <img class=shaded_box src=https://i.imgur.com/H2ljge8.jpeg alt="The Joker Taking a Nap." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
+
+> "Time to live  
+> Time to lie  
+> Time to laugh  
+> Time to die  
+> Take it easy, baby  
+> Take it as it comes" Take It As It Comes, The Doors.
+
+## Introduction
+
+A simple approach to sharing a fixture across multiple tests where mocking is a
+requirement. After comparing implementations with `pytest`'s `monkeypatch` and
+`mockito`, `unittest.patch` was selected because it is straightforward and
+succinct. The code in this article is
+<a href=https://gist.github.com/r-leyshon/817e19438380eb9df638dfb1cd4c242e target=_blank>available in this gist</a>
+for those pushed for time.
+
+### Intended Audience
+
+Experienced python Developers, test engineers & any intersection of the two.
+This tutorial is not for those new to mocking. Please refer to
+[Mocking With Pytest in Plain English](/./blogs/15-pytest-mocking.qmd) for a
+more comprehensive introduction to that. This blog is part of a series called
+[pytest in plain English](/blogs/index.qmd#category=pytest-in-plain-english).
+
+### Requirements
+
+`pip install pytest`
+
+## Some Source Code
+
+This little function would cause a problem when writing your test suite:
+```{python filename=poem.py}
+from datetime import datetime
+
+def get_poem_line_for_day():
+    """Returns the line of the poem based on the current day of the week."""
+    day_of_week = datetime.today().strftime('%A')
+    POEM = {
+        "Monday": "Monday's child is fair of face",
+        "Tuesday": "Tuesday's child is full of grace",
+        "Wednesday": "Wednesday's child is full of woe",
+        "Thursday": "Thursday's child has far to go",
+        "Friday": "Friday's child is loving and giving",
+        "Saturday": "Saturday's child works hard for his living",
+        "Sunday": "And the child that is born on the Sabbath day is bonny and blithe, and good and gay",
+    }
+    return POEM.get(day_of_week, "Unknown day")
+
+get_poem_line_for_day()
+
+```
+
+::: {.callout collapse="true"}
+
+### Why would this be hard to test without mocking? (Click to reveal)
+
+* The function will return different strings depending on the day the test is
+run.
+* Without mocking `get_poem_line_for_day`, you would have to update hard-coded
+test predicates to match the current day of the week. Nope.
+* In CI, avoiding mocking would likely result in setting a variable equal to
+the current day of the week and basing your test predicates off of that. Nope.
+* Let's instead patch the values...
+
+:::
+
+## Let's Test...
+
+### Local-Scoped Mock
+
+This is very easy to mock using local-scoped utility functions.
+
+```{python filename=test_poem.py}
+#| eval: false
+from unittest import mock
+
+import pytest
+
+import poem
+
+POEM = {
+        "Monday": "Monday's child is fair of face",
+        "Tuesday": "Tuesday's child is full of grace",
+        "Wednesday": "Wednesday's child is full of woe",
+        "Thursday": "Thursday's child has far to go",
+        "Friday": "Friday's child is loving and giving",
+        "Saturday": "Saturday's child works hard for his living",
+        "Sunday": "And the child that is born on the Sabbath day is bonny and blithe, and good and gay",
+    }
+
+
+@mock.patch("poem.get_poem_line_for_day")                                       # <1>
+def test_poem_line_forever_thursday(patched_poem):                              # <2>
+    """Uses immediate instantiation"""
+
+    def mock_poem(day, poem=POEM):                                              # <3>
+        return poem[day]
+
+    patched_poem.return_value = mock_poem(day="Thursday")                       # <4>
+    result = poem.get_poem_line_for_day()                                       # <5>
+    assert result == "Thursday's child has far to go"                           # <6>
+
+```
+
+1. Specify the target that we wish to patch.
+2. Define a name for the patch as `patched_poem`. We'll need to refer to this
+when implementing the patch in the test.
+3. Define a locally-scoped function that will serve the line of the poem
+depending on the day that **you ask for**.
+4. Set the return value of the patch we specified to be equal to the line for a
+hard-coded day of the week. Note that we could go ahead and make multiple
+assertions re-using the `mock_poem` utility.
+5. Use the System Under Test (SUT). Note that in a real test suite, we would
+likely target the component of the SUT that we need to control, rather than the
+entire source code. Eg - target `datetime.today` rather than
+`get_poem_line_for_day`.
+6. Whatever day the test is executed on, the resulting value will be patched in
+the way we specified.
+
+### Broken Mock with Fixture
+
+It is common to start with a [locally-scoped mock](#local-scoped-mock) and then
+, as the test suite grows, it would be better to share the mock across multiple
+tests. You may naively try to use the same `mock_poem` as a `pytest` fixture.
+
+```{python filename=test_poem.py}
+#| eval: false
+from unittest import mock
+
+import pytest
+
+import poem
+
+
+@pytest.fixture(scope="function")                                               # <1>
+def BROKEN_mock_poem(day, poem=POEM):                                                  # <2>
+    return poem[day]
+
+
+@mock.patch("poem.get_poem_line_for_day")                                       # <3>
+def test_IS_BROKEN_(patched_poem, BROKEN_mock_poem):
+    """Uses deferred instantiation."""
+    patched_poem.return_value = BROKEN_mock_poem(day_name="Wednesday")
+    result = poem.get_poem_line_for_day()                                       
+    assert result == "Wednesday's child is full of woe"
+
+    patched_poem.return_value = BROKEN_mock_poem(day_name="Friday")
+    result = poem.get_poem_line_for_day()
+    assert result == "Friday's child is loving and giving"
+
+```
+
+1. We attempt to shift the utility to a fixture in order to use it across
+multiple tests.
+2. `pytest` fixtures will eagerly evaluate the arguments to the fixture and
+raise an exception, as a value for `day` has not been set. 
+3. The test is not run due to the above exception.
+
+The problem with the above code is that `pytest` fixtures expect other
+fixtures, not placeholder arguments. As part of their dependency injection
+process, `pytest` fixtures will evaluate all arguments passed to the fixture
+before tests are run.
+
+### Mock with Fixture - Fixed
+
+We need to implement some minor tweaks to the broken fixture in order to delay
+evaluation of the parameters. In this way, we make the fixture "lazy" by using
+a factory function to instantiate the poem line within the test, rather than
+before it.
+
+```{python filename=test_poem.py}
+#| eval: false
+from unittest import mock
+
+import pytest
+
+import poem
+
+
+@pytest.fixture(scope="function")
+def mock_poem_line_factory():                                                   # <1>
+    """Factory function that mocks expected return values."""
+    def _get_poem_line(day_name: str, poem: dict = POEM) -> str:                # <2>
+        return poem[day_name]                                                   # <2>
+    
+    return _get_poem_line                                                       # <3>
+
+@mock.patch("poem.get_poem_line_for_day")
+def test_poem_line_any_day_we_like(patched_poem, mock_poem_line_factory):       # <4>
+    """Uses deferred instantiation."""
+    patched_poem.return_value = mock_poem_line_factory(day_name="Wednesday")
+    result = poem.get_poem_line_for_day()                                       # <5>
+    assert result == "Wednesday's child is full of woe"
+
+    patched_poem.return_value = mock_poem_line_factory(day_name="Friday")
+    result = poem.get_poem_line_for_day()
+    assert result == "Friday's child is loving and giving"
+
+```
+
+1. The fixture will now act as a factory function, encapsulating the
+instantiation of the values we wish to return. This gives us more control over
+when the `day_name` parameter is evaluated. Note that the fixture signature
+takes no arguments, though you could pass it other `pytest` fixtures if you
+needed to.
+2. The internal `_get_poem_line` signature defines the arguments needed to
+control which poem lines you wish to return.
+3. Note the factory function should return the internal itself, rather than its
+value - we need to delay evaluation.
+4. Don't forget to pass in the fixture to the test signature. It must come
+after the alias we used for `mock.patch`, due to the decorator.
+5. The mock fixture gets evaluated when we attempt to patch the SUT. 
+
+## Summary
+
+We've demonstrated how to go from a locally scoped mock to a fixture mock:
+
+1. Demonstrating how to achieve a straightforward mock:patch combo with a local
+utility.
+2. Demonstrating that the same approach does not work for a `pytest` fixture.
+3. Updating the fixture to use lazy evaluation.
+
+Please feel free to share your own thoughts and ideas in the comment
+section below (GitHub login required)! If you spot an error with this
+article, or have a suggested improvement then feel free to 
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues). 
+
+<p id=fin><i>fin!</i></p>
