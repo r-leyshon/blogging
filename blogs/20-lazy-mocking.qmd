@@ -1,8 +1,8 @@
 ---
 title: "Lazy Mocking"
 author: "Rich Leyshon"
-date: "November 04 2024"
-description: "Using Fixtures to Mock With Deferred Evaluation"
+date: "November 05 2024"
+description: "Mocking with Fixtures: Deferred Evaluation"
 categories:
     - How-to
     - pytest
@@ -142,8 +142,8 @@ the way we specified.
 ### Broken Mock with Fixture
 
 It is common to start with a [locally-scoped mock](#local-scoped-mock) and then
-, as the test suite grows, need to share that across multiple tests. You may
-naively try to use the same `mock_poem` as a `pytest` fixture.
+, as the test suite grows, it would be better to share the mock across multiple
+tests. You may naively try to use the same `mock_poem` as a `pytest` fixture.
 
 ```{python filename=test_poem.py}
 #| eval: false
@@ -173,7 +173,7 @@ def test_IS_BROKEN_(patched_poem, BROKEN_mock_poem):
 ```
 
 1. We attempt to shift the utility to a fixture in order to use it across
-mutliple tests.
+multiple tests.
 2. `pytest` fixtures will eagerly evaluate the arguments to the fixture and
 raise an exception, as a value for `day` has not been set. 
 3. The test is not run due to the above exception.
