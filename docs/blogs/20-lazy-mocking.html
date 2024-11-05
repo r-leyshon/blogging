@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2024-11-04">
-<meta name="description" content="Using Fixtures to Mock With Deferred Evaluation">
+<meta name="dcterms.date" content="2024-11-05">
+<meta name="description" content="Mocking with Fixtures: Deferred Evaluation">
 
 <title>Lazy Mocking – The Data Savvy Corner</title>
 <style>
@@ -96,12 +96,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../www/styles.css">
 <link rel="stylesheet" href=".././www/17-quarto-comments/styles.css">
 <meta property="og:title" content="Lazy Mocking – The Data Savvy Corner">
-<meta property="og:description" content="Using Fixtures to Mock With Deferred Evaluation">
+<meta property="og:description" content="Mocking with Fixtures: Deferred Evaluation">
 <meta property="og:image" content="https://i.imgur.com/H2ljge8.jpeg">
 <meta property="og:site_name" content="The Data Savvy Corner">
 <meta property="og:image:alt" content="The Joker Taking a Nap.">
 <meta name="twitter:title" content="Lazy Mocking – The Data Savvy Corner">
-<meta name="twitter:description" content="Using Fixtures to Mock With Deferred Evaluation">
+<meta name="twitter:description" content="Mocking with Fixtures: Deferred Evaluation">
 <meta name="twitter:image" content="https://i.imgur.com/H2ljge8.jpeg">
 <meta name="twitter:site" content="@Rich_L1984">
 <meta name="twitter:image:alt" content="The Joker Taking a Nap.">
@@ -170,7 +170,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#lets-test" id="toc-lets-test" class="nav-link" data-scroll-target="#lets-test">Let’s Test…</a>
   <ul class="collapse">
   <li><a href="#local-scoped-mock" id="toc-local-scoped-mock" class="nav-link" data-scroll-target="#local-scoped-mock">Local-Scoped Mock</a></li>
-  <li><a href="#mock-with-fixture---broken" id="toc-mock-with-fixture---broken" class="nav-link" data-scroll-target="#mock-with-fixture---broken">Mock with Fixture - Broken</a></li>
+  <li><a href="#broken-mock-with-fixture" id="toc-broken-mock-with-fixture" class="nav-link" data-scroll-target="#broken-mock-with-fixture">Broken Mock with Fixture</a></li>
   <li><a href="#mock-with-fixture---fixed" id="toc-mock-with-fixture---fixed" class="nav-link" data-scroll-target="#mock-with-fixture---fixed">Mock with Fixture - Fixed</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    Using Fixtures to Mock With Deferred Evaluation
+    Mocking with Fixtures: Deferred Evaluation
   </div>
 </div>
 
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 4, 2024</p>
+      <p class="date">November 5, 2024</p>
     </div>
   </div>
   
@@ -250,7 +250,7 @@ Take it as it comes” Take It As It Comes, The Doors.</p>
 <section id="some-source-code" class="level2">
 <h2 class="anchored" data-anchor-id="some-source-code">Some Source Code</h2>
 <p>This little function would cause a problem when writing your test suite:</p>
-<div id="637204a7" class="cell" data-execution_count="1">
+<div id="adeca5cf" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_poem_line_for_day():</span>
@@ -268,8 +268,8 @@ Take it as it comes” Take It As It Comes, The Doors.</p>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> POEM.get(day_of_week, <span class="st">"Unknown day"</span>)</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>get_poem_line_for_day()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>"Monday's child is fair of face"</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>"Tuesday's child is full of grace"</code></pre>
 </div>
 </div>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
@@ -299,7 +299,7 @@ Why would this be hard to test without mocking? (Click to reveal)
 <section id="local-scoped-mock" class="level3">
 <h3 class="anchored" data-anchor-id="local-scoped-mock">Local-Scoped Mock</h3>
 <p>This is very easy to mock using local-scoped utility functions.</p>
-<div id="8edac1cc" class="cell" data-execution_count="2">
+<div id="78b4b616" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest <span class="im">import</span> mock</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
@@ -357,10 +357,10 @@ Why would this be hard to test without mocking? (Click to reveal)
 </div>
 </div>
 </section>
-<section id="mock-with-fixture---broken" class="level3">
-<h3 class="anchored" data-anchor-id="mock-with-fixture---broken">Mock with Fixture - Broken</h3>
-<p>It is common to start with a <a href="#local-scoped-mock">locally-scoped mock</a> and then later need to share that across multiple tests. You may naively try to use the same <code>mock_poem</code> as a <code>pytest</code> fixture.</p>
-<div id="4b88c0ee" class="cell" data-execution_count="3">
+<section id="broken-mock-with-fixture" class="level3">
+<h3 class="anchored" data-anchor-id="broken-mock-with-fixture">Broken Mock with Fixture</h3>
+<p>It is common to start with a <a href="#local-scoped-mock">locally-scoped mock</a> and then , as the test suite grows, it would be better to share the mock across multiple tests. You may naively try to use the same <code>mock_poem</code> as a <code>pytest</code> fixture.</p>
+<div id="c368d6c1" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest <span class="im">import</span> mock</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
@@ -369,25 +369,25 @@ Why would this be hard to test without mocking? (Click to reveal)
 <span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-hidden="true" tabindex="-1"></a></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-8" class="code-annotation-target"><a href="#annotated-cell-3-8" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"function"</span>)</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-9" class="code-annotation-target"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mock_poem(day, poem<span class="op">=</span>POEM):</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-9" class="code-annotation-target"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> BROKEN_mock_poem(day, poem<span class="op">=</span>POEM):</span>
 <span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> poem[day]</span>
 <span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-3-12"><a href="#annotated-cell-3-12" aria-hidden="true" tabindex="-1"></a></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3">3</button><span id="annotated-cell-3-13" class="code-annotation-target"><a href="#annotated-cell-3-13" aria-hidden="true" tabindex="-1"></a><span class="at">@mock.patch</span>(<span class="st">"poem.get_poem_line_for_day"</span>)</span>
-<span id="annotated-cell-3-14"><a href="#annotated-cell-3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_IS_BROKEN_(patched_poem, mock_poem):</span>
+<span id="annotated-cell-3-14"><a href="#annotated-cell-3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_IS_BROKEN_(patched_poem, BROKEN_mock_poem):</span>
 <span id="annotated-cell-3-15"><a href="#annotated-cell-3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Uses deferred instantiation."""</span></span>
-<span id="annotated-cell-3-16"><a href="#annotated-cell-3-16" aria-hidden="true" tabindex="-1"></a>    patched_poem.return_value <span class="op">=</span> mock_poem(day_name<span class="op">=</span><span class="st">"Wednesday"</span>)</span>
+<span id="annotated-cell-3-16"><a href="#annotated-cell-3-16" aria-hidden="true" tabindex="-1"></a>    patched_poem.return_value <span class="op">=</span> BROKEN_mock_poem(day_name<span class="op">=</span><span class="st">"Wednesday"</span>)</span>
 <span id="annotated-cell-3-17"><a href="#annotated-cell-3-17" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> poem.get_poem_line_for_day()                                       </span>
 <span id="annotated-cell-3-18"><a href="#annotated-cell-3-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result <span class="op">==</span> <span class="st">"Wednesday's child is full of woe"</span></span>
 <span id="annotated-cell-3-19"><a href="#annotated-cell-3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-3-20"><a href="#annotated-cell-3-20" aria-hidden="true" tabindex="-1"></a>    patched_poem.return_value <span class="op">=</span> mock_poem(day_name<span class="op">=</span><span class="st">"Friday"</span>)</span>
+<span id="annotated-cell-3-20"><a href="#annotated-cell-3-20" aria-hidden="true" tabindex="-1"></a>    patched_poem.return_value <span class="op">=</span> BROKEN_mock_poem(day_name<span class="op">=</span><span class="st">"Friday"</span>)</span>
 <span id="annotated-cell-3-21"><a href="#annotated-cell-3-21" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> poem.get_poem_line_for_day()</span>
 <span id="annotated-cell-3-22"><a href="#annotated-cell-3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result <span class="op">==</span> <span class="st">"Friday's child is loving and giving"</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="8" data-code-annotation="1">We attempt to shift the utility to a fixture in order to use it across mutliple tests.</span>
+<span data-code-cell="annotated-cell-3" data-code-lines="8" data-code-annotation="1">We attempt to shift the utility to a fixture in order to use it across multiple tests.</span>
 </dd>
 <dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
 <dd>
@@ -400,11 +400,12 @@ Why would this be hard to test without mocking? (Click to reveal)
 </dl>
 </div>
 </div>
+<p>The problem with the above code is that <code>pytest</code> fixtures expect other fixtures, not placeholder arguments. As part of their dependency injection process, <code>pytest</code> fixtures will evaluate all arguments passed to the fixture before tests are run.</p>
 </section>
 <section id="mock-with-fixture---fixed" class="level3">
 <h3 class="anchored" data-anchor-id="mock-with-fixture---fixed">Mock with Fixture - Fixed</h3>
 <p>We need to implement some minor tweaks to the broken fixture in order to delay evaluation of the parameters. In this way, we make the fixture “lazy” by using a factory function to instantiate the poem line within the test, rather than before it.</p>
-<div id="e90b61db" class="cell" data-execution_count="4">
+<div id="94d5039b" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest <span class="im">import</span> mock</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
@@ -459,7 +460,7 @@ Why would this be hard to test without mocking? (Click to reveal)
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>We’ve summarised a basic implementation of how to defer evaluation of a <code>pytest</code> fixture by using a factory function, by:</p>
+<p>We’ve demonstrated how to go from a locally scoped mock to a fixture mock:</p>
 <ol type="1">
 <li>Demonstrating how to achieve a straightforward mock:patch combo with a local utility.</li>
 <li>Demonstrating that the same approach does not work for a <code>pytest</code> fixture.</li>
