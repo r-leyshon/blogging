@@ -412,7 +412,7 @@ Note that we need to import `pytest` to our test module in order to use the
 Now that we have registered and marked a test as `flaky`, we can adapt our
 `pytest` call to execute tests with that mark only. The pattern we will use is:
 
-> `pytest -k -m "<INSERT_MARK_NAME>"`
+> `pytest -v -m "<INSERT_MARK_NAME>"`
 
 ```{.abc}
 ... % pytest -v -m "flaky"
