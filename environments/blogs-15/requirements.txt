@@ -1,3 +1,4 @@
+ipykernel
 mockito
 pytest==8.1.1
 requests
