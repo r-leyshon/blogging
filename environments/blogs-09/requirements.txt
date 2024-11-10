@@ -1,6 +1,7 @@
 contextily
 geopandas
 haversine
+ipykernel
 jupyter
 folium
 mapclassify
