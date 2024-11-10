@@ -17,7 +17,7 @@ image-alt: "Soul singer with Joker makeup."
 toc: true
 jupyter: 
   kernelspec:
-    name: "conda-env-mocking-env-py"
+    name: "mocking-env"
     language: "python"
     display_name: "blog-mocking-env"
 css: /www/13-pytest-parametrize/styles.css
@@ -402,7 +402,7 @@ The strategy for testing this function without making requests to the web API
 is composed of 4 similar steps, regardless of the package used to implement the
 mocking. 
 
-<img style=" display: block; margin-left: auto; margin-right: auto; width: 800px;" src="https://i.imgur.com/6XJH7R9.png" alt="4 step mocking strategy">
+<img style=" display: block; margin-left: auto; margin-right: auto; width: 800px;" src=https://i.imgur.com/jRAdI1d.png alt="4 step mocking strategy">
 
 1.  **Mock:** Define the object or property that you wish to use as a
 replacement. This could be a static value or something a bit more involved,
@@ -648,10 +648,10 @@ def test_get_joke_monkeypatched_no_OOP(monkeypatch, ULTI_JOKE):
 
 ### Condition 1: Test JSON
 
-In this example, we demonstrate the same functionality as above, but with an
-object-oriented design pattern. This approach more closely follows that of
-the `pytest` documentation. As before, `MagicMock` and `mockito` examples will
-be included. 
+In this example, we demonstrate the same functionality as above, but the
+`monkeypatch` example will use an object-oriented design pattern. This approach
+more closely follows that of the `pytest` documentation. As before, `MagicMock`
+and `mockito` examples will be included. 
 
 The purpose of this test is to test the outcome of `get_joke()` when the user
 specifies a json format.

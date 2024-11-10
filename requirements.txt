@@ -1,9 +1,4 @@
-folium
-geopandas
-mapclassify
-matplotlib
+jupyter
 nbclient
 nbformat
-pandas
-pyprojroot
-requests
+pyprojroot # dep for site_health,py

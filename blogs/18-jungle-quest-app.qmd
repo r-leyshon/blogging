@@ -1,0 +1,1771 @@
+---
+title: "Choose Your Own Adventure with ChatGPT"
+author: "Rich Leyshon"
+date: "September 21 2024"
+description: "Iteratively Building an LLM-Powered Shiny Application."
+categories:
+    - Tutorial
+    - Python Shiny
+    - LLMs
+    - Large Language Models
+    - GenAI
+    - Generative AI
+    - Front End Dev
+    - OpenAI
+image: https://i.imgur.com/z9Xm9Lf.jpeg
+image-alt: "Adventurer reading a large book within a mysterious jungle temple."
+toc: true
+css: /./www/17-quarto-comments/styles.css
+code-annotations: select
+---
+
+ <img class=shaded_box src=https://i.imgur.com/z9Xm9Lf.jpeg alt="Adventurer reading within a jungle temple." style="display:block;margin-left:auto;margin-right:auto;width:60%;">
+
+> "ChatGPT amplifies human potential, turning thoughts into creation. It
+reminds us that imagination, when paired with technology, can shape the
+future." ChatGPT on the creative potential of ChatGPT.
+
+## Introduction
+
+This article will guide you through the process of building a Choose Your
+Own Adventure game using OpenAI generative AI models and Python Shiny.
+We'll walk through the entire journey, from concept to deployment, with a
+focus on the iterative development process and the use of ChatGPT for
+generating storylines.
+
+Choose Your Own Adventure is a classic storytelling format where the reader
+is presented with a series of choices that guide the story in different
+directions. The game is interactive, allowing the reader to make decisions
+that affect the outcome of the story. They were popular in the 1980s and
+early 1990s, widely available as graphic novels and comics with a fantasy
+or adventure theme.
+
+The aim of this project is to produce an interactive application that will
+use AI to generate the branching outcomes depending on the choices made by
+the user. We will provide the user with an introduction to the theme and we
+will provide the model with the rules for the game. Each game will play out
+differently depending on the creative interplay between the user and the
+model.
+
+::: {.callout-note collapse=true}
+
+### Inspiration for This Blog (Click to expand)
+
+The application concept was heavily influenced by the YouTube video by 
+Tech with Tim called
+<a href="https://www.youtube.com/watch?v=nhYcTh6vw9A" target="_blank">Python AI Choose Your Own Adventure Game - Tutorial</a>.
+This tutorial uses a more complicated stack behind the scenes and resulted
+in a game that solved itself - essentially the model would also generate
+'imagined' user responses through to completion. The tutorial was published
+only 11 months ago at the time of writing, though the code would not run
+without significant adaptation, due to a raft of breaking changes within
+`langchain`.
+
+I was inspired by the playful use of generative AI but could see that a few
+things could be done to improve the reproducibility of the code. Also, by 
+simplifying the stack required to generate the game responses, it is hoped
+that the risk of deprecation and breaking changes will be reduced,
+increasing the longevity of the code. Finally, an application would be
+needed in order to allow the human player and model to take turns in
+playing the game. I have opted to use 
+<a href="https://shiny.posit.co/py/" target="_blank">`shiny` for Python</a>
+in order to achieve this, though the same functionality could be achieved
+with many other dashboarding solutions.
+
+:::
+
+### Intended Audience
+
+Python programmers who are curious about building AI-enabled applications.
+Some familiarity with `shiny` may be assumed. For an overview and intro to
+building `shiny` apps with Python, check out my other blogs:
+
+- [The State of Python `shiny`](/blogs/01-state-of-pyshiny.qmd)
+- [Let's Build a Basic Python `shiny` App](/blogs/02-getting-started-pyshiny.qmd)
+
+### What You'll Need
+
+- [ ] Command line access
+- [ ] Python know-how
+  - [ ] Configure a virtual environment
+  - [ ] Dependency management
+- [ ] Basic knowledge of Python Shiny
+- [ ] An OpenAI API key
+
+```{.abc filename=requirements.txt}
+openai==1.30.4
+shiny==1.1.0
+shinyswatch==0.7.0
+
+```
+
+:::{.callout collapse="true"}
+
+### A Note on the Purpose (Click to expand)
+
+This article intends to discuss clearly. It doesn't aim to be clever or
+impressive. Its aim is to extend understanding without overwhelming the
+reader. The code may not always be optimal, favouring a simplistic approach
+wherever possible. The application may not be to your liking. The purpose
+is to help learners build a simple AI-driven application rather than a
+masterpiece. If you have ideas for improvements to the app or blog, please
+feel free to leave a comment at the end of the article.
+
+:::
+
+The final application is presented below, hosted with
+<a href="https://www.shinyapps.io/" target="_blank">shinyapps.io</a>.
+Please note, this is not configured for high traffic. Let me know if the
+app fails to launch for you by leaving a comment at the end of the blog.
+You will need an OpenAI API key in order to prompt the model. The app has a
+link to the sign up page if you would like to give it a try.
+
+If you would prefer to read the source code for the application before
+proceeding with the article, then please click on the GitHub icon at the
+top-right of the application. If you would rather interact with the
+application in a full-sized window, then visit
+<a href="https://richleysh84.shinyapps.io/choose-adventure/" target="_blank">Jungle Quest app on shinyapps.io</a>.
+This app is set up to query the gpt-3.5-turbo model, but as you proceed
+through the tutorial, feel free to experiment with other available models
+(they can behave quite differently).
+
+<iframe class=iframey src="https://richleysh84.shinyapps.io/choose-adventure/" style="overflow:hidden;margin:0;padding:0;width:100%;height:50rem"></iframe>
+
+## Setting up the Development Environment
+
+I'd recommend using <a href=https://code.visualstudio.com/ target="_blank">VSCode</a> with the
+<a href="https://marketplace.visualstudio.com/items?itemName=Posit.shiny" target="_blank">`shiny` extension</a>
+to help run and debug the app. It has a handy utility for launching your
+app within the VSCode interface or expanding it to full screen in your
+default browser. This is priceless when testing your User Interface's (UI)
+appearance on different browsers.
+
+You'll need to create and activate a virtual environment of your choice, I
+have used python 3.12 in the examples without any issues. install the
+dependencies listed in the `requirements.txt` file, and finally ensure that
+VSCode is configured to
+<a href="https://code.visualstudio.com/docs/python/environments" target="_blank">use the virtual environment</a>.
+
+## Iterative Development
+
+::: {.callout-caution}
+
+Take care with your OpenAI APi credentials. I demonstrate hard-coding these
+credentials within python scripts for simplicity. I'd advise storing them
+in a git-ignored secrets file or using the
+<a href=https://pypi.org/project/python-dotenv/ target="_blank">`python-dotenv`</a>
+package to keep them safe. Take care not to accidentally commit these
+credentials and expose them on GitHub. Leakage of OpenAI credentials is the
+fastest-growing type of secret leak, according to
+<a href=https://www.gitguardian.com/state-of-secrets-sprawl-report-2024 target="_blank">Git Guardian's State of Secret Sprawl 2024</a>.
+
+Finally, please note that usage of the openai service is associated with
+your account via your API key. Please conform to the
+<a href="https://openai.com/policies/" target="_blank">service's usage policy.</a>
+
+:::
+
+::: {.callout-tip}
+
+### Code Annotations
+
+Click on the numbered points within the code blocks, to reveal tooltips
+with additional explanations.
+
+:::
+
+::: {.panel-tabset #iterations}
+
+Let's gradually build on the logic until we have a fully functional app.
+
+### Iteration 1
+
+In this early prototype, we will focus on using the openai python client
+to send a basic prompt to the gpt-3.5-turbo model. 
+
+```{.python filename=app.py}
+"""Iteration 1: How to query the OpenAI API."""
+import openai
+
+API_KEY = "<INSERT_YOUR_KEY_HERE>"                                    # <1>
+
+
+def query_openai(prompt: str, api_key: str) -> str:
+    """Query the chat completions endpoint.
+
+    Parameters
+    ----------
+    prompt: str
+        The prompt to query the chat completions endpoint with.
+    api_key: str
+        The API key to use to query the chat completions endpoint.
+
+    Returns
+    -------
+    str
+        The response from the chat completions endpoint.
+    """
+
+    client = openai.OpenAI(api_key=api_key)                           # <2>
+    # need to handle cases where queries go wrong.
+    try:                                                              # <3>
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[                                                # <4>
+                {"role": "user", "content": prompt}                   # <4>
+            ]                                                         # <4>
+        )
+        return response.choices[0].message.content
+    # in cases where the API key is invalid.
+    except openai.AuthenticationError as e:
+        raise ValueError(f"Is your API key valid?:\n {e}")
+
+
+
+model_response = query_openai(
+  prompt="What is the capital of the moon?", api_key=API_KEY
+  )
+
+```
+1. Insert your API key into the API_KEY variable. Note - it's not advisable
+to include your secret credentials in your python scripts like this, but
+for simplicity's sake, I'm showing that here. Take care not to accidentally
+commit these credentials and expose them on GitHub.
+2. Creates a new OpenAI client with the api_key. This client can be reused
+to send queries to the different service endpoints.
+3. This will only pass if the key provided is valid.
+4. Note the format of the messages - a list of dictionaries. The value for
+role can be "user", "system" or "assistant".
+
+The model responds with:
+
+> The moon does not have a capital as it is not a sovereign nation or
+political entity.
+
+Let's summarise the process with a diagram:
+
+![Process diagram for iteration 1](https://i.imgur.com/t15T2J3.png)
+
+So far we have a basic `query_openai()` function that we can feed in a
+prompt and our api key. We then receive a response back from the openai
+model with the expected content.
+
+Although this is an extremely simple process, it's great to start off with
+the fundamentals. Understanding the structure of what's being sent and
+received is useful when we begin embedding this logic into our `shiny` app.
+
+### Iteration 2
+
+In this iteration, we are going to introduce a system message to help guide
+the behaviour of the model - we want the model to act as the guide on an
+adventure. We'll also need it to follow a few rules such as how to indicate
+the game is over.
+
+```{.python filename=app.py}
+"""Iteration 2: Add system & welcome prompts."""
+import openai
+
+API_KEY = "<INSERT_YOUR_KEY_HERE>"
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing  # <1>
+any choices. Never provide the player's input yourself. This is most        # <1>
+important.                                                                  # <1>
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must   # <2>
+include the text "The End...", I will search for this text to end the game. # <2>
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the   # <3>
+lost Crown of Quetzalcoatl.                                                 # <3>
+However, many challenges stand in your way. Are you brave enough, strong    # <3>
+enough and clever enough to overcome the perils of the jungle and secure    # <3>
+the crown?                                                                  # <3>
+                                                                            # <3>
+Before we begin our journey, choose your name, gender and race. Choose a    # <3>
+weapon to bring with you. Choose wisely, as the way ahead is filled with    # <3>
+many dangers.                                                               # <3>
+"""                                                                         # <3>
+
+
+def query_openai(
+        prompt: str,
+        api_key: str,
+        sys_prompt:str = _SYSTEM_MSG,
+        start_prompt:str = WELCOME_MSG,
+        ) -> str:
+    """Query the chat completions endpoint.
+
+    Parameters
+    ----------
+    prompt: str
+        The prompt to query the chat completions endpoint with.
+    api_key: str
+        The API key to use to query the chat completions endpoint.
+    sys_prompt: str
+        The system prompt to help guide the model behaviour. By default,
+        the system prompt is set to _SYSTEM_MSG.
+    start_prompt: str
+        The start prompt which will be presented to the user as the app
+        begins. By default, the start prompt is set to WELCOME_MSG.
+
+    Returns
+    -------
+    str
+        The response from the chat completions endpoint.
+    """
+
+    client = openai.OpenAI(api_key=api_key)
+    # need to handle cases where queries go wrong.
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[                                                      # <4>
+                {"role": "system", "content": sys_prompt},                  # <4>
+                {"role": "assistant", "content": start_prompt},             # <4>
+                {"role": "user", "content": prompt},                        # <4>
+            ]                                                               # <4>
+        )
+        return response.choices[0].message.content
+    # in cases where the API key is invalid.
+    except openai.AuthenticationError as e:
+        raise ValueError(f"Is your API key valid?:\n {e}")
+
+
+model_response = query_openai(
+    prompt="What is the capital of the moon?",
+    api_key=API_KEY
+    )
+
+```
+1. Certain models can get a bit overzealous and start providing imagined
+user input, ultimately playing the game through to completion on their own.
+As games go, that's not particularly fun, so let's try to safeguard against
+that behaviour with these explicit instructions.
+2. The gpt-3.5-turbo model seems to be pretty reliable at ending the game
+with the required pattern "The end...". We'll later search for this pattern
+to exit the app and return a message indicating game over. Interestingly, 
+I found gpt-4 models to be fairly unreliable in following this instruction.
+All of the models can be configured to stream their responses too, in which
+case they rarely gave the specified game over pattern. I'd be interested in
+others' opinions as to why this may be the case. Please feel free to leave
+a comment at the end of the article if you have an opinion.
+3. This welcome message will be used to introduce the game context for our
+users when the app launches. We will append this into the message stream
+and simulate the LLM greeting our user. We will also include this message
+when querying the model, where it will serve as what's known as a one-shot
+prompt to help guide the model's behaviour. A one-shot prompt is an example
+of how you'd like the model to behave.
+4. We update the messages stream with our hard-coded prompts. This helps to
+guide both the model and the user, setting context and modelling the
+desired behaviour.
+
+Thanks to the guidance in the hard-coded prompts, our model now behaves a
+bit differently:
+
+> I'm afraid the Moon doesn't have a capital city like countries on Earth
+do! Let's focus on our adventure in the Amazon Rainforest. To begin, please
+choose your name, gender, and race. Additionally, select a weapon to arm
+yourself with on this mystical journey. The fate of finding the lost Crown
+of Quetzalcoatl awaits your choices!
+
+Notice that the model still answers the question, but guides the user back
+to the purpose of the app. In a later iteration, we will see how to
+introduce moderations as a safeguard against the user passing inappropriate
+content.
+
+Finally, updating our process diagram to include the additional prompts, I
+have emphasised the changes implemented within this iteration. As we
+proceed, the diagram's complexity will increase and therefore I'll try to
+emphasise the changes implemented over the previous iteration only:
+
+![Process diagram for iteration 2](https://i.imgur.com/6vuOSp5.png)
+
+### Iteration 3
+
+This time, we'll put together the basic UI for the app. The UI needs a text
+field to pass the user's API key and the chat component. Let's update the
+app script to include the `shiny` UI.
+
+```{.python filename="app.py"}
+"""Iteration 3: A basic user interface with no server logic."""
+import openai
+from shiny import App, ui
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+
+def query_openai(
+        prompt: str,
+        api_key: str,
+        sys_prompt:str = _SYSTEM_MSG,
+        start_prompt:str = WELCOME_MSG,
+        ) -> str:
+    """Query the chat completions endpoint.
+
+    Parameters
+    ----------
+    prompt: str
+        The prompt to query the chat completions endpoint with.
+    api_key: str
+        The API key to use to query the chat completions endpoint.
+    sys_prompt: str
+        The system prompt to help guide the model behaviour. By default,
+        the system prompt is set to _SYSTEM_MSG.
+    start_prompt: str
+        The start prompt which will be presented to the user as the app
+        begins. By default, the start prompt is set to WELCOME_MSG.
+
+    Returns
+    -------
+    str
+        The response from the chat completions endpoint.
+    """
+
+    client = openai.OpenAI(api_key=api_key)
+    # need to handle cases where queries go wrong.
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": sys_prompt},
+                {"role": "assistant", "content": start_prompt},
+                {"role": "user", "content": prompt},
+            ]
+        )
+        return response.choices[0].message.content
+    # in cases where the API key is invalid.
+    except openai.AuthenticationError as e:
+        raise ValueError(f"Is your API key valid?:\n {e}")
+
+
+# Shiny User Interface ----------------------------------------------------
+
+app_ui = ui.page_fillable(                                                  # <1>
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(                                                           # <2>
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        ui.input_text(id="key_input", label="Enter your openai api key"),   # <3>
+    ), id="acc", multiple=False),
+    ui.chat_ui(id="chat"),                                                  
+    fillable_mobile=True,
+)
+
+app = App(app_ui, server=None)                                              # <4>
+```
+1. `ui.page_fillable()` Works well with a chat component, increasing the
+height of your app to accommodate a growing chat log.
+2. The `ui.accordion()` component will present a collapsible panel. This
+will be useful for the key input panel - we can minimise the key input once
+finished with it and focus on the chat.
+3. In `shiny` UI elements, the first argument is usually the `id`. If you
+know CSS and HTML, then it's the same `id` you'd target for styling an
+element. It's really important in `shiny` as the server logic we'll write
+later will communicate data to the UI via these `id` values. Make sure the
+`id` values are unique and do not include hyphens - use underscores
+instead.
+4. In this final step, we need to combine our UI with server logic to make
+things work. As we haven't written any server logic yet, we can just pass
+`None`. This means our UI won't do anything in its current state.
+
+Feel free to play around with the code and re-run the app using the play
+icon in the top-right corner of `app.py`. This interface uses the
+<a href="https://shinylive.io/py/examples/" target="_blank">shinylive service</a>
+which is useful for sharing simple `shiny` apps without any need for python
+installations.
+
+<iframe src=https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMAgujxMArhwA6EOWlQB9aUwC8UjligBzOEpocANkagAjI3AAUcpnc3aIcI0rIcylm2ADCbYsRY4JgBNYkk6JgB5AHcIUQATADdKMnC4RCYAKUkIHUsmAEVJOBYyAEIZMABKPFt7aQwoQhI6eI5SGzj6rSaWttIlVCgnIy8AZQpUJgBGDNDwqNRKEQBJUQAFNYBpOGxK2q77bowuVEkyVzgADzIrDni1SoBrXaVT8-2mUzNnR7AAUXIcAi2DCEWIS2gHCYaGhLz21QORxqvAelV6nxgkiMblQljUADEoEZAjU6nYGoQ2FALtI7miiNSyJUyYcmIYTOZLEoYMQzMY4GoACp0YoHKpyBTodSidBWRQqDgSQJ0ZJ0NQAOVIcAlEDAAF8ALpAA class=iframey style="overflow:hidden;margin:0;padding:0;width:100%;height:30rem"></iframe>
+
+The process diagram for our app so far looks like this:
+
+![Process diagram for iteration 3](https://i.imgur.com/ToBp4iQ.png)
+
+Our logic for talking to the OpenAI model has not yet been coupled with our
+UI. We'll fold that logic into our `shiny` server in the next iteration.
+
+### Iteration 4
+
+In this part, we'll take the logic from the `query_openai()` function
+defined in iteration 1 and use it to build our `shiny` server. The `shiny`
+server is typically referenced as the "backend" to our app.
+
+```{.python filename="app.py"}
+"""Iteration 4: Server logic allows us to create a chat log."""
+import openai
+from shiny import App, ui
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]                                                   # <1>
+
+# Shiny User Interface ----------------------------------------------------
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        ui.input_text(id="key_input", label="Enter your openai api key"),
+    ), id="acc", multiple=False),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(                                                         # <2>
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None      # <2>  
+        )                                                                   # <2>
+    
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():                                                    # <3>
+        """Respond to the user's message."""
+        # Get the user's input
+        user = chat.user_input()
+        #  update the stream list
+        stream.append({"role": "user", "content": user})                    
+        # Append a response to the chat
+        client = openai.AsyncOpenAI(api_key=input.key_input())              # <4>
+        response = await client.chat.completions.create(                    # <5>
+            model="gpt-3.5-turbo",
+            messages=stream,
+            temperature=0.7, # increase to make the model more creative
+            )
+        model_response = response.choices[0].message.content
+        await chat.append_message(model_response)                           # <5>
+        #  if the model indicates game over, end the game with a message.
+        if "the end..." in model_response.lower():                          # <6>
+            await chat.append_message(                                      # <6>
+                {                                                           # <6>
+                    "role": "assistant",                                    # <6>
+                    "content": "Game Over! Refresh the page to play again." # <6>
+                    })                                                      # <6>
+            exit()                                                          # <6>
+        else:
+            stream.append({"role": "assistant", "content": model_response}) 
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. To keep a running log of what's been said, we assign chat messages to
+a `stream` list. When the user and model respond, we'll dump that content
+as a dictionary at the end of this list.
+2. Here we create the backend to our `shiny` chat interface. It's vital
+that it has the same `id` value as the `ui.chat_ui()` element defined in
+our UI in iteration 3. This connection will allow the backend and frontend
+to communicate when we run the app.
+3. We use async here because it improves responsiveness, especially when
+dealing with potentially slow network requests to the OpenAI API.
+4. We've now switched over to the OpenAI Async client. This is better for
+working with event driven apps like this one. We no longer hard-code an API
+key. Instead, we'll take the value from the `ui.input_text()` field. Notice
+that we reference the `id` value that we set when we defined the UI like a
+method call: `input.key_input()`. This is how `shiny` apps wire the 
+frontend and backend together.
+5. We need to use `await` in parts of our server logic. This is because the
+model response typically takes some time to arrive and parts of the server
+would error until they receive it. Typically, anything that would raise an
+exception rather than returning `None` you'll need to `await` in a `shiny`
+app.
+6. This part of our server is where we end the game. Notice that this is
+dependent on our model following rule 6 in `_SYSTEM_MSG`. Not all models
+are great at following that instruction. At the time of writing this blog,
+I've tested `gpt-3.5-turbo`, `gpt-4o` and `chatgpt-4o-latest`. In my
+testing I found `gpt-3.5-turbo` to be the most reliable at following this
+rule. But when I tested streaming the model responses, no models would end
+the game as requested. This is definitely the most flaky element of this
+app and is part of the fun of working with these models.
+
+Updating the server logic for our process diagram, note that I have added a
+key that illustrates wherever we instantiate an openai client in the app.
+As we continue to build, handling the client becomes a bit involved so
+let's start paying attention to wherever we're using it:
+
+![Process diagram for iteration 4](https://i.imgur.com/46mqCrY.png)
+
+You can see that the `respond()` function has become the busiest unit in
+the app. It takes the api key value from our UI, combines the user's
+messages sent from the chat UI, adds these to the chat stream and
+communicates with the OpenAI model. Now these components are all wired up
+we get a running application. If you've made it this far - well done!
+
+You can see me interacting with the resultant app in the video below. Note
+that I cannot use shinylive to host a working version of this iteration as
+unfortunately the `openai` package is not available on that service. 
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application.
+Note that I have since revoked this key and it will no longer work. You
+should not share your secret keys with anyone.
+
+:::
+
+<iframe title="Iteration 4 recording" src="https://player.vimeo.com/video/1010110793?h=133c2b081d" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
+
+Notice that I attempt to use a nonsense key value and we get a
+nasty-looking error. Luckily, it's not a fatal one - the app doesn't crash.
+But we should think about handling cases where the key is bad and give a
+more accessible notification to the user instead. 
+
+### Iteration 5
+
+In this version, we build on our working app to improve the user
+experience. We'll add a 'submit' button, which the user can use when
+they're ready to use their key. We also provide notifications to the
+user when they submit their key, but we won't be checking whether the key
+is valid until the next iteration.
+
+```{.python filename="app.py"}
+"""Iteration 5: Submit button & notifications for the user."""
+import openai
+from shiny import App, reactive, ui
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):        # <1>
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),         # <2>
+        ui.input_action_button(                                             # <2>
+            id=f"{id}_btn",                                                 # <2>
+            label=button_label,
+            style="margin-top:28px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;" # <3>
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(                                             # <4>
+            id="key_input",                                                 # <4>
+            label="Enter your OpenAI API key",                              # <4>
+            button_label="Submit",                                          # <4>
+            placeholder="Enter key here"                                    # <4>
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+
+
+    @reactive.Effect                                                        # <5>
+    @reactive.event(input.key_input_btn)                                    # <5>
+    def handle_api_key_submit():                                            # <5>
+        """Update the UI with a notification when user submits key."""      # <5>
+        api_key = input.key_input_text()                                    # <5>
+        if api_key:                                                         # <5>
+            ui.notification_show(f"API key submitted: {api_key[:5]}...")    # <5>
+        else:                                                               # <5>
+            ui.notification_show("Please enter an API key", type="warning") # <5>
+
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message."""
+        # Get the user's input
+        user = chat.user_input()
+        #  update the stream list
+        stream.append({"role": "user", "content": user})
+        # Append a response to the chat
+        client = openai.AsyncOpenAI(api_key=input.key_input_text())
+        response = await client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=stream,
+            temperature=0.7, # increase to make the model more creative
+            )
+        model_response = response.choices[0].message.content
+        await chat.append_message(model_response)
+        #  if the model indicates game over, end the game with a message.
+        if "the end..." in model_response.lower():
+            await chat.append_message(
+                {
+                    "role": "assistant",
+                    "content": "Game Over! Refresh the page to play again."
+                    })
+            exit()
+        else:
+            stream.append({"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. Here we define a new function that's used to conveniently return a text
+field and an action button together. This is what we'll use for the key
+input going forward.
+2. Notice that the `id` value that we'll pass into
+`input_text_with_button()` will return separate unique `id` values for the
+text field and action button.
+3. Feel free to experiment with styling any elements with CSS. If you'd
+rather not have inline CSS, you can move the styling into a dedicated CSS
+file and apply it with classes or IDs to the elements in your UI.
+4. We replace the text field of previous iterations with our new
+`input_text_with_button()` text field & action button combo.
+5. In the server, we define a new function that will run whenever the
+action button with `id=input.key_input_btn` is clicked by the user. If
+there's a value that's been submitted we're going to place a confirmation
+notification on the UI. If not, we'll raise a warning to the user to remind
+them to submit their key.
+
+I've added a marker in the process diagram to remind us that
+`handle_api_key_submit()` will run as a reactive event when the key is
+submitted. This function updates the UI with feedback notifications.
+
+![Process diagram for iteration 5](https://i.imgur.com/lU743ra.png)
+
+:::{.callout-tip}
+
+Using `ui_notification_show()` is a really useful method for debugging
+reactive values when your app breaks. Use it to check on intermediate
+values that the frontend receives from the backend.
+
+:::
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application
+working. Note that I have since revoked this key and it will no longer
+work. You should not share your secret keys with anyone.
+
+:::
+
+In the recording below, you can see the new action button and the UI
+notifications being returned by the server. However, note that I still get
+that nasty red error when I pass an invalid key. In the next iteration,
+we'll determine whether the user has used a valid key.
+
+<iframe title="Iteration 5 recording" src="https://player.vimeo.com/video/1010111488?h=f74e808099" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
+
+### Iteration 6
+
+In this version of the app we will introduce more backend logic that will
+check whether the key the user has submitted is a valid one. 
+
+```{.python filename="app.py"}
+"""Iteration 6: Check the key is valid."""
+import openai
+from shiny import App, reactive, ui
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),
+        ui.input_action_button(
+            id=f"{id}_btn",
+            label=button_label,
+            style="margin-top:28px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;"
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(
+            id="key_input",
+            label="Enter your OpenAI API key",
+            button_label="Submit",
+            placeholder="Enter key here"
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+
+    @reactive.Effect
+    @reactive.event(input.key_input_btn)
+    async def handle_api_key_submit():
+        """Update the UI with a notification when user submits key.
+        
+        Checks the validity of the API key by querying the models list
+        endpoint."""
+        api_key = input.key_input_text()
+        client = openai.AsyncOpenAI(api_key=api_key)                        # <1>
+        try:
+            resp = await client.models.list()                               # <2>
+            if resp:
+                ui.notification_show(
+                    f"API key validated: {api_key[:5]}...")
+        except openai.AuthenticationError as e:                             # <3>
+            ui.notification_show(
+                "Bad key provided. Please try again.", type="warning")
+
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message."""
+        # Get the user's input
+        user = chat.user_input()
+        #  update the stream list
+        stream.append({"role": "user", "content": user})
+        # Append a response to the chat
+        client = openai.AsyncOpenAI(api_key=input.key_input_text())
+        response = await client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=stream,
+            temperature=0.7, # increase to make the model more creative
+            )
+        model_response = response.choices[0].message.content
+        await chat.append_message(model_response)
+        #  if the model indicates game over, end the game with a message.
+        if "the end..." in model_response.lower():
+            await chat.append_message(
+                {
+                    "role": "assistant",
+                    "content": "Game Over! Refresh the page to play again."
+                    })
+            exit()
+        else:
+            stream.append({"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. Notice that we are now creating another openai client. This is so that
+we can test the key to see whether it successfully queries the openai
+service, before using it to play the game. Initiating multiple clients is
+not needed and is inefficient design. In a later iteration we'll come back
+to this.
+2. This time, we'll query the `models.list()` endpoint to get a list of
+models available. There is currently no OpenAI endpoint for explicitly
+checking whether a service is valid. OpenAI API support team responded to
+my support ticket to suggest this as the best method for ensuring a key is
+valid.
+3. In cases where a bad key is provided, we can avoid the
+`openai.AuthenticationError` and print a warning to the UI instead.
+
+In our increasingly complex process diagram, I've emphasised that
+`handle_api_key_submit()` now instantiates another client object and uses
+it to query the `models.list` endpoint of the OpenAI service.
+
+![Process diagram for iteration 6](https://i.imgur.com/Tb7jjeK.png)
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application
+working. Note that I have since revoked this key and it will no longer
+work. You should not share your secret keys with anyone.
+
+:::
+
+In the recording below I demonstrate how this version of the app will
+return a warning to the user if the submitted key was not valid.
+
+<iframe title="Iteration 6 recording" src="https://player.vimeo.com/video/1010111977?h=b625a6f9ef" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
+
+### Iteration 7
+
+Now we introduce a moderation feature that will check that the prompts
+being passed from the user to the OpenAI service comply with the service's
+usage policies. Forewarned - this is far from perfect!
+
+In general, it's pretty good but if you're intentionally trying to test it
+like I did when implementing this feature, you can find some funny quirks.
+British expletives tend to sail through unchallenged and at times my test
+prompts were raised as violations for stating things like "Let's fight!"
+(category: harassment) when that was one of the options provided to me by
+the model! It's likely that passing greater context to the moderations
+endpoint (such as more of the message stream) may be able to overcome this,
+though that has not been implemented for this tutorial.
+
+```{.python filename="app.py"}
+"""Iteration 7: Implement prompt moderation."""
+import openai
+from shiny import App, reactive, ui
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),
+        ui.input_action_button(
+            id=f"{id}_btn",
+            label=button_label,
+            style="margin-top:28px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;"
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(
+            id="key_input",
+            label="Enter your OpenAI API key",
+            button_label="Submit",
+            placeholder="Enter key here"
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+
+
+    @reactive.Effect
+    @reactive.event(input.key_input_btn)
+    async def handle_api_key_submit():
+        """Update the UI with a notification when user submits key.
+        
+        Checks the validity of the API key by querying the models list
+        endpoint."""
+        api_key = input.key_input_text()
+        client = openai.AsyncOpenAI(api_key=api_key)
+        try:
+            resp = await client.models.list()
+            if resp:
+                ui.notification_show(
+                    f"API key validated: {api_key[:5]}...")
+        except openai.AuthenticationError as e:
+            ui.notification_show(
+                "Bad key provided. Please try again.", type="warning")
+    
+
+    async def check_moderation(prompt:str) -> str:                          # <1>
+        """Check if prompt is flagged by OpenAI's moderation endpoint.
+
+        Parameters
+        ----------
+        prompt : str
+            The user's prompt to check.
+
+        Returns
+        -------
+        str
+            The category violations if flagged, otherwise "good prompt".
+        """
+        client = openai.AsyncOpenAI(api_key=input.key_input_text())         # <2>
+        response = await client.moderations.create(
+            input=prompt)
+        content = response.results[0].to_dict()
+        if content["flagged"]:                                              # <3>
+            infringements = []
+            for key, val in content["categories"].items():
+                if val:
+                    infringements.append(key)
+            return " & ".join(infringements)                                # <4>
+        else:
+            return "good prompt"                                            # <5>
+
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message."""
+        # Get the user's input
+        usr_prompt = chat.user_input()
+
+        # Check moderations endpoint incase openai policies are violated
+        flag_check = await check_moderation(prompt=usr_prompt)
+        if flag_check != "good prompt":                                     # <6>
+            await chat.append_message({                                     # <6>
+                "role": "assistant",                                        # <6>
+                "content": f"Your message may violate OpenAI's usage policy, categories: {flag_check}. Please rephrase your input and try again." # <6>
+            })                                                              # <6>
+        else:
+            #  update the stream list
+            stream.append({"role": "user", "content": usr_prompt})
+            # Append a response to the chat
+            client = openai.AsyncOpenAI(api_key=input.key_input_text())
+            response = await client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=stream,
+                temperature=0.7, # increase to make the model more creative
+                )
+            model_response = response.choices[0].message.content
+            await chat.append_message(model_response)
+            #  if the model indicates game over, end game with a message.
+            if "the end..." in model_response.lower():
+                await chat.append_message(
+                    {
+                        "role": "assistant",
+                        "content": "Game Over! Refresh to play again."
+                        })
+                exit()
+            else:
+                stream.append(
+                    {"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. We define a new function that will query the OpenAI moderations
+endpoint.
+2. Notice that we create a third openai client in order to handle the
+communication with the service. In the next iteration we will refactor
+this.
+3. If the prompt has violated any category, then the value of the `flagged`
+key will be `True`.
+4. In cases where multiple categories are violated, we will include each
+breached category in a message to the user.
+5. The return value in the case of a prompt that passes the moderation
+check.
+6. We implement some control flow to query the `chat.completions` endpoint
+only if the moderations check passes.
+
+The updated process diagram clarifies the reactive flow of the app. Now
+prompts from the user pass through `check_moderations()` first. The outcome
+of check moderations is then passed along within the `respond()` function,
+determining whether the prompt would be passed along to the
+`chat.completions` endpoint.
+
+![Process diagram for iteration 7](https://i.imgur.com/h51HPSw.png)
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application
+working. Note that I have since revoked this key and it will no longer
+work. You should not share your secret keys with anyone.
+
+:::
+
+When using this iteration of the app, you can see that certain prompts may
+now be flagged as inappropriate. Note that this also reduces the
+performance of our app, as we need to send and process 2 queries for each
+prompt that the user enters.
+
+<iframe title="Iteration 7 recording" src="https://player.vimeo.com/video/1010112083?h=dc49a29e07" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
+
+### Iteration 8
+
+We have nearly arrived at our final design. In this stage, we refactor the
+application to ensure we use a single openai client to query the separate
+endpoints. 
+
+```{.python filename="app.py"}
+"""Iteration 8: Refactor OpenAI client instantiation."""
+import openai
+from shiny import App, reactive, ui
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl.
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),
+        ui.input_action_button(
+            id=f"{id}_btn",
+            label=button_label,
+            style="margin-top:28px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;"
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(
+            id="key_input",
+            label="Enter your OpenAI API key",
+            button_label="Submit",
+            placeholder="Enter key here"
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+    #  define a reactive value that will store the openai client
+    openai_client = reactive.Value(None)                                    # <1>
+
+
+    @reactive.Effect
+    @reactive.event(input.key_input_btn)
+    async def handle_api_key_submit():
+        """Update the UI with a notification when user submits key.
+        
+        Checks the validity of the API key by querying the models list
+        endpoint."""
+        api_key = input.key_input_text()
+        client = openai.AsyncOpenAI(api_key=api_key)
+        try:
+            resp = await client.models.list()
+            if resp:
+                openai_client.set(client)                                   # <2>
+                ui.notification_show(
+                    f"API key validated: {api_key[:5]}...")
+        except openai.AuthenticationError as e:
+            ui.notification_show(
+                "Bad key provided. Please try again.", type="warning")
+    
+
+    async def check_moderation(
+            prompt:str, reactive_client:reactive.Value
+            ) -> str:
+        """Check if prompt is flagged by OpenAI's moderation endpoint.
+
+        Parameters
+        ----------
+        prompt : str
+            The user's prompt to check.
+        reactive_client : reactive.Value
+            A reactive value that stores the openai client.
+
+        Returns
+        -------
+        str
+            The category violations if flagged, otherwise "good prompt".
+        """
+        client = reactive_client.get()
+        response = await client.moderations.create(
+            input=prompt)
+        content = response.results[0].to_dict()
+        if content["flagged"]:
+            infringements = []
+            for key, val in content["categories"].items():
+                if val:
+                    infringements.append(key)
+            return " & ".join(infringements)
+        else:
+            return "good prompt"
+    
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message."""
+        # Get the user's input
+        usr_prompt = chat.user_input()
+
+        # Check moderations endpoint incase openai policies are violated
+        flag_check = await check_moderation(
+            prompt=usr_prompt, reactive_client=openai_client)               # <3>
+        if flag_check != "good prompt":
+            await chat.append_message({
+                "role": "assistant",
+                "content": f"Your message may violate OpenAI's usage policy, categories: {flag_check}. Please rephrase your input and try again."
+            })
+        else:
+            #  update the stream list
+            stream.append({"role": "user", "content": usr_prompt})
+            # Append a response to the chat
+            response = await openai_client.get().chat.completions.create(   # <4>
+                model="gpt-3.5-turbo",
+                messages=stream,
+                temperature=0.7, # increase to make the model more creative
+                )
+            model_response = response.choices[0].message.content
+            await chat.append_message(model_response)
+            #  if the model indicates game over, end game with a message.
+            if "the end..." in model_response.lower():
+                await chat.append_message(
+                    {
+                        "role": "assistant",
+                        "content": "Game Over! Refresh to play again."
+                        })
+                exit()
+            else:
+                stream.append(
+                    {"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. `shiny`
+<a href=https://shiny.posit.co/py/api/core/reactive.value.html target="_blank">reactive values</a>
+are often good choices for objects that you intend to update at multiple
+points within a `shiny` server. Here we are defining an empty reactive value
+that we can subsequently use to store and access an openai client.
+2. It's a subtle change, but now if the client returns a list of models,
+validating the api key that the user passed, then we set that client as the
+return value of `openai_client`.
+3. The `check_moderations()` function expects to receive the reactive value
+object and will use it to `.get()` the stored client.
+4. This is the last occasion that we access the reactive client value. We
+initiated the client once and used it in three places to query 3 different
+endpoints.
+
+This refactoring reduces the complexity of the app, ensuring that once the
+api key has been validated, that same openai client will be passed to the
+`moderations` and `chat.completions` endpoints.
+
+![Process diagram for iteration 8](https://i.imgur.com/cfdOQeS.png")
+
+### Iteration 9
+
+In this final stage, we introduce some aesthetic changes - adding a theme
+and an image to chat UI, adding to the feel of the app. It's always nice to
+leave some of the styling towards the end of a build, a bit like adding the
+cherry to a cake.
+
+```{.python filename="app.py"}
+"""Iteration 9: Styling."""
+import openai
+from shiny import App, reactive, ui
+from shinyswatch import theme                                               # <1>
+
+_SYSTEM_MSG = """
+You are the guide of a 'choose your own adventure'- style game: a mystical
+journey through the Amazon Rainforest. Your job is to create compelling
+outcomes that correspond with the player's choices. You must navigate the
+player through challenges, providing choices, and consequences, dynamically
+adapting the tale based on the player's inputs. Your goal is to create a
+branching narrative experience where each of the player's choices leads to
+a new path, ultimately determining their fate. The player's goal is to find
+the lost crown of Quetzalcoatl.
+
+Here are some rules to follow:
+1. Always wait for the player to respond with their input before providing
+any choices. Never provide the player's input yourself. This is most
+important.
+2. Ask the player to provide a name, gender and race.
+3. Ask the player to choose from a selection of weapons that will be used
+later in the game.
+4. Have a few paths that lead to success. 
+5. Have some paths that lead to death.
+6. Whether or not the game results in success or death, the response must
+include the text "The End...", I will search for this text to end the game.
+"""
+
+WELCOME_MSG = """
+Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
+lost Crown of Quetzalcoatl:\n
+<div style="display: grid; place-items: center;"><img src="https://i.imgur.com/Fxa7p1D.jpeg" width=60%/></div>\n # <2>
+However, many challenges stand in your way. Are you brave enough, strong
+enough and clever enough to overcome the perils of the jungle and secure
+the crown?
+
+Before we begin our journey, choose your name, gender and race. Choose a
+weapon to bring with you. Choose wisely, as the way ahead is filled with
+many dangers.
+"""
+
+# compose a message stream
+_SYS = {"role": "system", "content": _SYSTEM_MSG}
+_WELCOME = {"role": "assistant", "content": WELCOME_MSG}
+stream = [_SYS, _WELCOME]
+
+# Shiny User Interface ----------------------------------------------------
+
+
+def input_text_with_button(id, label, button_label, placeholder=""):
+    """
+    An interface component combining an input text widget with an action
+    button. IDs for the text field and button can be accessed as <id>_text
+    and <id>_btn respectively.
+    """
+    return ui.div(
+        ui.input_text(
+            id=f"{id}_text", label=label, placeholder=placeholder),
+        ui.input_action_button(
+            id=f"{id}_btn",
+            label=button_label,
+            style="margin-top:32px;margin-bottom:16px;color:#04bb8c;border-color:#04bb8c;"
+            ),
+        class_="d-flex gap-2"
+    )
+
+
+app_ui = ui.page_fillable(
+    ui.panel_title("Choose Your Own Adventure: Jungle Quest!"),
+    ui.accordion(
+    ui.accordion_panel("Step 1: Your OpenAI API Key",
+        input_text_with_button(
+            id="key_input",
+            label="Enter your OpenAI API key",
+            button_label="Submit",
+            placeholder="Enter key here"
+            )), id="acc", multiple=False),
+ui.h6("Step 2: Choose your adventure"),
+    ui.chat_ui(id="chat"),
+    fillable_mobile=True,
+    theme=theme.darkly,                                                     # <3>
+)
+
+# Shiny server logic ------------------------------------------------------
+
+
+def server(input, output, session):
+    chat = ui.Chat(
+        id="chat", messages=[ui.markdown(WELCOME_MSG)], tokenizer=None
+        )
+    #  define a reactive value that will store the openai client
+    openai_client = reactive.Value(None)
+
+
+    @reactive.Effect
+    @reactive.event(input.key_input_btn)
+    async def handle_api_key_submit():
+        """Update the UI with a notification when user submits key.
+        
+        Checks the validity of the API key by querying the models list
+        endpoint."""
+        api_key = input.key_input_text()
+        client = openai.AsyncOpenAI(api_key=api_key)
+        try:
+            resp = await client.models.list()
+            if resp:
+                openai_client.set(client)
+                ui.notification_show(
+                    f"API key validated: {api_key[:5]}...")
+        except openai.AuthenticationError as e:
+            ui.notification_show(
+                "Bad key provided. Please try again.", type="warning")
+    
+
+    async def check_moderation(
+            prompt:str, reactive_client:reactive.Value
+            ) -> str:
+        """Check if prompt is flagged by OpenAI's moderation endpoint.
+
+        Parameters
+        ----------
+        prompt : str
+            The user's prompt to check.
+        reactive_client : reactive.Value
+            A reactive value that stores the openai client.
+
+        Returns
+        -------
+        str
+            The category violations if flagged, otherwise "good prompt".
+        """
+        client = reactive_client.get()
+        response = await client.moderations.create(
+            input=prompt)
+        content = response.results[0].to_dict()
+        if content["flagged"]:
+            infringements = []
+            for key, val in content["categories"].items():
+                if val:
+                    infringements.append(key)
+            return " & ".join(infringements)
+        else:
+            return "good prompt"
+    
+
+    # Define a callback to run when the user submits a message
+    @chat.on_user_submit
+    async def respond():
+        """Respond to the user's message.
+        
+        First check that OpenAI's usage policies are not moderated. If this
+        passes, then respond with a message from the model. If the model
+        has ended the game, then exit the game."""
+        # Get the user's input
+        usr_prompt = chat.user_input()
+
+        # Check moderations endpoint incase openai policies are violated
+        flag_check = await check_moderation(
+            prompt=usr_prompt, reactive_client=openai_client)
+        if flag_check != "good prompt":
+            await chat.append_message({
+                "role": "assistant",
+                "content": f"Your message may violate OpenAI's usage policy, categories: {flag_check}. Please rephrase your input and try again."
+            })
+        else:
+            #  update the stream list
+            stream.append({"role": "user", "content": usr_prompt})
+            # Append a response to the chat
+            response = await openai_client.get().chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=stream,
+                temperature=0.7, # increase to make the model more creative
+                )
+            model_response = response.choices[0].message.content
+            await chat.append_message(model_response)
+            #  if the model indicates game over, end game with a message.
+            if "the end..." in model_response.lower():
+                await chat.append_message(
+                    {
+                        "role": "assistant",
+                        "content": "Game Over! Refresh to play again."
+                        })
+                exit()
+            else:
+                stream.append(
+                    {"role": "assistant", "content": model_response})
+
+
+app = App(ui=app_ui, server=server)
+
+```
+1. In order to set a theme we import
+<a href=https://github.com/posit-dev/py-shinyswatch target="_blank">`shinyswatch`</a>.
+2. Markdown or HTML that you pass to the chat interface will get rendered.
+This includes images, links and even emojis. In fact, one of the gpt-4o
+models I tested decided to respond with emojis.
+3. Popping this one-liner in your UI will apply the theme styling to your
+application. Feel free to select any of the available options, see the
+interactive theme selector app below for all available themes.
+
+`shinyswatch` is a great utility that allows for efficient styling of
+python `shiny` apps. Check out this shinylive app from the package
+maintainers that allows you to easily toggle between the different themes
+available.
+
+<iframe src=https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXAAjFADugdOgnmAGlQGMB7CAFzkqVQDMAnUmZAZwAsBLCXZTmdKQYVkAQUxEAkhHQBXCqyIB5eXIVEAynFatO5Ig2oATOAyKzOAHQjX+g4Wy49WAdygVi7a9YzoA+hbIALzIFjhQAOZwfnQANhZGABTWyKmO3Liu7p5YFOxw8H7onMQA1qYBnIkAlETIAMTIADwAtGJGRsh5cF358MjFZabIAKqSXaTIuKSyDMi+KWlh3Gp+rLGcJgzJkLIwloTIBwByewBGpogHRDDcQQCMAAw3UAAeD4-PyABuUPFwQQAzI9aotUmEZhRVlRXhQ-N9TGd3PwdutNhVfrEDqCIGlegUARwMlkPOxcn04FgAF5wdDsXBmVKNVrIADC7FIpFYPSguO4nAonD++P6iVI6EF5D+1WsMps8pMdDYpgR2xW8hQ0jUimQkLUKBUUPkOu5Oj0EBQWjN5GqV1xaUaAFkoOU2LMetNZsqGKrkHRZBBiJLccQ-rFWPiRT1BuU5tyfcN-YHg2D0s43KTyQSiiVY2sVaYat57akAAJ6+Sp0uGCBbXJwWGpxVsDZbeF-Gp2vF4wwUWa4ugHEDqihYCB7GoAXwOxZ8mGCYkwiV8lSI8dVcsOYAouHQCBQ24bFDAk6I4Gg8FoYEMAEcLIZ4JRWLlYVuyJRqMeD0SeNYf5kM08awtx3PcrxhY9JwAXSAA class=iframey style="overflow:hidden;margin:0;padding:0;width:100%;height:30rem"></iframe>
+
+:::{.callout-important}
+
+I use a real OpenAI API key in these clips to demonstrate the application
+working. Note that I have since revoked this key and it will no longer
+work. You should not share your secret keys with anyone.
+
+:::
+
+The final app is demonstrated in full below.
+
+<iframe title="Iteration 9 recording" src="https://player.vimeo.com/video/1010112202?h=273164945d" class=iframey allowfullscreen style="overflow:hidden;margin:0;padding:0;width:100%;height:24rem;"></iframe>
+
+:::
+
+[Click to return to the start of the iteration tabsets](#iterations)
+
+## Conclusion
+
+Finally, we have arrived at the end of the application development! We
+started out with a basic little script that demonstrated how to use the
+`openai` python client and have arrived at a fully functional game with
+some additional safeguards against misuse. If you've stuck with it this far
+- well done, I'd say you've earned yourself a pat on the back! 
+
+<div hidden>{{< fa hands-clapping >}}</div><i class="fa-solid fa-hands-clapping fa-beat fa-2xl" style="color:#ffa53d;text-align:center;display:inline-block;width:100%;"></i>
+
+If you'd like to continue improving the app, then here are some
+suggestions:
+
+- Pass more context to the moderations endpoint to minimise false
+positives.
+- Add a temperature control, so that the user can adjust how creative the
+models can be.
+- Add a model selection widget so that the user can try out responses with
+different openai models.
+- Experiment with
+<a href=https://github.com/r-leyshon/adventure-app/tree/stream-example target="_blanks">streaming the responses</a>
+for a more responsive design.
+- Restructure your app to make use of
+<a href=https://shiny.posit.co/py/docs/modules.html target="_blank">`shiny` modules</a>,
+increasing the application's maintainability.
+
+I hope you've enjoyed the tutorial and learned something new. If you're
+able to riff off this with your own designs I would be really interested to
+take a look - please feel free to post links to your own creations in the
+comments at the end of the blog. If you'd like to consider how to share
+your app with others, take a look at my article on
+[Deployment to Shinyapps.io](/blogs/07-schedule-deploy-shinyapps.qmd).
+
+If you spot an error with this article, or have a suggested improvement then
+feel free to leave a comment (GitHub login required) or
+[raise an issue on GitHub](https://github.com/r-leyshon/blogging/issues).  
+
+<p id=fin><i>fin!</i></p>

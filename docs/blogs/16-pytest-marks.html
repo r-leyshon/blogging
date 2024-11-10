@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -472,7 +472,7 @@ The Flaky, The Slow &amp; The Needy
 <section id="the-flaky-function" class="level4">
 <h4 class="anchored" data-anchor-id="the-flaky-function">The Flaky Function</h4>
 <p>Here we define a function that will fail half the time. What a terrible test to have. The root of this unpredictable behaviour should be diagnosed as a priority as a matter of sanity.</p>
-<div id="e4677b5f" class="cell" data-execution_count="1">
+<div id="aad116a8" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -487,7 +487,7 @@ The Flaky, The Slow &amp; The Needy
 <section id="the-slow-function" class="level4">
 <h4 class="anchored" data-anchor-id="the-slow-function">The Slow Function</h4>
 <p>This function is going to be pretty slow. Slow test suites throttle our productivity. Once it finishes waiting for a specified number of seconds, it will return a string.</p>
-<div id="e736f07b" class="cell" data-execution_count="2">
+<div id="53b9abe7" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -501,7 +501,7 @@ The Flaky, The Slow &amp; The Needy
 <section id="the-needy-function" class="level4">
 <h4 class="anchored" data-anchor-id="the-needy-function">The Needy Function</h4>
 <p>Finally, the needy function will have an external dependency on a website. This test will simply check whether we get a HTTP status code of 200 (ok) when we request any URL.</p>
-<div id="39c60cc1" class="cell" data-execution_count="3">
+<div id="19317764" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -518,7 +518,7 @@ The Flaky, The Slow &amp; The Needy
 <h4 class="anchored" data-anchor-id="the-wrapper">The Wrapper</h4>
 <p>Finally, I’ll introduce a wrapper that will act as an opportunity for an integration test. This is a bit awkward, as none of the above functions are particularly related to each other.</p>
 <p>This function will execute the <code>check_site_available()</code> and <code>take_a_nap()</code> together. A pretty goofy example, I admit. Based on the status of the url request, a string will be returned.</p>
-<div id="712d9659" class="cell" data-execution_count="4">
+<div id="fc700305" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -541,12 +541,12 @@ The Flaky, The Slow &amp; The Needy
 <section id="lets-get-testing" class="level3">
 <h3 class="anchored" data-anchor-id="lets-get-testing">Let’s Get Testing</h3>
 <p>Initially, I will define a test that does nothing other than pass. This will be a placeholder, unmarked test.</p>
-<div id="d6766c37" class="cell" data-execution_count="5">
+<div id="9f168d55" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_nothing():</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, I import <code>croissant()</code> and assert that it returns <code>True</code>. As you may recall from above, <code>croissant()</code> will do so ~50 % of the time.</p>
-<div id="29189e47" class="cell" data-execution_count="6">
+<div id="a3818387" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    croissant,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    )</span>
@@ -614,7 +614,7 @@ The Flaky, The Slow &amp; The Needy
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>@pytest.mark.flaky<span class="ch">:</span> tests that can randomly fail through no change to the code</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now that we have confirmed our marker is available for use, we can use it to mark <code>test_croissant()</code> as flaky:</p>
-<div id="0f3c1eeb" class="cell" data-execution_count="7">
+<div id="1382df3b" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
@@ -635,7 +635,7 @@ The Flaky, The Slow &amp; The Needy
 <h4 class="anchored" data-anchor-id="selecting-a-single-mark">Selecting a Single Mark</h4>
 <p>Now that we have registered and marked a test as <code>flaky</code>, we can adapt our <code>pytest</code> call to execute tests with that mark only. The pattern we will use is:</p>
 <blockquote class="blockquote">
-<p><code>pytest -k -m "&lt;INSERT_MARK_NAME&gt;"</code></p>
+<p><code>pytest -v -m "&lt;INSERT_MARK_NAME&gt;"</code></p>
 </blockquote>
 <div class="sourceCode" id="cb12"><pre class="sourceCode abc code-with-copy"><code class="sourceCode abc"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>... <span class="co">% pytest -v -m "flaky"</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>============================= test session starts =============================</span>
@@ -674,7 +674,7 @@ The Flaky, The Slow &amp; The Needy
 <section id="selecting-multiple-marks" class="level4">
 <h4 class="anchored" data-anchor-id="selecting-multiple-marks">Selecting Multiple Marks</h4>
 <p>In this section, we will introduce another, differently marked test to illustrate the syntax for running multiple marks. For this example, we’ll test <code>take_a_nap()</code>:</p>
-<div id="b75c4842" class="cell" data-execution_count="8">
+<div id="6cdcc693" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
@@ -747,7 +747,7 @@ The Flaky, The Slow &amp; The Needy
 <section id="complex-selection-rules" class="level4">
 <h4 class="anchored" data-anchor-id="complex-selection-rules">Complex Selection Rules</h4>
 <p>By adding an additional mark, we can illustrate more complex selection and deselection rules for invoking <code>pytest</code>. Let’s write an integration test that checks whether the domain for this blog site can be reached.</p>
-<div id="77c0b75a" class="cell" data-execution_count="9">
+<div id="2ea4995a" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
@@ -815,7 +815,7 @@ The Flaky, The Slow &amp; The Needy
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"subclassy: test methods"</span>,</span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="ch">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Updating our test module to include <code>test_goofy_wrapper()</code>:</p>
-<div id="db1a7f0a" class="cell" data-execution_count="10">
+<div id="68e07188" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.do_something <span class="im">import</span> (</span>
@@ -880,7 +880,7 @@ The Flaky, The Slow &amp; The Needy
 <section id="tests-with-multiple-marks" class="level4">
 <h4 class="anchored" data-anchor-id="tests-with-multiple-marks">Tests with Multiple Marks</h4>
 <p>Note that we can use multiple marks with any test or test class. Let’s update <code>TestGoofyWrapper</code> to be marked as <code>integration</code> &amp; <code>slow</code>:</p>
-<div id="fc008b5f" class="cell" data-execution_count="11">
+<div id="bd3fa839" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.slow</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.classy</span></span>
