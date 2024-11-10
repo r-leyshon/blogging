@@ -17,7 +17,7 @@ toc: true
 toc-depth: 4
 jupyter: 
   kernelspec:
-    name: "conda-env-mocking-env-py"
+    name: "mocking-env"
     language: "python"
     display_name: "blog-mocking-env"
 css: /www/13-pytest-parametrize/styles.css
