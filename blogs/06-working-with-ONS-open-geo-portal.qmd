@@ -12,7 +12,7 @@ categories:         # delete categories as appropriate. using https://diataxis.f
 
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608
 image-alt: "Great Britain-United Kingdom Topographic Map"
-toc: false # iframe overlaps 
+toc: true 
 jupyter: 
   kernelspec:
     name: "ons-geo-env"
@@ -20,7 +20,7 @@ jupyter:
     display_name: "ons-geo-env"
 ---
 <figure class=center>
-  <img class="shaded_box" width=400px src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
+  <img class="shaded_box" style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
   <figcaption>Wikimedia commons UK Map.</figcaption>
 </figure>
 
