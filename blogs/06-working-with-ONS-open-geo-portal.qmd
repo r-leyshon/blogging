@@ -13,6 +13,7 @@ categories:         # delete categories as appropriate. using https://diataxis.f
 image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608
 image-alt: "Great Britain-United Kingdom Topographic Map"
 toc: true 
+code-annotations: select
 jupyter: 
   kernelspec:
     name: "ons-geo-env"
