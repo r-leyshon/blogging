@@ -34,6 +34,18 @@ If you're in a rush and just need a snippet that will ingest every UK 2021 LSOA
 boundary available, [here is a GitHub gist](https://gist.github.com/r-leyshon/222dd4039143398ad9574fba83c32752#file-get_data-py)
 just for you.
 
+:::{.callout collapse="true"}
+
+### Update
+
+This blog was updated with the following changes:
+
+* Endpoint url for LSOA 2021 boundaries had changed.
+* Replace iFrames in blog with images as some users were being prompted to
+log in.
+
+:::
+
 ## The Scenario
 
 You would like to use python to programmatically ingest data from the Office
