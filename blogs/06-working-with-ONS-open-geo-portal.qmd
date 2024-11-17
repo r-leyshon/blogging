@@ -21,7 +21,7 @@ jupyter:
     display_name: "ons-geo-env"
 ---
 <figure class=center>
-  <img class="shaded_box" style="display:block;margin-left:auto;margin-right:auto;width:100%;border:none;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
+  <img class="shaded_box" style="display:block;margin-left:auto;margin-right:auto;width:90%;border:none;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
   <figcaption>Wikimedia commons UK Map.</figcaption>
 </figure>
 
@@ -444,14 +444,14 @@ all_lsoas.tail(100).explore()
 One tip I have for troubleshooting queries is to open up the web interface
 for the `ENDPOINT`, by pasting it into your web browser, for example:
 
-<img src="https://i.imgur.com/oCkMdHW.png" display:block;margin-left:auto;margin-right:auto;width:60%;border:none; alt="LSOA 2021 Endpoint Interface.">
+<img src="https://i.imgur.com/oCkMdHW.png" style="display:block;margin-left:auto;margin-right:auto;width:95%;border:none;" alt="LSOA 2021 Endpoint Interface. Click to expand.">
 
 By using the fields to test out your query parameters and clicking the
 "Query (GET)" button at the bottom of the page, you can get an indication
 of whether your query is valid. This is a good place to test out more
 complex SQL statements for the `where` parameter:
 
-<img src="https://i.imgur.com/D1eyR0U.png" display:block;margin-left:auto;margin-right:auto;width:60%;border:none; alt="LSOA 2021 Endpoint Interface.">
+<img src="https://i.imgur.com/D1eyR0U.png" style="display:block;margin-left:auto;margin-right:auto;width:95%;border:none;" alt="LSOA 2021 Endpoint Interface. Click to expand.">
 
 If you encounter a HTTP 403 Forbidden response, check the endpoint that you
 are using is still valid. At times, ONS Geoportal change the endpoint. Old
