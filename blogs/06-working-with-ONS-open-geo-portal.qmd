@@ -103,7 +103,7 @@ Boundaries EW BFC"
 4. This will bring you to the data asset that you need. The webpage should
 look like the image below.
 
-<img src="https://i.imgur.com/izZZjt4.png"/ width=40% alt="ONS Open Geography Portal, LSOA 2021 boundaries interface.">
+<img src="https://i.imgur.com/izZZjt4.png" display:block;margin-left:auto;margin-right:auto;width:60%;border:none; alt="ONS Open Geography Portal, LSOA 2021 boundaries interface.">
 
 ### Finding the Endpoint
 Now that we have the correct data asset, let's find the endpoint. This is the
@@ -426,14 +426,14 @@ all_lsoas.tail(100).explore()
 One tip I have for troubleshooting queries is to open up the web interface for
 the `ENDPOINT`, by pasting it into your web browser, for example:
 
-<img src="https://i.imgur.com/oCkMdHW.png" width=40% alt="LSOA 2021 Endpoint Interface.">
+<img src="https://i.imgur.com/oCkMdHW.png" display:block;margin-left:auto;margin-right:auto;width:60%;border:none; alt="LSOA 2021 Endpoint Interface.">
 
 By using the fields to test out your query parameters and clicking the "Query
 (GET)" button at the bottom of the page, you can get an indication of whether
 your query is valid. This is a good place to test out more complex SQL
 statements for the `where` parameter:
 
-<img src="https://i.imgur.com/D1eyR0U.png" width=40% alt="LSOA 2021 Endpoint Interface.">
+<img src="https://i.imgur.com/D1eyR0U.png" display:block;margin-left:auto;margin-right:auto;width:60%;border:none; alt="LSOA 2021 Endpoint Interface.">
 
 ## Conclusion
 
