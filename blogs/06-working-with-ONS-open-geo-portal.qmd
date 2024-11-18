@@ -77,7 +77,7 @@ requests
 
 1. Create a new directory with a requirements file as shown above.
 2. Create a new virtual environment.
-3. `pip install -r requirements.txt`
+3. Install the dependencies [listed above](#what-youll-need).
 4. Create a file called `get_data.py` or whatever you would like to call it.
 The rest of the tutorial will work with this file.
 5. Add the following lines to the top of `get_data.py` and run them, this 
@@ -104,7 +104,7 @@ Boundaries EW BFC"
 4. This will bring you to the data asset that you need. The webpage should
 look like the image below.
 
-<img src="https://i.imgur.com/izZZjt4.png" display:block;margin-left:auto;margin-right:auto;width:60%;border:none; alt="ONS Open Geography Portal, LSOA 2021 boundaries interface.">
+<img src="https://i.imgur.com/izZZjt4.png" style="display:block;margin-left:auto;margin-right:auto;width:95%;border:none;" alt="ONS Open Geography Portal, LSOA 2021 boundaries interface.">
 
 ### Finding the Endpoint
 Now that we have the correct data asset, let's find the endpoint. This is the
@@ -268,9 +268,9 @@ can achieve this.
 params["where"] = "LSOA21NM like 'Newport%'"
 ```
 
-2. Pass the updated `params` dictionary to the `request_to_gdf` function
-and use the `.explore()` method to visualise the map. Confirm that the
-LSOAs returned match what you expected.
+Pass the updated `params` dictionary to the `request_to_gdf` function and
+use the `.explore()` method to visualise the map. Confirm that the LSOAs
+returned match what you expected.
 
 ```{python filename=get_data.py}
 #| code-fold: true
@@ -281,8 +281,7 @@ gdf.explore()
 
 ### How Many Records Are There?
 
-1. Update the `params` dictionary by changing the value of `where` to
-`'1=1'`.
+Update the `params` dictionary by changing the value of `where` to `'1=1'`.
 ```{python filename=get_data.py}
 #| code-fold: true
 #| code-summary: "Show the Solution"
@@ -290,8 +289,7 @@ gdf.explore()
 params["where"] = "1=1"                                                     # <1>
 ```
 1. Parameter to get max allowed data, this will get encoded to
-"where=1%3D1", see https://www.w3schools.com/tags/ref_urlencode.ASP for
-more on URL-encoding.
+"where=1%3D1", see @W3-urlencode for more on URL-encoding.
 
 For more on why to do this, consult the ArcGIS docs @ArcGIS. This is the
 way to state 'where=true', meaning get every record possible while
