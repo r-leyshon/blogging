@@ -1,0 +1,8 @@
+geopandas
+ipykernel
+jupyter
+folium
+mapclassify
+matplotlib
+pandas
+requests
