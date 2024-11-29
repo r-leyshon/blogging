@@ -79,6 +79,23 @@ Select repositories dropdown.
 options on the next screen for selecting your CI provider and coverage
 source. Ignore them and locate the `CODECOV_TOKEN` value. Copy it to your
 clipboard.
+
+:::{.callout-tip collapse="true"}
+
+### Changes with `CODECOV_TOKEN` (Click to expand)
+
+You may notice that CodeCov have included a banner at the top of their
+login screen - "You must now upload using a token." How lovely of them. It
+used to be the case that open repos did not require a token. Rather quietly
+sometime this year they
+<a href=https://docs.codecov.com/docs/adding-the-codecov-token target=_blank>changed this behaviour</a>
+without making it clear in  their docs. This was incredibly helpful when
+going through this setup live with a cohort of graduate data scientists. 
+
+Anyway there's a banner now so I'll forgive them.
+
+:::
+
 5. Keep your CodeCov page open in a tab. Now go the your repo page in a new
 tab. Settings > Security > Secrets and variables > Actions
 6. On the next page, under Repository secrets, click
