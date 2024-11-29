@@ -1,0 +1,188 @@
+---
+title: "Automated CodeCov reports with GitHub Actions"
+author: "Rich Leyshon"
+date: "November 29 2024"
+description: "A quick How-to reference for uploading python `coverage` reports to the CodeCov service"
+categories:
+    - How-to
+    - CodeCov
+    - Coverage
+    - CI:CD
+image: https://i.imgur.com/ozUGhg7.png
+image-alt: "CodeCov shield"
+toc: true
+css: /./www/17-quarto-comments/styles.css
+code-annotations: select
+---
+<img class=shaded_box src=https://i.imgur.com/ozUGhg7.png alt="CodeCov shield." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+
+## Introduction
+
+[CodeCov](https://about.codecov.io/) is an online service that allows you
+to generate free coverage reports for your repositories. You usually
+generate coverage reports as part of your CI workflow. Uploading these
+results to the CodeCov service allows centralised tracking of code coverage
+trends, various interactive visuals and the all important coverage shield(!)
+
+### Intended Audience
+
+Python developers who need to quickly get coverage reporting set up so they
+can get on with the real work.
+
+:::{.callout-note}
+
+I have included screengrabs of things where possible. Please note that
+GitHub or CodeCov may change their interfaces from time to time.
+:::
+
+### Requirements
+
+- Install the following requirements, along with any other dependencies of
+the code you wish to report on:
+```{.abc filename="requirements.txt"}
+coverage
+pytest
+```
+- A GitHub account
+- A repo with some code
+
+## Method
+
+1. Login to the
+<a href=https://about.codecov.io/ target=_blank>CodeCov Service</a> by
+accessing the login button at the top right of the screen. I suggest
+selecting the GitHub option for login. You will be asked to authenticate
+with GitHub if you do so.
+2. If creating your account, you will be prompted about
+<a href=https://about.codecov.io/pricing/ target=_blank>the type of account</a>
+that you need. I would suggest for most users **and** GitHub organisation
+members, a personal free account is fine.
+3. Search for the repo that you would like coverage reports for. If the
+repo does not appear, try clicking refresh. If the repo belongs to an
+organisation, click on the drop-down menu to the top-left of the screen, 
+highlighted in red in the image below. 
+
+![CodeCov UI Repo Owner drop down. Click to expand.](https://i.imgur.com/lCNyDYR.png){.lightbox .shaded_box}
+
+:::{.callout-note collapse="true"}
+
+### Org repo not appearing? (Click to expand)
+
+Some organisations may not allow CodeCov global access to its repositories.
+If this is the case, you will need to ask an organisation owner to check a
+box allowing CodeCov read & write access to the repo. This is done from the
+organisation's homepage > Settings > Third Party Access > GitHub Apps >
+Codecov > Configure > Repository access > Only select repositories >
+Select repositories dropdown.
+
+:::
+
+4. Once found, click on the blue configure button. There are various
+options on the next screen for selecting your CI provider and coverage
+source. Ignore them and locate the `CODECOV_TOKEN` value. Copy it to your
+clipboard.
+
+:::{.callout-tip collapse="true"}
+
+### Changes with `CODECOV_TOKEN` (Click to expand)
+
+You may notice that CodeCov have included a banner at the top of their
+login screen - "You must now upload using a token." How lovely of them. It
+used to be the case that open repos did not require a token. Rather quietly
+sometime this year they
+<a href=https://docs.codecov.com/docs/adding-the-codecov-token target=_blank>changed this behaviour</a>
+without making it clear in  their docs. This was incredibly helpful when
+going through this setup live with a cohort of graduate data scientists. 
+
+Anyway there's a banner now, so I'll forgive them.
+
+:::
+
+5. Keep your CodeCov page open in a tab. Now go the your repo page in a new
+tab. Settings > Security > Secrets and variables > Actions
+
+![GitHub UI location of Actions Secrets & Variables. Click to expand.](https://i.imgur.com/9bBT0zP.png){.lightbox .shaded_box}
+
+6. On the next page, under Repository secrets, click
+"New repository secret", ensure `Name` is equal to `CODECOV_TOKEN`, paste
+your clipboard credential into the `Secret` field then click "Add secret".
+7. Add a file to your repository, eg
+`.github/workflows/codecov-upload.yaml`.
+8. Save the following code snippet into the file:
+
+```{.abc filename=".github/workflows/codecov-upload.yaml"}
+
+name: MacOS Full Test Suite and Coverage
+
+on:
+  push:                                                                     # <1>
+  pull_request:                                                             # <1>
+    branches: ["main"]                                                      # <1>
+
+jobs:
+  build:
+    name: Full & Coverage
+    runs-on: ubuntu-latest                                                  # <2>
+    timeout-minutes: 15                                                     # <3>
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683       # <4> 
+    - name: Set up Python 12
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b   # <5>
+      with:
+        cache: 'pip'                                                        # <6>
+        python-version: 3.12
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Generate Coverage Report
+      run: |
+        coverage run -m pytest
+        coverage report                                                     # <7>
+        coverage xml
+    - name: Upload coverage report to CodeCov
+      uses: codecov/codecov-action@015f24e6818733317a2da2edd6290ab26238649a # <8>
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        verbose: true
+        token: ${{  secrets.CODECOV_TOKEN  }}
+        fail_ci_if_error: true
+
+```
+1. Adjust to suit your needs. Note that you can select different branch
+coverage reports in CodeCov by selecting "Branch Context".
+2. Ubuntu builds are fast, but you may wish to select a different os to
+match the supported platform of your package / codebase.
+3. Not necessary, but a good idea for private repos, where organisations
+pay for build time.
+4. SHA for v4.2.2
+5. SHA for v5.3.0
+6. Not neccesary, but speeds up pip dependencies by using a cache.
+7. Not necessary, but a good sanity check - did we actually create a
+coverage report? Did it contain any coverage data? This command will print
+the coverage report so that you can inspect it in your Action logs.
+8. SHA for v5.0.7
+
+:::{.callout-note collapse="true"}
+
+### Why reference SHA instead of versions? (Click to expand)
+
+It's
+<a href="/./blogs/14-gh-actions-security.qmd" target=_blank>more secure</a>.
+Ensure that you keep these versions updated to mitigate the risk of
+malicious attacks.
+
+:::
+
+9. Commit and push the new workflow file to your remote. Go and watch the
+Action to ensure it prints your coverage report in the logs and uploads to
+the CodeCov service without complaint.
+10. Go back to your tab with the CodeCov site. You may need to refresh or 
+click the "Resync" button, but your newly configured repo should now
+display coverage results. Click on Configuration > Badges & Graphs to get
+the links to your shiny new coverage shield.
+
+<p id=fin><i>fin!</i></p>
