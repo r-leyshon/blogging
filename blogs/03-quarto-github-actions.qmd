@@ -7,7 +7,7 @@ build and publication with GitHub Actions? Could you use a quick guide? I've
 got your back."
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - How-to   # task-oriented
-    - CI/CD
+    - CI:CD
     - Front End Dev
 image: https://i1.pickpik.com/photos/452/586/379/code-html-digital-coding-preview.jpg # creative commons
 image-alt: "HTML code."
