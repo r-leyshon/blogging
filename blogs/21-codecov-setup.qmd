@@ -2,19 +2,19 @@
 title: "Automated CodeCov reports with GitHub Actions"
 author: "Rich Leyshon"
 date: "November 29 2024"
-description: "A quick How-to reference for uploading python `coverage` reports"
+description: "A quick How-to reference for uploading python `coverage` reports to the CodeCov service"
 categories:
     - How-to
     - CodeCov
     - Coverage
     - CI:CD
 image: https://i.imgur.com/ozUGhg7.png
-image-alt: "Codecov shield"
+image-alt: "CodeCov shield"
 toc: true
 css: /./www/17-quarto-comments/styles.css
 code-annotations: select
 ---
-<img class=shaded_box src=https://i.imgur.com/ozUGhg7.png alt="Codecov shield." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+<img class=shaded_box src=https://i.imgur.com/ozUGhg7.png alt="CodeCov shield." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 
@@ -29,10 +29,10 @@ trends, various interactive visuals and the all important coverage shield(!)
 Python developers who need to quickly get coverage reporting set up so they
 can get on with the real work.
 
-:::{.callout-important}
+:::{.callout-note}
 
 I have included screengrabs of things where possible. Please note that
-sites like GitHub change their interface from time to time.
+GitHub or CodeCov may change their interfaces from time to time.
 :::
 
 ### Requirements
@@ -56,13 +56,13 @@ with GitHub if you do so.
 2. If creating your account, you will be prompted about
 <a href=https://about.codecov.io/pricing/ target=_blank>the type of account</a>
 that you need. I would suggest for most users **and** GitHub organisation
-members, a personal free account is all that you need.
+members, a personal free account is fine.
 3. Search for the repo that you would like coverage reports for. If the
 repo does not appear, try clicking refresh. If the repo belongs to an
 organisation, click on the drop-down menu to the top-left of the screen, 
 highlighted in red in the image below. 
 
-![Codecov UI Repo Owner drop down. Click to expand.](https://i.imgur.com/lCNyDYR.png){.lightbox .shaded_box}
+![CodeCov UI Repo Owner drop down. Click to expand.](https://i.imgur.com/lCNyDYR.png){.lightbox .shaded_box}
 
 :::{.callout-note collapse="true"}
 
@@ -70,7 +70,7 @@ highlighted in red in the image below.
 
 Some organisations may not allow CodeCov global access to its repositories.
 If this is the case, you will need to ask an organisation owner to check a
-box allowing codecov read & write access to the repo. This is done from the
+box allowing CodeCov read & write access to the repo. This is done from the
 organisation's homepage > Settings > Third Party Access > GitHub Apps >
 Codecov > Configure > Repository access > Only select repositories >
 Select repositories dropdown.
@@ -94,7 +94,7 @@ sometime this year they
 without making it clear in  their docs. This was incredibly helpful when
 going through this setup live with a cohort of graduate data scientists. 
 
-Anyway there's a banner now so I'll forgive them.
+Anyway there's a banner now, so I'll forgive them.
 
 :::
 
@@ -142,7 +142,7 @@ jobs:
         coverage run -m pytest
         coverage report                                                     # <7>
         coverage xml
-    - name: Upload coverage report to Codecov
+    - name: Upload coverage report to CodeCov
       uses: codecov/codecov-action@015f24e6818733317a2da2edd6290ab26238649a # <8>
       with:
         file: ./coverage.xml
@@ -155,14 +155,15 @@ jobs:
 1. Adjust to suit your needs. Note that you can select different branch
 coverage reports in CodeCov by selecting "Branch Context".
 2. Ubuntu builds are fast, but you may wish to select a different os to
-match the supportedc platform of your package / codebase.
+match the supported platform of your package / codebase.
 3. Not necessary, but a good idea for private repos, where organisations
 pay for build time.
 4. SHA for v4.2.2
 5. SHA for v5.3.0
 6. Not neccesary, but speeds up pip dependencies by using a cache.
 7. Not necessary, but a good sanity check - did we actually create a
-coverage report? Did it contain any coverage data? 
+coverage report? Did it contain any coverage data? This command will print
+the coverage report so that you can inspect it in your Action logs.
 8. SHA for v5.0.7
 
 :::{.callout-note collapse="true"}
