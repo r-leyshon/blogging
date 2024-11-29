@@ -2,7 +2,7 @@
 title: "GitHub Actions Security"
 author: "Rich Leyshon"
 date: "June 26 2024"
-description: "Can you actually rely on that pre-built Action you rely on?"
+description: "Can you actually rely on that pre-built Action you use?"
 categories:
     - How-to
     - GitHub
