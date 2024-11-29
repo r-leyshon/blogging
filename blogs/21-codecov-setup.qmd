@@ -93,23 +93,23 @@ your clipboard credential into the `Secret` field then click "Add secret".
 name: MacOS Full Test Suite and Coverage
 
 on:
-  push:
-  pull_request:
-    branches: [ "dev", "main" ]
+  push:                                                                     # <1>
+  pull_request:                                                             # <1>
+    branches: ["main"]                                                      # <1>
 
 jobs:
   build:
     name: Full & Coverage
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    runs-on: ubuntu-latest                                                  # <2>
+    timeout-minutes: 15                                                     # <3>
     strategy:
       fail-fast: false
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # sha for 4.2.2
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683       # <4> 
     - name: Set up Python 12
-      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # sha for 5.3.0
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b   # <5>
       with:
-        cache: 'pip'
+        cache: 'pip'                                                        # <6>
         python-version: 3.12
     - name: Install dependencies
       run: |
@@ -118,10 +118,10 @@ jobs:
     - name: Generate Coverage Report
       run: |
         coverage run -m pytest
-        coverage report
+        coverage report                                                     # <7>
         coverage xml
     - name: Upload coverage report to Codecov
-      uses: codecov/codecov-action@015f24e6818733317a2da2edd6290ab26238649a # v5.0.7
+      uses: codecov/codecov-action@015f24e6818733317a2da2edd6290ab26238649a # <8>
       with:
         file: ./coverage.xml
         flags: unittests
@@ -130,12 +130,25 @@ jobs:
         fail_ci_if_error: true
 
 ```
+1. Adjust to suit your needs. Note that you can select different branch
+coverage reports in CodeCov by selecting "Branch Context".
+2. Ubuntu builds are fast, but you may wish to select a different os to
+match the supportedc platform of your package / codebase.
+3. Not necessary, but a good idea for private repos, where organisations
+pay for build time.
+4. SHA for v4.2.2
+5. SHA for v5.3.0
+6. Not neccesary, but speeds up pip dependencies by using a cache.
+7. Not necessary, but a good sanity check - did we actually create a
+coverage report? Did it contain any coverage data? 
+8. SHA for v5.0.7
 
 :::{.callout-note collapse="true"}
 
 ### Why reference SHA instead of versions? (Click to expand)
 
-It's <a href="/./blogs/14-gh-actions-security.qmd" target=_blank>more secure</a>.
+It's
+<a href="/./blogs/14-gh-actions-security.qmd" target=_blank>more secure</a>.
 Ensure that you keep these versions updated to mitigate the risk of
 malicious attacks.
 
