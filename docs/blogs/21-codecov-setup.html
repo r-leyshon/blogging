@@ -221,10 +221,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img class="shaded_box" src="https://i.imgur.com/ozUGhg7.png" alt="CodeCov shield." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;"></p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p><a href="https://about.codecov.io/">CodeCov</a> is an online service that allows you to generate free coverage reports for your repositories. You usually generate coverage reports as part of your CI workflow. Uploading these results to the CodeCov service allows centralised tracking of code coverage trends, various interactive visuals and the all important coverage shield(!)</p>
+<p><a href="https://about.codecov.io/">CodeCov</a> is an online service that allows you to generate free coverage reports for your repositories. Coverage reports can be created as part of a CI workflow. Uploading these results to the CodeCov service allows centralised tracking of code coverage trends, various interactive visuals and the all important coverage shield(!)</p>
 <section id="intended-audience" class="level3">
 <h3 class="anchored" data-anchor-id="intended-audience">Intended Audience</h3>
-<p>Python developers who need to quickly get coverage reporting set up so they can get on with the real work.</p>
+<p>Python developers who need to quickly get coverage reporting set up so they can get on with the rest of their work.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -235,7 +235,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>I have included screengrabs of things where possible. Please note that GitHub or CodeCov may change their interfaces from time to time.</p>
+<p>I have included screengrabs of things where possible. Please note that GitHub or CodeCov may change their interfaces at their discretion.</p>
 </div>
 </div>
 </section>
@@ -260,8 +260,8 @@ Note
 <section id="method" class="level2">
 <h2 class="anchored" data-anchor-id="method">Method</h2>
 <ol type="1">
-<li>Login to the <a href="https://about.codecov.io/" target="_blank">CodeCov Service</a> by accessing the login button at the top right of the screen. I suggest selecting the GitHub option for login. You will be asked to authenticate with GitHub if you do so.</li>
-<li>If creating your account, you will be prompted about <a href="https://about.codecov.io/pricing/" target="_blank">the type of account</a> that you need. I would suggest for most users <strong>and</strong> GitHub organisation members, a personal free account is fine.</li>
+<li>Login to the <a href="https://about.codecov.io/" target="_blank">CodeCov Service</a> by accessing the button at the top right of the screen. I suggest selecting the GitHub option for login. You will be asked to authenticate with GitHub if you do so.</li>
+<li>If you don’t have one, you will be prompted about <a href="https://about.codecov.io/pricing/" target="_blank">the type of account</a> that you need. I would suggest for most users <strong>and</strong> GitHub organisation members, a personal free account is fine.</li>
 <li>Search for the repo that you would like coverage reports for. If the repo does not appear, try clicking refresh. If the repo belongs to an organisation, click on the drop-down menu to the top-left of the screen, highlighted in red in the image below.</li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
@@ -307,7 +307,7 @@ Changes with <code>CODECOV_TOKEN</code> (Click to expand)
 </div>
 </div>
 <ol start="5" type="1">
-<li>Keep your CodeCov page open in a tab. Now go the your repo page in a new tab. Settings &gt; Security &gt; Secrets and variables &gt; Actions</li>
+<li>Keep your CodeCov page open in a tab. Now go to your repo page in a new tab. Settings &gt; Security &gt; Secrets and variables &gt; Actions</li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -317,7 +317,7 @@ Changes with <code>CODECOV_TOKEN</code> (Click to expand)
 </div>
 <ol start="6" type="1">
 <li>On the next page, under Repository secrets, click “New repository secret”, ensure <code>Name</code> is equal to <code>CODECOV_TOKEN</code>, paste your clipboard credential into the <code>Secret</code> field then click “Add secret”.</li>
-<li>Add a file to your repository, eg <code>.github/workflows/codecov-upload.yaml</code>.</li>
+<li>Add a workflow file to your repository under <code>.github/workflows</code>.</li>
 <li>Save the following code snippet into the file:</li>
 </ol>
 <div class="code-with-filename">
@@ -1036,7 +1036,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <input type="hidden" id="giscus-base-theme" value="cobalt">
 <input type="hidden" id="giscus-alt-theme" value="cobalt">
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"closeEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom","loop":false});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

@@ -19,20 +19,20 @@ code-annotations: select
 ## Introduction
 
 [CodeCov](https://about.codecov.io/) is an online service that allows you
-to generate free coverage reports for your repositories. You usually
-generate coverage reports as part of your CI workflow. Uploading these
-results to the CodeCov service allows centralised tracking of code coverage
-trends, various interactive visuals and the all important coverage shield(!)
+to generate free coverage reports for your repositories. Coverage reports
+can be created as part of a CI workflow. Uploading these results to the
+CodeCov service allows centralised tracking of code coverage trends,
+various interactive visuals and the all important coverage shield(!)
 
 ### Intended Audience
 
 Python developers who need to quickly get coverage reporting set up so they
-can get on with the real work.
+can get on with the rest of their work.
 
 :::{.callout-note}
 
 I have included screengrabs of things where possible. Please note that
-GitHub or CodeCov may change their interfaces from time to time.
+GitHub or CodeCov may change their interfaces at their discretion.
 :::
 
 ### Requirements
@@ -50,10 +50,10 @@ pytest
 
 1. Login to the
 <a href=https://about.codecov.io/ target=_blank>CodeCov Service</a> by
-accessing the login button at the top right of the screen. I suggest
-selecting the GitHub option for login. You will be asked to authenticate
-with GitHub if you do so.
-2. If creating your account, you will be prompted about
+accessing the button at the top right of the screen. I suggest selecting
+the GitHub option for login. You will be asked to authenticate with GitHub
+if you do so.
+2. If you don't have one, you will be prompted about
 <a href=https://about.codecov.io/pricing/ target=_blank>the type of account</a>
 that you need. I would suggest for most users **and** GitHub organisation
 members, a personal free account is fine.
@@ -98,7 +98,7 @@ Anyway there's a banner now, so I'll forgive them.
 
 :::
 
-5. Keep your CodeCov page open in a tab. Now go the your repo page in a new
+5. Keep your CodeCov page open in a tab. Now go to your repo page in a new
 tab. Settings > Security > Secrets and variables > Actions
 
 ![GitHub UI location of Actions Secrets & Variables. Click to expand.](https://i.imgur.com/9bBT0zP.png){.lightbox .shaded_box}
@@ -106,8 +106,7 @@ tab. Settings > Security > Secrets and variables > Actions
 6. On the next page, under Repository secrets, click
 "New repository secret", ensure `Name` is equal to `CODECOV_TOKEN`, paste
 your clipboard credential into the `Secret` field then click "Add secret".
-7. Add a file to your repository, eg
-`.github/workflows/codecov-upload.yaml`.
+7. Add a workflow file to your repository under `.github/workflows`.
 8. Save the following code snippet into the file:
 
 ```{.abc filename=".github/workflows/codecov-upload.yaml"}
