@@ -44,6 +44,7 @@ This blog was updated with the following changes:
 * Endpoint url for LSOA 2021 boundaries had changed.
 * Replace iFrames in blog with images as some users were being prompted to
 log in.
+* Amend code chunks. 
 
 :::
 
@@ -104,7 +105,7 @@ Boundaries EW BFC"
 4. This will bring you to the data asset that you need. The webpage should
 look like the image below.
 
-<img src="https://i.imgur.com/izZZjt4.png" style="display:block;margin-left:auto;margin-right:auto;width:95%;border:none;" alt="ONS Open Geography Portal, LSOA 2021 boundaries interface.">
+![ONS Open Geography Portal, LSOA 2021 boundaries interface. Click to expand.](https://i.imgur.com/izZZjt4.png){.lightbox}
 
 ### Finding the Endpoint
 Now that we have the correct data asset, let's find the endpoint. This is the
@@ -388,11 +389,11 @@ then make yourself a cup of your chosen beverage.
 offset = len(gdf)                                                           # <1>
 all_lsoas = gdf                                                             # <2>
 while more_pages:
-    params["resultOffset"] += offset                                        # <3> 
-    response, gdf = request_to_gdf(ENDPOINT, params)
-    content = response.json()
-    all_lsoas = pd.concat([all_lsoas, gdf])
     try:
+        params["resultOffset"] += offset                                        # <3> 
+        response, gdf = request_to_gdf(ENDPOINT, params)
+        content = response.json()
+        all_lsoas = pd.concat([all_lsoas, gdf])
         more_pages = content["properties"]["exceededTransferLimit"]
     except KeyError:                                                        # <4>
         more_pages = False
@@ -442,14 +443,14 @@ all_lsoas.tail(100).explore()
 One tip I have for troubleshooting queries is to open up the web interface
 for the `ENDPOINT`, by pasting it into your web browser, for example:
 
-<img src="https://i.imgur.com/oCkMdHW.png" style="display:block;margin-left:auto;margin-right:auto;width:95%;border:none;" alt="LSOA 2021 Endpoint Interface. Click to expand.">
+![LSOA 2021 Endpoint Interface. Click to expand.](https://i.imgur.com/oCkMdHW.png){.lightbox}
 
 By using the fields to test out your query parameters and clicking the
 "Query (GET)" button at the bottom of the page, you can get an indication
 of whether your query is valid. This is a good place to test out more
 complex SQL statements for the `where` parameter:
 
-<img src="https://i.imgur.com/D1eyR0U.png" style="display:block;margin-left:auto;margin-right:auto;width:95%;border:none;" alt="LSOA 2021 Endpoint Interface. Click to expand.">
+![LSOA 2021 Endpoint Interface. Click to expand.](https://i.imgur.com/D1eyR0U.png){.lightbox}
 
 If you encounter a HTTP 403 Forbidden response, check the endpoint that you
 are using is still valid. At times, ONS Geoportal change the endpoint. Old
