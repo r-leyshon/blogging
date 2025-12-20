@@ -6,7 +6,7 @@ description: "An overview of the progress of Python Shiny, and where it could po
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Explanation   # understanding-oriented
     - Python Shiny
-image: /./www/01-python-shiny/shiny-python.png
+image: /./www/01-python-shiny/shiny-python.jpg
 image-alt: "AI-generated drawing of a shiny python."
 toc: false # toc overlapping iframe for shinyhelper
 format:
@@ -17,7 +17,7 @@ format:
 ## Python for Shiny is now a thing...
 
 <figure class=center>
-  <img class=shaded_box src=/./www/01-python-shiny/shiny-python.png alt="AI-generated drawing of a shiny python." width=300px>
+  <img class=shaded_box src=/./www/01-python-shiny/shiny-python.jpg alt="AI-generated drawing of a shiny python." width=300px>
   <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): python logo golden Sparkling glittery bokeh bright.</figcaption>
 </figure>
 
@@ -233,13 +233,13 @@ While I feel generally positive about the future of Python Shiny, I do look acro
 
 #### 1. Reactlog.
 <center>
-  <img src="https://rstudio.github.io/reactlog/reference/figures/logo.svg" width=30%>
+  <img src="/./www/01-python-shiny/reactlog-logo.svg" width=30%>
 </center>
 
 There's no 2 ways about it, debugging apps is a royal pain. One of my go to helpers in times of need is Posit's own [reactlog package](https://rstudio.github.io/reactlog/). Reactlog is such an understated tool, yet it has been crucial to me in understanding what's going on under the hood of my apps. So much so, that I now feel hopelessly exposed when writing apps in Python without it to lean on.
 
 <center>
-  <img class=shaded_box src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" width=100%>
+  <img class=shaded_box src="/./www/01-python-shiny/reactlog-ui-optimized.gif" width=100%>
 </center>
 
 
@@ -258,7 +258,7 @@ Another one of Posit's own packages, [DT](https://github.com/rstudio/DT) helps t
 The [shinyhelper](https://github.com/cwthom/shinyhelper) package developed by Chris Mason-Thom is an excellent solution for those involved applications that need a little more guidance for the user. 
 
 <center>
-  <img src="https://github.com/cwthom/shinyhelper/raw/master/man/figures/logo.png" width=30%>
+  <img src="/./www/01-python-shiny/shinyhelper-logo.png" width=30%>
 </center>
 
 Shinyhelper allows the developer to include markdown files with extensive instructions, images and gif animations of how to use your application. These documents will be hidden from the screen until the user chooses to click on the help icons that shinyhelper provides. These help icons can be easily styled and positioned around any element within your ui. Once clicked, they will launch modal windows with your beautifully formatted instructions, allowing a wealth of guidance to be included within your app without causing excessive clutter.
