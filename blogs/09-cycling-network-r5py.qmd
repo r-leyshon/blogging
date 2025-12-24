@@ -11,14 +11,14 @@ categories:
     - Geospatial
     - r5py
     - pydeck
-image: "https://images.pixexid.com/a-dynamic-image-of-a-cyclist-her-face-focused-and-determined-captured-mid-peda-cpglmien.jpeg?h=699&amp;q=70"
-image-alt: "A dynamic image of a cyclist, her face focused and determined, captured mid-pedal against the backdrop of a bustling city by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+image: "/./www/09-cycling-network-r5py/intro-img.jpg"
+image-alt: "A cyclist races against a synthwave cityscape."
 toc: true
 jupyter: 
   kernelspec:
-    name: "conda-env-cycling-env-py"
+    name: "cycling-env"
     language: "python"
-    display_name: "blog-cycling-env"
+    display_name: "cycling-env"
 ---
 
 <iframe src="../outputs/hex_layer.html" style="display: block; margin-left: auto; margin-right: auto; width: 80%; height: 300px;" title="Interactive map of London cycle station location density"></iframe>
