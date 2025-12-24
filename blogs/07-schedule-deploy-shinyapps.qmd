@@ -390,8 +390,6 @@ as dependencies and configuration can be stored between runs.
 
 Get some action!
 
-<div class="tenor-gif-embed center" data-postid="24199060" data-share-method="host" data-aspect-ratio="1.50235" data-width="66%"><a href="https://tenor.com/view/action-man-gif-24199060">Action Man GIF</a>from <a href="https://tenor.com/search/action-gifs">Action GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-
 <img class=shaded_box src=/./www/07-schedule-deploy-shinyapps/action-man.gif alt="Action man animation." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 <p id=fin><i>fin!</i></p>
