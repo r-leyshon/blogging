@@ -1,0 +1,3 @@
+The blog uses imagery that uses a synthwave, futuristic, cyberpunk aesthetic.
+Prefer images that are optimisec for the internet, eg small file sizes, file
+types should be svg or jpg. 

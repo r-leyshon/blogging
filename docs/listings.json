@@ -1,5 +1,15 @@
 [
   {
+    "listing": "/music-reviews/index.html",
+    "items": [
+      "/music-reviews/05-when-worlds-collide.html",
+      "/music-reviews/04-triads.html",
+      "/music-reviews/03-dk-county-piano.html",
+      "/music-reviews/02-zelda-and-chill.html",
+      "/music-reviews/01-ghostrunner-ost.html"
+    ]
+  },
+  {
     "listing": "/book-reviews/index.html",
     "items": [
       "/book-reviews/06-second-brain.html",
@@ -71,16 +81,6 @@
       "/book-reviews/01-deep-work.html",
       "/blogs/01-state-of-pyshiny.html",
       "/blogs/02-getting-started-pyshiny.html"
-    ]
-  },
-  {
-    "listing": "/music-reviews/index.html",
-    "items": [
-      "/music-reviews/05-when-worlds-collide.html",
-      "/music-reviews/04-triads.html",
-      "/music-reviews/03-dk-county-piano.html",
-      "/music-reviews/02-zelda-and-chill.html",
-      "/music-reviews/01-ghostrunner-ost.html"
     ]
   }
 ]
