@@ -6,7 +6,7 @@ description: "An overview of the progress of Python Shiny, and where it could po
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Explanation   # understanding-oriented
     - Python Shiny
-image: /./www/01-python-shiny/shiny-python.jpg
+image: /./www/01-python-shiny/intro-img.jpg
 image-alt: "AI-generated drawing of a shiny python."
 toc: false # toc overlapping iframe for shinyhelper
 format:
@@ -17,7 +17,7 @@ format:
 ## Python for Shiny is now a thing...
 
 <figure class=center>
-  <img class=shaded_box src=/./www/01-python-shiny/shiny-python.jpg alt="AI-generated drawing of a shiny python." width=300px>
+  <img class=shaded_box src=/./www/01-python-shiny/intro-img.jpg alt="AI-generated drawing of a shiny python." width=300px>
   <figcaption>[DALL.E prompt](https://huggingface.co/spaces/dalle-mini/dalle-mini): python logo golden Sparkling glittery bokeh bright.</figcaption>
 </figure>
 

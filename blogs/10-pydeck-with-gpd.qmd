@@ -8,20 +8,18 @@ categories:
     - Geospatial
     - pydeck
     - geopandas
-image: "https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70"
-image-alt: "A lake with mountains in the background by [Prompart](https://pixexid.com/profile/@prompart)"
+image: /./www/10-pydeck-with-gpd/intro-img.jpg
+image-alt: "A futuristic topography."
 toc: true
+execute:
+  freeze: true
 jupyter: 
   kernelspec:
-    name: "conda-env-cycling-env-py"
+    name: "cycling-env"
     language: "python"
-    display_name: "blog-cycling-env"
+    display_name: "cycling-env"
 ---
-
-<figure class=center>
-  <img class="shaded_box" width=400px src="https://images.pixexid.com/a-lake-with-mountains-in-the-background-0szt8nia.jpeg?h=700&amp;q=70"></img>
-  <figcaption style="text-align:center;">Creative commons license by [Prompart](https://pixexid.com/profile/@prompart)</figcaption>
-</figure>
+<img class=shaded_box src=/./www/10-pydeck-with-gpd/intro-img.jpg alt="A futuristic topography." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 
