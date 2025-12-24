@@ -10,7 +10,7 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - REST API
     - Web data
 
-image: /./www/06-working-with-ONS-geo-portal/intro-img.png
+image: /./www/06-working-with-ONS-geo-portal/intro-img.jpg
 image-alt: "Great Britain-United Kingdom Futuristic Map"
 toc: true 
 code-annotations: select
@@ -20,7 +20,7 @@ jupyter:
     language: "python"
     display_name: "ons-geo-env"
 ---
-<img class="shaded_box" style="display:block;margin-left:auto;margin-right:auto;width:90%;border:none;" src="/./www/06-working-with-ONS-geo-portal/intro-img.png" alt="Great Britain-United Kingdom Futuristic Map"</img>
+<img class="shaded_box" style="display:block;margin-left:auto;margin-right:auto;width:90%;border:none;" src="/./www/06-working-with-ONS-geo-portal/intro-img.jpg" alt="Great Britain-United Kingdom Futuristic Map"</img>
 
 ## Introduction
 
