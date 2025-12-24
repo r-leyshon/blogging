@@ -200,6 +200,8 @@ else:
 
 polygons = gpd.GeoDataFrame.from_features(
     features=content["features"], crs=content["crs"]["properties"]["name"])
+# simplify geometries to reduce file size (tolerance in degrees, ~0.005 ≈ 500m)
+polygons["geometry"] = polygons["geometry"].simplify(tolerance=0.005)
 # feature engineering for pydeck viz
 min_max_scaler = preprocessing.MinMaxScaler()
 x = polygons["Shape__Area"].values.reshape(-1, 1)

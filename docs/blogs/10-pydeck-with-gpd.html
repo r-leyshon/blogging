@@ -455,7 +455,7 @@ A Note on the Purpose
 <li>Activate the virtual environment.</li>
 <li>Create a python script and import the dependencies.</li>
 </ol>
-<div id="628c5529" class="cell" data-execution_count="1">
+<div id="a1ebb6d1" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
@@ -472,7 +472,7 @@ A Note on the Purpose
 <h3 class="anchored" data-anchor-id="ingest-data">Ingest Data</h3>
 <p>For the point data, I will ingest all Welsh lower super output area 2021 population-weighted centroids from <a href="https://geoportal.statistics.gov.uk/datasets/79fa1c80981b4e4eb218bbce1afc304b_0/explore">ONS Open Geography Portal</a>.</p>
 <p>For more on working with ONS Open Geography Portal, see <a href="../blogs/06-working-with-ONS-open-geo-portal.html">Getting Data from ONS Open Geography Portal</a>.</p>
-<div id="38ef35f0" class="cell" data-execution_count="2">
+<div id="e6c792f9" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ENDPOINT <span class="op">=</span> <span class="st">"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LSOA_Dec_2001_Address_Weighted_Centroids/FeatureServer/0/query"</span></span>
@@ -555,7 +555,7 @@ A Note on the Purpose
 </div>
 </div>
 <p>The geometry column is not in a format that pydeck will accept. Adding a column with a list of long,lat values for each coordinate will do the trick.</p>
-<div id="585cd3ba" class="cell" data-execution_count="3">
+<div id="33293b3c" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>centroids[<span class="st">"pydeck_geometry"</span>] <span class="op">=</span> [[c.x, c.y] <span class="cf">for</span> c <span class="kw">in</span> centroids[<span class="st">"geometry"</span>]]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>centroids.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
@@ -643,7 +643,7 @@ Tip
 <p>Control the map by click and dragging the map with your mouse. Hold shift + click and drag to yaw or pitch the map. Scroll in and out to alter the zoom.</p>
 </div>
 </div>
-<div id="50d906e9" class="cell" data-execution_count="4">
+<div id="a867562f" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> pdk.Layer(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ScatterplotLayer"</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    centroids,</span>
@@ -686,7 +686,7 @@ Tip
 <h3 class="anchored" data-anchor-id="ingest-data-1">Ingest Data</h3>
 <p>To demonstrate working with polygons, the Welsh super generalised 2023 local authority district boundaries will be ingested from <a href="https://geoportal.statistics.gov.uk/datasets/2e9f5c259fec4e1c9951ecb974253c66_0/explore?location=55.223511%2C-3.317025%2C6.81">ONS Open Geography Portal</a>.</p>
 <p>As elevation and polygon colour will be controlled by features of the data, sklearn.prepeocessing is used to scale the “Shape__Area” column.</p>
-<div id="78dbc8ed" class="cell" data-execution_count="6">
+<div id="540aa672" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ENDPOINT<span class="op">=</span><span class="st">"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LPA_APR_2023_UK_BFC_V2/FeatureServer/0/query"</span></span>
@@ -699,12 +699,14 @@ Tip
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>polygons <span class="op">=</span> gpd.GeoDataFrame.from_features(</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    features<span class="op">=</span>content[<span class="st">"features"</span>], crs<span class="op">=</span>content[<span class="st">"crs"</span>][<span class="st">"properties"</span>][<span class="st">"name"</span>])</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># feature engineering for pydeck viz</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>min_max_scaler <span class="op">=</span> preprocessing.MinMaxScaler()</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> polygons[<span class="st">"Shape__Area"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>x_scaled <span class="op">=</span> min_max_scaler.fit_transform(x)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>polygons[<span class="st">"area_norm"</span>] <span class="op">=</span> pd.Series(x_scaled.flatten())</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>polygons.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># simplify geometries to reduce file size (tolerance in degrees, ~0.005 ≈ 500m)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>polygons[<span class="st">"geometry"</span>] <span class="op">=</span> polygons[<span class="st">"geometry"</span>].simplify(tolerance<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># feature engineering for pydeck viz</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>min_max_scaler <span class="op">=</span> preprocessing.MinMaxScaler()</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> polygons[<span class="st">"Shape__Area"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>x_scaled <span class="op">=</span> min_max_scaler.fit_transform(x)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>polygons[<span class="st">"area_norm"</span>] <span class="op">=</span> pd.Series(x_scaled.flatten())</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>polygons.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
@@ -731,7 +733,7 @@ Tip
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>MULTIPOLYGON (((-4.40784 53.14366, -4.40775 53...</td>
+<td>MULTIPOLYGON (((-4.40784 53.14366, -4.406 53.1...</td>
 <td>355</td>
 <td>W43000001</td>
 <td>Isle of Anglesey LPA</td>
@@ -746,7 +748,7 @@ Tip
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>MULTIPOLYGON (((-4.0606 52.54119, -4.06071 52....</td>
+<td>MULTIPOLYGON (((-4.0606 52.54119, -4.06114 52....</td>
 <td>356</td>
 <td>W43000002</td>
 <td>Gwynedd LPA</td>
@@ -761,7 +763,7 @@ Tip
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>MULTIPOLYGON (((-4.07744 52.60258, -4.0773 52....</td>
+<td>MULTIPOLYGON (((-4.07744 52.60258, -4.0769 52....</td>
 <td>357</td>
 <td>W43000003</td>
 <td>Snowdonia National Park LPA</td>
@@ -776,7 +778,7 @@ Tip
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>MULTIPOLYGON (((-3.83259 53.19737, -3.83277 53...</td>
+<td>MULTIPOLYGON (((-3.83259 53.19737, -3.83279 53...</td>
 <td>358</td>
 <td>W43000004</td>
 <td>Conwy LPA</td>
@@ -791,7 +793,7 @@ Tip
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>MULTIPOLYGON (((-3.46001 53.28197, -3.46013 53...</td>
+<td>MULTIPOLYGON (((-3.46001 53.28197, -3.46036 53...</td>
 <td>359</td>
 <td>W43000005</td>
 <td>Denbighshire LPA</td>
@@ -811,7 +813,7 @@ Tip
 </div>
 </div>
 <p>In order to pass the content of this GeoDataFrame to pydeck, use the <code>to_json</code> method to format as a geoJSON string. Then use <code>json.loads()</code> to format that string as a dictionary.</p>
-<div id="addd6a8c" class="cell" data-execution_count="7">
+<div id="27d01b9a" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># format data for use in pydeck</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>json_out <span class="op">=</span> json.loads(polygons.to_json())</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the first authority</span></span>
@@ -835,7 +837,7 @@ Tip
 <h3 class="anchored" data-anchor-id="pydeck-visualisation-1">Pydeck Visualisation</h3>
 <p>This format can now be passed to pydeck. One ‘gotcha’ to be aware of, when using attributes in the json to control elevation or colour, the json properties must be explicitly referenced, eg <code>"properties.area_norm"</code>.</p>
 <p>In contrast, when using json attributes in the tooltip, you can refer to them directly, eg <code>"area_norm"</code>.</p>
-<div id="5ebf62d6" class="cell" data-execution_count="8">
+<div id="7e78e017" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="st">"100"</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="st">"(1 - properties.area_norm) * 255"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">"properties.area_norm * 255"</span></span>
