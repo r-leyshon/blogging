@@ -103,14 +103,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../www/styles.css">
 <meta property="og:title" content="Pytest Fixtures in Plain English – The Data Savvy Corner">
 <meta property="og:description" content="Plain English Discussion of Pytest Fixtures.">
-<meta property="og:image" content="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;amp;q=70">
+<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/11-fiddly-bits-of-pytest/intro-img.jpg">
 <meta property="og:site_name" content="The Data Savvy Corner">
-<meta property="og:image:alt" content="Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
+<meta property="og:image:alt" content="A futuristic lab test bench.">
 <meta name="twitter:title" content="Pytest Fixtures in Plain English – The Data Savvy Corner">
 <meta name="twitter:description" content="Plain English Discussion of Pytest Fixtures.">
-<meta name="twitter:image" content="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;amp;q=70">
+<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/11-fiddly-bits-of-pytest/intro-img.jpg">
 <meta name="twitter:site" content="@Rich_L1984">
-<meta name="twitter:image:alt" content="Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
+<meta name="twitter:image:alt" content="A futuristic lab test bench.">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -329,12 +329,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
-  <ul class="collapse">
-  <li><a href="#intended-audience" id="toc-intended-audience" class="nav-link" data-scroll-target="#intended-audience">Intended Audience</a></li>
+  <li><a href="#intended-audience" id="toc-intended-audience" class="nav-link active" data-scroll-target="#intended-audience">Intended Audience</a></li>
   <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What You’ll Need:</a></li>
   <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
-  </ul></li>
   <li><a href="#what-are-fixtures" id="toc-what-are-fixtures" class="nav-link" data-scroll-target="#what-are-fixtures">What are fixtures?</a></li>
   <li><a href="#when-would-you-use-fixtures" id="toc-when-would-you-use-fixtures" class="nav-link" data-scroll-target="#when-would-you-use-fixtures">When would you use fixtures?</a></li>
   <li><a href="#scoping-fixtures" id="toc-scoping-fixtures" class="nav-link" data-scroll-target="#scoping-fixtures">Scoping fixtures</a>
@@ -395,14 +392,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<figure class="center figure">
-<img class="shaded_box figure-img" width="400px" src="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg">
-<figcaption style="text-align:center;">
-Creative commons license by <a href="https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe">Ralph</a>
-</figcaption>
-</figure>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p><img class="shaded_box" src=".././www/11-fiddly-bits-of-pytest/intro-img.jpg" alt="A futuristic lab test bench." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;"> ## Introduction</p>
 <p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses using test data as fixtures with <code>pytest</code> and is the first in a series of blogs called <a href="../blogs/index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
 <p>For a wealth of documentation, guides and how-tos, please consult the <a href="https://docs.pytest.org/en/8.0.x/" target="_blank">pytest documentation</a>.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
@@ -440,7 +430,6 @@ A Note on the Purpose (Click to expand)
 <p>This blog is accompanied by code in <a href="https://github.com/r-leyshon/pytest-fiddly-examples">this repository</a>. The main branch provides a template with the minimum structure and requirements expected to run a <code>pytest</code> suite. The repo branches contain the code used in the examples of the following sections.</p>
 <p>Feel free to fork or clone the repo and checkout to the example branches as needed.</p>
 <p>The example code that accompanies this article is available in the <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/fixtures">fixtures branch</a> of the example code repo.</p>
-</section>
 </section>
 <section id="what-are-fixtures" class="level2">
 <h2 class="anchored" data-anchor-id="what-are-fixtures">What are fixtures?</h2>
@@ -623,9 +612,9 @@ A Note on the Purpose (Click to expand)
 <h4 class="anchored" data-anchor-id="define-data">Define Data</h4>
 <p>In this part, I will explore the scoping of fixtures with DataFrames. Again, I’ll use a toy example to demonstrate scope behaviour. Being a child of the ’90s (mostly), I’ll use a scenario from my childhood. Scooby Doo is still a thing, right?</p>
 <p><strong>Enter: The Mystery Machine</strong></p>
-<p><img src=".././www/11-fiddly-bits-of-pytest/mm.jpg" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
+<p><img src=".././www/11-fiddly-bits-of-pytest/mm.avif" alt="Scooby Doo &amp; the gang in the Mystery Machine" class="center"> </p>
 <p>The scenario: The passengers of the Mystery Machine van all have the munchies. They stop at a ‘drive thru’ to get some takeaway. We have a table with a record for each character. We have columns with data about the characters’ names, their favourite food, whether they have ‘the munchies’, and the contents of their stomach.</p>
-<div id="1e860ea0" class="cell" data-execution_count="1">
+<div id="600c9924" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mystery_machine <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        {</span>
@@ -1061,7 +1050,7 @@ Caution
 <section id="fixtures-across-multiple-test-modules" class="level4">
 <h4 class="anchored" data-anchor-id="fixtures-across-multiple-test-modules">Fixtures Across Multiple Test Modules</h4>
 <p>Finally in this section, we will explore fixture behaviour across more than one test module. Below I define a new source module with a function used to update the <code>mystery_machine</code> DataFrame. This function will update the <code>fave_food</code> column for a character if it has already eaten. This is meant to represent a character’s preference for a dessert following a main course. Once more, this function will not deep copy the input DataFrame but will allow inplace adjustment.</p>
-<p><img class="center shaded_box" alt="Delicious ice cream" title="Delicious ice cream by Prompart https://pixexid.com/profile/@prompart" src="https://images.pixexid.com/delicious-ice-cream-ibt3ypxn.jpeg?h=700&amp;q=70"></p>
+<p><img class="center shaded_box" alt="Delicious ice cream" title="Delicious ice cream by Prompart https://pixexid.com/profile/@prompart" src=".././www/11-fiddly-bits-of-pytest/sunday.jpg"></p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>update_food.py</strong></pre>

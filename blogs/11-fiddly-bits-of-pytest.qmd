@@ -9,21 +9,16 @@ categories:
     - Unit tests
     - fixtures
     - pytest-in-plain-english
-image: "https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg?h=699&amp;q=70"
-image-alt: "Sculptural simplicity, monochrome background highlighting the beauty of minimalist sculptures by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+image: "/./www/11-fiddly-bits-of-pytest/intro-img.jpg"
+image-alt: "A futuristic lab test bench."
 toc: true
 jupyter: 
   kernelspec:
-    name: "conda-env-pytest-env-py"
+    name: "pytest-env"
     language: "python"
-    display_name: "blog-pytest-env"
+    display_name: "pytest-env"
 ---
-
-<figure class=center>
-  <img class="shaded_box" width=400px src="https://images.pixexid.com/sculptural-simplicity-monochrome-background-highlighting-the-beauty-of-minimali-jmhkipzb.jpeg"></img>
-  <figcaption style="text-align:center;">Creative commons license by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
-</figure>
-
+<img class=shaded_box src=/./www/11-fiddly-bits-of-pytest/intro-img.jpg alt="A futuristic lab test bench." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 ## Introduction
 
 `pytest` is a testing package for the python framework. It is broadly used to
@@ -356,7 +351,7 @@ thing, right?
 
 **Enter: The Mystery Machine**
 
-<img src=/./www/11-fiddly-bits-of-pytest/mm.jpg alt="Scooby Doo & the gang in the Mystery Machine" class=center>
+<img src=/./www/11-fiddly-bits-of-pytest/mm.avif alt="Scooby Doo & the gang in the Mystery Machine" class=center>
 </img>
 
 The scenario: The passengers of the Mystery Machine van all have the munchies.
@@ -828,7 +823,7 @@ character's preference for a dessert following a main course. Once more, this
 function will not deep copy the input DataFrame but will allow inplace
 adjustment.
 
-<img class="center shaded_box" alt="Delicious ice cream" title="Delicious ice cream by Prompart https://pixexid.com/profile/@prompart" src="https://images.pixexid.com/delicious-ice-cream-ibt3ypxn.jpeg?h=700&amp;q=70">
+<img class="center shaded_box" alt="Delicious ice cream" title="Delicious ice cream by Prompart https://pixexid.com/profile/@prompart" src="/./www/11-fiddly-bits-of-pytest/sunday.jpg">
 
 ```{.python filename="update_food.py"}
 """Helping learners understand how to work with pytest fixtures."""

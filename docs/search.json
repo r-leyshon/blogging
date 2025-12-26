@@ -473,7 +473,7 @@
     "href": "blogs/11-fiddly-bits-of-pytest.html",
     "title": "Pytest Fixtures in Plain English",
     "section": "",
-    "text": "Creative commons license by Ralph"
+    "text": "## Introduction\npytest is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses using test data as fixtures with pytest and is the first in a series of blogs called pytest in plain English, favouring accessible language and simple examples to explain the more intricate features of the pytest package.\nFor a wealth of documentation, guides and how-tos, please consult the pytest documentation."
   },
   {
     "objectID": "blogs/11-fiddly-bits-of-pytest.html#introduction",

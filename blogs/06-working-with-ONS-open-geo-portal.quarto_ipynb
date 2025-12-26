@@ -1,0 +1,741 @@
+{
+  "cells": [
+    {
+      "cell_type": "raw",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: Getting Data from ONS Open Geography Portal\n",
+        "author: Rich Leyshon\n",
+        "date: December 15 2023\n",
+        "date-modified: last-modified\n",
+        "description: Ingesting data using Python requests & ArcGIS REST API.\n",
+        "categories:\n",
+        "  - Tutorial\n",
+        "  - ONS Open Geography Portal\n",
+        "  - REST API\n",
+        "  - Web data\n",
+        "image: /./www/06-working-with-ONS-geo-portal/intro-img.jpg\n",
+        "image-alt: Great Britain-United Kingdom Futuristic Map\n",
+        "toc: true\n",
+        "code-annotations: select\n",
+        "---"
+      ],
+      "id": "be3138d9"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "<img class=\"shaded_box\" style=\"display:block;margin-left:auto;margin-right:auto;width:90%;border:none;\" src=\"/./www/06-working-with-ONS-geo-portal/intro-img.jpg\" alt=\"Great Britain-United Kingdom Futuristic Map\"</img>\n",
+        "\n",
+        "## Introduction\n",
+        "\n",
+        "This tutorial is for programmers familiar with Python and how to create virtual\n",
+        "environments, but perhaps less familiar with the Python `requests` package or\n",
+        "ArcGIS REST API @ArcGIS. \n",
+        "\n",
+        "If you're in a rush and just need a snippet that will ingest every UK 2021 LSOA\n",
+        "boundary available, [here is a GitHub gist](https://gist.github.com/r-leyshon/222dd4039143398ad9574fba83c32752#file-get_data-py)\n",
+        "just for you.\n",
+        "\n",
+        ":::{.callout collapse=\"true\"}\n",
+        "\n",
+        "### Blog Updated (Click to reveal)\n",
+        "\n",
+        "This blog was updated with the following changes:\n",
+        "\n",
+        "* Endpoint url for LSOA 2021 boundaries had changed.\n",
+        "* Replace iFrames in blog with images as some users were being prompted to\n",
+        "log in.\n",
+        "* Amend code chunks. \n",
+        "\n",
+        ":::\n",
+        "\n",
+        "## The Scenario\n",
+        "\n",
+        "You would like to use python to programmatically ingest data from the Office\n",
+        "for National Statistics (ONS) Open Geography Portal. This tutorial aims to help\n",
+        "you do this, working with the [2021 LSOA boundaries](https://geoportal.statistics.gov.uk/datasets/2bbaef5230694f3abae4f9145a3a9800_0/explore?location=52.723885%2C-2.489483%2C6.87),\n",
+        "the essential features and quirks of the ArcGIS REST API will be explored.\n",
+        "\n",
+        "## What you'll need:\n",
+        "\n",
+        "- [ ] A permissive firewall (whitelist the domain \"https://geoportal.statistics.gov.uk/\" if necessary)\n",
+        "- [ ] Python package manager (eg `pip`)\n",
+        "- [ ] Python environment manager (eg `venv`, `poetry` etc)\n",
+        "- [ ] Python requirements:\n",
+        "\n",
+        "```{.python filename=requirements.txt eval=false}\n",
+        "folium\n",
+        "geopandas\n",
+        "mapclassify\n",
+        "matplotlib\n",
+        "pandas\n",
+        "requests\n",
+        "\n",
+        "```\n",
+        "\n",
+        "## Tutorial\n",
+        "\n",
+        "### Setting Things Up\n",
+        "\n",
+        "1. Create a new directory with a requirements file as shown above.\n",
+        "2. Create a new virtual environment.\n",
+        "3. Install the dependencies [listed above](#what-youll-need).\n",
+        "4. Create a file called `get_data.py` or whatever you would like to call it.\n",
+        "The rest of the tutorial will work with this file.\n",
+        "5. Add the following lines to the top of `get_data.py` and run them, this \n",
+        "ensures that you have the dependencies needed to run the rest of the code:"
+      ],
+      "id": "b8aef3c2"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import requests\n",
+        "import geopandas as gpd\n",
+        "import pandas as pd"
+      ],
+      "id": "6b5ca83c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Finding The Data Asset\n",
+        "\n",
+        "One of the tricky parts of working with the GeoPortal is finding the resource\n",
+        "that you need.\n",
+        "\n",
+        "1. Access the ONS Open Geography Portal homepage @ONSGeoPortal.\n",
+        "2. Using the ribbon menu at the top of the page, navigate to:  \n",
+        "Boundaries {{< fa arrow-right >}} Census Boundaries {{< fa arrow-right >}} Lower Super Output Areas {{< fa arrow-right >}} 2021 Boundaries. \n",
+        "3. Once you have clicked on this option, a page will open with items related to\n",
+        "your selection. Click on the item called \"Lower Layer Super Output Areas (2021)\n",
+        "Boundaries EW BFC\"\n",
+        "4. This will bring you to the data asset that you need. The webpage should\n",
+        "look like the image below.\n",
+        "\n",
+        "![ONS Open Geography Portal, LSOA 2021 boundaries interface. Click to expand.](/./www/06-working-with-ONS-geo-portal/izZZjt4.jpg){.lightbox}\n",
+        "\n",
+        "### Finding the Endpoint\n",
+        "Now that we have the correct data asset, let's find the endpoint. This is the\n",
+        "url that we will need to send our requests to, in order to receive the data\n",
+        "that we need.\n",
+        "\n",
+        "1. Click on the \"View Full Details\" button.\n",
+        "2. Scroll down, under the menu \"I want to...\", and expand the \"View API\n",
+        "Resources\" menu.\n",
+        "3. You will see two urls labelled \"GeoService\" and \"GeoJSON\". Click the copy\n",
+        "button to the right of the url.\n",
+        "4. Paste the url into your Python script.\n",
+        "5. Edit the url string to remove everything to the right of the word 'query',\n",
+        "including the question mark. Then assign it to a variable called `ENDPOINT` as\n",
+        "below:"
+      ],
+      "id": "b2e34454"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "ENDPOINT = \"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_December_2021_Boundaries_EW_BFC_V10/FeatureServer/0/query\""
+      ],
+      "id": "2ba25f7d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "This `ENDPOINT` is a url that we can use to flexibly ask for only the data or\n",
+        "metadata, that we require.\n",
+        "\n",
+        "### Requesting a Single Entry\n",
+        "\n",
+        "Now that we're set up to make requests, we can use an example that brings back\n",
+        "only a small slice of the database. To do this, we will need to specify some\n",
+        "query parameters. These parameters will get added to our endpoint url and will\n",
+        "be interpreted by ArcGIS to serve us only the data we ask for. In this example,\n",
+        "I will ask for a single LSOA boundary only by specifying the LSOA code with an\n",
+        "SQL clause. For more detail on the flexibility of ArcGIS API, please consult\n",
+        "the documentation @ArcGIS.\n",
+        "\n",
+        "Define the below Python dictionary, noting that the syntax and data formats\n",
+        "- don't forget to wrap the LSOA21CD in speech marks:"
+      ],
+      "id": "74a04f72"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# requesting a specific LSOA21CD\n",
+        "params = {\n",
+        "    \"where\": \"LSOA21CD = 'W01002029'\",                                     # <1>\n",
+        "    \"outSR\": 4326,                                                         # <2>\n",
+        "    \"f\": \"geoJSON\",                                                        # <3>\n",
+        "    \"resultOffset\": 0,                                                     # <4>    \n",
+        "    \"outFields\": \"*\",                                                      # <5>   \n",
+        "}"
+      ],
+      "id": "0141caf6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "1. SQL clauses can go here \n",
+        "2. CRS that you want\n",
+        "3. Response format\n",
+        "4. Parameter used for pagination later\n",
+        "5. This will ensure all available fields are returned\n",
+        "\n",
+        "Now I will define a function that will make the request and handle the\n",
+        "response for us. Go ahead and define this function:"
+      ],
+      "id": "9f128d25"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "def request_to_gdf(url:str, query_params:dict) -> gpd.GeoDataFrame:\n",
+        "    \"\"\"Send a get request to ArcGIS API & Convert to GeoDataFrame.\n",
+        "\n",
+        "    Only works when asking for features and GeoJSON format.\n",
+        "\n",
+        "    Parameters\n",
+        "    ----------\n",
+        "    url : str\n",
+        "        The url endpoint.\n",
+        "    query_params : dict\n",
+        "        A dictionary of query parameter : value pairs.\n",
+        "\n",
+        "    Returns\n",
+        "    -------\n",
+        "    requests.response\n",
+        "        The response from ArcGIS API server. Useful for paginated requests\n",
+        "        later.\n",
+        "    gpd.GeoDataFrame\n",
+        "        A GeoDataFrame of the requested geometries in the crs specified by\n",
+        "        the response metadata.\n",
+        "\n",
+        "    Raises\n",
+        "    ------\n",
+        "    requests.exceptions.RequestException\n",
+        "        The response was not ok.\n",
+        "    \"\"\"\n",
+        "    query_params[\"f\"] = \"geoJSON\"                                           # <1>\n",
+        "    response = requests.get(url, params=query_params)\n",
+        "    if response.ok:                                                         # <2>\n",
+        "        content = response.json()                \n",
+        "        return (\n",
+        "            response,                                                       # <3>\n",
+        "            gpd.GeoDataFrame.from_features(\n",
+        "                content[\"features\"],\n",
+        "                crs=content[\"crs\"][\"properties\"][\"name\"]                    # <4>\n",
+        "                ))\n",
+        "    else:\n",
+        "        raise requests.RequestException(\n",
+        "            f\"HTTP Code: {response.status_code}, Status: {response.reason}\" # <5>\n",
+        "        )"
+      ],
+      "id": "20ac4ecd",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "1. This approach will only work with geoJSON\n",
+        "2. Watch out for JSONDecodeError too...\n",
+        "3. We'll need the response again later for pagination\n",
+        "4. Best to get crs from response rather than hard-code your expected crs\n",
+        "5. Cases where a traditional bad response may be returned\n",
+        "\n",
+        "Briefly, this function is going to ensure the geoJSON format is asked for,\n",
+        "as this is the neatest way to bash the response into a GeoDataFrame. It\n",
+        "then queries ArcGIS API with the endpoint and parameter you specify. It\n",
+        "checks if  a status code 200 was returned (good response), if not an\n",
+        "exception is raised with the HTTP code and status. Finally, if no error\n",
+        "triggered an exception, the ArcGIS response and a GeoDataFrame format of\n",
+        "the spatial feature is returned.\n",
+        "\n",
+        ":::{.callout-caution collapse=\"true\"}\n",
+        "Be careful when handling the response of ArcGIS API. Depending on the query\n",
+        "you send, it is possible to return status code 200 responses that seem\n",
+        "fine. But if the server was unable to make sense of your SQL query, it may\n",
+        "result in a `JSONDecodeError` or even content with details of your error.\n",
+        "It is important to handle the various error conditions if you plan to build\n",
+        "something more robust than this tutorial and to be exacting with your query\n",
+        "strings. For this reason, I would suggest using the `params` dictionary\n",
+        "approach to introducing query parameters rather than attempting to manually\n",
+        "format the url string.\n",
+        ":::\n",
+        "\n",
+        "With that function defined, we can go straight to a tabular data format,\n",
+        "like below:"
+      ],
+      "id": "809763a2"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "_, gdf = request_to_gdf(ENDPOINT, params)\n",
+        "gdf.head()"
+      ],
+      "id": "261ace35",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We can use the GeoDataFrame `.explore()` method to quickly inspect the fruit\n",
+        "of our efforts."
+      ],
+      "id": "6f61c5a7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "gdf.explore()"
+      ],
+      "id": "437b0a94",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Return All LSOAs in a Local Authority\n",
+        "\n",
+        "We probably need to work with more than just a single LSOA, but would\n",
+        "prefer not to ingest all of them. Have a look at the available columns in\n",
+        "the GeoDataFrame. "
+      ],
+      "id": "73d6df41"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "gdf.head(1)"
+      ],
+      "id": "599d1415",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "There is a pattern that we can exploit to request every LSOA in a local\n",
+        "authority. Have a go at updating `params[\"where\"]` with an SQL query that\n",
+        "can achieve this."
+      ],
+      "id": "396ae5cf"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the solution\"\n",
+        "params[\"where\"] = \"LSOA21NM like 'Newport%'\""
+      ],
+      "id": "03a021c8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Pass the updated `params` dictionary to the `request_to_gdf` function and\n",
+        "use the `.explore()` method to visualise the map. Confirm that the LSOAs\n",
+        "returned match what you expected."
+      ],
+      "id": "ba35a74a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the solution\"\n",
+        "_, gdf = request_to_gdf(ENDPOINT, params)\n",
+        "gdf.explore()"
+      ],
+      "id": "0f2091db",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### How Many Records Are There?\n",
+        "\n",
+        "Update the `params` dictionary by changing the value of `where` to `'1=1'`."
+      ],
+      "id": "d4ab2846"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "\n",
+        "params[\"where\"] = \"1=1\"                                                     # <1>"
+      ],
+      "id": "9e67b422",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "1. Parameter to get max allowed data, this will get encoded to\n",
+        "\"where=1%3D1\", see @W3-urlencode for more on URL-encoding.\n",
+        "\n",
+        "For more on why to do this, consult the ArcGIS docs @ArcGIS. This is the\n",
+        "way to state 'where=true', meaning get every record possible while\n",
+        "respecting the `maxRecordCount`. `maxRecordCount` limits the number of\n",
+        "records available for  download to 2,000 records in most cases. This is\n",
+        "ArcGIS' method of limiting service demand while not requiring\n",
+        "authentication. It also means we need to handle **paginated** responses.\n",
+        "\n",
+        "It's a good idea to confirm the number of records available within the \n",
+        "database. Have a go at reading through the ArcGIS docs @ArcGIS to find the\n",
+        "parameter responsible for returning counts only. Query the database for the\n",
+        "number of records and store it as an integer called `n_records`."
+      ],
+      "id": "79e4a533"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "\n",
+        "# how many LSOA boundaries should we expect in the full data?\n",
+        "params[\"returnCountOnly\"] = True\n",
+        "response = requests.get(ENDPOINT, params=params)\n",
+        "n_records = response.json()[\"properties\"][\"count\"]\n",
+        "print(f\"There are {n_records} LSOAs in total\")"
+      ],
+      "id": "d25cc7c0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Paginated Requests\n",
+        "\n",
+        "Now we have the number of records, it's important to go back to collecting\n",
+        "geometries. Please update the `params` dictionary to allow that to happen."
+      ],
+      "id": "9be03c7b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "\n",
+        "# lets now return to collecting geometries\n",
+        "del params[\"returnCountOnly\"]                                               # <1>"
+      ],
+      "id": "9d00190e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "1. Alternatively set this to False\n",
+        "\n",
+        "\n",
+        "Have a go at requesting the first batch of LSOA boundaries. Count how many\n",
+        "you get without attempting to paginate."
+      ],
+      "id": "a222fc34"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "\n",
+        "response, gdf = request_to_gdf(ENDPOINT, params)\n",
+        "print(f\"There are only {len(gdf)} LSOAs on this page.\")"
+      ],
+      "id": "3cf7ac9d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Visualise the first 100 rows of the GeoDataFrame you created in the\n",
+        "previous step."
+      ],
+      "id": "aec122fe"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "gdf.head(100).explore()"
+      ],
+      "id": "49e345d6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We need a condition to check if there are more pages left in the database.\n",
+        "See if you can find the target parameter by examining the response\n",
+        "properties."
+      ],
+      "id": "eec69b18"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "content = response.json()\n",
+        "more_pages = content[\"properties\"][\"exceededTransferLimit\"]                 # <1>\n",
+        "print(\n",
+        "    f\"It is {more_pages}, that there are more pages of data to ingest...\"\n",
+        "    )"
+      ],
+      "id": "f536e9b0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "1. This is conditional on whether more pages are available.\n",
+        "\n",
+        "We are nearly ready to ask for every available LSOA boundary. This will be \n",
+        "an expensive request. Therefore to make things go a bit faster, let's ask\n",
+        "for only the default fields by removing `params[\"outFields\"]`."
+      ],
+      "id": "7b84fe12"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the solution\"\n",
+        "del params[\"outFields\"]"
+      ],
+      "id": "e1652a19",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Now we need to add a new parameter to our `params` dictionary, with the key\n",
+        "`resultOffset`. We need to send multiple queries to the server,\n",
+        "incrementing the value of `resultOffset` by the number of records on each\n",
+        "page in every consecutive request. This may take quite a while, depending\n",
+        "on your connection. Add the code below to your python script and run it,\n",
+        "then make yourself a cup of your chosen beverage."
+      ],
+      "id": "669e7e64"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "offset = len(gdf)                                                           # <1>\n",
+        "all_lsoas = gdf                                                             # <2>\n",
+        "while more_pages:\n",
+        "    try:\n",
+        "        params[\"resultOffset\"] += offset                                        # <3> \n",
+        "        response, gdf = request_to_gdf(ENDPOINT, params)\n",
+        "        content = response.json()\n",
+        "        all_lsoas = pd.concat([all_lsoas, gdf])\n",
+        "        more_pages = content[\"properties\"][\"exceededTransferLimit\"]\n",
+        "    except KeyError:                                                        # <4>\n",
+        "        more_pages = False\n",
+        "\n",
+        "all_lsoas = all_lsoas.reset_index(drop=True)"
+      ],
+      "id": "c60949d7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "1. Number of records to offset by\n",
+        "2. Append our growing gdf of LSOA boundaries to this\n",
+        "3. Increment the records to ingest\n",
+        "4. Rather than exceededTransferLimit = False, it disappears...\n",
+        "\n",
+        "Be careful with the `exceededTransferLimit` parameter. Instead of being set\n",
+        "to False on the last page (as the docs suggest it should) - it actually\n",
+        "disappears instead, hence why I use the `try:...except` clause above. You\n",
+        "can attempt to set this parameter explicitly, but I find this makes no\n",
+        "difference."
+      ],
+      "id": "37033712"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "params[\"returnExceededLimitFeatures\"] = \"true\"\n",
+        "# or\n",
+        "params[\"returnExceededLimitFeatures\"] = True\n",
+        "# both patterns result in the same behaviour as not setting it - the "
+      ],
+      "id": "28e3dfe4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Check whether the number of records ingested matches the number expected."
+      ],
+      "id": "f9cd5222"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "all_done = len(all_lsoas) == n_records\n",
+        "print(\n",
+        "    f\"Does the row count match the expected number of records? {all_done}\"\n",
+        "    )"
+      ],
+      "id": "52e3e4a4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Finally, visualise the last 100 records available within the GeoDataFrame."
+      ],
+      "id": "75b772a8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the Solution\"\n",
+        "all_lsoas.tail(100).explore()"
+      ],
+      "id": "8c762a8e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Troubleshooting\n",
+        "\n",
+        "One tip I have for troubleshooting queries is to open up the web interface\n",
+        "for the `ENDPOINT`, by pasting it into your web browser, for example:\n",
+        "\n",
+        "![LSOA 2021 Endpoint Interface. Click to expand.](/./www/06-working-with-ONS-geo-portal/oCkMdHW.png){.lightbox}\n",
+        "\n",
+        "By using the fields to test out your query parameters and clicking the\n",
+        "\"Query (GET)\" button at the bottom of the page, you can get an indication\n",
+        "of whether your query is valid. This is a good place to test out more\n",
+        "complex SQL statements for the `where` parameter:\n",
+        "\n",
+        "![LSOA 2021 Endpoint Interface. Click to expand.](/./www/06-working-with-ONS-geo-portal/D1eyR0U.png){.lightbox}\n",
+        "\n",
+        "If you encounter a HTTP 403 Forbidden response, check the endpoint that you\n",
+        "are using is still valid. At times, ONS Geoportal change the endpoint. Old\n",
+        "endpoints will no longer allow access.\n",
+        "\n",
+        "## Conclusion\n",
+        "\n",
+        "In this tutorial, we have:\n",
+        "\n",
+        "* Demonstrated how to find resources on ONS Open Geography Portal.\n",
+        "* Found the ArcGIS endpoint url of that resource.\n",
+        "* Had a brief read through the ArcGIS documentation.\n",
+        "* Queried the API for a single LSOA code.\n",
+        "* Discussed a few of the quirks of this API.\n",
+        "* Retrieved the total number of records available.\n",
+        "* Used paginated requests to retrieve every record in the database.\n",
+        "\n",
+        "A good next step towards a more robust ingestion method would be to\n",
+        "consider adding a retry strategy to the requests @ZenRows. For a great\n",
+        "overview of the essentials of geographic data and tools, check out my\n",
+        "colleague's fantastic  blog on geospatial need-to-knows @GeoEssentials.\n",
+        "\n",
+        "Every web API has its own quirks, which is part of the joy of working with\n",
+        "web data. I hope this was helpful and all the best with your geospatial\n",
+        "data project! \n",
+        "\n",
+        "## Special Thanks...\n",
+        "\n",
+        "...to my colleague Edward, for working through this blog and providing me\n",
+        "with really useful feedback.\n",
+        "\n",
+        "<p id=fin><i>fin!</i></p>"
+      ],
+      "id": "d4f3c061"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "ons-geo-env",
+      "language": "python",
+      "display_name": "ons-geo-env"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
