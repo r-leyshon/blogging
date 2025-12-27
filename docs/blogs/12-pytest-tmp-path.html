@@ -100,14 +100,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../www/styles.css">
 <meta property="og:title" content="Pytest With tmp_path in Plain English – The Data Savvy Corner">
 <meta property="og:description" content="Plain English Discussion of Pytest Temporary Fixtures.">
-<meta property="og:image" content="https://images.pixexid.com/a-clock-with-gears-made-of-layered-textured-paper-and-a-glossy-metallic-face-s-0yp5gyd5.jpeg?h=699&amp;amp;q=70">
+<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/12-pytest-tmp-path/intro-img.jpg">
 <meta property="og:site_name" content="The Data Savvy Corner">
-<meta property="og:image:alt" content="A clock with gears made of layered, textured paper and a glossy metallic face, set against a backdrop of passing time by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
+<meta property="og:image:alt" content="Temporary directories being produced by a factory on a futuristic workbench.">
 <meta name="twitter:title" content="Pytest With tmp_path in Plain English – The Data Savvy Corner">
 <meta name="twitter:description" content="Plain English Discussion of Pytest Temporary Fixtures.">
-<meta name="twitter:image" content="https://images.pixexid.com/a-clock-with-gears-made-of-layered-textured-paper-and-a-glossy-metallic-face-s-0yp5gyd5.jpeg?h=699&amp;amp;q=70">
+<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/12-pytest-tmp-path/intro-img.jpg">
 <meta name="twitter:site" content="@Rich_L1984">
-<meta name="twitter:image:alt" content="A clock with gears made of layered, textured paper and a glossy metallic face, set against a backdrop of passing time by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)">
+<meta name="twitter:image:alt" content="Temporary directories being produced by a factory on a futuristic workbench.">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -397,12 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<figure class="center figure">
-<img class="shaded_box figure-img" width="400px" src="https://images.pixexid.com/a-clock-with-gears-made-of-layered-textured-paper-and-a-glossy-metallic-face-s-0yp5gyd5.jpeg">
-<figcaption style="text-align:center;">
-Creative commons license by <a href="https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe">Ralph</a>
-</figcaption>
-</figure>
+<p><img class="shaded_box" src=".././www/12-pytest-tmp-path/intro-img.jpg" alt="Temporary directories being produced by a factory on a futuristic workbench." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;"></p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses why and how we use pytest’s temporary fixtures <code>tmp_path</code> and <code>tmp_path_factory</code>. This blog is the second in a series of blogs called <a href="../blogs/index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
@@ -492,7 +487,7 @@ A Note on the Purpose (Click to expand)
 <p>As a reminder, <a href="https://github.com/r-leyshon/pytest-fiddly-examples/tree/temp-fixtures" target="_blank">the code for this section is located here.</a></p>
 <p>In this deliberately silly example, let’s say we have a poem sitting on our disk in a text file. Thanks to chatGPT for the poem and MSFT Bing Copilot for the image, making this a trivial consideration. Or should I really thank the millions of people who wrote the content that these services trained on?</p>
 <p>Saving the text file in the chunk below to the <code>./tests/data/</code> folder is where you would typically save data for your tests.</p>
-<p><img src="https://i.imgur.com/TKN3zzt.png" alt="A modern take on Jack and Jill sees the pair fending off bugs in a future technological dystopia." class="center" width="400/"></p>
+<p><img src=".././www/12-pytest-tmp-path/jack_jill.jpg" alt="A modern take on Jack and Jill sees the pair fending off bugs in a future technological dystopia." class="center" width="400/"></p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>tests/data/jack-jill-2024.txt</strong></pre>
@@ -528,7 +523,7 @@ A Note on the Purpose (Click to expand)
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>Showed that even in darkness, there's always light.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s imagine we need a program that can edit the text and write new versions of the poem to disk. Let’s go ahead and create a function that will read the poem from disk and replace any word that you’d like to change.</p>
-<div id="9b36e765" class="cell" data-execution_count="1">
+<div id="20e6e98b" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Demonstrating tmp_path &amp; tmp_path_factory with a simple txt file."""</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
@@ -559,7 +554,7 @@ A Note on the Purpose (Click to expand)
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> txt.replace(target_pattern, replacement)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can try using the function to rename a character in the rhyme, by running the below code in a python shell.</p>
-<div id="bbf18052" class="cell" data-execution_count="2">
+<div id="145b276e" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyprojroot <span class="im">import</span> here</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rhyme <span class="op">=</span> _update_a_term(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  txt_pth<span class="op">=</span>here(<span class="st">"data/blogs/jack-jill-2024.txt"</span>),</span>
@@ -590,7 +585,7 @@ Why Use Underscores?
 </div>
 </div>
 <p>Great, next we need a little utility function that will take our text and write it to a file of our choosing.</p>
-<div id="d4c0a362" class="cell" data-execution_count="3">
+<div id="b8d7a01b" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _write_string_to_txt(some_txt:<span class="bu">str</span>, out_pth:Union[Path, <span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Write some string to a text file.</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -611,7 +606,7 @@ Why Use Underscores?
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        f.close()    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we need a wrapper function that will use the above functions, allowing the user to read in the text file, replace a pattern and then write the new poem to file.</p>
-<div id="4b0c178b" class="cell" data-execution_count="4">
+<div id="e6efe982" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_poem(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    poem_pth:Union[Path, <span class="bu">str</span>],</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    target_pattern:<span class="bu">str</span>,</span>
@@ -639,7 +634,7 @@ Why Use Underscores?
 <section id="testing-the-source-code" class="level3">
 <h3 class="anchored" data-anchor-id="testing-the-source-code">Testing the Source Code</h3>
 <p>We need to test <code>update_poem()</code> but it writes files to disk. We don’t want to litter our (and our colleagues’) disks with files every time <code>pytest</code> runs. Therefore we need to ensure the function’s <code>out_file</code> parameter is pointing at a temporary directory. In that way, we can rely on the temporary structure’s behaviour on teardown to remove these files when pytest finishes doing its business.</p>
-<div id="f274e9da" class="cell" data-execution_count="5">
+<div id="3c70f60f" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -665,7 +660,7 @@ Why Use Underscores?
 <li>Are the contents of that file as I expect?</li>
 </ul>
 <p>Let’s go ahead and add in those assertions.</p>
-<div id="a7c83031" class="cell" data-execution_count="6">
+<div id="e50bfc11" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -701,7 +696,7 @@ tests/test_update_poetry.py .                                            [100%]
 
 ============================== 1 passed in 0.01s ==============================</code></pre>
 <p>So we prove that the function works how we hoped it would. But what if I want to work with the <code>new_poem.txt</code> file again in another test function? Let’s add another test to <code>test_update_poetry.py</code> and see what we get when we try to use <code>tmp_path</code> once more.</p>
-<div id="69bcfe8a" class="cell" data-execution_count="7">
+<div id="b94fd7ce" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import statements ...</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -736,7 +731,7 @@ Fixture Scopes
 </div>
 </div>
 </div>
-<div id="cca79ae0" class="cell" data-execution_count="8">
+<div id="69a5e856" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import statements ...</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -749,7 +744,7 @@ Fixture Scopes
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">yield</span> tmp_path_factory.mktemp(<span class="st">"put_poetry_here"</span>, numbered<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that as <code>tmp_path_factory</code> is session-scoped, I’m free to reference it in another fixture with any scope. Here I define a module-scoped fixture, which means teardown of <code>_module_scoped_tmp</code> will occur once the final test in this test module completes. Now repeating the logic executed with <code>tmp_path</code> above, but this time with our new module-scoped temporary directory, we get a different outcome.</p>
-<div id="18015746" class="cell" data-execution_count="9">
+<div id="2e7f967d" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for update_poetry module."""</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import statements ...</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
