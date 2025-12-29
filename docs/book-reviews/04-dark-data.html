@@ -120,12 +120,12 @@ div.csl-indent {
 <link rel="stylesheet" href="../www/styles.css">
 <meta property="og:title" content="Dark Data – The Data Savvy Corner">
 <meta property="og:description" content="A perfect compendium of gotchas for the entry data scientist.">
-<meta property="og:image" content="https://i.imgur.com/qVgnzFV.jpeg">
+<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/book-reviews/04-dark-data/intro-img.jpg">
 <meta property="og:site_name" content="The Data Savvy Corner">
 <meta property="og:image:alt" content="An image of a black hole within a field of binary digits.">
 <meta name="twitter:title" content="Dark Data – The Data Savvy Corner">
 <meta name="twitter:description" content="A perfect compendium of gotchas for the entry data scientist.">
-<meta name="twitter:image" content="https://i.imgur.com/qVgnzFV.jpeg">
+<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/book-reviews/04-dark-data/intro-img.jpg">
 <meta name="twitter:site" content="@Rich_L1984">
 <meta name="twitter:image:alt" content="An image of a black hole within a field of binary digits.">
 <meta name="twitter:card" content="summary_large_image">
@@ -406,9 +406,7 @@ div.csl-indent {
 </header>
 
 
-<figure class="center figure">
-<img class="shaded_box figure-img" src="https://i.imgur.com/qVgnzFV.jpeg" alt="An image of a black hole within a field of binary digits." width="400px">
-</figure>
+<p><img class="shaded_box" src=".././www/book-reviews/04-dark-data/intro-img.jpg" alt="An image of a black hole within a field of binary digits." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;"></p>
 <section id="book-summary" class="level2">
 <h2 class="anchored" data-anchor-id="book-summary">Book Summary</h2>
 <p>“Dark Data: Why What You Don’t Know Matters” by David J. Hand delves into the crucial concept of dark data — information that is unseen, uncollected, or unanalysed but significantly impacts decision-making and understanding. Hand categorises dark data into 15 types, illustrating the dangers of ignoring such data through historical and contemporary examples like FDR’s reelection polls and the Challenger shuttle disaster. The book highlights how unrecognised dark data can lead to skewed understandings, incorrect conclusions, and flawed actions.</p>
@@ -469,7 +467,7 @@ div.csl-indent {
 <p>Distorting a dataset could be caused by either dropping records or imputing values for missing observations. There are far too many machine learning tutorials online that carelessly instruct learners to do so, in order to be able to use the algorithm of choice. Mindlessly erasing or imputing records with missing observations would generally mean reversion to the mean but has the potential to propagate algorithmic harm. Could the missing records represent people at the fringes of society, whose data are often challenging to capture? I worry that this practice is far too widespread within the field of data science, as many of the popular machine learning algorithms will not tolerate the inconvenient truth of dark data.</p>
 <p>Treating these records should involve a good deal of investigation. Is there a hint in the present data that could explain the missingness? Could correlations with other dimensions in the data mean a more appropriate imputation value based on a sub-group average, rather than the population average? To help python developers assess missingness in a dataset, I highly encourage people to make use of the <a href="https://github.com/ResidentMario/missingno"><code>missingno</code> package</a>. If you write in R, then the equivalent functionality is available with <a href="https://naniar.njtierney.com/"><code>naniar</code></a>.</p>
 <p>The below visual gives an overview of populated records in a data table about road traffic collisions. Dark bands are populated records. White bands are missing records.</p>
-<div id="19b2c58a" class="cell" data-execution_count="1">
+<div id="9ad97741" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> missingno <span class="im">as</span> msno</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -478,7 +476,7 @@ div.csl-indent {
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="04-dark-data_files/figure-html/cell-2-output-1.png" width="1963" height="1064" class="figure-img"></p>
+<p><img src="04-dark-data_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>

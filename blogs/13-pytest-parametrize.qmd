@@ -9,21 +9,18 @@ categories:
     - Unit tests
     - parametrize
     - pytest-in-plain-english
-image: "https://i.imgur.com/n1flYqU.jpeg"
-image-alt: "Complex sushi conveyor belt with a futuristic theme in a pastel palette."
+image: /./www/13-pytest-parametrize/intro-img.jpg
+image-alt: "Futuristic Russian dolls on a conveyor belt."
 toc: true
 jupyter: 
   kernelspec:
-    name: "conda-env-pytest-env-py"
+    name: "pytest-env"
     language: "python"
-    display_name: "blog-pytest-env"
+    display_name: "pytest-env"
 css: /www/13-pytest-parametrize/styles.css
 ---
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/n1flYqU.jpeg"></img>
-  <figcaption>Complex sushi conveyor belt with a futuristic theme in a pastel palette.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/13-pytest-parametrize/intro-img.jpg alt="Futuristic Russian dolls on a conveyor belt." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 

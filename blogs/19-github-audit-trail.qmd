@@ -12,13 +12,13 @@ categories:
     - Blame
     - VSCode
     - Git Grep
-image: https://i.imgur.com/iwVPwPG.png
+image: /./www/19-github-audit-trail/intro-img.jpg
 image-alt: "A cute cat-like character inspects code with a magnifying glass."
 toc: true
 css: /./www/17-quarto-comments/styles.css
 ---
 
- <img class=shaded_box src=https://i.imgur.com/iwVPwPG.png alt="A cute cat-like character inspects code with a magnifying glass." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
+<img class=shaded_box src=/./www/19-github-audit-trail/intro-img.jpg alt="A cute cat-like character inspects code with a magnifying glass." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 > "You don't need version control any more than a trapese [sic] artist
 needs a safety net." Mark Cidade, <a href=https://stackoverflow.com/posts/250991/revisions target="_blank">Stack Overflow</a>

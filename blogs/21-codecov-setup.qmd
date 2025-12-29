@@ -8,13 +8,13 @@ categories:
     - CodeCov
     - Coverage
     - CI:CD
-image: https://i.imgur.com/ozUGhg7.png
-image-alt: "CodeCov shield"
+image: /./www/21-codecov-setup/intro-img.jpg
+image-alt: "Futuristic cyberpunk shield"
 toc: true
 css: /./www/17-quarto-comments/styles.css
 code-annotations: select
 ---
-<img class=shaded_box src=https://i.imgur.com/ozUGhg7.png alt="CodeCov shield." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+<img class=shaded_box src=/./www/21-codecov-setup/intro-img.jpg alt="Futuristic cyberpunk shield" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 

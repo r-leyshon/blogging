@@ -11,8 +11,8 @@ categories:
     - custom marks
     - markers
     - pytest-in-plain-english
-image: "https://i.imgur.com/dCJBh9w.jpeg"
-image-alt: "Planet composed of croissants"
+image: /./www/16-pytest-marks/intro-img.jpg
+image-alt: "Futuristic workbench quality controlled ampules."
 toc: true
 toc-depth: 4
 jupyter: 
@@ -23,10 +23,7 @@ jupyter:
 css: /www/13-pytest-parametrize/styles.css
 ---
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/dCJBh9w.jpeg"></img>
-  <figcaption>Planet composed of croissants.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/16-pytest-marks/intro-img.jpg alt="Futuristic workbench quality controlled ampules." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 > "The only flake I want is that of a croissant." Mariel Feldman.
 

@@ -101,14 +101,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href=".././www/17-quarto-comments/styles.css">
 <meta property="og:title" content="Lazy Mocking – The Data Savvy Corner">
 <meta property="og:description" content="Mocking with Fixtures: Deferred Evaluation">
-<meta property="og:image" content="https://i.imgur.com/H2ljge8.jpeg">
+<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/20-lazy-mocking/intro-img.jpg">
 <meta property="og:site_name" content="The Data Savvy Corner">
-<meta property="og:image:alt" content="The Joker Taking a Nap.">
+<meta property="og:image:alt" content="The marionette Taking a Nap in a cyberpunk setting.">
 <meta name="twitter:title" content="Lazy Mocking – The Data Savvy Corner">
 <meta name="twitter:description" content="Mocking with Fixtures: Deferred Evaluation">
-<meta name="twitter:image" content="https://i.imgur.com/H2ljge8.jpeg">
+<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/20-lazy-mocking/intro-img.jpg">
 <meta name="twitter:site" content="@Rich_L1984">
-<meta name="twitter:image:alt" content="The Joker Taking a Nap.">
+<meta name="twitter:image:alt" content="The marionette Taking a Nap in a cyberpunk setting.">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -393,7 +393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><img class="shaded_box" src="https://i.imgur.com/H2ljge8.jpeg" alt="The Joker Taking a Nap." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;"></p>
+<p><img class="shaded_box" src=".././www/20-lazy-mocking/intro-img.jpg" alt="The marionette Taking a Nap in a cyberpunk setting." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;"></p>
 <blockquote class="blockquote">
 <p>“Time to live<br>
 Time to lie<br>
@@ -417,7 +417,7 @@ Take it as it comes” Take It As It Comes, The Doors.</p>
 <section id="some-source-code" class="level2">
 <h2 class="anchored" data-anchor-id="some-source-code">Some Source Code</h2>
 <p>This little function would cause a problem when writing your test suite:</p>
-<div id="adeca5cf" class="cell" data-execution_count="1">
+<div id="c3c02f5b" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_poem_line_for_day():</span>
@@ -436,7 +436,7 @@ Take it as it comes” Take It As It Comes, The Doors.</p>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>get_poem_line_for_day()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>"Tuesday's child is full of grace"</code></pre>
+<pre><code>"Monday's child is fair of face"</code></pre>
 </div>
 </div>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
@@ -466,7 +466,7 @@ Why would this be hard to test without mocking? (Click to reveal)
 <section id="local-scoped-mock" class="level3">
 <h3 class="anchored" data-anchor-id="local-scoped-mock">Local-Scoped Mock</h3>
 <p>This is very easy to mock using local-scoped utility functions.</p>
-<div id="78b4b616" class="cell" data-execution_count="2">
+<div id="9a4a5ee5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest <span class="im">import</span> mock</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
@@ -527,7 +527,7 @@ Why would this be hard to test without mocking? (Click to reveal)
 <section id="broken-mock-with-fixture" class="level3">
 <h3 class="anchored" data-anchor-id="broken-mock-with-fixture">Broken Mock with Fixture</h3>
 <p>It is common to start with a <a href="#local-scoped-mock">locally-scoped mock</a> and then , as the test suite grows, it would be better to share the mock across multiple tests. You may naively try to use the same <code>mock_poem</code> as a <code>pytest</code> fixture.</p>
-<div id="c368d6c1" class="cell" data-execution_count="3">
+<div id="9dfaa6a5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest <span class="im">import</span> mock</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
@@ -572,7 +572,7 @@ Why would this be hard to test without mocking? (Click to reveal)
 <section id="mock-with-fixture---fixed" class="level3">
 <h3 class="anchored" data-anchor-id="mock-with-fixture---fixed">Mock with Fixture - Fixed</h3>
 <p>We need to implement some minor tweaks to the broken fixture in order to delay evaluation of the parameters. In this way, we make the fixture “lazy” by using a factory function to instantiate the poem line within the test, rather than before it.</p>
-<div id="94d5039b" class="cell" data-execution_count="4">
+<div id="2b319b56" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest <span class="im">import</span> mock</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>

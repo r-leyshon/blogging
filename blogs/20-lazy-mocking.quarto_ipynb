@@ -18,20 +18,20 @@
         "    - patching\n",
         "    - lazy\n",
         "    - lazy evaluation\n",
-        "image: https://i.imgur.com/H2ljge8.jpeg\n",
-        "image-alt: \"The Joker Taking a Nap.\"\n",
+        "image: /./www/20-lazy-mocking/intro-img.jpg\n",
+        "image-alt: \"The marionette Taking a Nap in a cyberpunk setting.\"\n",
         "toc: true\n",
         "css: /./www/17-quarto-comments/styles.css\n",
         "code-annotations: select\n",
         "---"
       ],
-      "id": "a9ef7d41"
+      "id": "74f3983c"
     },
     {
       "cell_type": "markdown",
       "metadata": {},
       "source": [
-        " <img class=shaded_box src=https://i.imgur.com/H2ljge8.jpeg alt=\"The Joker Taking a Nap.\" style=\"display:block;margin-left:auto;margin-right:auto;width:60%;border:none;\">\n",
+        "<img class=shaded_box src=/./www/20-lazy-mocking/intro-img.jpg alt=\"The marionette Taking a Nap in a cyberpunk setting.\" style=\"display:block;margin-left:auto;margin-right:auto;width:40%;border:none;\">\n",
         "\n",
         "> \"Time to live  \n",
         "> Time to lie  \n",
@@ -65,7 +65,7 @@
         "\n",
         "This little function would cause a problem when writing your test suite:"
       ],
-      "id": "53bad58c"
+      "id": "9cef9174"
     },
     {
       "cell_type": "code",
@@ -89,7 +89,7 @@
         "\n",
         "get_poem_line_for_day()"
       ],
-      "id": "b026d05a",
+      "id": "3938dd5a",
       "execution_count": null,
       "outputs": []
     },
@@ -117,7 +117,7 @@
         "\n",
         "This is very easy to mock using local-scoped utility functions."
       ],
-      "id": "b1d023ff"
+      "id": "1125b3b6"
     },
     {
       "cell_type": "code",
@@ -152,7 +152,7 @@
         "    result = poem.get_poem_line_for_day()                                       # <5>\n",
         "    assert result == \"Thursday's child has far to go\"                           # <6>"
       ],
-      "id": "f6be8329",
+      "id": "5bda6060",
       "execution_count": null,
       "outputs": []
     },
@@ -181,7 +181,7 @@
         ", as the test suite grows, it would be better to share the mock across multiple\n",
         "tests. You may naively try to use the same `mock_poem` as a `pytest` fixture."
       ],
-      "id": "66586876"
+      "id": "0db08d39"
     },
     {
       "cell_type": "code",
@@ -211,7 +211,7 @@
         "    result = poem.get_poem_line_for_day()\n",
         "    assert result == \"Friday's child is loving and giving\""
       ],
-      "id": "61377199",
+      "id": "71180885",
       "execution_count": null,
       "outputs": []
     },
@@ -237,7 +237,7 @@
         "a factory function to instantiate the poem line within the test, rather than\n",
         "before it."
       ],
-      "id": "cdd87365"
+      "id": "db24b89e"
     },
     {
       "cell_type": "code",
@@ -270,7 +270,7 @@
         "    result = poem.get_poem_line_for_day()\n",
         "    assert result == \"Friday's child is loving and giving\""
       ],
-      "id": "095a0a10",
+      "id": "fc4b3024",
       "execution_count": null,
       "outputs": []
     },
@@ -307,7 +307,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "048b9c31"
+      "id": "1e1ebaf4"
     }
   ],
   "metadata": {

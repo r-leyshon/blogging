@@ -101,14 +101,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../www/13-pytest-parametrize/styles.css">
 <meta property="og:title" content="Parametrized Tests With Pytest in Plain English – The Data Savvy Corner">
 <meta property="og:description" content="Plain English Discussion of Pytest Parametrize">
-<meta property="og:image" content="https://i.imgur.com/n1flYqU.jpeg">
+<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/13-pytest-parametrize/intro-img.jpg">
 <meta property="og:site_name" content="The Data Savvy Corner">
-<meta property="og:image:alt" content="Complex sushi conveyor belt with a futuristic theme in a pastel palette.">
+<meta property="og:image:alt" content="Futuristic Russian dolls on a conveyor belt.">
 <meta name="twitter:title" content="Parametrized Tests With Pytest in Plain English – The Data Savvy Corner">
 <meta name="twitter:description" content="Plain English Discussion of Pytest Parametrize">
-<meta name="twitter:image" content="https://i.imgur.com/n1flYqU.jpeg">
+<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/13-pytest-parametrize/intro-img.jpg">
 <meta name="twitter:site" content="@Rich_L1984">
-<meta name="twitter:image:alt" content="Complex sushi conveyor belt with a futuristic theme in a pastel palette.">
+<meta name="twitter:image:alt" content="Futuristic Russian dolls on a conveyor belt.">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -402,12 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<figure class="center figure">
-<img class="shaded_box figure-img" width="400px" src="https://i.imgur.com/n1flYqU.jpeg">
-<figcaption>
-Complex sushi conveyor belt with a futuristic theme in a pastel palette.
-</figcaption>
-</figure>
+<p><img class="shaded_box" src=".././www/13-pytest-parametrize/intro-img.jpg" alt="Futuristic Russian dolls on a conveyor belt." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;"></p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p><code>pytest</code> is a testing package for the python framework. It is broadly used to quality assure code logic. This article discusses what parametrized tests mean and how to implement them with <code>pytest</code>. This blog is the third in a series of blogs called <a href="../blogs/index.html#category=pytest-in-plain-english">pytest in plain English</a>, favouring accessible language and simple examples to explain the more intricate features of the <code>pytest</code> package.</p>
@@ -489,7 +484,7 @@ A Note on the Purpose (Click to expand)
 <section id="define-the-source-code" class="level3">
 <h3 class="anchored" data-anchor-id="define-the-source-code">Define the Source Code</h3>
 <p>Here we define a very basic function that checks whether an integer is prime. If a prime is encountered, then True is returned. If not, then False. The value 1 gets its own treatment (return <code>False</code>). Lastly, we include some basic defensive checks, we return a <code>TypeError</code> if anything other than integer is passed to the function and a <code>ValueError</code> if the integer is less than or equal to 0.</p>
-<div id="fd9bba60" class="cell" data-execution_count="1">
+<div id="6805ae19" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_num_prime(pos_int: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Check if a positive integer is a prime number.</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -525,7 +520,7 @@ A Note on the Purpose (Click to expand)
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Running this function with a range of values demonstrates its behaviour.</p>
-<div id="5a491729" class="cell" data-execution_count="2">
+<div id="31eac1c6" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>is_num_prime(i)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -545,7 +540,7 @@ A Note on the Purpose (Click to expand)
 <section id="lets-get-testing" class="level3">
 <h3 class="anchored" data-anchor-id="lets-get-testing">Let’s Get Testing</h3>
 <p>Let’s begin with the defensive tests. Let’s say I need to check that the function can be relied upon to raise on a number of conditions. The typical approach may be to test the raise conditions within a dedicated test function.</p>
-<div id="aaf71d0e" class="cell" data-execution_count="3">
+<div id="4148d99c" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for primes module."""</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -579,7 +574,7 @@ tests/test_primes.py .                                                   [100%]
 <section id="enter-parametrize" class="level3">
 <h3 class="anchored" data-anchor-id="enter-parametrize">…Enter Parametrize</h3>
 <p>Now to start using parametrize, we need to use the <code>@pytest.mark.parametrize</code> decorator, which takes 2 arguments, a string and an iterable.</p>
-<div id="d785773b" class="cell" data-execution_count="4">
+<div id="767bf7d0" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.parametrize</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"some_values, exception_types"</span>, [(<span class="fl">1.0</span>, <span class="pp">TypeError</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="pp">ValueError</span>)]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -589,7 +584,7 @@ tests/test_primes.py .                                                   [100%]
 <p>iteration 1… “some_values” = 1.0, “exception_types” = TypeError<br>
 iteration 2… “some_values” = -1, “exception_types” = ValueError</p>
 <p>Let’s go ahead and use this parametrized fixture with a test.</p>
-<div id="7776a4c1" class="cell" data-execution_count="5">
+<div id="38dfd31e" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.parametrize</span>(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"some_values, exception_types"</span>, [(<span class="fl">1.0</span>, <span class="pp">TypeError</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="pp">ValueError</span>)]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    )</span>
@@ -633,7 +628,7 @@ test_is_num_primes_exceptions_parametrized[-1-ValueError] PASSED         [100%]
 <section id="yet-more-cases" class="level3">
 <h3 class="anchored" data-anchor-id="yet-more-cases">Yet More Cases</h3>
 <p>Next up, we may wish to check return values for our function with several more cases. To keep things simple, let’s write a test that checks the return values for a range of numbers between 1 and 5.</p>
-<div id="c27359d9" class="cell" data-execution_count="6">
+<div id="ba65329f" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_is_num_primes_manually():</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Test several positive integers return expected boolean.</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -646,7 +641,7 @@ test_is_num_primes_exceptions_parametrized[-1-ValueError] PASSED         [100%]
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> is_num_prime(<span class="dv">5</span>) <span class="op">==</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>One way that this can be serialised is by using a list of parameters and expected results.</p>
-<div id="d092fcd4" class="cell" data-execution_count="7">
+<div id="65c7a95a" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_is_num_primes_with_list():</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Test the same values using lists.</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -667,7 +662,7 @@ tests/test_primes.py .                                                   [100%]
 
 ======================= 1 passed, 55 deselected in 0.01s ======================</code></pre>
 <p>To parametrize the equivalent test, we can take the below approach.</p>
-<div id="69967ecb" class="cell" data-execution_count="8">
+<div id="4f3d0bb2" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.parametrize</span>(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"some_integers, answers"</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    [(<span class="dv">1</span>, <span class="va">False</span>), (<span class="dv">2</span>, <span class="va">True</span>), (<span class="dv">3</span>, <span class="va">True</span>), (<span class="dv">4</span>, <span class="va">False</span>), (<span class="dv">5</span>, <span class="va">True</span>)]</span>
@@ -698,7 +693,7 @@ tests/test_primes.py::test_is_num_primes_parametrized[5-True] PASSED     [100%]
 </code></pre>
 <p>Where this approach really comes into its own is when the number of cases you need to test increases, you can explore ways of generating cases rather than hard-coding the values, as in the previous examples.</p>
 <p>In the example below, we can use the <code>range()</code> function to generate the integers we need to test, and then zipping these cases to their expected return values.</p>
-<div id="566ff690" class="cell" data-execution_count="9">
+<div id="4dc937b8" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if my list of cases is growing, I can employ other tactics...</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>in_ <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">21</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> [</span>
@@ -753,7 +748,7 @@ collected 56 items / 36 deselected / 20 selected
 <p><img src="https://i.imgur.com/GLgYXI4.png" alt="People surrounding a giant stack of pancakes" class="center" width="400"></p>
 <p>Parametrize gets really interesting when you have a situation where you need to test <strong>combinations of input parameters</strong> against expected outputs. In this scenario, stacked parametrization allows you to set up all combinations with very little fuss.</p>
 <p>For this section, I will define a new function built on top of our <code>is_num_prime()</code> function. This function will take 2 positive integers and add them together, but only if both of the input integers are prime. Otherwise, we’ll simply return the input numbers. To keep things simple, we’ll always return a tuple in all cases.</p>
-<div id="0fa6ed32" class="cell" data-execution_count="10">
+<div id="44824c5a" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sum_if_prime(pos_int1: <span class="bu">int</span>, pos_int2: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>:</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Sum 2 integers only if they are prime numbers.</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -776,7 +771,7 @@ collected 56 items / 36 deselected / 20 selected
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (pos_int1, pos_int2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then using this function with a range of numbers:</p>
-<div id="fec7d59c" class="cell" data-execution_count="11">
+<div id="42f1f039" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> and </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> result: </span><span class="sc">{</span>sum_if_prime(i, i)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -788,7 +783,7 @@ collected 56 items / 36 deselected / 20 selected
 </div>
 </div>
 <p>Testing combinations of input parameters for this function will quickly become burdensome:</p>
-<div id="c665c1f1" class="cell" data-execution_count="12">
+<div id="a18b8f7b" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> example_pkg.primes <span class="im">import</span> sum_if_prime</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -828,7 +823,7 @@ tests/test_primes.py .                                                   [100%]
 </figure>
 </div>
 <p>To use stacked parametrization against our <code>sum_if_prime()</code> function, we can use 2 separate iterables:</p>
-<div id="7d32bf19" class="cell" data-execution_count="13">
+<div id="218a4efb" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.parametrize</span>(<span class="st">"first_ints"</span>, <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>))</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.parametrize</span>(<span class="st">"second_ints"</span>, <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>))</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_sum_if_prime_stacked_parametrized_inputs(</span>
@@ -887,7 +882,7 @@ test_sum_if_prime_stacked_parametrized_inputs[5-5] PASSED                [100%]
 </figure>
 </div>
 <p>To do this, we need to define a new fixture, which will return the required dictionary mapping of parameters to expected values.</p>
-<div id="ff6598d9" class="cell" data-execution_count="14">
+<div id="17da5cd4" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using stacked parametrization, we can avoid manually typing the cases out,</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># though we do still need to define a dictionary of the expected answers...</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
@@ -911,7 +906,7 @@ test_sum_if_prime_stacked_parametrized_inputs[5-5] PASSED                [100%]
 <span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> expected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Passing our <code>expected_answers</code> fixture to our test will allow us to match all parameter combinations to their expected answer. Let’s update <code>test_sum_if_prime_stacked_parametrized_inputs</code> to use the parameter values to access the expected assertion value from the dictionary.</p>
-<div id="7e072d89" class="cell" data-execution_count="15">
+<div id="c2b0c823" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.parametrize</span>(<span class="st">"first_ints"</span>, <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.parametrize</span>(<span class="st">"second_ints"</span>, <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>))</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_sum_if_prime_stacked_parametrized_inputs(</span>

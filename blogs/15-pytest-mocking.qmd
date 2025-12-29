@@ -12,8 +12,8 @@ categories:
     - mockito
     - MagicMock
     - monkeypatch
-image: "https://i.imgur.com/K0mxjuF.jpeg"
-image-alt: "Soul singer with Joker makeup."
+image: /./www/15-pytest-mocking/intro-img.jpg
+image-alt: "A futuristic marionette."
 toc: true
 jupyter: 
   kernelspec:
@@ -23,10 +23,7 @@ jupyter:
 css: /www/13-pytest-parametrize/styles.css
 ---
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/K0mxjuF.jpeg"></img>
-  <figcaption>The Joker sings the Green Green Grass of Home.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/15-pytest-mocking/intro-img.jpg alt="A futuristic marionette." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 > "A day without laughter is a day wasted." Charlie Chaplin
 

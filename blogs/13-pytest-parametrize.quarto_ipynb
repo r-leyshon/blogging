@@ -15,21 +15,18 @@
         "    - Unit tests\n",
         "    - parametrize\n",
         "    - pytest-in-plain-english\n",
-        "image: \"https://i.imgur.com/n1flYqU.jpeg\"\n",
-        "image-alt: \"Complex sushi conveyor belt with a futuristic theme in a pastel palette.\"\n",
+        "image: /./www/13-pytest-parametrize/intro-img.jpg\n",
+        "image-alt: \"Futuristic Russian dolls on a conveyor belt.\"\n",
         "toc: true\n",
         "jupyter: \n",
         "  kernelspec:\n",
-        "    name: \"conda-env-pytest-env-py\"\n",
+        "    name: \"pytest-env\"\n",
         "    language: \"python\"\n",
-        "    display_name: \"blog-pytest-env\"\n",
+        "    display_name: \"pytest-env\"\n",
         "css: /www/13-pytest-parametrize/styles.css\n",
         "---\n",
         "\n",
-        "<figure class=center >\n",
-        "  <img class=\"shaded_box\" width=400px src=\"https://i.imgur.com/n1flYqU.jpeg\"></img>\n",
-        "  <figcaption>Complex sushi conveyor belt with a futuristic theme in a pastel palette.</figcaption>\n",
-        "</figure>\n",
+        "<img class=shaded_box src=/./www/13-pytest-parametrize/intro-img.jpg alt=\"Futuristic Russian dolls on a conveyor belt.\" style=\"display:block;margin-left:auto;margin-right:auto;width:40%;border:none;\">\n",
         "\n",
         "## Introduction\n",
         "\n",
@@ -148,7 +145,7 @@
         "passed to the function and a `ValueError` if the integer is less than or equal\n",
         "to 0."
       ],
-      "id": "ff395ecc"
+      "id": "38d389c3"
     },
     {
       "cell_type": "code",
@@ -188,7 +185,7 @@
         "        else:\n",
         "            return True"
       ],
-      "id": "ab1c2d1c",
+      "id": "0feed5df",
       "execution_count": null,
       "outputs": []
     },
@@ -198,7 +195,7 @@
       "source": [
         "Running this function with a range of values demonstrates its behaviour."
       ],
-      "id": "6f151b35"
+      "id": "e89956a7"
     },
     {
       "cell_type": "code",
@@ -207,7 +204,7 @@
         "for i in range(1, 11):\n",
         "  print(f\"{i}: {is_num_prime(i)}\")"
       ],
-      "id": "6683076d",
+      "id": "30b36b1c",
       "execution_count": null,
       "outputs": []
     },
@@ -221,7 +218,7 @@
         "function can be relied upon to raise on a number of conditions. The typical\n",
         "approach may be to test the raise conditions within a dedicated test function."
       ],
-      "id": "9d90240e"
+      "id": "10cf258f"
     },
     {
       "cell_type": "code",
@@ -245,7 +242,7 @@
         "    with pytest.raises(ValueError, match=\"must be a positive integer.\"):\n",
         "        is_num_prime(-1)"
       ],
-      "id": "5dd3e9f7",
+      "id": "31042ca9",
       "execution_count": null,
       "outputs": []
     },
@@ -283,7 +280,7 @@
         "Now to start using parametrize, we need to use the `@pytest.mark.parametrize`\n",
         "decorator, which takes 2 arguments, a string and an iterable."
       ],
-      "id": "2a8ae95e"
+      "id": "ba79dc9a"
     },
     {
       "cell_type": "code",
@@ -295,7 +292,7 @@
         "    \"some_values, exception_types\", [(1.0, TypeError), (-1, ValueError)]\n",
         "    )"
       ],
-      "id": "e6b0daba",
+      "id": "593d729e",
       "execution_count": null,
       "outputs": []
     },
@@ -316,7 +313,7 @@
         "\n",
         "Let's go ahead and use this parametrized fixture with a test."
       ],
-      "id": "3d3a23bd"
+      "id": "f518a155"
     },
     {
       "cell_type": "code",
@@ -336,7 +333,7 @@
         "    with pytest.raises(exception_types, match=\"must be a positive integer.\"):\n",
         "        is_num_prime(some_values)"
       ],
-      "id": "aa987bbf",
+      "id": "af997df2",
       "execution_count": null,
       "outputs": []
     },
@@ -389,7 +386,7 @@
         "more cases. To keep things simple, let's write a test that checks the return\n",
         "values for a range of numbers between 1 and 5."
       ],
-      "id": "038ef28b"
+      "id": "e1e02694"
     },
     {
       "cell_type": "code",
@@ -408,7 +405,7 @@
         "    assert is_num_prime(4) == False\n",
         "    assert is_num_prime(5) == True"
       ],
-      "id": "bf16d3cd",
+      "id": "d9eba6ef",
       "execution_count": null,
       "outputs": []
     },
@@ -419,7 +416,7 @@
         "One way that this can be serialised is by using a list of parameters and\n",
         "expected results."
       ],
-      "id": "caffc3e6"
+      "id": "29912dc3"
     },
     {
       "cell_type": "code",
@@ -435,7 +432,7 @@
         "    answers = [is_num_prime(i) for i in range(1, 6)]\n",
         "    assert answers == [False, True, True, False, True]"
       ],
-      "id": "eb29caf8",
+      "id": "a4a2d00b",
       "execution_count": null,
       "outputs": []
     },
@@ -462,7 +459,7 @@
         "\n",
         "To parametrize the equivalent test, we can take the below approach."
       ],
-      "id": "3c420373"
+      "id": "8c75dc02"
     },
     {
       "cell_type": "code",
@@ -481,7 +478,7 @@
         "    \"\"\"\n",
         "    assert is_num_prime(some_integers) == answers"
       ],
-      "id": "f4a5b08e",
+      "id": "b8494d5b",
       "execution_count": null,
       "outputs": []
     },
@@ -519,7 +516,7 @@
         "integers we need to test, and then zipping these cases to their expected return\n",
         "values."
       ],
-      "id": "81639c18"
+      "id": "e1470240"
     },
     {
       "cell_type": "code",
@@ -540,7 +537,7 @@
         "    \"\"\"The same tests but this time with zipped inputs.\"\"\"\n",
         "    assert is_num_prime(some_integers) == some_answers"
       ],
-      "id": "2aa872a6",
+      "id": "a68fcbac",
       "execution_count": null,
       "outputs": []
     },
@@ -603,7 +600,7 @@
         "we'll simply return the input numbers. To keep things simple, we'll always\n",
         "return a tuple in all cases."
       ],
-      "id": "9d6863de"
+      "id": "3522fb09"
     },
     {
       "cell_type": "code",
@@ -630,7 +627,7 @@
         "    else:\n",
         "        return (pos_int1, pos_int2)"
       ],
-      "id": "96075fbe",
+      "id": "75ff8c10",
       "execution_count": null,
       "outputs": []
     },
@@ -640,7 +637,7 @@
       "source": [
         "Then using this function with a range of numbers:"
       ],
-      "id": "d7ec1aae"
+      "id": "49a5c988"
     },
     {
       "cell_type": "code",
@@ -649,7 +646,7 @@
         "for i in range(1, 6):\n",
         "    print(f\"{i} and {i} result: {sum_if_prime(i, i)}\")"
       ],
-      "id": "8559f8cf",
+      "id": "2e060672",
       "execution_count": null,
       "outputs": []
     },
@@ -660,7 +657,7 @@
         "Testing combinations of input parameters for this function will quickly become\n",
         "burdensome:"
       ],
-      "id": "a220d4d7"
+      "id": "c420e84f"
     },
     {
       "cell_type": "code",
@@ -684,7 +681,7 @@
         "    assert sum_if_prime(2, 5) == (7,)\n",
         "    # ..."
       ],
-      "id": "1fd93bc3",
+      "id": "e55f01b0",
       "execution_count": null,
       "outputs": []
     },
@@ -722,7 +719,7 @@
         "To use stacked parametrization against our `sum_if_prime()` function, we can\n",
         "use 2 separate iterables:"
       ],
-      "id": "03d56f6f"
+      "id": "69716b14"
     },
     {
       "cell_type": "code",
@@ -736,7 +733,7 @@
         "    \"\"\"Using stacked parameters to set up combinations of all cases.\"\"\"\n",
         "    assert isinstance(sum_if_prime(first_ints, second_ints), tuple)"
       ],
-      "id": "08c46848",
+      "id": "4ee08992",
       "execution_count": null,
       "outputs": []
     },
@@ -805,7 +802,7 @@
         "To do this, we need to define a new fixture, which will return the required\n",
         "dictionary mapping of parameters to expected values."
       ],
-      "id": "398a5356"
+      "id": "267bc519"
     },
     {
       "cell_type": "code",
@@ -834,7 +831,7 @@
         "    }\n",
         "    return expected"
       ],
-      "id": "4ca161e5",
+      "id": "7b9e5c13",
       "execution_count": null,
       "outputs": []
     },
@@ -847,7 +844,7 @@
         "`test_sum_if_prime_stacked_parametrized_inputs` to use the parameter values to\n",
         "access the expected assertion value from the dictionary."
       ],
-      "id": "0b31f214"
+      "id": "9c17ab9d"
     },
     {
       "cell_type": "code",
@@ -865,7 +862,7 @@
         "    # expected_answers dictionary\n",
         "    assert answer == expected_answers[first_ints][second_ints]"
       ],
-      "id": "fa078cac",
+      "id": "ebff0e4c",
       "execution_count": null,
       "outputs": []
     },
@@ -950,14 +947,14 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "2753218e"
+      "id": "7a43e3b4"
     }
   ],
   "metadata": {
     "kernelspec": {
-      "name": "conda-env-pytest-env-py",
+      "name": "pytest-env",
       "language": "python",
-      "display_name": "blog-pytest-env"
+      "display_name": "pytest-env"
     }
   },
   "nbformat": 4,
