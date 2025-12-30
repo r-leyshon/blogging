@@ -25,7 +25,7 @@
         "code-annotations: select\n",
         "---"
       ],
-      "id": "74f3983c"
+      "id": "24081589"
     },
     {
       "cell_type": "markdown",
@@ -65,7 +65,7 @@
         "\n",
         "This little function would cause a problem when writing your test suite:"
       ],
-      "id": "9cef9174"
+      "id": "2cc1a829"
     },
     {
       "cell_type": "code",
@@ -89,7 +89,7 @@
         "\n",
         "get_poem_line_for_day()"
       ],
-      "id": "3938dd5a",
+      "id": "77275c8a",
       "execution_count": null,
       "outputs": []
     },
@@ -117,7 +117,7 @@
         "\n",
         "This is very easy to mock using local-scoped utility functions."
       ],
-      "id": "1125b3b6"
+      "id": "3d11fabd"
     },
     {
       "cell_type": "code",
@@ -152,7 +152,7 @@
         "    result = poem.get_poem_line_for_day()                                       # <5>\n",
         "    assert result == \"Thursday's child has far to go\"                           # <6>"
       ],
-      "id": "5bda6060",
+      "id": "3ea320b9",
       "execution_count": null,
       "outputs": []
     },
@@ -181,7 +181,7 @@
         ", as the test suite grows, it would be better to share the mock across multiple\n",
         "tests. You may naively try to use the same `mock_poem` as a `pytest` fixture."
       ],
-      "id": "0db08d39"
+      "id": "e80ad37f"
     },
     {
       "cell_type": "code",
@@ -211,7 +211,7 @@
         "    result = poem.get_poem_line_for_day()\n",
         "    assert result == \"Friday's child is loving and giving\""
       ],
-      "id": "71180885",
+      "id": "ce7ca418",
       "execution_count": null,
       "outputs": []
     },
@@ -237,7 +237,7 @@
         "a factory function to instantiate the poem line within the test, rather than\n",
         "before it."
       ],
-      "id": "db24b89e"
+      "id": "9cd69877"
     },
     {
       "cell_type": "code",
@@ -270,7 +270,7 @@
         "    result = poem.get_poem_line_for_day()\n",
         "    assert result == \"Friday's child is loving and giving\""
       ],
-      "id": "fc4b3024",
+      "id": "3945bcb0",
       "execution_count": null,
       "outputs": []
     },
@@ -307,15 +307,14 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "1e1ebaf4"
+      "id": "2b35b42c"
     }
   ],
   "metadata": {
     "kernelspec": {
-      "name": "python3",
+      "display_name": "Python 3",
       "language": "python",
-      "display_name": "Python 3 (ipykernel)",
-      "path": "/Users/richard.leyshon/Documents/GitHub/blogging/blogging-env/share/jupyter/kernels/python3"
+      "name": "python3"
     }
   },
   "nbformat": 4,

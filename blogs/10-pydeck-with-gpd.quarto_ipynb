@@ -19,7 +19,7 @@
         "toc: true\n",
         "---"
       ],
-      "id": "b46cb48d"
+      "id": "56e93bb9"
     },
     {
       "cell_type": "markdown",
@@ -76,7 +76,7 @@
         "3. Activate the virtual environment.\n",
         "4. Create a python script and import the dependencies."
       ],
-      "id": "a508ef2a"
+      "id": "c9ee3b10"
     },
     {
       "cell_type": "code",
@@ -91,7 +91,7 @@
         "import requests\n",
         "from sklearn import preprocessing"
       ],
-      "id": "8ab4f7ea",
+      "id": "43dc4551",
       "execution_count": null,
       "outputs": []
     },
@@ -110,7 +110,7 @@
         "For more on working with ONS Open Geography Portal, see\n",
         "[Getting Data from ONS Open Geography Portal](/./blogs/06-working-with-ONS-open-geo-portal.qmd)."
       ],
-      "id": "52c5edb1"
+      "id": "9c3d875f"
     },
     {
       "cell_type": "code",
@@ -135,7 +135,7 @@
         "    features=content[\"features\"], crs=content[\"crs\"][\"properties\"][\"name\"])\n",
         "centroids.head()"
       ],
-      "id": "efb290e1",
+      "id": "eb5d52cb",
       "execution_count": null,
       "outputs": []
     },
@@ -146,7 +146,7 @@
         "The geometry column is not in a format that pydeck will accept. Adding a column\n",
         "with a list of long,lat values for each coordinate will do the trick."
       ],
-      "id": "207f82ab"
+      "id": "15b623fd"
     },
     {
       "cell_type": "code",
@@ -155,7 +155,7 @@
         "centroids[\"pydeck_geometry\"] = [[c.x, c.y] for c in centroids[\"geometry\"]]\n",
         "centroids.head()"
       ],
-      "id": "6c0c65d3",
+      "id": "be0c3a08",
       "execution_count": null,
       "outputs": []
     },
@@ -172,7 +172,7 @@
         "click and drag to yaw or pitch the map. Scroll in and out to alter the zoom.\n",
         ":::"
       ],
-      "id": "24f403e2"
+      "id": "97ed48d0"
     },
     {
       "cell_type": "code",
@@ -210,7 +210,7 @@
         ")\n",
         "r.to_html(\"../outputs/scatter_layer.html\")"
       ],
-      "id": "560a8a16",
+      "id": "1015c5cf",
       "execution_count": null,
       "outputs": []
     },
@@ -220,7 +220,7 @@
       "source": [
         "<iframe src=\"../outputs/scatter_layer.html\" style=\"width: 100%; height: 400px; border: none;\"></iframe>"
       ],
-      "id": "624b7358"
+      "id": "fb8a7554"
     },
     {
       "cell_type": "code",
@@ -230,7 +230,7 @@
         "# tidy up\n",
         "del resp, content, centroids, scatter, r"
       ],
-      "id": "27863660",
+      "id": "5e07cf5a",
       "execution_count": null,
       "outputs": []
     },
@@ -254,7 +254,7 @@
         "As elevation and polygon colour will be controlled by features of the data,\n",
         "sklearn.prepeocessing is used to scale the \"Shape__Area\" column."
       ],
-      "id": "e9b7d0a5"
+      "id": "a7e6b635"
     },
     {
       "cell_type": "code",
@@ -281,7 +281,7 @@
         "polygons[\"area_norm\"] = pd.Series(x_scaled.flatten())\n",
         "polygons.head()"
       ],
-      "id": "b055fd96",
+      "id": "90a39f73",
       "execution_count": null,
       "outputs": []
     },
@@ -293,7 +293,7 @@
         "method to format as a geoJSON string. Then use `json.loads()` to format that\n",
         "string as a dictionary."
       ],
-      "id": "12edf2c8"
+      "id": "b3118a0f"
     },
     {
       "cell_type": "code",
@@ -304,7 +304,7 @@
         "# inspect the first authority\n",
         "json_out[\"features\"][0][\"properties\"]"
       ],
-      "id": "a2965da5",
+      "id": "5d843ca7",
       "execution_count": null,
       "outputs": []
     },
@@ -321,7 +321,7 @@
         "In contrast, when using json attributes in the tooltip, you can refer to them\n",
         "directly, eg `\"area_norm\"`."
       ],
-      "id": "5e4e32a3"
+      "id": "572253fb"
     },
     {
       "cell_type": "code",
@@ -362,7 +362,7 @@
         ")\n",
         "r.to_html(\"../outputs/geojson_layer.html\")"
       ],
-      "id": "8ea82849",
+      "id": "fd147068",
       "execution_count": null,
       "outputs": []
     },
@@ -391,7 +391,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "ed8a7974"
+      "id": "d77b855e"
     }
   ],
   "metadata": {
