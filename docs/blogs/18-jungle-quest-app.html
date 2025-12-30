@@ -81,6 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -576,8 +579,8 @@ Code Annotations
 <p>Let’s summarise the process with a diagram:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/t15T2J3.png" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 1</figcaption>
+<p><a href=".././www/18-jungle-quest-app/01.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Process diagram for iteration 1 - Click to expand"><img src=".././www/18-jungle-quest-app/01.png" class="img-fluid figure-img" alt="Process diagram for iteration 1 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 1 - Click to expand</figcaption>
 </figure>
 </div>
 <p>So far we have a basic <code>query_openai()</code> function that we can feed in a prompt and our api key. We then receive a response back from the openai model with the expected content.</p>
@@ -704,8 +707,8 @@ Code Annotations
 <p>Finally, updating our process diagram to include the additional prompts, I have emphasised the changes implemented within this iteration. As we proceed, the diagram’s complexity will increase and therefore I’ll try to emphasise the changes implemented over the previous iteration only:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/6vuOSp5.png" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 2</figcaption>
+<p><a href=".././www/18-jungle-quest-app/02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Process diagram for iteration 2 - Click to expand"><img src=".././www/18-jungle-quest-app/02.png" class="img-fluid figure-img" alt="Process diagram for iteration 2 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 2 - Click to expand</figcaption>
 </figure>
 </div>
 </div>
@@ -837,8 +840,8 @@ Code Annotations
 <p>The process diagram for our app so far looks like this:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/ToBp4iQ.png" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 3</figcaption>
+<p><a href=".././www/18-jungle-quest-app/03.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Process diagram for iteration 3 - Click to expand"><img src=".././www/18-jungle-quest-app/03.png" class="img-fluid figure-img" alt="Process diagram for iteration 3 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 3 - Click to expand</figcaption>
 </figure>
 </div>
 <p>Our logic for talking to the OpenAI model has not yet been coupled with our UI. We’ll fold that logic into our <code>shiny</code> server in the next iteration.</p>
@@ -974,8 +977,8 @@ Code Annotations
 <p>Updating the server logic for our process diagram, note that I have added a key that illustrates wherever we instantiate an openai client in the app. As we continue to build, handling the client becomes a bit involved so let’s start paying attention to wherever we’re using it:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/46mqCrY.png" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 4</figcaption>
+<p><a href=".././www/18-jungle-quest-app/04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Process diagram for iteration 4 - Click to expand"><img src=".././www/18-jungle-quest-app/04.png" class="img-fluid figure-img" alt="Process diagram for iteration 4 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 4 - Click to expand</figcaption>
 </figure>
 </div>
 <p>You can see that the <code>respond()</code> function has become the busiest unit in the app. It takes the api key value from our UI, combines the user’s messages sent from the chat UI, adds these to the chat stream and communicates with the OpenAI model. Now these components are all wired up we get a running application. If you’ve made it this far - well done!</p>
@@ -1159,8 +1162,8 @@ Important
 <p>I’ve added a marker in the process diagram to remind us that <code>handle_api_key_submit()</code> will run as a reactive event when the key is submitted. This function updates the UI with feedback notifications.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/lU743ra.png" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 5</figcaption>
+<p><a href=".././www/18-jungle-quest-app/05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Process diagram for iteration 5 - Click to expand"><img src=".././www/18-jungle-quest-app/05.png" class="img-fluid figure-img" alt="Process diagram for iteration 5 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 5 - Click to expand</figcaption>
 </figure>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1354,8 +1357,8 @@ Important
 <p>In our increasingly complex process diagram, I’ve emphasised that <code>handle_api_key_submit()</code> now instantiates another client object and uses it to query the <code>models.list</code> endpoint of the OpenAI service.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/Tb7jjeK.png" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 6</figcaption>
+<p><a href=".././www/18-jungle-quest-app/06.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Process diagram for iteration 6 - Click to expand"><img src=".././www/18-jungle-quest-app/06.png" class="img-fluid figure-img" alt="Process diagram for iteration 6 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 6 - Click to expand</figcaption>
 </figure>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -1587,8 +1590,8 @@ Important
 <p>The updated process diagram clarifies the reactive flow of the app. Now prompts from the user pass through <code>check_moderations()</code> first. The outcome of check moderations is then passed along within the <code>respond()</code> function, determining whether the prompt would be passed along to the <code>chat.completions</code> endpoint.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/h51HPSw.png" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 7</figcaption>
+<p><a href=".././www/18-jungle-quest-app/07.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Process diagram for iteration 7 - Click to expand"><img src=".././www/18-jungle-quest-app/07.png" class="img-fluid figure-img" alt="Process diagram for iteration 7 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 7 - Click to expand</figcaption>
 </figure>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -1818,8 +1821,8 @@ Important
 <p>This refactoring reduces the complexity of the app, ensuring that once the api key has been validated, that same openai client will be passed to the <code>moderations</code> and <code>chat.completions</code> endpoints.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/cfdOQeS.png%22" class="img-fluid figure-img"></p>
-<figcaption>Process diagram for iteration 8</figcaption>
+<p><a href=".././www/18-jungle-quest-app/08.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Process diagram for iteration 8 - Click to expand"><img src=".././www/18-jungle-quest-app/08.png" class="img-fluid figure-img" alt="Process diagram for iteration 8 - Click to expand"></a></p>
+<figcaption>Process diagram for iteration 8 - Click to expand</figcaption>
 </figure>
 </div>
 </div>
@@ -2568,6 +2571,38 @@ Important
   loadGiscus();
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

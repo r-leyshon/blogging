@@ -244,7 +244,7 @@ political entity.
 
 Let's summarise the process with a diagram:
 
-![Process diagram for iteration 1](https://i.imgur.com/t15T2J3.png)
+![Process diagram for iteration 1 - Click to expand](/./www/18-jungle-quest-app/01.png){.lightbox}
 
 So far we have a basic `query_openai()` function that we can feed in a
 prompt and our api key. We then receive a response back from the openai
@@ -393,7 +393,7 @@ have emphasised the changes implemented within this iteration. As we
 proceed, the diagram's complexity will increase and therefore I'll try to
 emphasise the changes implemented over the previous iteration only:
 
-![Process diagram for iteration 2](https://i.imgur.com/6vuOSp5.png)
+![Process diagram for iteration 2 - Click to expand](/./www/18-jungle-quest-app/02.png){.lightbox}
 
 ### Iteration 3
 
@@ -525,7 +525,7 @@ installations.
 
 The process diagram for our app so far looks like this:
 
-![Process diagram for iteration 3](https://i.imgur.com/ToBp4iQ.png)
+![Process diagram for iteration 3 - Click to expand](/./www/18-jungle-quest-app/03.png){.lightbox}
 
 Our logic for talking to the OpenAI model has not yet been coupled with our
 UI. We'll fold that logic into our `shiny` server in the next iteration.
@@ -668,7 +668,7 @@ key that illustrates wherever we instantiate an openai client in the app.
 As we continue to build, handling the client becomes a bit involved so
 let's start paying attention to wherever we're using it:
 
-![Process diagram for iteration 4](https://i.imgur.com/46mqCrY.png)
+![Process diagram for iteration 4 - Click to expand](/./www/18-jungle-quest-app/04.png){.lightbox}
 
 You can see that the `respond()` function has become the busiest unit in
 the app. It takes the api key value from our UI, combines the user's
@@ -857,7 +857,7 @@ I've added a marker in the process diagram to remind us that
 `handle_api_key_submit()` will run as a reactive event when the key is
 submitted. This function updates the UI with feedback notifications.
 
-![Process diagram for iteration 5](https://i.imgur.com/lU743ra.png)
+![Process diagram for iteration 5 - Click to expand](/./www/18-jungle-quest-app/05.png){.lightbox}
 
 :::{.callout-tip}
 
@@ -1044,7 +1044,7 @@ In our increasingly complex process diagram, I've emphasised that
 `handle_api_key_submit()` now instantiates another client object and uses
 it to query the `models.list` endpoint of the OpenAI service.
 
-![Process diagram for iteration 6](https://i.imgur.com/Tb7jjeK.png)
+![Process diagram for iteration 6 - Click to expand](/./www/18-jungle-quest-app/06.png){.lightbox}
 
 :::{.callout-important}
 
@@ -1272,7 +1272,7 @@ of check moderations is then passed along within the `respond()` function,
 determining whether the prompt would be passed along to the
 `chat.completions` endpoint.
 
-![Process diagram for iteration 7](https://i.imgur.com/h51HPSw.png)
+![Process diagram for iteration 7 - Click to expand](/./www/18-jungle-quest-app/07.png){.lightbox}
 
 :::{.callout-important}
 
@@ -1498,7 +1498,7 @@ This refactoring reduces the complexity of the app, ensuring that once the
 api key has been validated, that same openai client will be passed to the
 `moderations` and `chat.completions` endpoints.
 
-![Process diagram for iteration 8](https://i.imgur.com/cfdOQeS.png")
+![Process diagram for iteration 8 - Click to expand](/./www/18-jungle-quest-app/08.png){.lightbox}
 
 ### Iteration 9
 
