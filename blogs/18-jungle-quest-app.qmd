@@ -1539,7 +1539,7 @@ include the text "The End...", I will search for this text to end the game.
 WELCOME_MSG = """
 Welcome to the Amazon Rainforest, adventurer! Your mission is to find the
 lost Crown of Quetzalcoatl:\n
-<div style="display: grid; place-items: center;"><img src="https://i.imgur.com/Fxa7p1D.jpeg" width=60%/></div>\n # <2>
+<div style="display: grid; place-items: center;"><img src="https://raw.githubusercontent.com/r-leyshon/adventure-app/main/www/crown.jpeg" width=60%/></div>\n # <2>
 However, many challenges stand in your way. Are you brave enough, strong
 enough and clever enough to overcome the perils of the jungle and secure
 the crown?
