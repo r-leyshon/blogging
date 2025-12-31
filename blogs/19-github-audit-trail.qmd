@@ -171,7 +171,7 @@ on the matter for a more detailed breakdown.
 To help visualise the differences in these approaches, consider the
 following diagram:
 
-![Source: <a href=https://matt-rickard.com/squash-merge-or-rebase target="blank">matt-rickard.com</a>](https://matt-rickard.com/static/image/squash-merge-or-rebase/1.webp)
+![Merge strategy comparison diagram. Image © <a href="https://matt-rickard.com/squash-merge-or-rebase" target="_blank">Matt Rickard</a>.](/./www/19-github-audit-trail/1.webp)
 
 In the following scenarios, I will walk through commit history following
 the three different merges. In all examples, I will refer to the target
