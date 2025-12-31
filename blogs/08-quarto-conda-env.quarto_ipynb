@@ -255,14 +255,15 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "f72e2f62"
+      "id": "d18eb5e3"
     }
   ],
   "metadata": {
     "kernelspec": {
-      "display_name": "Python 3",
+      "name": "python3",
       "language": "python",
-      "name": "python3"
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/Users/richard.leyshon/Documents/GitHub/blogging/blogging-env/share/jupyter/kernels/python3"
     }
   },
   "nbformat": 4,

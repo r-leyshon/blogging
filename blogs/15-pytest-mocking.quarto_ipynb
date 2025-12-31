@@ -176,7 +176,7 @@
         "The purpose of the code is to retrieve jokes from <https://icanhazdadjoke.com/>\n",
         "like so:"
       ],
-      "id": "ddae50a8"
+      "id": "66cd40e4"
     },
     {
       "cell_type": "code",
@@ -226,7 +226,7 @@
         "    r = _query_endpoint(endp=endp, usr_agent=usr_agent, f=f)\n",
         "    return _handle_response(r)"
       ],
-      "id": "0b82ece9",
+      "id": "0fc9f6e7",
       "execution_count": null,
       "outputs": []
     },
@@ -237,7 +237,7 @@
         "for _ in range(3):\n",
         "    print(get_joke(f=\"application/json\"))"
       ],
-      "id": "682c31e4",
+      "id": "a1d5956c",
       "execution_count": null,
       "outputs": []
     },
@@ -265,7 +265,7 @@
         "2. `_handle_response()` Used to catch HTTP errors, or to pull the text out of\n",
         "the various response formats."
       ],
-      "id": "9be35c99"
+      "id": "513f3e0c"
     },
     {
       "cell_type": "code",
@@ -286,7 +286,7 @@
         "    resp = requests.get(endp, headers=HEADERS)\n",
         "    return resp"
       ],
-      "id": "f1279ee9",
+      "id": "d9a87c9d",
       "execution_count": null,
       "outputs": []
     },
@@ -308,7 +308,7 @@
         "response from the external service, we need a utility to handle the various\n",
         "statuses of that response:"
       ],
-      "id": "7058d30c"
+      "id": "83d712fb"
     },
     {
       "cell_type": "code",
@@ -356,7 +356,7 @@
         "        )\n",
         "    return content"
       ],
-      "id": "74584d41",
+      "id": "7384c0cf",
       "execution_count": null,
       "outputs": []
     },
@@ -375,7 +375,7 @@
         "\n",
         "Finally, the above functions get wrapped in the `get_joke()` function below:"
       ],
-      "id": "463ee97a"
+      "id": "f1154488"
     },
     {
       "cell_type": "code",
@@ -422,7 +422,7 @@
         "    r = _query_endpoint(endp=endp, usr_agent=usr_agent, f=f)\n",
         "    return _handle_response(r)"
       ],
-      "id": "3d69a443",
+      "id": "de23ce66",
       "execution_count": null,
       "outputs": []
     },
@@ -476,7 +476,7 @@
         "define it once and then refer to it throughout several examples below. So it\n",
         "needs to be a pretty memorable, awesome joke."
       ],
-      "id": "ffbaa247"
+      "id": "b0f8262b"
     },
     {
       "cell_type": "code",
@@ -490,7 +490,7 @@
         "    return (\"Doc, I can't stop singing 'The Green, Green Grass of Home.' That \"\n",
         "    \"sounds like Tom Jones Syndrome. Is it common? Well, It's Not Unusual.\")"
       ],
-      "id": "8ba17785",
+      "id": "10b49472",
       "execution_count": null,
       "outputs": []
     },
@@ -522,7 +522,7 @@
         "\n",
         "#### monkeypatch"
       ],
-      "id": "aa8b698d"
+      "id": "19299aaf"
     },
     {
       "cell_type": "code",
@@ -555,7 +555,7 @@
         "    # Use the module's namespace to correspond with the monkeypatch\n",
         "    assert example_pkg.only_joking.get_joke() == ULTI_JOKE "
       ],
-      "id": "4601f208",
+      "id": "2f19e259",
       "execution_count": null,
       "outputs": []
     },
@@ -586,7 +586,7 @@
         "\n",
         "#### MagicMock"
       ],
-      "id": "1a980cf3"
+      "id": "cebe4c4a"
     },
     {
       "cell_type": "code",
@@ -613,7 +613,7 @@
         "        # step 4\n",
         "        assert joke == ULTI_JOKE"
       ],
-      "id": "bd3baa3b",
+      "id": "b0bb7079",
       "execution_count": null,
       "outputs": []
     },
@@ -635,7 +635,7 @@
         "\n",
         "#### mockito"
       ],
-      "id": "ecff2c00"
+      "id": "39c180e1"
     },
     {
       "cell_type": "code",
@@ -661,7 +661,7 @@
         "    assert joke == ULTI_JOKE\n",
         "    unstub()"
       ],
-      "id": "5a3a495a",
+      "id": "2ec86b9a",
       "execution_count": null,
       "outputs": []
     },
@@ -698,7 +698,7 @@
         "using `monkeypatch` and definitely adds to the cognitive load for new users.\n",
         "This first example will mock the value of `requests.get` without using classes."
       ],
-      "id": "83a5d47d"
+      "id": "952bb5cf"
     },
     {
       "cell_type": "code",
@@ -729,7 +729,7 @@
         "    joke = get_joke(f=\"application/json\")\n",
         "    assert joke == ULTI_JOKE, f\"Expected:\\n'{ULTI_JOKE}\\nFound:\\n{joke}'\""
       ],
-      "id": "973ac57f",
+      "id": "0b139229",
       "execution_count": null,
       "outputs": []
     },
@@ -769,7 +769,7 @@
         "\n",
         "#### monkeypatch"
       ],
-      "id": "9cb1601d"
+      "id": "ff81f0bc"
     },
     {
       "cell_type": "code",
@@ -863,7 +863,7 @@
         "\n",
         "#### MagicMock"
       ],
-      "id": "46931737"
+      "id": "40958c1d"
     },
     {
       "cell_type": "code",
@@ -890,7 +890,7 @@
         "        # step 4: Assert\n",
         "        assert joke == ULTI_JOKE"
       ],
-      "id": "272289fe",
+      "id": "dbf306e2",
       "execution_count": null,
       "outputs": []
     },
@@ -913,7 +913,7 @@
         "\n",
         "#### mockito"
       ],
-      "id": "bfd70cf1"
+      "id": "3f7adae0"
     },
     {
       "cell_type": "code",
@@ -941,7 +941,7 @@
         "    assert joke == ULTI_JOKE\n",
         "    unstub()"
       ],
-      "id": "89a42b27",
+      "id": "67e8160a",
       "execution_count": null,
       "outputs": []
     },
@@ -981,7 +981,7 @@
         "\n",
         "#### monkeypatch"
       ],
-      "id": "d328b587"
+      "id": "14edbbad"
     },
     {
       "cell_type": "code",
@@ -1013,7 +1013,7 @@
         "    # step 4: Assert\n",
         "    assert j_txt == ULTI_JOKE, f\"Expected:\\n'{ULTI_JOKE}\\nFound:\\n{j_txt}'\""
       ],
-      "id": "51439b2f",
+      "id": "bdea91ba",
       "execution_count": null,
       "outputs": []
     },
@@ -1033,7 +1033,7 @@
         "\n",
         "#### MagicMock"
       ],
-      "id": "d8f6faf5"
+      "id": "96d93ab6"
     },
     {
       "cell_type": "code",
@@ -1060,7 +1060,7 @@
         "        # step 4: Assert\n",
         "        assert joke == ULTI_JOKE"
       ],
-      "id": "0f4ef6c1",
+      "id": "10acaf6b",
       "execution_count": null,
       "outputs": []
     },
@@ -1070,7 +1070,7 @@
       "source": [
         "#### mockito"
       ],
-      "id": "4b94f781"
+      "id": "db7573de"
     },
     {
       "cell_type": "code",
@@ -1097,7 +1097,7 @@
         "    assert joke == ULTI_JOKE\n",
         "    unstub()"
       ],
-      "id": "80470164",
+      "id": "1b509c26",
       "execution_count": null,
       "outputs": []
     },
@@ -1118,7 +1118,7 @@
         "\n",
         "#### monkeypatch"
       ],
-      "id": "8cf045be"
+      "id": "bb54cdac"
     },
     {
       "cell_type": "code",
@@ -1152,7 +1152,7 @@
         "        match=\"This client accepts 'application/json' or 'text/plain' format\"):\n",
         "        get_joke(f=\"text/html\")"
       ],
-      "id": "7ee41e19",
+      "id": "d123830c",
       "execution_count": null,
       "outputs": []
     },
@@ -1178,7 +1178,7 @@
         "\n",
         "#### MagicMock"
       ],
-      "id": "d2d36d79"
+      "id": "6fe46acf"
     },
     {
       "cell_type": "code",
@@ -1204,7 +1204,7 @@
         "            match=\"client accepts 'application/json' or 'text/plain' format\"):\n",
         "            get_joke(f=\"text/html\")"
       ],
-      "id": "b91d831a",
+      "id": "242da3fb",
       "execution_count": null,
       "outputs": []
     },
@@ -1214,7 +1214,7 @@
       "source": [
         "#### mockito"
       ],
-      "id": "fc49bc43"
+      "id": "ab207937"
     },
     {
       "cell_type": "code",
@@ -1243,7 +1243,7 @@
         "        example_pkg.only_joking.get_joke(f=\"text/html\")\n",
         "    unstub()"
       ],
-      "id": "3b6e9187",
+      "id": "35631ec8",
       "execution_count": null,
       "outputs": []
     },
@@ -1269,7 +1269,7 @@
         "\n",
         "#### monkeypatch"
       ],
-      "id": "bf07a65f"
+      "id": "325ef4f6"
     },
     {
       "cell_type": "code",
@@ -1305,7 +1305,7 @@
         "    with pytest.raises(requests.HTTPError, match=\"404: Not Found\"):\n",
         "        get_joke()"
       ],
-      "id": "0cc98213",
+      "id": "991b2032",
       "execution_count": null,
       "outputs": []
     },
@@ -1332,7 +1332,7 @@
         "\n",
         "#### MagicMock"
       ],
-      "id": "457d21fb"
+      "id": "2e6364db"
     },
     {
       "cell_type": "code",
@@ -1359,7 +1359,7 @@
         "        with pytest.raises(requests.HTTPError, match=\"404: Not Found\"):\n",
         "            get_joke()"
       ],
-      "id": "c72afa75",
+      "id": "ea85662c",
       "execution_count": null,
       "outputs": []
     },
@@ -1369,7 +1369,7 @@
       "source": [
         "#### mockito"
       ],
-      "id": "ba78e3c5"
+      "id": "aaa4f48a"
     },
     {
       "cell_type": "code",
@@ -1396,7 +1396,7 @@
         "        example_pkg.only_joking.get_joke()\n",
         "    unstub()"
       ],
-      "id": "bcb3a70c",
+      "id": "71f32106",
       "execution_count": null,
       "outputs": []
     },
@@ -1443,7 +1443,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "160616a4"
+      "id": "647ec4d5"
     }
   ],
   "metadata": {

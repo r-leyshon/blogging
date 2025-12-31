@@ -44,7 +44,7 @@ designed in subtle ways, to nudge you towards some of these behaviours. The
 sort of things that are not required but are incredibly helpful to others - 
 including your future self. 
 
-<iframe src="https://giphy.com/embed/TtlYafuP93f5FxemDU" style="display:block;margin-left:auto;margin-right:auto;width:60%;height:275px;border:none;" class="iframey shaded_box" allowFullScreen></iframe>
+![Jerry Springer final word](/./www/19-github-audit-trail/js-optimized.gif){style="display:block;margin-left:auto;margin-right:auto;width:60%;" .shaded_box}
 <br>
 Read on for more on how to be kind to yourself, and those poor souls who
 need to read your work - GitHub has your back.
@@ -141,13 +141,13 @@ apart our code.
 The GitHub UI helps to nudge us in the right direction. Below I create a
 new issue in the repo for this blog:
 
-![Creating an issue in GitHub](https://i.imgur.com/kvkwrW0.png)
+![Creating an issue in GitHub](/./www/19-github-audit-trail/01.png)
 
 Notice that there is an option on the right hand side, under `Development`
 to `Create a branch` for this issue. Click this and GitHub will create
 a branch with a naming convention that links the branch to the issue.
 
-<img src=https://i.imgur.com/2EOE623.png alt="Creating a new branch from an issue in GitHub" style="display:block;margin-left:auto;margin-right:auto;" width=50%>
+![Creating a new branch from an issue in GitHub](/./www/19-github-audit-trail/02.png){style="display:block;margin-left:auto;margin-right:auto;" width=50%}
 
 Once finished with the branch, we raise a PR. To link the PR with the issue,
 ensure to use one of <a href=https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/using-keywords-in-issues-and-pull-requests#linking-a-pull-request-to-an-issue target="_blank">GitHub's keywords</a>
@@ -189,7 +189,7 @@ like "FEATURE: ...". Merging the PR creates new commits to `main`, which
 have all the file edits from `feature`. However, note that these new commits
 have different hashes to those in `feature`.
 
-![Comparing `main` and `feature` following rebase merge. Click to enlarge.](https://i.imgur.com/M7ZMT4i.png){.lightbox}
+![Comparing `main` and `feature` following rebase merge. Click to enlarge.](/./www/19-github-audit-trail/03.png){.lightbox}
 
 ### Squash and Merge
 
@@ -200,12 +200,12 @@ into a single, new commit. You can see that even in the trivial example
 the outcome is that `main` branch will be much more succinct than in the
 other merge strategies. 
 
-![Comparing `main` and `feature` following a squash merge. Click to enlarge.](https://i.imgur.com/NbfJjZD.png){.lightbox}
+![Comparing `main` and `feature` following a squash merge. Click to enlarge.](/./www/19-github-audit-trail/04.png){.lightbox}
 
 Inspecting the automated squash merge commit message demonstrates how
 GitHub summarises the activity from `feature` branch.
 
-![Squash commit generated commit message.](https://i.imgur.com/KBznXhf.png)
+![Squash commit generated commit message.](/./www/19-github-audit-trail/05.png)
 
 The squash merge strategy is a good candidate for busy projects with many
 contributors. It's also a neat way to avoid noise in your version history,
@@ -224,7 +224,7 @@ changes in `feature`. Notice that in this scenario, the commits in `main`
 and `feature` share the same content and commit hashes, as opposed to a
 rebase merge which "pretends" those commits happened in `main`. 
 
-![Comparing `main` and `feature` following a merge commit. Click to enlarge.](https://i.imgur.com/BiuYZAv.png){.lightbox}
+![Comparing `main` and `feature` following a merge commit. Click to enlarge.](/./www/19-github-audit-trail/06.png){.lightbox}
 
 This is perhaps the noisiest merge strategy, as the commits of each feature
 branch are all merged to main, plus an additional commit that marks the
@@ -288,14 +288,14 @@ issues and PRs with an epic. These milestones can then be added to GitHub
 projects to coordinate burn-down effort. Find the milestones interface
 under the issues tab. 
 
-![GitHub Milestone interface. Click to expand.](https://i.imgur.com/eJuzMcX.png"){.lightbox}
+![GitHub Milestone interface. Click to expand.](/./www/19-github-audit-trail/07.png){.lightbox}
 
 Adding this sort of structure can be great in helping collaborators
 understand where your work fits into more tangible delivery, and your
 product managers will thank you for it. Below I show how with a few clicks,
 the milestone can be used to create an informative delivery roadmap.
 
-![Milestone on a GitHub roadmap. Click to expand.](https://i.imgur.com/fEwDSUB.png){.lightbox}
+![Milestone on a GitHub roadmap. Click to expand.](/./www/19-github-audit-trail/08.png){.lightbox}
 
 You can see in the project that I have grouped the issues by milestone on
 the left hand-side. Also, by adding the milestone to the date fields, you
@@ -323,7 +323,7 @@ At times, it may be useful to identify the person who wrote some code. It's
 not completely obvious, but by viewing a file and toggling from `Preview`
 to `Blame`, you get a line-by-line view of who commited what and when.
 
-![GitHub blame view. Click to expand.](https://i.imgur.com/17wmNNG.png){.lightbox}
+![GitHub blame view. Click to expand.](/./www/19-github-audit-trail/09.png){.lightbox}
 
 Note that there are also handy tools such as
 <a href=https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens target="_blank">GitLens for VSCode</a>
@@ -378,13 +378,13 @@ left, then `Terminal` -> `New Terminal`. You will be presented with options
 in the terminal asking you to launch GitHub Codespaces or to continue in a
 local clone of the repo. 
 
-![Launching Codespaces. Click to expand.](https://i.imgur.com/ZnqzMi2.png){.lightbox}
+![Launching Codespaces. Click to expand.](/./www/19-github-audit-trail/10.png){.lightbox}
 
 Once Codespaces is launched, you have an interactive terminal to carry out
 your favourite operations. Here I'm displaying the `git grep` command in
 my browser with Codespaces.
 
-![Running terminal operations with Codespaces. Click to expand.](https://i.imgur.com/jRigeEl.png){.lightbox}
+![Running terminal operations with Codespaces. Click to expand.](/./www/19-github-audit-trail/11.png){.lightbox}
 
 ## Summary
 

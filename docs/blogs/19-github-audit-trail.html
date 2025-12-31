@@ -380,9 +380,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Most developers spend time reading other people’s code - for Pull Reviews (PRs) or to learn more about a software package, for example. Every so often, a developer may need to review an entire repository and possibly even its commit history. This can happen when publishing a mature codebase.</p>
 <p>Making sense of other peoples’ commit histories can be challenging, especially if that work is exploratory. Understanding the myriad reasons for any single change after the fact is reliant upon whether the developer had time to document their reasons for their implementation. Even if you work alone, perhaps that other developer will be yourself at times. Needing to pick through your code’s commit history in order to find a bug-free version.</p>
 <p>The good news is that there are a few tools that Git and GitHub can provide us, and one or two easy habits that will greatly assist your colleagues in comprehending your Git activity. In fact, the GitHub User Interface (UI) is designed in subtle ways, to nudge you towards some of these behaviours. The sort of things that are not required but are incredibly helpful to others - including your future self.</p>
-<iframe src="https://giphy.com/embed/TtlYafuP93f5FxemDU" style="display:block;margin-left:auto;margin-right:auto;width:60%;height:275px;border:none;" class="iframey shaded_box" allowfullscreen="">
-</iframe>
-<p><br> Read on for more on how to be kind to yourself, and those poor souls who need to read your work - GitHub has your back.</p>
+<p><img src=".././www/19-github-audit-trail/js-optimized.gif" class="shaded_box img-fluid" style="display:block;margin-left:auto;margin-right:auto;width:60%;" alt="Jerry Springer final word"> <br> Read on for more on how to be kind to yourself, and those poor souls who need to read your work - GitHub has your back.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -447,12 +445,17 @@ Opinions Ahead… (click to expand)
 <p>The GitHub UI helps to nudge us in the right direction. Below I create a new issue in the repo for this blog:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/kvkwrW0.png" class="img-fluid figure-img"></p>
+<p><img src=".././www/19-github-audit-trail/01.png" class="img-fluid figure-img"></p>
 <figcaption>Creating an issue in GitHub</figcaption>
 </figure>
 </div>
 <p>Notice that there is an option on the right hand side, under <code>Development</code> to <code>Create a branch</code> for this issue. Click this and GitHub will create a branch with a naming convention that links the branch to the issue.</p>
-<p><img src="https://i.imgur.com/2EOE623.png" alt="Creating a new branch from an issue in GitHub" style="display:block;margin-left:auto;margin-right:auto;" width="50%"></p>
+<div class="quarto-figure quarto-figure-center" style="display:block;margin-left:auto;margin-right:auto;">
+<figure class="figure">
+<p><img src=".././www/19-github-audit-trail/02.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Creating a new branch from an issue in GitHub</figcaption>
+</figure>
+</div>
 <p>Once finished with the branch, we raise a PR. To link the PR with the issue, ensure to use one of <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/using-keywords-in-issues-and-pull-requests#linking-a-pull-request-to-an-issue" target="_blank">GitHub’s keywords</a> to automatically close the issue on merge. In this example, including the line <code>Fixes #71</code> in a comment within the PR will link the issue. Several issues can be linked in this way, eg <code>Fixes #71, Resolves #72</code> and so on. In this way, we have given an issue, branch and PR a clear identity.</p>
 </section>
 <section id="consider-your-merge-strategy" class="level2">
@@ -477,7 +480,7 @@ Opinions Ahead… (click to expand)
 <p>When a rebase merge is used, new commits that mirror those in <code>feature</code> branch are created in <code>main</code>. You keep every commit and maintain a linear commit history. In the diagram below, I compare commits in <a href="https://github.com/r-leyshon/rebase-merge-example" target="_blank">a repo with an example rebase merge</a>. Note that there are 2 commits from <code>feature</code> branch with commit messages like “FEATURE: …”. Merging the PR creates new commits to <code>main</code>, which have all the file edits from <code>feature</code>. However, note that these new commits have different hashes to those in <code>feature</code>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/M7ZMT4i.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Comparing main and feature following rebase merge. Click to enlarge."><img src="https://i.imgur.com/M7ZMT4i.png" class="img-fluid figure-img" alt="Comparing main and feature following rebase merge. Click to enlarge."></a></p>
+<p><a href=".././www/19-github-audit-trail/03.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Comparing main and feature following rebase merge. Click to enlarge."><img src=".././www/19-github-audit-trail/03.png" class="img-fluid figure-img" alt="Comparing main and feature following rebase merge. Click to enlarge."></a></p>
 <figcaption>Comparing <code>main</code> and <code>feature</code> following rebase merge. Click to enlarge.</figcaption>
 </figure>
 </div>
@@ -487,14 +490,14 @@ Opinions Ahead… (click to expand)
 <p>On selecting “Squash and merge” in the GitHub UI, A new “summary commit” is created in <code>main</code>. This condenses all of the file changes from <code>feature</code> into a single, new commit. You can see that even in the trivial example <a href="https://github.com/r-leyshon/squash-commit-example" target="_blank">squash merge repository</a>, the outcome is that <code>main</code> branch will be much more succinct than in the other merge strategies.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/NbfJjZD.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Comparing main and feature following a squash merge. Click to enlarge."><img src="https://i.imgur.com/NbfJjZD.png" class="img-fluid figure-img" alt="Comparing main and feature following a squash merge. Click to enlarge."></a></p>
+<p><a href=".././www/19-github-audit-trail/04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Comparing main and feature following a squash merge. Click to enlarge."><img src=".././www/19-github-audit-trail/04.png" class="img-fluid figure-img" alt="Comparing main and feature following a squash merge. Click to enlarge."></a></p>
 <figcaption>Comparing <code>main</code> and <code>feature</code> following a squash merge. Click to enlarge.</figcaption>
 </figure>
 </div>
 <p>Inspecting the automated squash merge commit message demonstrates how GitHub summarises the activity from <code>feature</code> branch.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://i.imgur.com/KBznXhf.png" class="img-fluid figure-img"></p>
+<p><img src=".././www/19-github-audit-trail/05.png" class="img-fluid figure-img"></p>
 <figcaption>Squash commit generated commit message.</figcaption>
 </figure>
 </div>
@@ -505,7 +508,7 @@ Opinions Ahead… (click to expand)
 <p>Finally, we consider the default merge behaviour - the <a href="https://github.com/r-leyshon/merge-commit-example" target="_blank">merge commit</a>. This behaviour will create a new commit in <code>main</code> that introduces the changes in <code>feature</code>. Notice that in this scenario, the commits in <code>main</code> and <code>feature</code> share the same content and commit hashes, as opposed to a rebase merge which “pretends” those commits happened in <code>main</code>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/BiuYZAv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Comparing main and feature following a merge commit. Click to enlarge."><img src="https://i.imgur.com/BiuYZAv.png" class="img-fluid figure-img" alt="Comparing main and feature following a merge commit. Click to enlarge."></a></p>
+<p><a href=".././www/19-github-audit-trail/06.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Comparing main and feature following a merge commit. Click to enlarge."><img src=".././www/19-github-audit-trail/06.png" class="img-fluid figure-img" alt="Comparing main and feature following a merge commit. Click to enlarge."></a></p>
 <figcaption>Comparing <code>main</code> and <code>feature</code> following a merge commit. Click to enlarge.</figcaption>
 </figure>
 </div>
@@ -578,14 +581,14 @@ Opinions Ahead… (click to expand)
 <p>A feature that I consider to be under-utilised in GitHub are <a href="https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones" target="_blank">milestones</a>. The milestone feature allows you to group related work, such as grouping issues and PRs with an epic. These milestones can then be added to GitHub projects to coordinate burn-down effort. Find the milestones interface under the issues tab.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/eJuzMcX.png%22" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="GitHub Milestone interface. Click to expand."><img src="https://i.imgur.com/eJuzMcX.png%22" class="img-fluid figure-img" alt="GitHub Milestone interface. Click to expand."></a></p>
+<p><a href=".././www/19-github-audit-trail/07.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="GitHub Milestone interface. Click to expand."><img src=".././www/19-github-audit-trail/07.png" class="img-fluid figure-img" alt="GitHub Milestone interface. Click to expand."></a></p>
 <figcaption>GitHub Milestone interface. Click to expand.</figcaption>
 </figure>
 </div>
 <p>Adding this sort of structure can be great in helping collaborators understand where your work fits into more tangible delivery, and your product managers will thank you for it. Below I show how with a few clicks, the milestone can be used to create an informative delivery roadmap.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/fEwDSUB.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Milestone on a GitHub roadmap. Click to expand."><img src="https://i.imgur.com/fEwDSUB.png" class="img-fluid figure-img" alt="Milestone on a GitHub roadmap. Click to expand."></a></p>
+<p><a href=".././www/19-github-audit-trail/08.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Milestone on a GitHub roadmap. Click to expand."><img src=".././www/19-github-audit-trail/08.png" class="img-fluid figure-img" alt="Milestone on a GitHub roadmap. Click to expand."></a></p>
 <figcaption>Milestone on a GitHub roadmap. Click to expand.</figcaption>
 </figure>
 </div>
@@ -603,7 +606,7 @@ Opinions Ahead… (click to expand)
 <p>At times, it may be useful to identify the person who wrote some code. It’s not completely obvious, but by viewing a file and toggling from <code>Preview</code> to <code>Blame</code>, you get a line-by-line view of who commited what and when.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/17wmNNG.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="GitHub blame view. Click to expand."><img src="https://i.imgur.com/17wmNNG.png" class="img-fluid figure-img" alt="GitHub blame view. Click to expand."></a></p>
+<p><a href=".././www/19-github-audit-trail/09.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="GitHub blame view. Click to expand."><img src=".././www/19-github-audit-trail/09.png" class="img-fluid figure-img" alt="GitHub blame view. Click to expand."></a></p>
 <figcaption>GitHub blame view. Click to expand.</figcaption>
 </figure>
 </div>
@@ -627,14 +630,14 @@ Opinions Ahead… (click to expand)
 <p>If you’d like an interactive terminal, or to test out code, you’ll need to switch over to GitHub Codespaces. Again, this is a free service that GitHub provide that provisions some compute for you. To launch a ‘live’ version of VSCode in your browser, click on the burger icon in in the ribbon to the left, then <code>Terminal</code> -&gt; <code>New Terminal</code>. You will be presented with options in the terminal asking you to launch GitHub Codespaces or to continue in a local clone of the repo.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/ZnqzMi2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Launching Codespaces. Click to expand."><img src="https://i.imgur.com/ZnqzMi2.png" class="img-fluid figure-img" alt="Launching Codespaces. Click to expand."></a></p>
+<p><a href=".././www/19-github-audit-trail/10.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Launching Codespaces. Click to expand."><img src=".././www/19-github-audit-trail/10.png" class="img-fluid figure-img" alt="Launching Codespaces. Click to expand."></a></p>
 <figcaption>Launching Codespaces. Click to expand.</figcaption>
 </figure>
 </div>
 <p>Once Codespaces is launched, you have an interactive terminal to carry out your favourite operations. Here I’m displaying the <code>git grep</code> command in my browser with Codespaces.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://i.imgur.com/jRigeEl.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Running terminal operations with Codespaces. Click to expand."><img src="https://i.imgur.com/jRigeEl.png" class="img-fluid figure-img" alt="Running terminal operations with Codespaces. Click to expand."></a></p>
+<p><a href=".././www/19-github-audit-trail/11.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Running terminal operations with Codespaces. Click to expand."><img src=".././www/19-github-audit-trail/11.png" class="img-fluid figure-img" alt="Running terminal operations with Codespaces. Click to expand."></a></p>
 <figcaption>Running terminal operations with Codespaces. Click to expand.</figcaption>
 </figure>
 </div>

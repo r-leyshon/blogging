@@ -25,7 +25,7 @@
         "      theme: default\n",
         "---"
       ],
-      "id": "e309b277"
+      "id": "fe7033fc"
     },
     {
       "cell_type": "markdown",
@@ -77,7 +77,7 @@
         "  <iframe src=\"https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACASRlWICcyGZiATAVwA2cAM4MyxBgAs4g1A35iARvwCWg3g2L92DNKgA6EAGbtiMBiKmqI2BqtYcuavAwCC6I0ZoA9VPzIyGwBzcWsIYLEoJWIANzgwhP1uOCgIMTIZO0I0hiUEqyh2OE18sgB3OEoGbG1dNT0ITRE4dnj2L2h0AH0GgF4FVSwoYLhu40E1XgAKIwYGGgAmPUFBLWNEhlk4eHIxWv4GctUrcUkrYnKauoUW3QuhTWDJY8ybTbU5+cGMG38yboUAAeZFmEG+EPsvD6BkgsDGlDI7GwsLwX0hDEE0VkMLAAAVhFAWltyK1rjoGNB4Kj0ZDUFjCHApMQNK1cQBNG5UhIyYqw2kQgCURmFECMvDgGzu7WmfwCrm0ZH+rhaIhEqlIgsQXxoAGYwid7GJyryEgddMlBMRgqpCJZmY8GM8MAwAMqSYxFVwQYhcGD8QhSDDB2nFMg6cEAOVIcC+3gYADEbFBVnYALQG5SqLioKCEADWI1ECnkNwaaWarXaLtd-FQZIcbE4aS4Gez3EUZHj+Up8M0AAN9P2MEZkgMPKhpvpeqoVVXWoKwABfAC6QA\" title=\"Getting Started with a basic Python Shiny App.\"></iframe>\n",
         "</div>"
       ],
-      "id": "810c83e8"
+      "id": "dea7b90b"
     },
     {
       "cell_type": "code",
@@ -104,7 +104,7 @@
         "# Finally - this bit packages up our ui and server. Super important - it must\n",
         "# be named `app`."
       ],
-      "id": "a13a3496",
+      "id": "a9ac01d2",
       "execution_count": null,
       "outputs": []
     },
@@ -139,7 +139,7 @@
         "  <iframe src=\"https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACAV1QBMoKGyALOBgSxipiAJzIMAzmQ5x45LsQERCAGyas+AAxGUNIzQxjFWTFXAA6EAGYjiMSd34RsAoaPFN+eBgEF03nQg9S0s0VAB9TwYAXmZ+LCgAczhwqzV+VgAKSwZcuIwnVCYycIoADzJsiDyagVZo80hYFMoyEWxGvBza3JUoACM4FQawAAUzKAk+VrgRBmxiJjnoeE7untQ+wjhuYhU9EYBNReXmhl4dRvXagEou6ryaACYGAEllNQ0GKDiGRbIiuIhrJWhgGAAVRwSBgAd34KhUDmIMK4vAYhCgKkIpg4-FIEmuNEMUC+TlRfCmIgAbrMGP0oIQANYKcnMSkYa6eDD-QGlOAVcI0kT0siCbJgRI6OCiiCJRp3Sw3EJBOBWSSzIWZQrFbw8nXqiQSPEQG6IQkAZgYAFU2DJWZShbD+DxvgwrExlKLSKiOOcoEEzNCeHxyuIdBJhBAphyHrkAAJ68REphTVmJhgaEgiDiiFkwKAiZk8fjQ92e43XOOBPQYUMMImYiSKCBwOCsFmUCRLPgwvgpkNorM6Qhh3S0zOiHMia4aNWS1syxKZU3XGpXMBXWO1SElt0ekfGp0IrhQRkDvjp4hq4P5bUlUPLhjAuRke49XJWUT58Q3qQiJyJEorrCCozoUjMyh8P67afiI34COIkzfNUAAS4IALIADKrnk6awayURkIoEi7DCMbvgw66bhROhkEs1RWI0KH8AwIB3hgKwtOQ7TLgAvt4vZYnYIaKKM2A8N6ADKjjOByG4QKE6AxL46CZGEkReOq1KzDcYC8QAukAA\" title=\"Basic Server Functionality in a Python Shiny App.\"></iframe>\n",
         "</div>"
       ],
-      "id": "1f5b69b4"
+      "id": "91c1d2bd"
     },
     {
       "cell_type": "code",
@@ -173,7 +173,7 @@
         "\n",
         "app = App(app_ui, server)"
       ],
-      "id": "2337e1ee",
+      "id": "26abf2d0",
       "execution_count": null,
       "outputs": []
     },
@@ -224,7 +224,7 @@
         "  <iframe src=\"https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMAgujxM6lACZw6EgK4cAOhFVpUAfSVMAvEyVYoAcziaaAGyXSAFAEpVjiLJqs5ANzk2uqBWQnEfr7+biwsHKR2iKpMsZJwZAp0EEwAcqRwTuroeqLoNhraHBIsHnIOEGAAvgC6QA\" title=\"Exercise 1 - repeat a message.\"></iframe>\n",
         "</div>"
       ],
-      "id": "307ac13c"
+      "id": "6b68ba9e"
     },
     {
       "cell_type": "code",
@@ -264,7 +264,7 @@
         "\n",
         "app = App(app_ui, server)"
       ],
-      "id": "3d5a7983",
+      "id": "f7145e2c",
       "execution_count": null,
       "outputs": []
     },
@@ -280,7 +280,7 @@
         "  <iframe src=\"https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACASRlWICcyGyALOB9nCiEyASwBu-GMQAmAVwA2-AGbtiMBgGUeoiNgA6EVeoYBnHXoajWHLnNF4BlGXHaOAgukeDhYyYcM0VAB9ewYAXgZ7LCgAczhg5QV7GQAKQwZMqNEMXVQ5MmCKAA8ydIgsyqsZcP1IWATKMnYDfAyqzIUoACM4BVqwAAUlKFN+JtcGbGI5dgZoeDq8do7ULsI4HmIFF3YBgE0ZuYX+PkE6laqASmWKrJoAJgYoGRlnit9RUgZugrJv-7cPjZRwwOSEHgMBSiADW-AA7vwZKI3vDRLwgfwSlw8gVLtFcYVPqRgr8yP8IKkUQNYsRSX9SEsoT0+gMAMLQwgw7jEARyCAYQV1G6XGjPV5mdT8cSiUxyKAKMxwVBQdhQMQA3m8LFwUoMGZkfJkfE5MhxUwYbrsVIiu6ZaJm2IWq0224mjAGo1FXWFSTsbrq6zpMCxQRwMQQWLC25XAIQFzKJXsP1UiBGxyegqOMamUxfCBXRCigDM4reUA+r3R+YVDBgqu5vQUxHhmP12vYpkuAAFM8a7Qxu4J464MNiez4RBI4Bg4JJyKmjRhafTyaRYwOEwxQ3Bw7pYjaiwPKoIyLMKso6gAJUQMECEjAnYJNFo2gC+jkRChI8B5DEG2C8N82i6NgGAXBAhhigAKjophWPBUBaBYYGeKg+rdAAVnAIgYMwXBgqYXC9PMDRvAABkE5HgdA6ARAwaGpEEoQOEmfobmAb4ALpAA\" title=\"Control the Reactive Flow With the Action Button.\"></iframe>\n",
         "</div>"
       ],
-      "id": "2d07ba02"
+      "id": "6b9519ab"
     },
     {
       "cell_type": "code",
@@ -315,7 +315,7 @@
         "# This is a Shiny.App object. It must be named `app`.\n",
         "app = App(app_ui, server)"
       ],
-      "id": "ee8c48dd",
+      "id": "de22717d",
       "execution_count": null,
       "outputs": []
     },
@@ -334,7 +334,7 @@
         "  <iframe src=\"https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMArhzxMAgugl1KAEzh0AOhFVpUAfTFMAvKI5YoAcziaaAGzHyAFKqYODGMiZYY2ARjthJTC3AA3OAsmDyY2OCh5LmNlMABKPHtHMWdXdwAmb19-IJCM8MjoiFiEpIhHJxdjNwAjOhtE5IdU6rdUbwBlRjgmCgAPYTiJVvSWMgYS7y4mWuILeQwluPj41VU1tQhFGlYlIIauVBEyCWIT49O9lhYOUnjEZqY5MhE6CoA5Ujh16HQ9KToGwabTiPZ0A7xMAAXwAukA\" title=\"Displaying DOM elements with Shiny Tags.\"></iframe>\n",
         "</div>\n"
       ],
-      "id": "13b4129b"
+      "id": "dec11ab0"
     },
     {
       "cell_type": "code",
@@ -355,7 +355,7 @@
         "\n",
         "app = App(app_ui, server)"
       ],
-      "id": "d91f26a0",
+      "id": "e18683a0",
       "execution_count": null,
       "outputs": []
     },
@@ -380,7 +380,7 @@
         "  <iframe src=\"https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAYgEYACASRlWICcyGyALOB9nCiEyASwBu-GMQAmAVwA2-AGbtiMBgGUeoiNgA6EVeoYBnHXoajWHLnNF4BlGXHaOAgukeDhYyYcM0VAB9ewYAXgZ7LCgAczhg5QV7GQAKQwZMqNEMMjjTDB46dLAACTgFBWIGAAVsXlItC2wAQn0wAEo8DKzovNiCgCN2VK6AiCzs3PysdInJrPaAFR1TBnbu+YWp-oLTMjUIWJLTa1QlBiCFUUIoMVJ2sa2F9oYAd1FKhlR2XS5sYhyS4MWKCOBiI4YR6bSZ9GbEBSpOEDDDXEoAUXIrgYALk7AY0Hg0J2MzR7UI10IAGsBHIII8nrCcrtZj1tu0akooKZ+OJRKcuBs2QtolBUiB2jxBMp2oh1mAeGQyKhTIgAPRqmR3bmEUSUQhwW6sOQFWKiXhyQYYUTENXtAC+jnapnU-DecEGArg0OFk1eyg4DGkgisRg4MDuNvpnRhvWZMylo02wuF0V0qDkZGCFAAHmQ5ttMqIZOF2oSEpQDgZ8L6sgooIMKqWwJyhDyGJXsbj8eWhc9JudhHAeAiXOxmwBNQE92D8PiCdq1zKMrI0ABMlxkMkuE18UYYg0zZEax+4fGyjhgckIPAY1ypbv4MmL73Nt94-FzXHTmdTOR-WZ7qQwSHkqpCpMWzaxMQIFHg8+B3g2TbtAAwpSNKnuwdIYDhPrPDQm7bi68AMHyphyFAChmHAqBQOwkYntUH7cHAeYMICyq-s8yJDCMK6ZDxGDDEm4xMhgHEZlmX7BJI7CDJGMAlKCcDgrosR4R04wuMo1HsLJEEQJJjgSZmjg8qYpykB0iDCjQADMhE7oR5pRpRQZ0TSjZVG8Z78MQH7sKYwoAAImWQIWCBAY65Kx4XPMFPgiBIcAYHAkjkAZkkYNBsFgRAmnPNpIJghCxzWUuThkHiEwymUogMCAAEYOWwSVuw2CjI67wVCQJGnnUDQTNoujYFCYDjARKz8lYaxQE0I0YJ4qDsYMABWhpkBgzBcFe+wHvw5bbgABkER1QtA6ARAwS2pEEoQOLpskFWA9oALpAA\" title=\"Exercise 2 - convert ui from HTML to markdown.\"></iframe>\n",
         "</div>"
       ],
-      "id": "20b4d565"
+      "id": "94995f81"
     },
     {
       "cell_type": "code",
@@ -429,7 +429,7 @@
         "# This is a Shiny.App object. It must be named `app`.\n",
         "app = App(app_ui, server)\n"
       ],
-      "id": "419c6849",
+      "id": "2d0a7456",
       "execution_count": null,
       "outputs": []
     },
@@ -466,7 +466,7 @@
         "  <iframe src=\"https://shinylive.io/py/editor/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMArhzxM6lACZw6EgILoJUqITIcAbnAA6EPWlQB9MUwC8ojligBzOEZoAbMdIAUepp6YBiJgunSTFBMbHBQsnRBEIEsqHCEHDQ8ZKFMjlAQNiK2cFGBGmSOcBgeXmIYZLYsGKHhcq7llTbVbGQwjq7pmWY6YJS9AJQSjVUVHIVw7mAKTABKYY6OPABCUCwchH7og0N6pZ7lXKgiZEYUAB5k7hBet7zSPZCw9pRkdNi9ePt36QBGcI5HgAFIprXKvORMbDEESRaDwT7fW6odKEOBsYiOCKPACaMLhzxCcl0YCRXl2NzKViOJyMag0pCMvxOZFIrg4D16NmITJZpE+aSg-0BvQAwo4NgBrJisyQiCAYRWDL6Ug5WJrVX50VwU24jZoYLU6lXfcowsjHU4XU7aOi-KAaGBTGxSOAaTLKvQDPbROA0VhyW3siCWiTm0MBljrUgDRDfAAC4ZOCakvroFTglxTYXUWmKcG05GDlow3N5ZFZEG9qqYsn9Lrgbq4Nh1cZrtykZFhNxovQAEhwmCAaWQMPCXuR3jqAL4SADuAJI8BlxCYQOwKVITAAypxuCVSfpoOhzFtUK5DCZxAG6Lbq2BpwBdIA\" title=\"Add an Accessible Header to a Shiny App.\"></iframe>\n",
         "</div>"
       ],
-      "id": "bdc1ad8e"
+      "id": "312f1dac"
     },
     {
       "cell_type": "code",
@@ -499,7 +499,7 @@
         "\n",
         "app = App(app_ui, server)\n"
       ],
-      "id": "1b9e7452",
+      "id": "ab62e6e7",
       "execution_count": null,
       "outputs": []
     },
@@ -560,14 +560,15 @@
         "\n",
         "Happy dashboarding!"
       ],
-      "id": "7258f495"
+      "id": "b7aa2bcb"
     }
   ],
   "metadata": {
     "kernelspec": {
-      "display_name": "Python 3",
+      "name": "python3",
       "language": "python",
-      "name": "python3"
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/Users/richard.leyshon/Documents/GitHub/blogging/blogging-env/share/jupyter/kernels/python3"
     }
   },
   "nbformat": 4,
