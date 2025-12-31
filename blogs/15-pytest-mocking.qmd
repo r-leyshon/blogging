@@ -12,8 +12,8 @@ categories:
     - mockito
     - MagicMock
     - monkeypatch
-image: "https://i.imgur.com/K0mxjuF.jpeg"
-image-alt: "Soul singer with Joker makeup."
+image: /./www/15-pytest-mocking/intro-img.jpg
+image-alt: "A futuristic marionette."
 toc: true
 jupyter: 
   kernelspec:
@@ -23,10 +23,7 @@ jupyter:
 css: /www/13-pytest-parametrize/styles.css
 ---
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/K0mxjuF.jpeg"></img>
-  <figcaption>The Joker sings the Green Green Grass of Home.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/15-pytest-mocking/intro-img.jpg alt="A futuristic marionette." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 > "A day without laughter is a day wasted." Charlie Chaplin
 
@@ -381,7 +378,7 @@ def get_joke(
 
 The behaviour in `get_joke()` is summarised in the flowchart below:
 
-<img style=" display: block; margin-left: auto; margin-right: auto; width: 500px;" src="https://i.imgur.com/ekrD8nH.png" alt="get_joke() logic flow">
+<img style="display:block;margin-left:auto;margin-right:auto;width:500px;" src=/./www/15-pytest-mocking/01-control-flow.jpg alt="get_joke() logic flow">
 
 There are 4 outcomes to check, coloured red and green in the process chart
 above.
@@ -402,7 +399,7 @@ The strategy for testing this function without making requests to the web API
 is composed of 4 similar steps, regardless of the package used to implement the
 mocking. 
 
-<img style=" display: block; margin-left: auto; margin-right: auto; width: 800px;" src=https://i.imgur.com/jRAdI1d.png alt="4 step mocking strategy">
+<img style="display:block;margin-left:auto;margin-right:auto;width:800px;" src=/./www/15-pytest-mocking/02-mock-steps.jpg alt="4 step mocking strategy">
 
 1.  **Mock:** Define the object or property that you wish to use as a
 replacement. This could be a static value or something a bit more involved,

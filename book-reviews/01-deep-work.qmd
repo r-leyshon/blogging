@@ -10,15 +10,12 @@ categories:
     - Business
     - Psychology
     - Philosophy 
-image: https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019
-image-alt: "Misty trees in Fanal Forest, Madeira."
+image: /./www/book-reviews/01-deep-work/intro-img.jpg
+image-alt: "Futuristic, cyberpunk forestry."
 toc: true
 ---
 
-<figure class=center>
- <img class=shaded_box src=https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg/800px-Fanal%2C_Seixal%2C_Madeira_-_2021-09-19_-_IMG_7200.jpg?20220630234019 alt="Misty trees in Fanal Forest, Madeira." width=400px>
- <figcaption>Fanal Forest, Madeira. Wikimedia Creative Commons.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/book-reviews/01-deep-work/intro-img.jpg alt="Futuristic, cyberpunk forestry." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 

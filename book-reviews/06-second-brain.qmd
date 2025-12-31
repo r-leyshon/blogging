@@ -14,15 +14,13 @@ categories:
     - Psychology
     - Technology
     - Note Taking
-image: https://i.imgur.com/nQ4qFP4.png
+image: /./www/book-reviews/06-second-brain/intro-img.jpg
 image-alt: "An image of A digital brain built from circuitry."
 toc: true
 toc-depth: 4
 ---
 
-<figure class=center>
- <img class=shaded_box src=https://i.imgur.com/nQ4qFP4.png alt="An image of a digital brain built from circuitry." width=100%>
-</figure>
+<img class=shaded_box src=/./www/book-reviews/06-second-brain/intro-img.jpg alt="An image of A digital brain built from circuitry." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Book Summary
 
@@ -109,7 +107,7 @@ with no specific reason in mind, other than in a futile attempt to try to
 remember everything (guilty as charged), Forte's C.O.D.E. recipe can offer
 clarity:
 
-<img src="https://fortelabs.com/wp-content/uploads/2024/05/CODE.001.jpeg" alt="Tiago Forte's recipe for success: Capture, Organise, Distil & Express." width=80% class="center"/>
+<img src="/./www/book-reviews/06-second-brain/CODE.001.jpeg" alt="Tiago Forte's recipe for success: Capture, Organise, Distil & Express. Image credit https://fortelabs.com/" width=80% class="center"/>
 
 My interpretation of the recipe is as follows:
 

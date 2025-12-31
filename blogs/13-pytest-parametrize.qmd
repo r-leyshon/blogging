@@ -9,21 +9,22 @@ categories:
     - Unit tests
     - parametrize
     - pytest-in-plain-english
-image: "https://i.imgur.com/n1flYqU.jpeg"
-image-alt: "Complex sushi conveyor belt with a futuristic theme in a pastel palette."
+image: /./www/13-pytest-parametrize/intro-img.jpg
+image-alt: "Futuristic Russian dolls on a conveyor belt."
 toc: true
 jupyter: 
   kernelspec:
-    name: "conda-env-pytest-env-py"
+    name: "pytest-env"
     language: "python"
-    display_name: "blog-pytest-env"
+    display_name: "pytest-env"
 css: /www/13-pytest-parametrize/styles.css
+format:
+  html:
+    mermaid:
+      theme: forest
 ---
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/n1flYqU.jpeg"></img>
-  <figcaption>Complex sushi conveyor belt with a futuristic theme in a pastel palette.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/13-pytest-parametrize/intro-img.jpg alt="Futuristic Russian dolls on a conveyor belt." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 
@@ -88,18 +89,54 @@ A standard approach to testing could look like Figure 1 below, where separate
 tests are defined for the different values we need to check. This would likely
 result in a fair amount of repeated boilerplate code.
 
-![Figure 1: Testing multiple values without parametrization](https://i.imgur.com/obEM4Oo.png)
+```{mermaid}
+%%| label: fig-no-parametrize
+%%| fig-cap: "Testing multiple values without parametrization"
+flowchart LR
+    subgraph tests [Separate Test Functions]
+        T1[test_value_1]
+        T2[test_value_2]
+        T3[test_value_3]
+        T4[test_value_n...]
+    end
+    T1 --> F[function]
+    T2 --> F
+    T3 --> F
+    T4 --> F
+```
 
 Instead, we can reduce the number of tests down to 1 and pass a list of tuples
 to the test instead. Each tuple should contain a parameter value and the
 expected result, as illustrated in Figure 2.
 
-![Figure 2: Parametrized testing of multiple values](https://i.imgur.com/12QNQxt.png)
+```{mermaid}
+%%| label: fig-parametrize
+%%| fig-cap: "Parametrized testing of multiple values"
+flowchart LR
+    subgraph params [Parametrized Fixture]
+        P["[(val1, exp1), (val2, exp2), (val3, exp3)]"]
+    end
+    params --> T[Single Test Function]
+    T --> F[function]
+```
 
 So let's imagine we have a simple function called `double()`, the setup for the
 parametrized list is illustrated in Figure 3.
 
-![Figure 3: Exemplified paramatrization for `test_double()`](https://i.imgur.com/9jqdR9O.png)
+```{mermaid}
+%%| label: fig-test-double
+%%| fig-cap: "Exemplified parametrization for test_double()"
+flowchart LR
+    subgraph fixture ["@pytest.mark.parametrize"]
+        direction TB
+        R1["(2, 4)"]
+        R2["(3, 6)"]
+        R3["(5, 10)"]
+    end
+    fixture --> T["test_double(input, expected)"]
+    T --> D["double(input)"]
+    D --> A["assert result == expected"]
+```
 
 ### Why use Parametrization?
 
@@ -485,8 +522,6 @@ collected 56 items / 36 deselected / 20 selected
 
 ## Stacked Parametrization
 
-<img src=https://i.imgur.com/GLgYXI4.png alt="People surrounding a giant stack of pancakes" class=center width=400></img>
-
 Parametrize gets really interesting when you have a situation where you need to
 test **combinations of input parameters** against expected outputs. In this
 scenario, stacked parametrization allows you to set up all combinations with
@@ -577,7 +612,24 @@ inject into our test.
 This allows us to very easily pass all parameter combinations to a
 **single assertion statement**, as in the diagram below.
 
-![Stacked parametrization against a single assertion](https://i.imgur.com/gyx5Jy4.png)
+```{mermaid}
+%%| label: fig-stacked-single
+%%| fig-cap: "Stacked parametrization against a single assertion"
+flowchart LR
+    subgraph fix1 ["@parametrize first_ints"]
+        A1[1]
+        A2[2]
+        A3[3]
+    end
+    subgraph fix2 ["@parametrize second_ints"]
+        B1[1]
+        B2[2]
+        B3[3]
+    end
+    fix1 --> C["All Combinations: 3 x 3 = 9 tests"]
+    fix2 --> C
+    C --> T["Single Assertion: isinstance(result, tuple)"]
+```
 
 To use stacked parametrization against our `sum_if_prime()` function, we can
 use 2 separate iterables:
@@ -649,7 +701,21 @@ To test our function against combinations of parameters with
 **different expected answers**, we must employ a dictionary mapping of the
 parameter combinations as keys and the expected assertions as values.
 
-![Using a dictionary to map multiple assertions against stacked parametrized fixtures](https://i.imgur.com/DMkpVG7.png)
+```{mermaid}
+%%| label: fig-dict-mapping
+%%| fig-cap: "Using a dictionary to map multiple assertions against stacked parametrized fixtures"
+flowchart LR
+    subgraph stack [Stacked Fixtures]
+        P1["first_ints: 1,2,3"]
+        P2["second_ints: 1,2,3"]
+    end
+    stack --> L["Lookup: expected[first][second]"]
+    subgraph dict [Dictionary Fixture]
+        D["{1: {1: result, 2: result}, 2: {...}}"]
+    end
+    dict --> L
+    L --> A["assert answer == expected"]
+```
 
 To do this, we need to define a new fixture, which will return the required
 dictionary mapping of parameters to expected values.
@@ -770,9 +836,5 @@ establishing practice and firming-up some opinions. Particularly:
 * Ethan
 * Henry
 * Sergio
-
-The diagrams used in this article were produced with the excellent
-[Excalidraw](https://excalidraw.com/), with thanks to Mat for the
-recommendation.
 
 <p id=fin><i>fin!</i></p>

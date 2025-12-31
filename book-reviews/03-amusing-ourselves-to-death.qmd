@@ -8,16 +8,13 @@ categories:
     - Non-fiction
     - Media
     - Criticism
-image: https://api.ndla.no/image-api/raw/xA3l9jD6.jpg?width=1024&amp;cropStartX=94.1777234636871&amp;cropEndX=8.982192737430104&amp;cropStartY=95.71146229981429&amp;cropEndY=25.15810261601981
-image-alt: "A cartoon depicting people engrossed in TV & mobile phone."
+image: /./www/book-reviews/03-amusing-ourselves-to-death/intro-img.jpg
+image-alt: "Dystopian futuristic man enrossed in realistic VR simulator has allowed their physical body to wither."
 toc: true
 toc-depth: 4
 ---
 
-<figure class=center>
- <img class=shaded_box src=https://api.ndla.no/image-api/raw/xA3l9jD6.jpg?width=1024&amp;cropStartX=94.1777234636871&amp;cropEndX=8.982192737430104&amp;cropStartY=95.71146229981429&amp;cropEndY=25.15810261601981 alt="A cartoon depicting people engrossed in TV & mobile phone." width=400px>
- <figcaption>Image credit: <https://api.ndla.no/></figcaption>
-</figure>
+<img class=shaded_box src=/./www/book-reviews/03-amusing-ourselves-to-death/intro-img.jpg alt="Dystopian futuristic man enrossed in realistic VR simulator has allowed their physical body to wither." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Summary
 
@@ -408,12 +405,7 @@ higher ratings was astute, predicting the trend for American TV evangelicals,
 of which the most viral have now become immortalised in memes rather than by
 the rapture that they tend to call for.
 
-<div class="tenor-gif-embed center" data-postid="21109768" data-share-method="host" data-aspect-ratio="1.77778" data-width="50%">
-    <a href="https://tenor.com/view/ken-copeland-kenneth-copeland-lil-kc-covid19-covid19preacher-gif-21109768">Ken Copeland Kenneth Copeland GIF</a>
-    from
-    <a href="https://tenor.com/search/ken+copeland-gifs">Ken Copeland GIFs</a>
-</div>
-<script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+![Ken Copeland GIF](/./www/book-reviews/03-amusing-ourselves-to-death/ken-copeland-optimized.gif){style="display:block;margin-left:auto;margin-right:auto;width:50%;"}
 
 Which brings me to Postman's next concern about religious show business - the
 unavoidable celebrity that the clerics attract. Coupled with the monetisation

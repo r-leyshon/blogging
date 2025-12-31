@@ -10,8 +10,8 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - REST API
     - Web data
 
-image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608
-image-alt: "Great Britain-United Kingdom Topographic Map"
+image: /./www/06-working-with-ONS-geo-portal/intro-img.jpg
+image-alt: "Great Britain-United Kingdom Futuristic Map"
 toc: true 
 code-annotations: select
 jupyter: 
@@ -20,10 +20,7 @@ jupyter:
     language: "python"
     display_name: "ons-geo-env"
 ---
-<figure class=center>
-  <img class="shaded_box" style="display:block;margin-left:auto;margin-right:auto;width:90%;border:none;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Great_Britain-United_Kingdom_Topographic_Map.jpg/569px-Great_Britain-United_Kingdom_Topographic_Map.jpg?20220903003608"></img>
-  <figcaption>Wikimedia commons UK Map.</figcaption>
-</figure>
+<img class="shaded_box" style="display:block;margin-left:auto;margin-right:auto;width:90%;border:none;" src="/./www/06-working-with-ONS-geo-portal/intro-img.jpg" alt="Great Britain-United Kingdom Futuristic Map"</img>
 
 ## Introduction
 
@@ -105,7 +102,7 @@ Boundaries EW BFC"
 4. This will bring you to the data asset that you need. The webpage should
 look like the image below.
 
-![ONS Open Geography Portal, LSOA 2021 boundaries interface. Click to expand.](https://i.imgur.com/izZZjt4.png){.lightbox}
+![ONS Open Geography Portal, LSOA 2021 boundaries interface. Click to expand.](/./www/06-working-with-ONS-geo-portal/izZZjt4.jpg){.lightbox}
 
 ### Finding the Endpoint
 Now that we have the correct data asset, let's find the endpoint. This is the
@@ -443,14 +440,14 @@ all_lsoas.tail(100).explore()
 One tip I have for troubleshooting queries is to open up the web interface
 for the `ENDPOINT`, by pasting it into your web browser, for example:
 
-![LSOA 2021 Endpoint Interface. Click to expand.](https://i.imgur.com/oCkMdHW.png){.lightbox}
+![LSOA 2021 Endpoint Interface. Click to expand.](/./www/06-working-with-ONS-geo-portal/oCkMdHW.png){.lightbox}
 
 By using the fields to test out your query parameters and clicking the
 "Query (GET)" button at the bottom of the page, you can get an indication
 of whether your query is valid. This is a good place to test out more
 complex SQL statements for the `where` parameter:
 
-![LSOA 2021 Endpoint Interface. Click to expand.](https://i.imgur.com/D1eyR0U.png){.lightbox}
+![LSOA 2021 Endpoint Interface. Click to expand.](/./www/06-working-with-ONS-geo-portal/D1eyR0U.png){.lightbox}
 
 If you encounter a HTTP 403 Forbidden response, check the endpoint that you
 are using is still valid. At times, ONS Geoportal change the endpoint. Old

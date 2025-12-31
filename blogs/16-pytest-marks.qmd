@@ -11,8 +11,8 @@ categories:
     - custom marks
     - markers
     - pytest-in-plain-english
-image: "https://i.imgur.com/dCJBh9w.jpeg"
-image-alt: "Planet composed of croissants"
+image: /./www/16-pytest-marks/intro-img.jpg
+image-alt: "Futuristic workbench quality controlled ampules."
 toc: true
 toc-depth: 4
 jupyter: 
@@ -23,10 +23,7 @@ jupyter:
 css: /www/13-pytest-parametrize/styles.css
 ---
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/dCJBh9w.jpeg"></img>
-  <figcaption>Planet composed of croissants.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/16-pytest-marks/intro-img.jpg alt="Futuristic workbench quality controlled ampules." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 > "The only flake I want is that of a croissant." Mariel Feldman.
 
@@ -181,9 +178,7 @@ I have a motley crew of functions to consider. A sort of homage to Sergio
 Leone's 'The Good, The Bad & the Ugly', although I'll let you figure out which
 is which.
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/uO3DaTH.jpeg"></img>
-  <figcaption>The Flaky, The Slow & The Needy</figcaption>
+<img class="shaded_box" src=/./www/16-pytest-marks/cowboy-bots.jpg alt="The Flaky, The Slow & The Needy" style="display:block;margin-left:auto;margin-right:auto;width:400px;">
 </figure>
 
 
@@ -558,7 +553,7 @@ a passing run. I didn't want the flaky exception to carry on presenting itself.
 While I may be sprinkling glitter, I do not want to misrepresent how
 frustrating flaky tests can be!
 
-<div class="tenor-gif-embed center" data-postid="24035134" data-share-method="host" data-aspect-ratio="1.22605" data-width="50%"><a href="https://tenor.com/view/glitter-gif-24035134">Glitter GIF</a>from <a href="https://tenor.com/search/glitter-gifs">Glitter GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+<img src=/./www/16-pytest-marks/glitter-optimized.gif alt="Glitter animation" style="display:block;margin-left:auto;margin-right:auto;width:320px;">
 
 #### Complex Selection Rules
 

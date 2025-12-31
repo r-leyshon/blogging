@@ -9,15 +9,12 @@ categories:
     - GitHub Actions
     - CI:CD
     - Security
-image: "https://i.imgur.com/bPIGcZh.jpg"
+image: /./www/14-gh-actions-security/intro-img.jpg
 image-alt: "An android locking a high security vault door."
 toc: true
 ---
 
-<figure class=center >
-  <img class="shaded_box" width=400px src="https://i.imgur.com/bPIGcZh.jpg"></img>
-  <figcaption>An android locking a high security vault door.</figcaption>
-</figure>
+<img class=shaded_box src=/./www/14-gh-actions-security/intro-img.jpg alt="An android locking a high security vault door." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## TL;DR
 
@@ -81,30 +78,30 @@ The layout of the GitHub user interface is liable to change.
 1. Find the Action that you wish to use on GitHub and click on its banner to
 navigate to the Action's homepage.
 
-![The GitHub Actions marketplace](https://i.imgur.com/4G5qba2.png)
+![The GitHub Actions marketplace](/./www/14-gh-actions-security/01.webp)
 
 2. Ensure that you have identified the correct Action by checking the author
 and the number of stars. Click on the link shown to navigate to the Action's
 repository.
 
-![The Codecov Action homepage](https://i.imgur.com/tcBYkpy.png)
+![The Codecov Action homepage](/./www/14-gh-actions-security/02.webp)
 
 3. Consult the readme and releases section to identify the latest version of
 the Action. Ensure that the appropriate branch is selected from the branch
 selector widget.
 
-![Checking the selected branch](https://i.imgur.com/eVU7ce5.png)
+![Checking the selected branch](/./www/14-gh-actions-security/03.webp)
 
 4. Once you have selected the appropriate branch for the latest release, click
 on the commits section.
 
-![Click on the commits](https://i.imgur.com/5jQWlQs.png)
+![Click on the commits](/./www/14-gh-actions-security/04.webp)
 
 5. From the list of commits, select the commit associated with the latest
 release and click the copy button to copy the full commit SHA reference to your
 clipboard.
 
-![Copy the full commit sha](https://i.imgur.com/8NVX30Y.png)
+![Copy the full commit sha](/./www/14-gh-actions-security/05.webp)
 
 6. Replace the version reference in your workflow file with your copied commit
 reference. 

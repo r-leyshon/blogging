@@ -12,13 +12,13 @@ categories:
     - patching
     - lazy
     - lazy evaluation
-image: https://i.imgur.com/H2ljge8.jpeg
-image-alt: "The Joker Taking a Nap."
+image: /./www/20-lazy-mocking/intro-img.jpg
+image-alt: "The marionette Taking a Nap in a cyberpunk setting."
 toc: true
 css: /./www/17-quarto-comments/styles.css
 code-annotations: select
 ---
- <img class=shaded_box src=https://i.imgur.com/H2ljge8.jpeg alt="The Joker Taking a Nap." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
+<img class=shaded_box src=/./www/20-lazy-mocking/intro-img.jpg alt="The marionette Taking a Nap in a cyberpunk setting." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 > "Time to live  
 > Time to lie  

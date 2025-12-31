@@ -9,14 +9,12 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - Quarto
     - Conda Environments
     - Conda
-image: https://images.pixexid.com/this-3d-abstract-composition-showcases-a-futuristic-cityscape-made-of-neon-light-3gph8k0n.jpeg?h=700&amp;q=70
-image-alt: "This 3D abstract composition showcases a futuristic cityscape made of neon lights and geometric shapes, perfect for a cyberpunk-inspired desktop wallpaper. Creative commons license, created by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+image: /./www/08-quarto-conda-env/intro-img.jpg
+image-alt: "Python in a futuristic terrarium."
 toc: true
 ---
-<figure class=center>
-  <img class="shaded_box" width=400px src="https://images.pixexid.com/this-3d-abstract-composition-showcases-a-futuristic-cityscape-made-of-neon-light-3gph8k0n.jpeg?h=700&amp;q=70"></img>
-  <figcaption style="text-align:center;">Creative commons license, created by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
-</figure>
+
+<img class=shaded_box src=/./www/08-quarto-conda-env/intro-img.jpg alt="Python in a futuristic terrarium." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 

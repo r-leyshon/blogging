@@ -9,8 +9,8 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - Explanation
     - Video games
     - Data analysis
-image: https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg
-image-alt: "Starfield wallpaper."
+image: /./www/04-starfield-resources/intro-img.jpg 
+image-alt: "Starfield-esque scene."
 toc: false # off to avoid overlapping larger iframes in this article
 execute: 
   eval: false
@@ -21,10 +21,8 @@ format:
 ---
 ## Unleashing Your Inner Space Scavenger
 
-<figure class=center>
-  <img class=shaded_box src="https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/06/Starfield-920x518.jpg" alt="Starfield wallpaper" width=300px>
-  <figcaption>Image credit <https://www.trustedreviews.com/></figcaption>
-</figure>
+<img class=shaded_box src="/./www/04-starfield-resources/intro-img.jpg" alt="Starfield-esque scene." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+
 
 It's been a while since I've dedicated to a Bethesda video game. The last would
 have been Fallout 3 in 2009-ish. Since then a lot has changed for me. Kids, a

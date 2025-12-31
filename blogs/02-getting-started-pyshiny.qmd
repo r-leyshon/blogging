@@ -6,8 +6,8 @@ description: "An interactive tutorial allowing newcomers to Shiny to build a bas
 categories:         # delete categories as appropriate. using https://diataxis.fr/ documentation definitions.
     - Tutorial      # learning-oriented
     - Python Shiny
-image: https://c0.wallpaperflare.com/preview/564/703/665/school-coding-software-development-education.jpg  # (e.g. /img/dsc_button.png)
-image-alt: "Woman Instructing On Laptop."
+image: /./www/02-getting-started-python-shiny/intro-img.jpg
+image-alt: "Robot software devs collaborating."
 toc: false # off to avoid overlapping larger iframes in this article
 execute: 
   eval: false
@@ -20,11 +20,8 @@ format:
 ---
 ## Getting to grips with Python Shiny.
 
-<figure class=center>
-  <img class=shaded_box src="https://c0.wallpaperflare.com/preview/564/703/665/school-coding-software-development-education.jpg" alt="Woman Instructing On Laptop." width=300px>
-  <figcaption>Source: <https://www.wallpaperflare.com/>. Creative Commons License.
-  </figcaption>
-</figure>
+<img class=shaded_box src="/./www/02-getting-started-python-shiny/intro-img.jpg" alt="Robot software devs collaborating." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+
 
 This tutorial is intended for those who are already familiar with Python, but
 may be less familiar with dashboarding and Shiny in Python. It may also be of

@@ -11,20 +11,16 @@ categories:
     - tmp_path_factory
     - fixtures
     - pytest-in-plain-english
-image: "https://images.pixexid.com/a-clock-with-gears-made-of-layered-textured-paper-and-a-glossy-metallic-face-s-0yp5gyd5.jpeg?h=699&amp;q=70"
-image-alt: "A clock with gears made of layered, textured paper and a glossy metallic face, set against a backdrop of passing time by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)"
+image: "/./www/12-pytest-tmp-path/intro-img.jpg"
+image-alt: "Temporary directories being produced by a factory on a futuristic workbench."
 toc: true
 jupyter: 
   kernelspec:
-    name: "conda-env-pytest-env-py"
+    name: "pytest-env"
     language: "python"
-    display_name: "blog-pytest-env"
+    display_name: "pytest-env"
 ---
-
-<figure class=center>
-  <img class="shaded_box" width=400px src="https://images.pixexid.com/a-clock-with-gears-made-of-layered-textured-paper-and-a-glossy-metallic-face-s-0yp5gyd5.jpeg"></img>
-  <figcaption style="text-align:center;">Creative commons license by [Ralph](https://pixexid.com/profile/cjxrsxsl7000008s6h21jecoe)</figcaption>
-</figure>
+<img class=shaded_box src=/./www/12-pytest-tmp-path/intro-img.jpg alt="Temporary directories being produced by a factory on a futuristic workbench." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 
@@ -169,7 +165,7 @@ millions of people who wrote the content that these services trained on?
 Saving the text file in the chunk below to the `./tests/data/` folder is where
 you would typically save data for your tests.
 
-<img src="https://i.imgur.com/TKN3zzt.png" alt="A modern take on Jack and Jill sees the pair fending off bugs in a future technological dystopia." class="center" width=400/>
+<img src="/./www/12-pytest-tmp-path/jack_jill.jpg" alt="A modern take on Jack and Jill sees the pair fending off bugs in a future technological dystopia." class="center" width=400/>
 
 ```{.abc filename="tests/data/jack-jill-2024.txt"}
 In the realm of data, where Jack and Jill dwell,

@@ -8,13 +8,13 @@ categories:
     - CodeCov
     - Coverage
     - CI:CD
-image: https://i.imgur.com/ozUGhg7.png
-image-alt: "CodeCov shield"
+image: /./www/21-codecov-setup/intro-img.jpg
+image-alt: "Futuristic cyberpunk shield"
 toc: true
 css: /./www/17-quarto-comments/styles.css
 code-annotations: select
 ---
-<img class=shaded_box src=https://i.imgur.com/ozUGhg7.png alt="CodeCov shield." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+<img class=shaded_box src=/./www/21-codecov-setup/intro-img.jpg alt="Futuristic cyberpunk shield" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
 
 ## Introduction
 
@@ -62,7 +62,7 @@ repo does not appear, try clicking refresh. If the repo belongs to an
 organisation, click on the drop-down menu to the top-left of the screen, 
 highlighted in red in the image below. 
 
-![CodeCov UI Repo Owner drop down. Click to expand.](https://i.imgur.com/lCNyDYR.png){.lightbox .shaded_box}
+![CodeCov UI Repo Owner drop down. Click to expand.](/./www/21-codecov-setup/01.png){.lightbox .shaded_box}
 
 :::{.callout-note collapse="true"}
 
@@ -101,7 +101,7 @@ Anyway there's a banner now, so I'll forgive them.
 5. Keep your CodeCov page open in a tab. Now go to your repo page in a new
 tab. Settings > Security > Secrets and variables > Actions
 
-![GitHub UI location of Actions Secrets & Variables. Click to expand.](https://i.imgur.com/9bBT0zP.png){.lightbox .shaded_box}
+![GitHub UI location of Actions Secrets & Variables. Click to expand.](/./www/21-codecov-setup/02.png){.lightbox .shaded_box}
 
 6. On the next page, under Repository secrets, click
 "New repository secret", ensure `Name` is equal to `CODECOV_TOKEN`, paste

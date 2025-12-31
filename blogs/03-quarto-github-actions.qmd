@@ -9,13 +9,16 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - How-to   # task-oriented
     - CI:CD
     - Front End Dev
-image: https://i1.pickpik.com/photos/452/586/379/code-html-digital-coding-preview.jpg # creative commons
-image-alt: "HTML code."
+image: /./www/03-quarto-github-actions/intro-img.jpg
+image-alt: "Automated assembly line."
 toc: true
 format:
   html:
     css: /./www/styles.css
 ---
+
+<img class=shaded_box src=/./www/03-quarto-github-actions/intro-img.jpg alt="Automated assembly line." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+
 ## Assumptions
 
 * You're set up with a [GitHub account](https://github.com/).

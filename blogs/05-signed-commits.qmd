@@ -8,8 +8,8 @@ categories:         # delete categories as appropriate. using https://diataxis.f
     - GitHub
     - Authentication
     - Verification
-image: /./www/05-signed-commits/verified-badge.png
-image-alt: "GitHub verification badge."
+image: /./www/05-signed-commits/intro-img.webp
+image-alt: "Verification badge."
 toc: true 
 execute: 
   eval: false # use code blocks with copy options but don't run the code
@@ -18,10 +18,7 @@ format:
     mermaid:
       theme: default
 ---
-<figure class=center>
-  <img class="shaded_box" src="/./www/05-signed-commits/verified-badge.png"></img>
-  <figcaption>GitHub verification badge.</figcaption>
-</figure>
+<img src="/./www/05-signed-commits/intro-img.webp" alt="Verification badge." style="display:block;margin-left:auto;margin-right:auto;width:60%;border:none;">
 
 ## Acknowledgement
 
