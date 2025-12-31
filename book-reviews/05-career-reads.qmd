@@ -54,7 +54,7 @@ audiences, so I'll try to set out who I think will find the content useful.
 
 ### 1. 7 Habits of Highly Effective People
 
-<img src="https://www.franklincovey.com/wp-content/uploads/2023/11/book_7-habits_600x600.png" data-src="https://www.franklincovey.com/wp-content/uploads/2023/11/book_7-habits_600x600.png" alt="7 habits of highly effective people" class="center" data-ll-status="loaded">
+![7 Habits of Highly Effective People book cover. Image © Franklin Covey.](/./www/book-reviews/05-career-reads/book_7-habits_600x600.webp){.center}
 
 The Seven Habits of Highly Effective People by Stephen R. Covey @Covey.
 
@@ -82,7 +82,7 @@ of people and projects.
 
 The highlight of the book for me is the famous Covey Quadrant:
 
-<img alt="Covey quadrant, creative commons." src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/7_habits_decision-making_matrix.png/596px-7_habits_decision-making_matrix.png?20181120003806" width="40%" class="center">
+![Covey quadrant. Image licensed under Creative Commons.](/./www/book-reviews/05-career-reads/7_habits_decision-making_matrix.webp){.center width="40%"}
 
 This was adapted from the Eisenhower Matrix, named after the former president
 who had devised the rubric. Covey's guidance was to spend time at the start of
@@ -101,8 +101,6 @@ opportunity to trial the approach with the faculty, who were extremely busy
 delivering technical training across public sector bodies while also needing to
 iterate and improve on the service offering. 
 
-<img src="https://i.imgur.com/tieaClW.png" alt="Power BI Team resourcing dashboard." style="display:block;margin-left:auto;margin-right:auto;width:70%;">
-
 This tool was exceptionally useful in helping manage demand. Conversations
 about feasible turnaround and how incoming priorities compared to pre-existing
 work were well-informed by a quick weekly update to the dashboard's data
@@ -113,7 +111,7 @@ team need help managing competing demands.
 
 ### 2. Agile DSDM Project Framework
 
-<img src="https://products.agilebusiness.org/static/343b69ec-37c5-45da-90fc10a0ee471b55/137a12af-29e5-4ed8-b4cf7ac05b1baf06/agile-pm-square.png" alt="agile-pm-square.png" class="center" width=50%>
+![Agile PM logo. Image © Agile Business Consortium Limited.](/./www/book-reviews/05-career-reads/agile-pm-square.webp){.center width="50%"}
 
 The Dynamic Systems Development Method @dsdm, an Agile project management
 framework, published by the Agile Business Consortium Ltd. The handbook is
@@ -188,8 +186,7 @@ the Agile philosophy. I had benefited from taking this experience with me to
 other organisations that had not discovered Agile, and enjoying the benefits
 of these simple rules.
 
-<img src="https://www.agilebusiness.org/static/f0e0abae-c39d-4e20-93b6fd6c84fab5f4/800x456_highestperformance__4a7c7e45a350/3b-projectvariables-trad.png" alt="Project demands payoff." style="display:block;margin-left:auto;margin-right:auto;width:70%;">
-Image © Agile Business Consortium Limited.
+![Project demands payoff. Image © Agile Business Consortium Limited.](/./www/book-reviews/05-career-reads/3b-projectvariables-trad.webp){style="display:block;margin-left:auto;margin-right:auto;width:70%;"}
 
 I recall one of my directors stating something to the effect of,
 
@@ -216,8 +213,7 @@ others that it works, too!
 
 Data Visualisation: A Handbook for Data Driven Design by Andy Kirk @kirk-viz.
 
-<img src="https://r3e826.n3cdn2.secureserver.net/wp-content/uploads/2023/02/Book.jpg?time=1721908621" class="center" alt="Data Visualisation Book shot">  
-Image © Data Viz Excellence, Everywhere Ltd
+![Data Visualisation book cover. Image © Data Viz Excellence, Everywhere Ltd.](/./www/book-reviews/05-career-reads/81G2OggHvvL.jpg){.center}
 
 :::{.callout-tip collapse="true"}
 
@@ -337,7 +333,7 @@ curated xkcd comic strips that the team have included at relevant points. It's
 rare to get a sense of humour in a civil service publication and very much
 appreciated.
 
-<img alt="Comic demonstrating poor file naming." src="https://imgs.xkcd.com/comics/documents.png" style="display:block;margin-left:auto;margin-right:auto;width:30%;">
+![Comic demonstrating poor file naming. Image © XKCD.](/./www/book-reviews/05-career-reads/xkcd-documents.png){style="display:block;margin-left:auto;margin-right:auto;width:30%;"}
 
 ## Special Mentions
 
