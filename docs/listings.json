@@ -82,5 +82,17 @@
       "/blogs/01-state-of-pyshiny.html",
       "/blogs/02-getting-started-pyshiny.html"
     ]
+  },
+  {
+    "listing": "/garden/index.html",
+    "items": [
+      "/garden/00-hello-garden.html"
+    ]
+  },
+  {
+    "listing": "/notepad/index.html",
+    "items": [
+      "/notepad/00-hello-notepad.html"
+    ]
   }
 ]

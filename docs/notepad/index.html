@@ -6,11 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Rich Leyshon">
-<meta name="dcterms.date" content="2024-09-06">
-<meta name="description" content="Systematise what you’re already probably doing.">
 
-<title>Building a Second Brain – The Data Savvy Corner</title>
+<title>Notepad – The Data Savvy Corner</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,32 +20,14 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <link href="..//./favicon.ico" rel="icon">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -79,24 +58,78 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-notepad-notes .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-notepad-notes'] = new List('listing-notepad-notes', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../www/styles.css">
-<meta property="og:title" content="Building a Second Brain – The Data Savvy Corner">
-<meta property="og:description" content="Systematise what you’re already probably doing.">
-<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/book-reviews/06-second-brain/intro-img.jpg">
+<meta property="og:title" content="Notepad – The Data Savvy Corner">
+<meta property="og:description" content="Musings, ramblings, generally putting things down in text so I don’t forget them.">
 <meta property="og:site_name" content="The Data Savvy Corner">
-<meta property="og:image:alt" content="An image of A digital brain built from circuitry.">
-<meta name="twitter:title" content="Building a Second Brain – The Data Savvy Corner">
-<meta name="twitter:description" content="Systematise what you’re already probably doing.">
-<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/book-reviews/06-second-brain/intro-img.jpg">
+<meta name="twitter:title" content="Notepad – The Data Savvy Corner">
+<meta name="twitter:description" content="Musings, ramblings, generally putting things down in text so I don’t forget them.">
 <meta name="twitter:site" content="@Rich_L1984">
-<meta name="twitter:image:alt" content="An image of A digital brain built from circuitry.">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed notepad-section quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -292,7 +325,7 @@ div.csl-indent {
 <span class="menu-text">Books</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notepad/index.html"> 
+    <a class="nav-link active" href="../notepad/index.html" aria-current="page"> 
 <span class="menu-text">📝 Notepad</span></a>
   </li>  
 </ul>
@@ -307,7 +340,7 @@ div.csl-indent {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -315,62 +348,24 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#book-summary" id="toc-book-summary" class="nav-link active" data-scroll-target="#book-summary">Book Summary</a></li>
-  <li><a href="#on-the-author" id="toc-on-the-author" class="nav-link" data-scroll-target="#on-the-author">On the Author</a></li>
-  <li><a href="#three-takeaway-ideas" id="toc-three-takeaway-ideas" class="nav-link" data-scroll-target="#three-takeaway-ideas">Three Takeaway Ideas</a>
-  <ul>
-  <li><a href="#consolidation." id="toc-consolidation." class="nav-link" data-scroll-target="#consolidation.">1. Consolidation.</a></li>
-  <li><a href="#c.o.d.e." id="toc-c.o.d.e." class="nav-link" data-scroll-target="#c.o.d.e.">2. C.O.D.E.</a></li>
-  <li><a href="#what-to-capture" id="toc-what-to-capture" class="nav-link" data-scroll-target="#what-to-capture">3. What to Capture?</a></li>
-  </ul></li>
-  <li><a href="#in-summary" id="toc-in-summary" class="nav-link" data-scroll-target="#in-summary">In Summary</a></li>
-  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#notepad" id="toc-notepad" class="nav-link active" data-scroll-target="#notepad">Notepad</a></li>
   </ul>
 </nav>
-    </div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWV0YQ==">meta <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Building a Second Brain</h1>
-<p class="subtitle lead">A Proven Method to Organise Your Digital Life and Unlock Your Creative Potential.</p>
-  <div class="quarto-categories">
-    <div class="quarto-category">Non-fiction</div>
-    <div class="quarto-category">Self-Help</div>
-    <div class="quarto-category">Productivity</div>
-    <div class="quarto-category">Personal Knowledge Management</div>
-    <div class="quarto-category">Personal Development</div>
-    <div class="quarto-category">Business</div>
-    <div class="quarto-category">Psychology</div>
-    <div class="quarto-category">Technology</div>
-    <div class="quarto-category">Note Taking</div>
-  </div>
-  </div>
-
-<div>
-  <div class="description">
-    Systematise what you’re already probably doing.
-  </div>
+<h1 class="title">Notepad</h1>
 </div>
 
 
-<div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Rich Leyshon </p>
-          </div>
-  </div>
+<div class="quarto-title-meta column-page-left">
+
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 6, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -380,79 +375,64 @@ div.csl-indent {
 </header>
 
 
-<p><img class="shaded_box" src=".././www/book-reviews/06-second-brain/intro-img.jpg" alt="An image of A digital brain built from circuitry." style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;"></p>
-<section id="book-summary" class="level2">
-<h2 class="anchored" data-anchor-id="book-summary">Book Summary</h2>
-<p>Building a Second Brain by Tiago Forte is a productivity book that teaches how to take and organise effective notes in a digital format. Collating these records with your own synthesis within a cohesive software ecosystem in order to improve productivity and support creative work.</p>
-<blockquote class="blockquote">
-<p>“Those who learn how to leverage technology and master the flow of information through their lives will be empowered to accomplish anything they set their minds to.” <span class="citation" data-cites="2ndBrain"><a href="#ref-2ndBrain" role="doc-biblioref">[1, p. 7]</a></span></p>
-</blockquote>
+<section id="notepad" class="level1 notepad-title notepad-header">
+<h1 class="notepad-title">Notepad</h1>
+<p><em>Quick notes, fleeting thoughts, and things worth jotting down.</em></p>
 </section>
-<section id="on-the-author" class="level2">
-<h2 class="anchored" data-anchor-id="on-the-author">On the Author</h2>
-<p>Tiago Forte is a productivity expert known for his work on personal knowledge management. He studied international business and worked in various roles, including the Peace Corps in Ukraine, where he taught productivity techniques. His career in innovation consulting introduced him to the world of Personal Knowledge Management (PKM), leading to the creation of his training venture, <a href="https://fortelabs.com/" target="_blank">Forte Labs</a>. This has since grown into a successful online education company, with Forte emphasising the integration of personal and professional growth. His work focuses on helping individuals manage information overload to enhance creativity and productivity.</p>
-</section>
-<section id="three-takeaway-ideas" class="level2">
-<h2 class="anchored" data-anchor-id="three-takeaway-ideas">Three Takeaway Ideas</h2>
-<section id="consolidation." class="level3">
-<h3 class="anchored" data-anchor-id="consolidation.">1. Consolidation.</h3>
-<p>What I liked best about this book was that it didn’t feel completely new to me. It discussed concepts that I had intuited and practised in less formal ways prior to reading. Therefore, adaptation to a centralised digital notekeeping solution would present a minor attitude adjustment, rather than a complete transformation.</p>
-<p>Back in 2015 I had attended a training course on how to get the most out of Microsoft OneNote, with low expectations and even less interest. Previously, OneNote had been the perplexing default option for printing documents - a minor annoyance while I swiftly found the printer I needed. The training session did a lot to demystify the software and highlighted some great features which at the time felt quite revolutionary, notably audio transcription, apply and search notes by tag and video embedding. I proceeded to use OneNote to record meeting outcomes, transcribe user-testing sessions, scribble ideas over papers and policy documents and so on. Some of my colleagues started to notice and asked me about it. I remember saying these words:</p>
-<blockquote class="blockquote">
-<p>If I need to find something, I can ‘CTRL + F’ the software, whereas I can’t do that with a notebook or stack of post-it notes.</p>
-</blockquote>
-<p>Over time, my digital ecosystem has diversified a bit. Sometimes because of me and software compatibility with the devices that I use, and at other times because of the preferences of my team. This book made a great case for favouring interoperable software to achieve a unified note taking system. Software that cannot work together is not serving your ability to retrieve information when you need it most.</p>
-<blockquote class="blockquote">
-<p>“Research from Microsoft shows that the average US employee spends 76 hours per year looking for misplaced notes, items, or files. And a report from the International Data Corporation found that 26 percent of a typical knowledge worker’s day is spent looking for and consolidating information spread across a variety of systems.” <span class="citation" data-cites="2ndBrain"><a href="#ref-2ndBrain" role="doc-biblioref">[1, p. 16]</a></span></p>
-</blockquote>
-<p>This must be achingly familiar to most modern workers, especially programmers. Those times when you find yourself Googling for solutions that you once knew, following purple links that you’ve already visited. Or trying to find that salient programming meme or inspirational quote in a newly refreshed social media feed. Surely, everyone has experienced this? Tiago Forte’s book suggests that if we ‘get our digital act together’, we don’t have to rely on our biological brain for recall. We can farm that job out to a digital note taking system which will perform better, recall faster and with greater accuracy. Instead, we can shift our efforts to synthesis - spotting connections between notes, adding our interpretation to them and extracting relevance in the process.</p>
-</section>
-<section id="c.o.d.e." class="level3">
-<h3 class="anchored" data-anchor-id="c.o.d.e.">2. C.O.D.E.</h3>
-<p>To anyone who has found themselves mindlessly highlighting reams of a text with no specific reason in mind, other than in a futile attempt to try to remember everything (guilty as charged), Forte’s C.O.D.E. recipe can offer clarity:</p>
-<p><img src=".././www/book-reviews/06-second-brain/CODE.001.jpeg" alt="Tiago Forte's recipe for success: Capture, Organise, Distil &amp; Express. Image credit https://fortelabs.com/" width="80%" class="center"></p>
-<p>My interpretation of the recipe is as follows:</p>
-<p><strong style="font-size:24px">C</strong>apture: Your note taking app should be ready to go at all times. With the capability to sync across all of your devices and backed up in the cloud, you should never miss an opportunity to make a record of an important piece of information, whenever and wherever it presents itself to you. More on the type of information to capture in a note in <a href="#what-to-capture">section 3</a>.</p>
-<p><strong style="font-size:24px">O</strong>rganise: Consider where the note should live within your digital brain. Don’t put pressure on yourself to do this straight away, as it may dissuade you from recording notes in the first place. But use your default section of a notebook (the area where documents would print to by default in OneNote for example) as a holding area. You can then triage these notes later in the day.</p>
-<p>Also, don’t agonise over where to locate these notes. Remember that you can search for them across your entire notebook. In fact, revisiting important notes and realigning them to new project folders or bringing old notes out of cold storage can play an important part in the creative process - never start from scratch again! Every time you initiate a new project, a great starting point would be to consult existing notes for relevant content. Most modern note taking applications also allow you to create internal links, allowing you to build connections across topics in your digital notes, or to group notes together under an index page.</p>
-<p><strong style="font-size:24px">D</strong>istill: The author suggests a specific summarising mechanism to allow at-a-glance knowledge retrieval when revisiting notes. One crucial element in acquiring knowledge is that you should always endeavour to do something with the information you wish to learn. Over time, when the details fade in your mind, it is the impact or relevance of that information that remains. Forte encourages the reader to develop the habit of reflecting upon the studied content, leaving helpful summaries that will aid your future self in retrieving what was important.</p>
-<p><strong style="font-size:24px">E</strong>xpress: Evaluate. Share the products of your note taking efforts and seek feedback from others. Find opportunities to help those around you in professional communities and consider how to refine your notes or your note-taking practice. Forte introduces the concept of “intermediate packets” - over time, projects may call for common notes or portions of notes to be put to work. In iteratively refining these packets of information, they can be adapted or generalised, greatly helping to facilitate future work.</p>
-</section>
-<section id="what-to-capture" class="level3">
-<h3 class="anchored" data-anchor-id="what-to-capture">3. What to Capture?</h3>
-<p>The author emphasises the importance of allowing your intuition to guide you when deciding on what information holds more value within any piece of text. The more you practise this skill, the better you will become in extracting the salient points of a text. If that sounds too much like hard work, the author suggests aligning your priorities to a set of ongoing projects that will help to guide your attention in capturing, organising and reflecting upon information.</p>
-<blockquote class="blockquote">
-<p>“You have to keep a dozen of your favourite problems constantly present in your mind, although by and large they will lay in a dormant state. Every time you hear or read a new trick or a new result, test it against each of your twelve problems to see whether it helps.” (Nobel prize-winning physicist Richard Feynman reflects on his strategy for success) <span class="citation" data-cites="2ndBrain"><a href="#ref-2ndBrain" role="doc-biblioref">[1, p. 44]</a></span></p>
-</blockquote>
-<p>I don’t consider the number twelve to be particularly important in all honesty. But you may have a few longer term targets in a professional development plan that you would like to progress - why not start with these? Having sections of your digital brain dedicated to these topics allows you to orient your efforts and order your thoughts.</p>
-<p>Forte also provides direction to those who need more direction in deciding what information has the greatest utility.</p>
-<blockquote class="blockquote">
-<p>“Capture Criteria #1: Does It Inspire Me? …<br>
-”Capture Criteria #2: Is It Useful? …<br>
-“Capture Criteria #3: Is It Personal? …<br>
-”Capture Criteria #4: Is It Inspiring?” <span class="citation" data-cites="2ndBrain"><a href="#ref-2ndBrain" role="doc-biblioref">[1, pp. 48–49]</a></span></p>
-</blockquote>
-<p>These criteria can be used to help filter the information that you capture, allowing you to focus on that which is most important. The author offers a brief explanation for each of the criteria, supported by examples. I am currently trying these criteria on for size and have included a highlighting key within my note taking app to help me remember to use them.</p>
-</section>
-</section>
-<section id="in-summary" class="level2">
-<h2 class="anchored" data-anchor-id="in-summary">In Summary</h2>
-<p>Overall, I would recommend this book to anyone interested in the personal efficacy space. It is full of practical advice and encouragement to get started or to refine your digital note taking system. The book contains plenty of examples that illustrate exactly how to put the ideas into action, catering for a range of preferred learning styles. Additionally, the author’s system is extremely well-supported and debated online. Check out the <a href="https://fortelabs.com" target="_blank">Forte Labs</a> website and the <a href="https://www.youtube.com/@TiagoForte" target="_blank">Tiago Forte YouTube channel</a> for more information.</p>
-<p>If this book inspired you to start your own digital note taking system, you may find my review of Cal Newport’s <a href="../book-reviews/01-deep-work.html">Deep Work</a> book useful.</p>
-</section>
-<section id="acknowledgements" class="level2">
-<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
-<p>I would like to thank Beth for a fantastic book recommendation - this was a great read.</p>
+<div id="listing-notepad-notes" class="notepad-notes-container quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="bWV0YQ==" data-listing-date-sort="1767830400000" data-listing-file-modified-sort="1768032995061" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="74">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notepad/00-hello-notepad.html" class="no-external">Welcome to the Notepad</a>
+</h3>
+<div class="listing-categories">
 
+<div class="listing-category" onclick="window.quartoListingCategory('bWV0YQ=='); return false;">meta</div>
 
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
-<div id="ref-2ndBrain" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Tiago Forte, <em><span class="nocase">Building a Second Brain</span>: <span class="nocase">A Proven Method to Organise Your Digital Life and Unlock Your Creative Potential.</span></em> <span>Profile Books Ltd</span>, 2022.</div>
 </div>
-</div></section></div></main> <!-- /main -->
+<div class="delink listing-description"><a href="../notepad/00-hello-notepad.html" class="no-external">
+<p>A deliberately scruffy space for ideas, experiments, and snippets.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../notepad/00-hello-notepad.html" class="no-external">
+<div class="listing-date">
+Jan 8, 2026
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+<script>
+function makeCardsClickable() {
+  document.querySelectorAll('.notepad-section .quarto-post').forEach(function(card) {
+    if (card.dataset.clickHandler) return;
+    card.dataset.clickHandler = 'true';
+    
+    var link = card.querySelector('h3.listing-title a, .listing-title a');
+    if (!link) return;
+    
+    card.addEventListener('click', function(e) {
+      // Don't navigate if clicking directly on a link or category button
+      if (e.target.closest('a') || e.target.closest('.listing-category')) return;
+      window.location.href = link.href;
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  makeCardsClickable();
+  setTimeout(makeCardsClickable, 500);
+});
+</script>
+
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -865,38 +845,6 @@ div.csl-indent {
     }
   });
   </script>
-<input type="hidden" id="giscus-base-theme" value="cobalt">
-<input type="hidden" id="giscus-alt-theme" value="cobalt">
-<script>
-  function loadGiscus() {
-    // Function to get the theme based on body class
-    const getTheme = () => {
-      let baseTheme = document.getElementById('giscus-base-theme').value;
-      let altTheme = document.getElementById('giscus-alt-theme').value;
-      if (authorPrefersDark) {
-          [baseTheme, altTheme] = [altTheme, baseTheme];
-      }
-      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
-    };
-    const script = document.createElement("script");
-    script.src = "https://giscus.app/client.js";
-    script.async = true;
-    script.dataset.repo = "r-leyshon/blogging";
-    script.dataset.repoId = "R_kgDOJ7xM-w";
-    script.dataset.category = "Announcements";
-    script.dataset.categoryId = "DIC_kwDOJ7xM-84Chxs3";
-    script.dataset.mapping = "url";
-    script.dataset.reactionsEnabled = "1";
-    script.dataset.emitMetadata = "0";
-    script.dataset.inputPosition = "top";
-    script.dataset.theme = getTheme();
-    script.dataset.lang = "en";
-    script.crossOrigin = "anonymous";
-    // Append the script to the desired div instead of at the end of the body
-    document.getElementById("quarto-content").appendChild(script);
-  }
-  loadGiscus();
-</script>
 </div> <!-- /content -->
 
 

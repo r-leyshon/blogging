@@ -28,6 +28,8 @@ website:
       - blogs/index.qmd
       - music-reviews/index.qmd
       - book-reviews/index.qmd
+      - text: "📝 Notepad"
+        href: notepad/index.qmd
     tools:
       - icon: twitter-x
         href: https://twitter.com/Rich_L1984
