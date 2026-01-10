@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://thedatasavvycorner.netlify.app/notepad/index.html</loc>
+    <lastmod>2026-01-10T08:16:35.061Z</lastmod>
+  </url>
+  <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/index.html</loc>
     <lastmod>2026-01-10T07:45:48.690Z</lastmod>
   </url>
@@ -147,18 +151,6 @@
   <url>
     <loc>https://thedatasavvycorner.netlify.app/music-reviews/05-when-worlds-collide.html</loc>
     <lastmod>2024-09-02T16:37:39.306Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/garden/index.html</loc>
-    <lastmod>2026-01-08T17:41:45.094Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/garden/00-hello-garden.html</loc>
-    <lastmod>2026-01-08T17:41:45.106Z</lastmod>
-  </url>
-  <url>
-    <loc>https://thedatasavvycorner.netlify.app/notepad/index.html</loc>
-    <lastmod>2026-01-10T08:16:35.061Z</lastmod>
   </url>
   <url>
     <loc>https://thedatasavvycorner.netlify.app/notepad/00-hello-notepad.html</loc>
