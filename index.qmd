@@ -12,6 +12,7 @@ listing:
         - /blogs/[!index]*.qmd
         - /book-reviews/[!index]*.qmd
         - /music-reviews/[!index]*.qmd
+        - /notepad/[!index]*.qmd
     sort:
         - "date desc"
         - "title desc"
@@ -46,6 +47,10 @@ concentration. I'll include reviews of some of my favourite albums here.
 * [Book Reviews](book-reviews/index.qmd) : Much of my casual reading is
 non-fiction and tangential to programming. I'll review material here that I
 have found to be supportive of my work in various aspects.
+
+* [Notepad](notepad/index.qmd) : Quick notes, fleeting thoughts, and things
+worth jotting down. A deliberately scruffy space for ideas, experiments, and
+snippets.
 
 ## Recent Articles
 

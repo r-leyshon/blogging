@@ -55,6 +55,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/notepad/00-hello-notepad.html",
       "/blogs/21-codecov-setup.html",
       "/blogs/20-lazy-mocking.html",
       "/blogs/19-github-audit-trail.html",
