@@ -7,7 +7,7 @@ body-classes: notepad-section
 order: 1
 ---
 
-In the age of the LLM revolution, I'm currently unsure as to how useful long form blogging will be going forward.
+In the age of the LLM revolution, I'm currently unsure as to how useful long form blogging will be. 
 
 While I weigh things up, I will go with a demonstrably scruffy and minimal approach to recording ideas, experiments and snippets for things that I've found interesting, tricky or non-trivial.
 
