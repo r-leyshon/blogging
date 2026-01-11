@@ -22,7 +22,7 @@
         "toc: true\n",
         "---"
       ],
-      "id": "be8656e3"
+      "id": "8b368ddb"
     },
     {
       "cell_type": "markdown",
@@ -212,7 +212,7 @@
         "of the poem to disk. Let's go ahead and create a function that will read the\n",
         "poem from disk and replace any word that you'd like to change."
       ],
-      "id": "f62fe117"
+      "id": "1ce652c9"
     },
     {
       "cell_type": "code",
@@ -247,7 +247,7 @@
         "        f.close()\n",
         "    return txt.replace(target_pattern, replacement)"
       ],
-      "id": "9a315a01",
+      "id": "c800ef78",
       "execution_count": null,
       "outputs": []
     },
@@ -258,7 +258,7 @@
         "Now we can try using the function to rename a character in the rhyme, by\n",
         "running the below code in a python shell."
       ],
-      "id": "adeee31f"
+      "id": "314c3e01"
     },
     {
       "cell_type": "code",
@@ -271,7 +271,7 @@
         "  replacement=\"Jock\")\n",
         "print(rhyme[0:175])"
       ],
-      "id": "bb2d626d",
+      "id": "e6a7c513",
       "execution_count": null,
       "outputs": []
     },
@@ -296,7 +296,7 @@
         "Great, next we need a little utility function that will take our text and write\n",
         "it to a file of our choosing."
       ],
-      "id": "dd86763f"
+      "id": "0200eb74"
     },
     {
       "cell_type": "code",
@@ -321,7 +321,7 @@
         "        f.writelines(some_txt)\n",
         "        f.close()    "
       ],
-      "id": "2eae6cb5",
+      "id": "0529f0aa",
       "execution_count": null,
       "outputs": []
     },
@@ -333,7 +333,7 @@
         "the user to read in the text file, replace a pattern and then write the new\n",
         "poem to file."
       ],
-      "id": "3ed0b523"
+      "id": "60fc6f86"
     },
     {
       "cell_type": "code",
@@ -361,7 +361,7 @@
         "    txt = _update_a_term(poem_pth, target_pattern, replacement)\n",
         "    _write_string_to_txt(txt, out_file)"
       ],
-      "id": "a49a9e3b",
+      "id": "4c32d3f9",
       "execution_count": null,
       "outputs": []
     },
@@ -382,7 +382,7 @@
         "behaviour on teardown to remove these files when pytest finishes doing its\n",
         "business."
       ],
-      "id": "bd2116ae"
+      "id": "90c65f97"
     },
     {
       "cell_type": "code",
@@ -407,7 +407,7 @@
         "        out_file=new_poem_path\n",
         "        )"
       ],
-      "id": "8525b419",
+      "id": "707c314e",
       "execution_count": null,
       "outputs": []
     },
@@ -432,7 +432,7 @@
         "\n",
         "Let's go ahead and add in those assertions."
       ],
-      "id": "6eb63c2d"
+      "id": "c3b2919e"
     },
     {
       "cell_type": "code",
@@ -468,7 +468,7 @@
         "    assert \"glitch\" not in what_was_written\n",
         "    assert \"bug\" in what_was_written\n"
       ],
-      "id": "2b2392eb",
+      "id": "e007bbbc",
       "execution_count": null,
       "outputs": []
     },
@@ -491,7 +491,7 @@
         "another test to `test_update_poetry.py` and see what we get when we try to use\n",
         "`tmp_path` once more."
       ],
-      "id": "1ad6a9a9"
+      "id": "df462979"
     },
     {
       "cell_type": "code",
@@ -508,7 +508,7 @@
         "    assert \"new_poem\" not in os.listdir(tmp_path)\n",
         "    assert os.listdir(tmp_path) == []\n"
       ],
-      "id": "7aa79ab4",
+      "id": "4cc1ef48",
       "execution_count": null,
       "outputs": []
     },
@@ -541,7 +541,7 @@
         "\n",
         ":::"
       ],
-      "id": "7740594f"
+      "id": "baef8b23"
     },
     {
       "cell_type": "code",
@@ -559,7 +559,7 @@
         "def _module_scoped_tmp(tmp_path_factory):\n",
         "    yield tmp_path_factory.mktemp(\"put_poetry_here\", numbered=False)"
       ],
-      "id": "44823980",
+      "id": "40ab5563",
       "execution_count": null,
       "outputs": []
     },
@@ -574,7 +574,7 @@
         "but this time with our new module-scoped temporary directory, we get a\n",
         "different outcome."
       ],
-      "id": "b7f5ffb2"
+      "id": "cc01f595"
     },
     {
       "cell_type": "code",
@@ -620,7 +620,7 @@
         "    assert \"glitch\" not in found_txt\n",
         "    assert \"bug\" in found_txt"
       ],
-      "id": "151fbbfa",
+      "id": "41ac3010",
       "execution_count": null,
       "outputs": []
     },
@@ -699,7 +699,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "ddfa5ead"
+      "id": "f0a39e24"
     }
   ],
   "metadata": {

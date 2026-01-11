@@ -204,7 +204,7 @@
         "road traffic collisions. Dark bands are populated records. White bands are\n",
         "missing records."
       ],
-      "id": "79f62c73"
+      "id": "1f4a6be5"
     },
     {
       "cell_type": "code",
@@ -216,7 +216,7 @@
         "collisions = pd.read_csv(\"https://raw.githubusercontent.com/ResidentMario/missingno-data/master/nyc_collision_factors.csv\")\n",
         "msno.matrix(collisions.sample(250))"
       ],
-      "id": "d2e1fa01",
+      "id": "65bc5673",
       "execution_count": null,
       "outputs": []
     },
@@ -250,7 +250,7 @@
         "[missingno]: https://github.com/ResidentMario/missingno\n",
         "[naniar]: https://naniar.njtierney.com/"
       ],
-      "id": "4691dbb9"
+      "id": "37e5f0a5"
     }
   ],
   "metadata": {

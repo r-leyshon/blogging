@@ -8,7 +8,9 @@ order: 1
 image: /./www/notepad/00-hello-notepad.jpg
 image-alt: "A cozy notepad sketch"
 ---
-<img class=shaded_box src=/./www/notepad/00-hello-notepad.jpg alt="A cozy notepad sketch" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+<div class="notepad-hero">
+<img src=/./www/notepad/00-hello-notepad.jpg alt="A cozy notepad sketch">
+</div>
 
 In the age of the LLM revolution, I'm currently unsure as to how useful long form blogging will be. 
 

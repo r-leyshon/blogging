@@ -418,6 +418,63 @@ body.notepad-section.quarto-dark main.content blockquote {
   color: #F0EBE3;  /* Cream text */
 }
 
+/* Notepad hero image - cozy polaroid style */
+.notepad-hero {
+  display: block;
+  margin: 1.5rem auto 2rem auto;
+  max-width: 45%;
+  padding: 0.8rem 0.8rem 2.5rem 0.8rem;
+  background: linear-gradient(135deg, #FFFEF9 0%, #F5F0E6 100%);
+  border: none;
+  border-radius: 2px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 0 20px rgba(0, 0, 0, 0.02);
+  transform: rotate(-1.5deg);
+  transition: transform 0.3s ease;
+}
+
+.notepad-hero:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.notepad-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tape effect at top */
+.notepad-hero::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 20px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 200, 0.9) 0%, 
+    rgba(255, 255, 180, 0.7) 100%);
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode adjustments */
+body.notepad-section.quarto-dark .notepad-hero {
+  background: linear-gradient(135deg, #3A3632 0%, #2D2A26 100%);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+body.notepad-section.quarto-dark .notepad-hero::before {
+  background: linear-gradient(180deg, 
+    rgba(200, 180, 140, 0.8) 0%, 
+    rgba(180, 160, 120, 0.6) 100%);
+}
+
 body.notepad-section.quarto-dark main.content a {
   color: #90CAF9;
 }

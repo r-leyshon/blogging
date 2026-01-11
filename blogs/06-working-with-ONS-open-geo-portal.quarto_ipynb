@@ -21,7 +21,7 @@
         "code-annotations: select\n",
         "---"
       ],
-      "id": "37e34538"
+      "id": "7c7a3fd2"
     },
     {
       "cell_type": "markdown",
@@ -88,7 +88,7 @@
         "5. Add the following lines to the top of `get_data.py` and run them, this \n",
         "ensures that you have the dependencies needed to run the rest of the code:"
       ],
-      "id": "a621e9ea"
+      "id": "6fb4e8a2"
     },
     {
       "cell_type": "code",
@@ -98,7 +98,7 @@
         "import geopandas as gpd\n",
         "import pandas as pd"
       ],
-      "id": "f93b8c1a",
+      "id": "0a21ea51",
       "execution_count": null,
       "outputs": []
     },
@@ -137,7 +137,7 @@
         "including the question mark. Then assign it to a variable called `ENDPOINT` as\n",
         "below:"
       ],
-      "id": "3ebfa825"
+      "id": "86267da3"
     },
     {
       "cell_type": "code",
@@ -145,7 +145,7 @@
       "source": [
         "ENDPOINT = \"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_December_2021_Boundaries_EW_BFC_V10/FeatureServer/0/query\""
       ],
-      "id": "ea4a9837",
+      "id": "ae45a6e8",
       "execution_count": null,
       "outputs": []
     },
@@ -169,7 +169,7 @@
         "Define the below Python dictionary, noting that the syntax and data formats\n",
         "- don't forget to wrap the LSOA21CD in speech marks:"
       ],
-      "id": "579c269a"
+      "id": "1ffe2e13"
     },
     {
       "cell_type": "code",
@@ -184,7 +184,7 @@
         "    \"outFields\": \"*\",                                                      # <5>   \n",
         "}"
       ],
-      "id": "a5b1d031",
+      "id": "41c0f17c",
       "execution_count": null,
       "outputs": []
     },
@@ -201,7 +201,7 @@
         "Now I will define a function that will make the request and handle the\n",
         "response for us. Go ahead and define this function:"
       ],
-      "id": "3b24c303"
+      "id": "b409508f"
     },
     {
       "cell_type": "code",
@@ -248,7 +248,7 @@
         "            f\"HTTP Code: {response.status_code}, Status: {response.reason}\" # <5>\n",
         "        )"
       ],
-      "id": "5a60ad8e",
+      "id": "e2187ebd",
       "execution_count": null,
       "outputs": []
     },
@@ -285,7 +285,7 @@
         "With that function defined, we can go straight to a tabular data format,\n",
         "like below:"
       ],
-      "id": "37a139fb"
+      "id": "b17b48b8"
     },
     {
       "cell_type": "code",
@@ -294,7 +294,7 @@
         "_, gdf = request_to_gdf(ENDPOINT, params)\n",
         "gdf.head()"
       ],
-      "id": "f1c34d4a",
+      "id": "65672c90",
       "execution_count": null,
       "outputs": []
     },
@@ -305,7 +305,7 @@
         "We can use the GeoDataFrame `.explore()` method to quickly inspect the fruit\n",
         "of our efforts."
       ],
-      "id": "49142c6c"
+      "id": "4d4aebaf"
     },
     {
       "cell_type": "code",
@@ -313,7 +313,7 @@
       "source": [
         "gdf.explore()"
       ],
-      "id": "1b9c8880",
+      "id": "e833aa31",
       "execution_count": null,
       "outputs": []
     },
@@ -327,7 +327,7 @@
         "prefer not to ingest all of them. Have a look at the available columns in\n",
         "the GeoDataFrame. "
       ],
-      "id": "ac534128"
+      "id": "e0e7f3f0"
     },
     {
       "cell_type": "code",
@@ -336,7 +336,7 @@
         "#| echo: false\n",
         "gdf.head(1)"
       ],
-      "id": "16720439",
+      "id": "901de37f",
       "execution_count": null,
       "outputs": []
     },
@@ -348,7 +348,7 @@
         "authority. Have a go at updating `params[\"where\"]` with an SQL query that\n",
         "can achieve this."
       ],
-      "id": "b8107497"
+      "id": "d00dc310"
     },
     {
       "cell_type": "code",
@@ -358,7 +358,7 @@
         "#| code-summary: \"Show the solution\"\n",
         "params[\"where\"] = \"LSOA21NM like 'Newport%'\""
       ],
-      "id": "329fb6a1",
+      "id": "bdcd1bf0",
       "execution_count": null,
       "outputs": []
     },
@@ -370,7 +370,7 @@
         "use the `.explore()` method to visualise the map. Confirm that the LSOAs\n",
         "returned match what you expected."
       ],
-      "id": "eaa8fd47"
+      "id": "cb52d2c6"
     },
     {
       "cell_type": "code",
@@ -381,7 +381,7 @@
         "_, gdf = request_to_gdf(ENDPOINT, params)\n",
         "gdf.explore()"
       ],
-      "id": "7f200d10",
+      "id": "b9b75c01",
       "execution_count": null,
       "outputs": []
     },
@@ -393,7 +393,7 @@
         "\n",
         "Update the `params` dictionary by changing the value of `where` to `'1=1'`."
       ],
-      "id": "a76fe589"
+      "id": "37fe03e8"
     },
     {
       "cell_type": "code",
@@ -404,7 +404,7 @@
         "\n",
         "params[\"where\"] = \"1=1\"                                                     # <1>"
       ],
-      "id": "b9539f93",
+      "id": "a2b28068",
       "execution_count": null,
       "outputs": []
     },
@@ -427,7 +427,7 @@
         "parameter responsible for returning counts only. Query the database for the\n",
         "number of records and store it as an integer called `n_records`."
       ],
-      "id": "9a542c29"
+      "id": "93cf05c1"
     },
     {
       "cell_type": "code",
@@ -442,7 +442,7 @@
         "n_records = response.json()[\"properties\"][\"count\"]\n",
         "print(f\"There are {n_records} LSOAs in total\")"
       ],
-      "id": "fb6e8501",
+      "id": "05e20f2e",
       "execution_count": null,
       "outputs": []
     },
@@ -455,7 +455,7 @@
         "Now we have the number of records, it's important to go back to collecting\n",
         "geometries. Please update the `params` dictionary to allow that to happen."
       ],
-      "id": "de802bc8"
+      "id": "abf5f2fc"
     },
     {
       "cell_type": "code",
@@ -467,7 +467,7 @@
         "# lets now return to collecting geometries\n",
         "del params[\"returnCountOnly\"]                                               # <1>"
       ],
-      "id": "204f9442",
+      "id": "dedc07a3",
       "execution_count": null,
       "outputs": []
     },
@@ -481,7 +481,7 @@
         "Have a go at requesting the first batch of LSOA boundaries. Count how many\n",
         "you get without attempting to paginate."
       ],
-      "id": "70bb5991"
+      "id": "4863956e"
     },
     {
       "cell_type": "code",
@@ -493,7 +493,7 @@
         "response, gdf = request_to_gdf(ENDPOINT, params)\n",
         "print(f\"There are only {len(gdf)} LSOAs on this page.\")"
       ],
-      "id": "d3336df4",
+      "id": "53eeba35",
       "execution_count": null,
       "outputs": []
     },
@@ -504,7 +504,7 @@
         "Visualise the first 100 rows of the GeoDataFrame you created in the\n",
         "previous step."
       ],
-      "id": "b1620900"
+      "id": "b7faba52"
     },
     {
       "cell_type": "code",
@@ -514,7 +514,7 @@
         "#| code-summary: \"Show the Solution\"\n",
         "gdf.head(100).explore()"
       ],
-      "id": "f8d28718",
+      "id": "37d9cbf3",
       "execution_count": null,
       "outputs": []
     },
@@ -526,7 +526,7 @@
         "See if you can find the target parameter by examining the response\n",
         "properties."
       ],
-      "id": "9ab30d4d"
+      "id": "3276ced1"
     },
     {
       "cell_type": "code",
@@ -540,7 +540,7 @@
         "    f\"It is {more_pages}, that there are more pages of data to ingest...\"\n",
         "    )"
       ],
-      "id": "f51a5037",
+      "id": "c423c26d",
       "execution_count": null,
       "outputs": []
     },
@@ -554,7 +554,7 @@
         "an expensive request. Therefore to make things go a bit faster, let's ask\n",
         "for only the default fields by removing `params[\"outFields\"]`."
       ],
-      "id": "c5360d29"
+      "id": "471f0e40"
     },
     {
       "cell_type": "code",
@@ -564,7 +564,7 @@
         "#| code-summary: \"Show the solution\"\n",
         "del params[\"outFields\"]"
       ],
-      "id": "fc83e94e",
+      "id": "980bc098",
       "execution_count": null,
       "outputs": []
     },
@@ -579,7 +579,7 @@
         "on your connection. Add the code below to your python script and run it,\n",
         "then make yourself a cup of your chosen beverage."
       ],
-      "id": "2e3ac29f"
+      "id": "8d87d539"
     },
     {
       "cell_type": "code",
@@ -599,7 +599,7 @@
         "\n",
         "all_lsoas = all_lsoas.reset_index(drop=True)"
       ],
-      "id": "acb8f5e6",
+      "id": "6d3ec5e8",
       "execution_count": null,
       "outputs": []
     },
@@ -618,7 +618,7 @@
         "can attempt to set this parameter explicitly, but I find this makes no\n",
         "difference."
       ],
-      "id": "505f1657"
+      "id": "efbf4c47"
     },
     {
       "cell_type": "code",
@@ -629,7 +629,7 @@
         "params[\"returnExceededLimitFeatures\"] = True\n",
         "# both patterns result in the same behaviour as not setting it - the "
       ],
-      "id": "29f543b5",
+      "id": "19f14759",
       "execution_count": null,
       "outputs": []
     },
@@ -639,7 +639,7 @@
       "source": [
         "Check whether the number of records ingested matches the number expected."
       ],
-      "id": "7cd9812b"
+      "id": "891c09ae"
     },
     {
       "cell_type": "code",
@@ -652,7 +652,7 @@
         "    f\"Does the row count match the expected number of records? {all_done}\"\n",
         "    )"
       ],
-      "id": "6494867a",
+      "id": "56b867b8",
       "execution_count": null,
       "outputs": []
     },
@@ -662,7 +662,7 @@
       "source": [
         "Finally, visualise the last 100 records available within the GeoDataFrame."
       ],
-      "id": "9ff13ad2"
+      "id": "4c481d72"
     },
     {
       "cell_type": "code",
@@ -672,7 +672,7 @@
         "#| code-summary: \"Show the Solution\"\n",
         "all_lsoas.tail(100).explore()"
       ],
-      "id": "0aad950d",
+      "id": "23f769e7",
       "execution_count": null,
       "outputs": []
     },
@@ -726,7 +726,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "6c702750"
+      "id": "1b271268"
     }
   ],
   "metadata": {

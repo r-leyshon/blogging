@@ -25,10 +25,17 @@ image-alt: "Descriptive alt text"
 ```
 
 ### 3. Add hero image (optional but recommended)
-After the YAML frontmatter:
+After the YAML frontmatter, use the cozy polaroid-style wrapper:
 ```html
-<img class=shaded_box src=/./www/notepad/XX-slug-name.jpg alt="Alt text" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;">
+<div class="notepad-hero">
+<img src=/./www/notepad/XX-slug-name.jpg alt="Alt text">
+</div>
 ```
+This creates a polaroid-style image with:
+- Cream paper frame with extra space at bottom
+- Subtle tape effect at top
+- Slight rotation for a casual, pinned-to-board feel
+- Hover animation that straightens the image
 
 ### 4. To pin an article to the top
 Add `order: 1` to the YAML frontmatter (lower numbers appear first).
