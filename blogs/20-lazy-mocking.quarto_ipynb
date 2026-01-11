@@ -25,7 +25,7 @@
         "code-annotations: select\n",
         "---"
       ],
-      "id": "8b8439e4"
+      "id": "16533c8d"
     },
     {
       "cell_type": "markdown",
@@ -65,7 +65,7 @@
         "\n",
         "This little function would cause a problem when writing your test suite:"
       ],
-      "id": "b9ba3a79"
+      "id": "a6f950f2"
     },
     {
       "cell_type": "code",
@@ -89,7 +89,7 @@
         "\n",
         "get_poem_line_for_day()"
       ],
-      "id": "bebdcf14",
+      "id": "e9506492",
       "execution_count": null,
       "outputs": []
     },
@@ -117,7 +117,7 @@
         "\n",
         "This is very easy to mock using local-scoped utility functions."
       ],
-      "id": "8762d2e0"
+      "id": "ce47cead"
     },
     {
       "cell_type": "code",
@@ -152,7 +152,7 @@
         "    result = poem.get_poem_line_for_day()                                       # <5>\n",
         "    assert result == \"Thursday's child has far to go\"                           # <6>"
       ],
-      "id": "e43866ca",
+      "id": "d02e8d4c",
       "execution_count": null,
       "outputs": []
     },
@@ -181,7 +181,7 @@
         ", as the test suite grows, it would be better to share the mock across multiple\n",
         "tests. You may naively try to use the same `mock_poem` as a `pytest` fixture."
       ],
-      "id": "ced457ef"
+      "id": "54984019"
     },
     {
       "cell_type": "code",
@@ -211,7 +211,7 @@
         "    result = poem.get_poem_line_for_day()\n",
         "    assert result == \"Friday's child is loving and giving\""
       ],
-      "id": "ee6ac1cb",
+      "id": "17aff579",
       "execution_count": null,
       "outputs": []
     },
@@ -237,7 +237,7 @@
         "a factory function to instantiate the poem line within the test, rather than\n",
         "before it."
       ],
-      "id": "27604953"
+      "id": "87e7808b"
     },
     {
       "cell_type": "code",
@@ -270,7 +270,7 @@
         "    result = poem.get_poem_line_for_day()\n",
         "    assert result == \"Friday's child is loving and giving\""
       ],
-      "id": "a5f5834c",
+      "id": "c6d5fd26",
       "execution_count": null,
       "outputs": []
     },
@@ -307,7 +307,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "68f661c6"
+      "id": "b2ff70f4"
     }
   ],
   "metadata": {

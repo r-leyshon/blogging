@@ -4,7 +4,7 @@
     "href": "notepad/index.html",
     "title": "Notepad",
     "section": "",
-    "text": "Notepad\nQuick notes, fleeting thoughts, and things worth jotting down.\n\n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nPruning Stale Local Branches\n\n\n\ntil\n\ngit\n\nsnippet\n\n\n\nTidy up local branches that no longer exist on remote.\n\n\n\n\n\nJan 11, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Notepad\nQuick notes, fleeting thoughts, and things worth jotting down.\n\n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nPruning Stale Local Branches\n\n\n\ntil\n\ngit\n\nsnippet\n\n\n\nTidy up local branches that no longer exist on remote.\n\n\n\n\n\nJan 11, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nCursor’s Browser Tools are a Game Changer\n\n\n\ntil\n\ncursor\n\nweb-dev\n\n\n\nNo more manual screengrabs. No more copy-paste DOM.\n\n\n\n\n\nJan 11, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "music-reviews/index.html",
@@ -1173,7 +1173,7 @@
     "href": "index.html#recent-articles",
     "title": "Welcome to The Data Savvy Corner!",
     "section": "Recent Articles",
-    "text": "Recent Articles\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nPruning Stale Local Branches\n\n\n\ntil\n\ngit\n\nsnippet\n\n\n\nTidy up local branches that no longer exist on remote.\n\n\n\n\n\nJan 11, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nAutomated CodeCov reports with GitHub Actions\n\n\n\nHow-to\n\nCodeCov\n\nCoverage\n\nCI:CD\n\n\n\nA quick How-to reference for uploading python coverage reports to the CodeCov service\n\n\n\n\n\nNov 29, 2024\n\n\nRich Leyshon\n\n7 min\n\n\n\n\n\n\n\n\n\n\n\nLazy Mocking\n\n\n\nHow-to\n\npytest\n\nUnit tests\n\nmocking\n\npytest-in-plain-english\n\npatching\n\nlazy\n\nlazy evaluation\n\n\n\nMocking with Fixtures: Deferred Evaluation\n\n\n\n\n\nNov 5, 2024\n\n\nRich Leyshon\n\n10 min\n\n\n\n\n\n\n\n\n\n\n\nCommit with Clarity\n\n\n\nExplanation\n\nGitHub\n\nGit\n\nVersion Control\n\nSoftware Development\n\nBlame\n\nVSCode\n\nGit Grep\n\n\n\nBuilding a Better Audit Trail with GitHub\n\n\n\n\n\nOct 13, 2024\n\n\nRich Leyshon\n\n14 min\n\n\n\n\nNo matching items"
+    "text": "Recent Articles\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nPruning Stale Local Branches\n\n\n\ntil\n\ngit\n\nsnippet\n\n\n\nTidy up local branches that no longer exist on remote.\n\n\n\n\n\nJan 11, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nCursor’s Browser Tools are a Game Changer\n\n\n\ntil\n\ncursor\n\nweb-dev\n\n\n\nNo more manual screengrabs. No more copy-paste DOM.\n\n\n\n\n\nJan 11, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nAutomated CodeCov reports with GitHub Actions\n\n\n\nHow-to\n\nCodeCov\n\nCoverage\n\nCI:CD\n\n\n\nA quick How-to reference for uploading python coverage reports to the CodeCov service\n\n\n\n\n\nNov 29, 2024\n\n\nRich Leyshon\n\n7 min\n\n\n\n\n\n\n\n\n\n\n\nLazy Mocking\n\n\n\nHow-to\n\npytest\n\nUnit tests\n\nmocking\n\npytest-in-plain-english\n\npatching\n\nlazy\n\nlazy evaluation\n\n\n\nMocking with Fixtures: Deferred Evaluation\n\n\n\n\n\nNov 5, 2024\n\n\nRich Leyshon\n\n10 min\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#about-me",
@@ -1349,5 +1349,40 @@
     "title": "Pruning Stale Local Branches",
     "section": "Delete them all at once",
     "text": "Delete them all at once\ngit branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d\nUse -D instead of -d to force-delete branches with unmerged changes."
+  },
+  {
+    "objectID": "notepad/02-cursor-browser-tools.html",
+    "href": "notepad/02-cursor-browser-tools.html",
+    "title": "Cursor’s Browser Tools are a Game Changer",
+    "section": "",
+    "text": "I’m genuinely blown away by Cursor’s browser integration."
+  },
+  {
+    "objectID": "notepad/02-cursor-browser-tools.html#what-changed",
+    "href": "notepad/02-cursor-browser-tools.html#what-changed",
+    "title": "Cursor’s Browser Tools are a Game Changer",
+    "section": "What Changed",
+    "text": "What Changed\nPreviously, debugging web dev with an AI assistant meant:\n\nManual screenshots → paste into chat\nCopy-pasting chunks of DOM\nDescribing what you’re seeing\nBack-and-forth “can you scroll down?”\n\nNow? The agent just… looks at the page."
+  },
+  {
+    "objectID": "notepad/02-cursor-browser-tools.html#the-toolkit",
+    "href": "notepad/02-cursor-browser-tools.html#the-toolkit",
+    "title": "Cursor’s Browser Tools are a Game Changer",
+    "section": "The Toolkit",
+    "text": "The Toolkit\nWhat I’ve been using:\n\nbrowser_navigate — point it at a URL\nbrowser_snapshot — accessibility tree, better than screenshots for reasoning\nbrowser_take_screenshot — visual capture when needed\nbrowser_click / browser_type — interact with elements directly\nbrowser_console_messages — inspect console logs without opening devtools\nbrowser_network_requests — see API calls, failed fetches, etc.\nbrowser_resize — test responsive layouts at different widths\nbrowser_wait_for — wait for text to appear/disappear or just pause\n\nThe console and network tools seem particularly powerful for debugging—no more “check your network tab” back-and-forth."
+  },
+  {
+    "objectID": "notepad/02-cursor-browser-tools.html#what-i-might-have-missed",
+    "href": "notepad/02-cursor-browser-tools.html#what-i-might-have-missed",
+    "title": "Cursor’s Browser Tools are a Game Changer",
+    "section": "What I Might Have Missed",
+    "text": "What I Might Have Missed\nDigging into the available tools, there’s more:\n\nbrowser_console_messages — inspect console logs without opening devtools\nbrowser_network_requests — see API calls, failed fetches, etc.\nbrowser_resize — test responsive layouts at different widths\nbrowser_wait_for — wait for text to appear/disappear or just pause\n\nThe console and network tools seem particularly powerful for debugging—no more “check your network tab” back-and-forth."
+  },
+  {
+    "objectID": "notepad/02-cursor-browser-tools.html#why-it-matters",
+    "href": "notepad/02-cursor-browser-tools.html#why-it-matters",
+    "title": "Cursor’s Browser Tools are a Game Changer",
+    "section": "Why It Matters",
+    "text": "Why It Matters\nThis feels like a genuine workflow shift. The agent can now:\n\nNavigate to your running dev server\nVisually verify changes\nInspect the DOM structure\nCatch console errors\nIterate on fixes\n\n\nNow I just need it to make me coffee while the tests run."
   }
 ]

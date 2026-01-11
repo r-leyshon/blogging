@@ -1,0 +1,55 @@
+---
+title: "Cursor's Browser Tools are a Game Changer"
+description: "No more manual screengrabs. No more copy-paste DOM."
+date: 2026-01-11
+categories: [til, cursor, web-dev]
+body-classes: notepad-section
+image: /./www/notepad/02-cursor-browser-tools.jpg
+image-alt: "A cozy desk with a browser window"
+---
+<div class="notepad-hero">
+<img src=/./www/notepad/02-cursor-browser-tools.jpg alt="A cozy desk with a browser window">
+</div>
+
+I'm genuinely blown away by Cursor's browser integration.
+
+## What Changed
+
+Previously, debugging web dev with an AI assistant meant:
+
+- Manual screenshots → paste into chat
+- Copy-pasting chunks of DOM
+- Describing what you're seeing
+- Back-and-forth "can you scroll down?"
+
+Now? The agent just... *looks at the page*.
+
+## The Toolkit
+
+What I've been using:
+
+- **`browser_navigate`** — point it at a URL
+- **`browser_snapshot`** — accessibility tree, better than screenshots for reasoning
+- **`browser_take_screenshot`** — visual capture when needed
+- **`browser_click` / `browser_type`** — interact with elements directly
+- **`browser_console_messages`** — inspect console logs without opening devtools
+- **`browser_network_requests`** — see API calls, failed fetches, etc.
+- **`browser_resize`** — test responsive layouts at different widths
+- **`browser_wait_for`** — wait for text to appear/disappear or just pause
+
+The console and network tools seem particularly powerful for debugging—no more "check your network tab" back-and-forth.
+
+## Why It Matters
+
+This feels like a genuine workflow shift. The agent can now:
+
+1. Navigate to your running dev server
+2. Visually verify changes
+3. Inspect the DOM structure
+4. Catch console errors
+5. Iterate on fixes
+
+
+---
+
+*Now I just need it to make me coffee while the tests run.*

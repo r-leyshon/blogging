@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Rich Leyshon">
+<meta name="dcterms.date" content="2026-01-11">
+<meta name="description" content="No more manual screengrabs. No more copy-paste DOM.">
 
-<title>Welcome to The Data Savvy Corner! – The Data Savvy Corner</title>
+<title>Cursor’s Browser Tools are a Game Changer – The Data Savvy Corner</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<link href=".//./favicon.ico" rel="icon">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-c1df456a4ff80d8bd23f98e2d1c6f7b2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="..//./favicon.ico" rel="icon">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c1df456a4ff80d8bd23f98e2d1c6f7b2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -59,83 +58,24 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-main-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-reading-time','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
-      page: 25,
-    pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-main-listing'] = new List('listing-main-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6658778373981809" crossorigin="anonymous"></script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="./www/styles.css">
-<link rel="alternate" type="application/rss+xml" title="The Data Savvy Corner" href="index.xml" data-external="1"><meta property="og:title" content="Welcome to The Data Savvy Corner! – The Data Savvy Corner">
-<meta property="og:description" content="Musings, ramblings, generally putting things down in text so I don’t forget them.">
-<meta property="og:image" content="https://thedatasavvycorner.netlify.app/www/notepad/01-git-prune.jpg">
+<link rel="stylesheet" href="../www/styles.css">
+<meta property="og:title" content="Cursor’s Browser Tools are a Game Changer – The Data Savvy Corner">
+<meta property="og:description" content="No more manual screengrabs. No more copy-paste DOM.">
+<meta property="og:image" content="https://thedatasavvycorner.netlify.app//./www/notepad/02-cursor-browser-tools.jpg">
 <meta property="og:site_name" content="The Data Savvy Corner">
-<meta property="og:image:alt" content="Git branches being pruned">
-<meta name="twitter:title" content="Welcome to The Data Savvy Corner! – The Data Savvy Corner">
-<meta name="twitter:description" content="Musings, ramblings, generally putting things down in text so I don’t forget them.">
-<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app/www/notepad/01-git-prune.jpg">
+<meta property="og:image:alt" content="A cozy desk with a browser window">
+<meta name="twitter:title" content="Cursor’s Browser Tools are a Game Changer – The Data Savvy Corner">
+<meta name="twitter:description" content="No more manual screengrabs. No more copy-paste DOM.">
+<meta name="twitter:image" content="https://thedatasavvycorner.netlify.app//./www/notepad/02-cursor-browser-tools.jpg">
 <meta name="twitter:site" content="@Rich_L1984">
-<meta name="twitter:image:alt" content="Git branches being pruned">
+<meta name="twitter:image:alt" content="A cozy desk with a browser window">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed notepad-section quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -304,7 +244,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">The Data Savvy Corner</span>
     </a>
   </div>
@@ -314,27 +254,27 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="./index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs/index.html"> <i class="bi bi-code-slash" role="img">
+    <a class="nav-link" href="../blogs/index.html"> <i class="bi bi-code-slash" role="img">
 </i> 
 <span class="menu-text">Technical Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./music-reviews/index.html"> <i class="bi bi-music-note-beamed" role="img">
+    <a class="nav-link" href="../music-reviews/index.html"> <i class="bi bi-music-note-beamed" role="img">
 </i> 
 <span class="menu-text">Music</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./book-reviews/index.html"> <i class="bi bi-book" role="img">
+    <a class="nav-link" href="../book-reviews/index.html"> <i class="bi bi-book" role="img">
 </i> 
 <span class="menu-text">Books</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./notepad/index.html"> <i class="bi bi-pencil" role="img">
+    <a class="nav-link" href="../notepad/index.html"> <i class="bi bi-pencil" role="img">
 </i> 
 <span class="menu-text">Notepad</span></a>
   </li>  
@@ -358,10 +298,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#intro" id="toc-intro" class="nav-link active" data-scroll-target="#intro">Intro</a></li>
-  <li><a href="#site-overview" id="toc-site-overview" class="nav-link" data-scroll-target="#site-overview">Site Overview</a></li>
-  <li><a href="#recent-articles" id="toc-recent-articles" class="nav-link" data-scroll-target="#recent-articles">Recent Articles</a></li>
-  <li><a href="#about-me" id="toc-about-me" class="nav-link" data-scroll-target="#about-me">About Me</a></li>
+  <li><a href="#what-changed" id="toc-what-changed" class="nav-link active" data-scroll-target="#what-changed">What Changed</a></li>
+  <li><a href="#the-toolkit" id="toc-the-toolkit" class="nav-link" data-scroll-target="#the-toolkit">The Toolkit</a></li>
+  <li><a href="#why-it-matters" id="toc-why-it-matters" class="nav-link" data-scroll-target="#why-it-matters">Why It Matters</a></li>
   </ul>
 </nav>
     </div>
@@ -371,27 +310,31 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Welcome to The Data Savvy Corner!</h1>
-</div>
+<h1 class="title">Cursor’s Browser Tools are a Game Changer</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">til</div>
+    <div class="quarto-category">cursor</div>
+    <div class="quarto-category">web-dev</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    No more manual screengrabs. No more copy-paste DOM.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Rich Leyshon </p>
-          </div>
-  </div>
     
-  
     <div>
-    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">January 11, 2026</p>
+      <p class="date">January 11, 2026</p>
     </div>
   </div>
+  
     
   </div>
   
@@ -400,228 +343,48 @@ window.Quarto = {
 </header>
 
 
-<section id="intro" class="level2">
-<h2 class="anchored" data-anchor-id="intro">Intro</h2>
-<p>A site to store blogs about programming concepts, software development and data science. Generally things that future me will be thankful that I’ve recorded.</p>
-</section>
-<section id="site-overview" class="level2">
-<h2 class="anchored" data-anchor-id="site-overview">Site Overview</h2>
+<div class="notepad-hero">
+<p><img src=".././www/notepad/02-cursor-browser-tools.jpg" alt="A cozy desk with a browser window"></p>
+</div>
+<p>I’m genuinely blown away by Cursor’s browser integration.</p>
+<section id="what-changed" class="level2">
+<h2 class="anchored" data-anchor-id="what-changed">What Changed</h2>
+<p>Previously, debugging web dev with an AI assistant meant:</p>
 <ul>
-<li><p><a href="./blogs/index.html">Technical Blogs</a> : Technical blogs, Explanations, tutorials, how-to guides. All articles are categorised according to the excellent <a href="https://diataxis.fr/">diataxis framework</a>.</p></li>
-<li><p><a href="./music-reviews/index.html">Music Reviews</a> : Mostly album reviews. I listen to instrumental music when programming. This was a habit that I developed while working within a busy office environment. This has helped me efficiently establish a state of mental flow required for deep concentration. I’ll include reviews of some of my favourite albums here.</p></li>
-<li><p><a href="./book-reviews/index.html">Book Reviews</a> : Much of my casual reading is non-fiction and tangential to programming. I’ll review material here that I have found to be supportive of my work in various aspects.</p></li>
-<li><p><a href="./notepad/index.html">Notepad</a> : Quick notes, fleeting thoughts, and things worth jotting down. A deliberately scruffy space for ideas, experiments, and snippets.</p></li>
+<li>Manual screenshots → paste into chat</li>
+<li>Copy-pasting chunks of DOM</li>
+<li>Describing what you’re seeing</li>
+<li>Back-and-forth “can you scroll down?”</li>
 </ul>
+<p>Now? The agent just… <em>looks at the page</em>.</p>
 </section>
-<section id="recent-articles" class="level2">
-<h2 class="anchored" data-anchor-id="recent-articles">Recent Articles</h2>
-<div id="listing-main-listing" class="quarto-listing quarto-listing-container-default">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-    <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-    <select id="listing-main-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-main-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-      <option value="" disabled="" selected="" hidden="">Order By</option>
-      <option value="index" data-direction="asc">Default</option>
-      <option value="listing-title" data-direction="asc">
-        Title
-      </option>
-      <option value="listing-date-sort" data-direction="asc">
-        Date - Oldest
-      </option>
-      <option value="listing-date-sort" data-direction="desc">
-        Date - Newest
-      </option>
-    </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="dGlsJTJDZ2l0JTJDc25pcHBldA==" data-listing-date-sort="1768089600000" data-listing-file-modified-sort="1768120779951" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="89">
-<div class="thumbnail"><a href="./notepad/01-git-prune.html" class="no-external">
-
-<img loading="lazy" src="././www/notepad/01-git-prune.jpg" class="thumbnail-image" alt="Git branches being pruned">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./notepad/01-git-prune.html" class="no-external">Pruning Stale Local Branches</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGls'); return false;">til</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2l0'); return false;">git</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('c25pcHBldA=='); return false;">snippet</div>
-
-</div>
-<div class="delink listing-description"><a href="./notepad/01-git-prune.html" class="no-external">
-<p>Tidy up local branches that no longer exist on remote.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./notepad/01-git-prune.html" class="no-external">
-<div class="listing-date">
-Jan 11, 2026
-</div>
-<div class="listing-reading-time">1 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="dGlsJTJDY3Vyc29yJTJDd2ViLWRldg==" data-listing-date-sort="1768089600000" data-listing-file-modified-sort="1768121692718" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="179">
-<div class="thumbnail"><a href="./notepad/02-cursor-browser-tools.html" class="no-external">
-
-<img loading="lazy" src="././www/notepad/02-cursor-browser-tools.jpg" class="thumbnail-image" alt="A cozy desk with a browser window">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./notepad/02-cursor-browser-tools.html" class="no-external">Cursor’s Browser Tools are a Game Changer</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGls'); return false;">til</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y3Vyc29y'); return false;">cursor</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('d2ViLWRldg=='); return false;">web-dev</div>
-
-</div>
-<div class="delink listing-description"><a href="./notepad/02-cursor-browser-tools.html" class="no-external">
-<p>No more manual screengrabs. No more copy-paste DOM.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./notepad/02-cursor-browser-tools.html" class="no-external">
-<div class="listing-date">
-Jan 11, 2026
-</div>
-<div class="listing-reading-time">1 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="bWV0YQ==" data-listing-date-sort="1767830400000" data-listing-file-modified-sort="1768120703796" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="79">
-<div class="thumbnail"><a href="./notepad/00-hello-notepad.html" class="no-external">
-
-<img loading="lazy" src="././www/notepad/00-hello-notepad.jpg" class="thumbnail-image" alt="A cozy notepad sketch">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./notepad/00-hello-notepad.html" class="no-external">Welcome to the Notepad</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bWV0YQ=='); return false;">meta</div>
-
-</div>
-<div class="delink listing-description"><a href="./notepad/00-hello-notepad.html" class="no-external">
-<p>A deliberately scruffy space for ideas, experiments, and snippets.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./notepad/00-hello-notepad.html" class="no-external">
-<div class="listing-date">
-Jan 8, 2026
-</div>
-<div class="listing-reading-time">1 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="SG93LXRvJTJDQ29kZUNvdiUyQ0NvdmVyYWdlJTJDQ0klM0FDRA==" data-listing-date-sort="1732838400000" data-listing-file-modified-sort="1767175633413" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1390">
-<div class="thumbnail"><a href="./blogs/21-codecov-setup.html" class="no-external">
-
-<img loading="lazy" src="././www/21-codecov-setup/intro-img.jpg" class="thumbnail-image" alt="Futuristic cyberpunk shield">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blogs/21-codecov-setup.html" class="no-external">Automated CodeCov reports with GitHub Actions</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('SG93LXRv'); return false;">How-to</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q29kZUNvdg=='); return false;">CodeCov</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q292ZXJhZ2U='); return false;">Coverage</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q0klM0FDRA=='); return false;">CI:CD</div>
-
-</div>
-<div class="delink listing-description"><a href="./blogs/21-codecov-setup.html" class="no-external">
-<p>A quick How-to reference for uploading python <code>coverage</code> reports to the CodeCov service</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blogs/21-codecov-setup.html" class="no-external">
-<div class="listing-date">
-Nov 29, 2024
-</div>
-<div class="listing-author">
-Rich Leyshon
-</div>
-<div class="listing-reading-time">7 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="SG93LXRvJTJDcHl0ZXN0JTJDVW5pdCUyMHRlc3RzJTJDbW9ja2luZyUyQ3B5dGVzdC1pbi1wbGFpbi1lbmdsaXNoJTJDcGF0Y2hpbmclMkNsYXp5JTJDbGF6eSUyMGV2YWx1YXRpb24=" data-listing-date-sort="1730764800000" data-listing-file-modified-sort="1767013135164" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1868">
-<div class="thumbnail"><a href="./blogs/20-lazy-mocking.html" class="no-external">
-
-<img loading="lazy" src="././www/20-lazy-mocking/intro-img.jpg" class="thumbnail-image" alt="The marionette Taking a Nap in a cyberpunk setting.">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blogs/20-lazy-mocking.html" class="no-external">Lazy Mocking</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('SG93LXRv'); return false;">How-to</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHl0ZXN0'); return false;">pytest</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VW5pdCUyMHRlc3Rz'); return false;">Unit tests</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bW9ja2luZw=='); return false;">mocking</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHl0ZXN0LWluLXBsYWluLWVuZ2xpc2g='); return false;">pytest-in-plain-english</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cGF0Y2hpbmc='); return false;">patching</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bGF6eQ=='); return false;">lazy</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bGF6eSUyMGV2YWx1YXRpb24='); return false;">lazy evaluation</div>
-
-</div>
-<div class="delink listing-description"><a href="./blogs/20-lazy-mocking.html" class="no-external">
-<p>Mocking with Fixtures: Deferred Evaluation</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blogs/20-lazy-mocking.html" class="no-external">
-<div class="listing-date">
-Nov 5, 2024
-</div>
-<div class="listing-author">
-Rich Leyshon
-</div>
-<div class="listing-reading-time">10 min</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
+<section id="the-toolkit" class="level2">
+<h2 class="anchored" data-anchor-id="the-toolkit">The Toolkit</h2>
+<p>What I’ve been using:</p>
+<ul>
+<li><strong><code>browser_navigate</code></strong> — point it at a URL</li>
+<li><strong><code>browser_snapshot</code></strong> — accessibility tree, better than screenshots for reasoning</li>
+<li><strong><code>browser_take_screenshot</code></strong> — visual capture when needed</li>
+<li><strong><code>browser_click</code> / <code>browser_type</code></strong> — interact with elements directly</li>
+<li><strong><code>browser_console_messages</code></strong> — inspect console logs without opening devtools</li>
+<li><strong><code>browser_network_requests</code></strong> — see API calls, failed fetches, etc.</li>
+<li><strong><code>browser_resize</code></strong> — test responsive layouts at different widths</li>
+<li><strong><code>browser_wait_for</code></strong> — wait for text to appear/disappear or just pause</li>
+</ul>
+<p>The console and network tools seem particularly powerful for debugging—no more “check your network tab” back-and-forth.</p>
 </section>
-<section id="about-me" class="level2">
-<h2 class="anchored" data-anchor-id="about-me">About Me</h2>
-<p><img class="center" src="https://github.com/r-leyshon/resume/blob/main/www/fin-conf-2020-bw.jpg?raw=true" alt="@r-leyshon"></p>
-<p>I am a Senior Developer at the the Ministry of Justice, UK. I enjoy programming &amp; <a href="https://dataingovernment.blog.gov.uk/category/reproducible-analytical-pipelines/">automation</a> and an advocate for the standards outlined in <a href="https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html">Quality Assurance of Code for Analysis &amp; Research</a>. For more detail regarding my professional experience, please follow this <a href="https://r-leyshon.github.io/resume/">link to my resumé</a>. To collaborate, reach out at <a href="https://github.com/r-leyshon">my GitHub profile</a>.</p>
-
+<section id="why-it-matters" class="level2">
+<h2 class="anchored" data-anchor-id="why-it-matters">Why It Matters</h2>
+<p>This feels like a genuine workflow shift. The agent can now:</p>
+<ol type="1">
+<li>Navigate to your running dev server</li>
+<li>Visually verify changes</li>
+<li>Inspect the DOM structure</li>
+<li>Catch console errors</li>
+<li>Iterate on fixes</li>
+</ol>
+<hr>
+<p><em>Now I just need it to make me coffee while the tests run.</em></p>
 
 
 </section>
@@ -1039,6 +802,38 @@ Rich Leyshon
     }
   });
   </script>
+<input type="hidden" id="giscus-base-theme" value="cobalt">
+<input type="hidden" id="giscus-alt-theme" value="cobalt">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "r-leyshon/blogging";
+    script.dataset.repoId = "R_kgDOJ7xM-w";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDOJ7xM-84Chxs3";
+    script.dataset.mapping = "url";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
 </div> <!-- /content -->
 
 
