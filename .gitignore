@@ -7,6 +7,9 @@ environments/**/*-env/
 # quarto things
 .luarc.json
 
+# Rendered site output (built by CI)
+docs/
+
 # secret things
 .secrets.toml
 # Byte-compiled / optimized / DLL files
