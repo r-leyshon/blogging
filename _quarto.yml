@@ -25,10 +25,17 @@ website:
     left:
       - icon: rss
         href: index.xml
-      - blogs/index.qmd
-      - music-reviews/index.qmd
-      - book-reviews/index.qmd
-      - text: "📝 Notepad"
+      - text: "Technical Blog"
+        icon: code-slash
+        href: blogs/index.qmd
+      - text: "Music"
+        icon: music-note-beamed
+        href: music-reviews/index.qmd
+      - text: "Books"
+        icon: book
+        href: book-reviews/index.qmd
+      - text: "Notepad"
+        icon: pencil
         href: notepad/index.qmd
     tools:
       - icon: twitter-x
