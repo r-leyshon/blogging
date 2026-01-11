@@ -194,7 +194,7 @@
         "have. The root of this unpredictable behaviour should be diagnosed as a\n",
         "priority as a matter of sanity."
       ],
-      "id": "320e334f"
+      "id": "b796b6ee"
     },
     {
       "cell_type": "code",
@@ -210,7 +210,7 @@
         "    else:\n",
         "        raise Exception(\"Flaky test detected!\")"
       ],
-      "id": "f243804f",
+      "id": "0fc5f31a",
       "execution_count": null,
       "outputs": []
     },
@@ -224,7 +224,7 @@
         "productivity. Once it finishes waiting for a specified number of seconds, it\n",
         "will return a string."
       ],
-      "id": "a56d81be"
+      "id": "64221305"
     },
     {
       "cell_type": "code",
@@ -239,7 +239,7 @@
         "    time.sleep(float(how_many_seconds))\n",
         "    return \"Rise and shine!\""
       ],
-      "id": "4c5eb058",
+      "id": "e82ba82f",
       "execution_count": null,
       "outputs": []
     },
@@ -253,7 +253,7 @@
         "test will simply check whether we get a HTTP status code of 200 (ok) when we\n",
         "request any URL. "
       ],
-      "id": "fff2346a"
+      "id": "b04c4548"
     },
     {
       "cell_type": "code",
@@ -270,7 +270,7 @@
         "    except requests.RequestException:\n",
         "        return False"
       ],
-      "id": "598d9120",
+      "id": "6c34c69d",
       "execution_count": null,
       "outputs": []
     },
@@ -288,7 +288,7 @@
         "together. A pretty goofy example, I admit. Based on the status of the url\n",
         "request, a string will be returned."
       ],
-      "id": "468a61a5"
+      "id": "2ee50d23"
     },
     {
       "cell_type": "code",
@@ -311,7 +311,7 @@
         "\n",
         "    return msg"
       ],
-      "id": "acbb70db",
+      "id": "3125bf4b",
       "execution_count": null,
       "outputs": []
     },
@@ -324,7 +324,7 @@
         "Initially, I will define a test that does nothing other than pass. This will\n",
         "be a placeholder, unmarked test. "
       ],
-      "id": "81102dda"
+      "id": "978edb46"
     },
     {
       "cell_type": "code",
@@ -333,7 +333,7 @@
         "def test_nothing():\n",
         "    pass"
       ],
-      "id": "d33ce9c6",
+      "id": "b9135a7c",
       "execution_count": null,
       "outputs": []
     },
@@ -344,7 +344,7 @@
         "Next, I import `croissant()` and assert that it returns `True`. As you may\n",
         "recall from above, `croissant()` will do so ~50 % of the time."
       ],
-      "id": "ee29838d"
+      "id": "dc0da258"
     },
     {
       "cell_type": "code",
@@ -364,7 +364,7 @@
         "def test_croissant():\n",
         "    assert croissant()"
       ],
-      "id": "ffd1b8ec",
+      "id": "1f86003f",
       "execution_count": null,
       "outputs": []
     },
@@ -452,7 +452,7 @@
         "Now that we have confirmed our marker is available for use, we can use it to\n",
         "mark `test_croissant()` as flaky:"
       ],
-      "id": "d2f05f9b"
+      "id": "b6e7fed3"
     },
     {
       "cell_type": "code",
@@ -474,7 +474,7 @@
         "def test_croissant():\n",
         "    assert croissant()"
       ],
-      "id": "934a3609",
+      "id": "44d6eb73",
       "execution_count": null,
       "outputs": []
     },
@@ -544,7 +544,7 @@
         "illustrate the syntax for running multiple marks. For this example, we'll test\n",
         "`take_a_nap()`:"
       ],
-      "id": "a9d0ed91"
+      "id": "e088a960"
     },
     {
       "cell_type": "code",
@@ -574,7 +574,7 @@
         "    assert isinstance(out, str), f\"a string was not returned: {type(out)}\"\n",
         "    assert out == \"Rise and shine!\", f\"unexpected string pattern: {out}\""
       ],
-      "id": "f0e9c63d",
+      "id": "68dfd780",
       "execution_count": null,
       "outputs": []
     },
@@ -655,7 +655,7 @@
         "deselection rules for invoking `pytest`. Let's write an integration test that\n",
         "checks whether the domain for this blog site can be reached."
       ],
-      "id": "41bac3ae"
+      "id": "4afc22c7"
     },
     {
       "cell_type": "code",
@@ -692,7 +692,7 @@
         "    url = \"https://thedatasavvycorner.com/\"\n",
         "    assert check_site_available(url), f\"site {url} is down...\""
       ],
-      "id": "d4c566c0",
+      "id": "10d19935",
       "execution_count": null,
       "outputs": []
     },
@@ -757,7 +757,7 @@
         "\n",
         "Updating our test module to include `test_goofy_wrapper()`:"
       ],
-      "id": "fb89bcf0"
+      "id": "77b98fa4"
     },
     {
       "cell_type": "code",
@@ -810,7 +810,7 @@
         "            \"https://thegoofycorner.com/\", 1\n",
         "            ).endswith(\"Your site is down!\"), \"The site wasn't down.\""
       ],
-      "id": "999b7743",
+      "id": "06719f94",
       "execution_count": null,
       "outputs": []
     },
@@ -845,7 +845,7 @@
         "Note that we can use multiple marks with any test or test class. Let's update\n",
         "`TestGoofyWrapper` to be marked as `integration` & `slow`:"
       ],
-      "id": "ab72d4c4"
+      "id": "7522c91d"
     },
     {
       "cell_type": "code",
@@ -867,7 +867,7 @@
         "            \"https://thegoofycorner.com/\", 1\n",
         "            ).endswith(\"Your site is down!\"), \"The site wasn't down.\""
       ],
-      "id": "1f306bc7",
+      "id": "be3795f4",
       "execution_count": null,
       "outputs": []
     },
@@ -976,7 +976,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "e5d0bf21"
+      "id": "f925795f"
     }
   ],
   "metadata": {

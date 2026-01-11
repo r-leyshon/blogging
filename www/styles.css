@@ -426,10 +426,40 @@ body.notepad-section.quarto-dark .notepad-header em {
   color: #4A6A8A;
 }
 
+/* Inline code */
 .notepad-section main.content code {
-  color: #1E3A5F;
-  background: rgba(30, 58, 95, 0.08);
+  color: #5D4E37;
+  background: #F5F0E6;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.9em;
 }
+
+/* Code blocks - warm beige theme */
+.notepad-section main.content pre {
+  background: linear-gradient(135deg, #FAF8F3 0%, #F0EBE1 100%);
+  border: 1px solid #E5DFD3;
+  border-left: 4px solid #C9A66B;
+  border-radius: 4px;
+  padding: 1rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.notepad-section main.content pre code {
+  background: transparent;
+  padding: 0;
+  color: #4A3F35;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Syntax highlighting - warm tones */
+.notepad-section main.content .sourceCode .co { color: #8B7355; }  /* comments */
+.notepad-section main.content .sourceCode .st { color: #6B8E4E; }  /* strings */
+.notepad-section main.content .sourceCode .kw { color: #8B4513; font-weight: 600; }  /* keywords */
+.notepad-section main.content .sourceCode .fu { color: #5D4E8C; }  /* functions */
+.notepad-section main.content .sourceCode .dv { color: #B5651D; }  /* numbers */
+.notepad-section main.content .sourceCode .op { color: #5D4E37; }  /* operators */
+.notepad-section main.content .sourceCode .va { color: #4A6B8A; }  /* variables */
 
 /* Dark mode article styling - cream/beige text like index */
 body.notepad-section.quarto-dark main.content {
@@ -538,10 +568,32 @@ body.notepad-section.quarto-dark main.content .lead {
   color: #C5C0B5;
 }
 
+/* Dark mode inline code */
 body.notepad-section.quarto-dark main.content code {
-  color: #F0EBE3;
-  background: rgba(240, 235, 227, 0.15);
+  color: #E8DFD0;
+  background: #3A3632;
 }
+
+/* Dark mode code blocks - warm dark theme */
+body.notepad-section.quarto-dark main.content pre {
+  background: linear-gradient(135deg, #2D2A26 0%, #252320 100%);
+  border: 1px solid #3A3632;
+  border-left: 4px solid #A07840;
+}
+
+body.notepad-section.quarto-dark main.content pre code {
+  background: transparent;
+  color: #E8DFD0;
+}
+
+/* Dark mode syntax highlighting */
+body.notepad-section.quarto-dark main.content .sourceCode .co { color: #9B8B7B; }
+body.notepad-section.quarto-dark main.content .sourceCode .st { color: #98B87E; }
+body.notepad-section.quarto-dark main.content .sourceCode .kw { color: #D4A574; font-weight: 600; }
+body.notepad-section.quarto-dark main.content .sourceCode .fu { color: #B8A8D8; }
+body.notepad-section.quarto-dark main.content .sourceCode .dv { color: #E8A860; }
+body.notepad-section.quarto-dark main.content .sourceCode .op { color: #E8DFD0; }
+body.notepad-section.quarto-dark main.content .sourceCode .va { color: #8AB8D8; }
 
 /* Fix categories visibility in dark mode */
 body.notepad-section.quarto-dark .quarto-listing-default .quarto-post .listing-category {

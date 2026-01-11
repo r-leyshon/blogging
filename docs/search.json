@@ -4,7 +4,7 @@
     "href": "notepad/index.html",
     "title": "Notepad",
     "section": "",
-    "text": "Notepad\nQuick notes, fleeting thoughts, and things worth jotting down.\n\n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Notepad\nQuick notes, fleeting thoughts, and things worth jotting down.\n\n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nPruning Stale Local Branches\n\n\n\ntil\n\ngit\n\nsnippet\n\n\n\nTidy up local branches that no longer exist on remote.\n\n\n\n\n\nJan 11, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "music-reviews/index.html",
@@ -1173,7 +1173,7 @@
     "href": "index.html#recent-articles",
     "title": "Welcome to The Data Savvy Corner!",
     "section": "Recent Articles",
-    "text": "Recent Articles\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nAutomated CodeCov reports with GitHub Actions\n\n\n\nHow-to\n\nCodeCov\n\nCoverage\n\nCI:CD\n\n\n\nA quick How-to reference for uploading python coverage reports to the CodeCov service\n\n\n\n\n\nNov 29, 2024\n\n\nRich Leyshon\n\n7 min\n\n\n\n\n\n\n\n\n\n\n\nLazy Mocking\n\n\n\nHow-to\n\npytest\n\nUnit tests\n\nmocking\n\npytest-in-plain-english\n\npatching\n\nlazy\n\nlazy evaluation\n\n\n\nMocking with Fixtures: Deferred Evaluation\n\n\n\n\n\nNov 5, 2024\n\n\nRich Leyshon\n\n10 min\n\n\n\n\n\n\n\n\n\n\n\nCommit with Clarity\n\n\n\nExplanation\n\nGitHub\n\nGit\n\nVersion Control\n\nSoftware Development\n\nBlame\n\nVSCode\n\nGit Grep\n\n\n\nBuilding a Better Audit Trail with GitHub\n\n\n\n\n\nOct 13, 2024\n\n\nRich Leyshon\n\n14 min\n\n\n\n\n\n\n\n\n\n\n\nChoose Your Own Adventure with ChatGPT\n\n\n\nTutorial\n\nPython Shiny\n\nLLMs\n\nLarge Language Models\n\nGenAI\n\nGenerative AI\n\nFront End Dev\n\nOpenAI\n\n\n\nIteratively Building an LLM-Powered Shiny Application.\n\n\n\n\n\nSep 21, 2024\n\n\nRich Leyshon\n\n83 min\n\n\n\n\nNo matching items"
+    "text": "Recent Articles\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nPruning Stale Local Branches\n\n\n\ntil\n\ngit\n\nsnippet\n\n\n\nTidy up local branches that no longer exist on remote.\n\n\n\n\n\nJan 11, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nWelcome to the Notepad\n\n\n\nmeta\n\n\n\nA deliberately scruffy space for ideas, experiments, and snippets.\n\n\n\n\n\nJan 8, 2026\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nAutomated CodeCov reports with GitHub Actions\n\n\n\nHow-to\n\nCodeCov\n\nCoverage\n\nCI:CD\n\n\n\nA quick How-to reference for uploading python coverage reports to the CodeCov service\n\n\n\n\n\nNov 29, 2024\n\n\nRich Leyshon\n\n7 min\n\n\n\n\n\n\n\n\n\n\n\nLazy Mocking\n\n\n\nHow-to\n\npytest\n\nUnit tests\n\nmocking\n\npytest-in-plain-english\n\npatching\n\nlazy\n\nlazy evaluation\n\n\n\nMocking with Fixtures: Deferred Evaluation\n\n\n\n\n\nNov 5, 2024\n\n\nRich Leyshon\n\n10 min\n\n\n\n\n\n\n\n\n\n\n\nCommit with Clarity\n\n\n\nExplanation\n\nGitHub\n\nGit\n\nVersion Control\n\nSoftware Development\n\nBlame\n\nVSCode\n\nGit Grep\n\n\n\nBuilding a Better Audit Trail with GitHub\n\n\n\n\n\nOct 13, 2024\n\n\nRich Leyshon\n\n14 min\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#about-me",
@@ -1321,5 +1321,33 @@
     "title": "Welcome to the Notepad",
     "section": "",
     "text": "In the age of the LLM revolution, I’m currently unsure as to how useful long form blogging will be.\nWhile I weigh things up, I will go with a demonstrably scruffy and minimal approach to recording ideas, experiments and snippets for things that I’ve found interesting, tricky or non-trivial.\nSome of these ideas may be re-touched with time or grow into fully fledged articles, while others may remain as limited records of stuff done."
+  },
+  {
+    "objectID": "notepad/01-git-prune.html",
+    "href": "notepad/01-git-prune.html",
+    "title": "Pruning Stale Local Branches",
+    "section": "",
+    "text": "After a while, local branches pile up—especially ones tracking remotes that have since been deleted. Here’s how to clean house."
+  },
+  {
+    "objectID": "notepad/01-git-prune.html#prune-and-find-stale-branches",
+    "href": "notepad/01-git-prune.html#prune-and-find-stale-branches",
+    "title": "Pruning Stale Local Branches",
+    "section": "Prune and find stale branches",
+    "text": "Prune and find stale branches\n# Prune stale remote-tracking references\ngit fetch --prune\n\n# List local branches with gone remotes\ngit branch -vv | grep ': gone]'"
+  },
+  {
+    "objectID": "notepad/01-git-prune.html#get-just-the-branch-names",
+    "href": "notepad/01-git-prune.html#get-just-the-branch-names",
+    "title": "Pruning Stale Local Branches",
+    "section": "Get just the branch names",
+    "text": "Get just the branch names\ngit branch -vv | grep ': gone]' | awk '{print $1}'"
+  },
+  {
+    "objectID": "notepad/01-git-prune.html#delete-them-all-at-once",
+    "href": "notepad/01-git-prune.html#delete-them-all-at-once",
+    "title": "Pruning Stale Local Branches",
+    "section": "Delete them all at once",
+    "text": "Delete them all at once\ngit branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d\nUse -D instead of -d to force-delete branches with unmerged changes."
   }
 ]

@@ -119,7 +119,7 @@
         "\n",
         "Start by loading the required packages."
       ],
-      "id": "052b0f37"
+      "id": "2a289357"
     },
     {
       "cell_type": "code",
@@ -144,7 +144,7 @@
         "from sklearn import preprocessing\n",
         "from shapely.geometry import LineString, Point, Polygon"
       ],
-      "id": "58007c46",
+      "id": "994e3a22",
       "execution_count": null,
       "outputs": []
     },
@@ -174,7 +174,7 @@
         "\n",
         "#### Solution"
       ],
-      "id": "36d7b4cc"
+      "id": "33bb0e38"
     },
     {
       "cell_type": "code",
@@ -196,7 +196,7 @@
         "    ]\n",
         ")"
       ],
-      "id": "243aa8ab",
+      "id": "0f265803",
       "execution_count": null,
       "outputs": []
     },
@@ -240,7 +240,7 @@
         "\n",
         "#### Solution"
       ],
-      "id": "b672cef5"
+      "id": "729aa375"
     },
     {
       "cell_type": "code",
@@ -276,7 +276,7 @@
         "\n",
         "station_gdf.head()"
       ],
-      "id": "f92e5e2b",
+      "id": "b8da0d71",
       "execution_count": null,
       "outputs": []
     },
@@ -323,7 +323,7 @@
         "\n",
         "#### Solution"
       ],
-      "id": "e8c578cb"
+      "id": "08531aa5"
     },
     {
       "cell_type": "code",
@@ -373,7 +373,7 @@
         ")\n",
         "r"
       ],
-      "id": "036f4862",
+      "id": "71fde3af",
       "execution_count": null,
       "outputs": []
     },
@@ -448,7 +448,7 @@
         "\n",
         "#### Solution"
       ],
-      "id": "dc90d247"
+      "id": "9d683f7c"
     },
     {
       "cell_type": "code",
@@ -542,7 +542,7 @@
         "create_point_grid(\n",
         "  bbox_list=[-0.5917,51.2086,0.367,51.7575], stepsize=5000).explore(min_zoom=9)"
       ],
-      "id": "101a28fa",
+      "id": "79198a29",
       "execution_count": null,
       "outputs": []
     },
@@ -620,7 +620,7 @@
         "\n",
         "Part 1"
       ],
-      "id": "28aaf682"
+      "id": "d72ce721"
     },
     {
       "cell_type": "code",
@@ -647,7 +647,7 @@
         "print(\n",
         "  f\"Point grid contains buffered stations? {cond}\")"
       ],
-      "id": "26e497bf",
+      "id": "b64e2e48",
       "execution_count": null,
       "outputs": []
     },
@@ -657,7 +657,7 @@
       "source": [
         "Part 2"
       ],
-      "id": "579fc971"
+      "id": "71a91539"
     },
     {
       "cell_type": "code",
@@ -677,7 +677,7 @@
         ")\n",
         "plt.show()"
       ],
-      "id": "f214bca1",
+      "id": "60338335",
       "execution_count": null,
       "outputs": []
     },
@@ -759,7 +759,7 @@
         "\n",
         "#### Part 1"
       ],
-      "id": "04b54beb"
+      "id": "04ad7ec8"
     },
     {
       "cell_type": "code",
@@ -769,7 +769,7 @@
         "#| code-summary: \"Show the code\"\n",
         "transport_network = r5py.TransportNetwork(osm_pth)"
       ],
-      "id": "077f6e53",
+      "id": "3564a9f9",
       "execution_count": null,
       "outputs": []
     },
@@ -782,7 +782,7 @@
         "\n",
         "#### Part 2"
       ],
-      "id": "092e284a"
+      "id": "ed669d3a"
     },
     {
       "cell_type": "code",
@@ -798,7 +798,7 @@
         ")\n",
         "point_plane.head()"
       ],
-      "id": "1dac113a",
+      "id": "2e9933fd",
       "execution_count": null,
       "outputs": []
     },
@@ -808,7 +808,7 @@
       "source": [
         "#### Part 3"
       ],
-      "id": "b9b2e20f"
+      "id": "17f11a5f"
     },
     {
       "cell_type": "code",
@@ -829,7 +829,7 @@
         "    title=\"Distribution of coordinate snap distance in point plane (m)\"\n",
         "    )"
       ],
-      "id": "a2ccf205",
+      "id": "608395b6",
       "execution_count": null,
       "outputs": []
     },
@@ -840,7 +840,7 @@
         "Here we can confirm that the distribution of the haversine distances is\n",
         "strongly right-skewed. There appear to be no values greater than 450 metres."
       ],
-      "id": "b12f3058"
+      "id": "2592357c"
     },
     {
       "cell_type": "code",
@@ -848,7 +848,7 @@
       "source": [
         "point_plane[\"snap_dist_m\"].describe()"
       ],
-      "id": "1aa1d9ad",
+      "id": "147deeef",
       "execution_count": null,
       "outputs": []
     },
@@ -925,7 +925,7 @@
         "\n",
         "#### Part 1"
       ],
-      "id": "9dd76172"
+      "id": "f3f187f2"
     },
     {
       "cell_type": "code",
@@ -945,7 +945,7 @@
         ")\n",
         "largest_snaps.head()"
       ],
-      "id": "58478fd1",
+      "id": "d01e1916",
       "execution_count": null,
       "outputs": []
     },
@@ -955,7 +955,7 @@
       "source": [
         "#### Part 2"
       ],
-      "id": "176b418e"
+      "id": "0c63c684"
     },
     {
       "cell_type": "code",
@@ -991,7 +991,7 @@
         ")\n",
         "imap"
       ],
-      "id": "4ecfb3cb",
+      "id": "53abcb41",
       "execution_count": null,
       "outputs": []
     },
@@ -1006,7 +1006,7 @@
         "are set as the geometry column. The snapped distance and original geometry\n",
         "column can be removed."
       ],
-      "id": "f4fe832f"
+      "id": "688ffe38"
     },
     {
       "cell_type": "code",
@@ -1017,7 +1017,7 @@
         "point_plane.set_geometry(\"geometry\", inplace=True)\n",
         "point_plane.head()"
       ],
-      "id": "8339a0eb",
+      "id": "301f9e0f",
       "execution_count": null,
       "outputs": []
     },
@@ -1058,7 +1058,7 @@
         "alarmed by NaN in the `travel_time` column. These are points in the point plane\n",
         "that were not reachable from any bike station. "
       ],
-      "id": "813ff1e3"
+      "id": "64ef36bd"
     },
     {
       "cell_type": "code",
@@ -1079,7 +1079,7 @@
         "\n",
         "travel_time_matrix.dropna().head()"
       ],
-      "id": "e8b75dc2",
+      "id": "cc9041a8",
       "execution_count": null,
       "outputs": []
     },
@@ -1159,7 +1159,7 @@
         "\n",
         "#### Solution"
       ],
-      "id": "6c129b46"
+      "id": "b7120fe2"
     },
     {
       "cell_type": "code",
@@ -1221,7 +1221,7 @@
         "med_tts = get_median_tts_for_all_stations(travel_time_matrix, point_plane)\n",
         "med_tts.dropna().head()"
       ],
-      "id": "589b34af",
+      "id": "61bc3f6b",
       "execution_count": null,
       "outputs": []
     },
@@ -1232,7 +1232,7 @@
         "As this final GeoDataFrame is all that is required for the remaining tutorial,\n",
         "go ahead and tidy up the environment. "
       ],
-      "id": "00c3d185"
+      "id": "68fafbe0"
     },
     {
       "cell_type": "code",
@@ -1243,7 +1243,7 @@
         "del [station_gdf, travel_time_matrix, point_plane, transport_network, imap,\n",
         "largest_snaps, z_start]"
       ],
-      "id": "d46e00e0",
+      "id": "aedb9f87",
       "execution_count": null,
       "outputs": []
     },
@@ -1260,7 +1260,7 @@
         "interactive map. Use the features available in `med_tts` to customise the point\n",
         "radius and colour. Use the function to render an interactive map."
       ],
-      "id": "0d80bfbb"
+      "id": "4494e315"
     },
     {
       "cell_type": "code",
@@ -1355,7 +1355,7 @@
         "r = make_scatter_deck(med_tts)\n",
         "r"
       ],
-      "id": "8bd0ba5d",
+      "id": "1eb4a944",
       "execution_count": null,
       "outputs": []
     },
@@ -1388,7 +1388,7 @@
         "3. Pass this dataframe to the function you wrote in [exercise 9](#exercise-9).\n",
         ":::"
       ],
-      "id": "d0dc0b81"
+      "id": "392b42bd"
     },
     {
       "cell_type": "code",
@@ -1405,7 +1405,7 @@
         "r = make_scatter_deck(n_isolated, radius=50, start_zoom=9.5)\n",
         "r"
       ],
-      "id": "0417c1ab",
+      "id": "768c00ab",
       "execution_count": null,
       "outputs": []
     },
@@ -1451,7 +1451,7 @@
         "\n",
         "<p id=fin><i>fin!</i></p>"
       ],
-      "id": "35922cf1"
+      "id": "ed434080"
     }
   ],
   "metadata": {
