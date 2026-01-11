@@ -1,4 +1,991 @@
 /* css styles */
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+
+/* ============================================
+   NOTEPAD SECTION - Spiral Notepad Theme
+   ============================================ */
+
+/* Import handwritten accent font */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap');
+
+/* CSS Custom Properties for Notepad Theme */
+/* Light mode defaults - applied to .notepad-section */
+.notepad-section {
+  --notepad-paper: #FFFFFF;
+  --notepad-paper-lines: #E5E0D0;
+  --notepad-margin-line: #E07070;
+  --notepad-text: #1C1C1C;  /* Dark text for index/cards */
+  --notepad-text-muted: #444;
+  --notepad-shadow: rgba(0, 0, 0, 0.15);
+  --notepad-clip-color: #888;
+  --notepad-spiral: #555;
+  --notepad-accent: #0D47A1;
+  /* Blue ink for articles with lined paper */
+  --notepad-ink: #1E3A5F;
+  --notepad-ink-muted: #4A6A8A;
+}
+
+/* Notepad Section Container */
+.notepad-section {
+  background: linear-gradient(135deg, #F5F3EB 0%, #EDE9DD 100%);
+  min-height: 100vh;
+}
+
+/* Dark mode - Quarto uses .quarto-dark class on body */
+body.notepad-section.quarto-dark {
+  background: linear-gradient(135deg, #2A2722 0%, #1F1D1A 100%);
+  
+  /* Override CSS variables for dark mode */
+  --notepad-paper: #3D3A33;
+  --notepad-paper-lines: #524E45;
+  --notepad-margin-line: #A06060;
+  --notepad-text: #F0EBE3;
+  --notepad-text-muted: #C5C0B5;
+  --notepad-shadow: rgba(0, 0, 0, 0.4);
+  --notepad-clip-color: #999;
+  --notepad-spiral: #777;
+  --notepad-accent: #90CAF9;
+  --notepad-ink: #7EB8E8;
+  --notepad-ink-muted: #A0C8E8;
+}
+
+/* Notepad Header with Spiral Binding Effect */
+.notepad-header {
+  position: relative;
+  background: var(--notepad-paper);
+  padding: 2.5rem 2rem 2rem 3rem;
+  margin: 2rem auto;
+  max-width: 900px;
+  border-radius: 0 4px 4px 0;
+  box-shadow: 
+    0 2px 8px var(--notepad-shadow),
+    inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+/* Spiral binding holes */
+.notepad-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background: 
+    radial-gradient(circle at 15px 25px, var(--notepad-spiral) 6px, transparent 6px),
+    radial-gradient(circle at 15px 55px, var(--notepad-spiral) 6px, transparent 6px),
+    radial-gradient(circle at 15px 85px, var(--notepad-spiral) 6px, transparent 6px),
+    radial-gradient(circle at 15px 115px, var(--notepad-spiral) 6px, transparent 6px);
+  background-size: 30px 30px;
+  border-right: 2px solid var(--notepad-paper-lines);
+}
+
+/* Red margin line */
+.notepad-header::after {
+  content: '';
+  position: absolute;
+  left: 50px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--notepad-margin-line);
+}
+
+.notepad-title,
+.notepad-section .notepad-header h1,
+.notepad-section h1.notepad-title,
+body.notepad-section .notepad-header h1.notepad-title {
+  font-family: 'Caveat', cursive;
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: #1C1C1C !important;
+  margin: 0 0 0.5rem 20px;
+  letter-spacing: 1px;
+}
+
+/* Dark mode header title */
+body.notepad-section.quarto-dark .notepad-header h1.notepad-title,
+body.notepad-section.quarto-dark h1.notepad-title {
+  color: #F0EBE3 !important;
+}
+
+.notepad-header p,
+.notepad-header em,
+.notepad-section .notepad-header p,
+.notepad-section .notepad-header em {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: #444 !important;
+  margin-left: 20px;
+  font-style: normal;
+}
+
+/* Dark mode header subtitle */
+body.notepad-section.quarto-dark .notepad-header p,
+body.notepad-section.quarto-dark .notepad-header em {
+  color: #C5C0B5 !important;
+}
+
+/* Notepad Notes Container */
+.notepad-notes-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+/* Style the listing items as notepad pages */
+.notepad-section .quarto-listing-default {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Individual note card - torn notepad page (blank paper, no lines) */
+.notepad-section .quarto-listing-default .quarto-post {
+  position: relative;
+  /* Spiral holes on left edge + paper background */
+  background: 
+    radial-gradient(circle at 15px 15px, var(--notepad-spiral) 5px, transparent 5px) 0 5px / 30px 30px repeat-y,
+    linear-gradient(to right, transparent 29px, var(--notepad-paper-lines) 29px, var(--notepad-paper-lines) 31px, transparent 31px),
+    var(--notepad-paper);
+  padding: 1.5rem 1.5rem 1.5rem 3.5rem;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 
+    0 2px 6px var(--notepad-shadow),
+    0 1px 2px var(--notepad-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+/* Torn edge effect at bottom */
+.notepad-section .quarto-listing-default .quarto-post::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--notepad-paper);
+  pointer-events: none;
+  clip-path: polygon(
+    0% 0%, 3% 60%, 6% 20%, 9% 80%, 12% 30%, 15% 70%, 18% 10%, 
+    21% 50%, 24% 90%, 27% 40%, 30% 60%, 33% 20%, 36% 80%, 
+    39% 30%, 42% 70%, 45% 10%, 48% 50%, 51% 90%, 54% 40%, 
+    57% 60%, 60% 20%, 63% 80%, 66% 30%, 69% 70%, 72% 10%, 
+    75% 50%, 78% 90%, 81% 40%, 84% 60%, 87% 20%, 90% 80%, 
+    93% 30%, 96% 70%, 100% 0%, 100% 100%, 0% 100%
+  );
+}
+
+/* Red margin line on cards */
+.notepad-section .quarto-listing-default .quarto-post::after {
+  content: '';
+  position: absolute;
+  left: 2.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--notepad-margin-line);
+  pointer-events: none;
+}
+
+/* Hide placeholder images but show actual thumbnails */
+.notepad-section .quarto-listing-default .quarto-post .listing-item-img-placeholder {
+  display: none;
+}
+
+/* Style actual thumbnail images */
+.notepad-section .quarto-listing-default .quarto-post .thumbnail {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  margin-left: 1rem;
+  object-fit: cover;
+  transform: rotate(-2deg);
+  border: 3px solid var(--notepad-paper);
+}
+
+/* Move image to left side */
+.notepad-section .quarto-listing-default .quarto-post.image-right {
+  flex-direction: row-reverse !important;
+}
+
+/* Add paper clip to top-right corner */
+.notepad-section .quarto-listing-default .quarto-post .metadata {
+  position: relative;
+  z-index: 2;
+}
+
+.notepad-section .quarto-listing-default .quarto-post .metadata::before {
+  content: '📎';
+  position: absolute;
+  top: -0.5rem;
+  right: 0;
+  font-size: 1.2rem;
+  transform: rotate(45deg);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Hover effect - lift the note */
+.notepad-section .quarto-listing-default .quarto-post:hover {
+  transform: translateY(-3px) rotate(0.3deg);
+  box-shadow: 
+    0 6px 16px var(--notepad-shadow),
+    0 3px 6px var(--notepad-shadow);
+}
+
+/* Note titles - using correct Quarto class names + handwritten font */
+.notepad-section .quarto-listing-default .quarto-post .listing-title {
+  position: relative;
+  z-index: 2;
+}
+
+.notepad-section .quarto-listing-default .quarto-post .listing-title,
+.notepad-section .quarto-listing-default .quarto-post .listing-title a {
+  font-family: 'Caveat', cursive;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--notepad-text) !important;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.notepad-section .quarto-listing-default .quarto-post .listing-title a:hover {
+  color: var(--notepad-accent) !important;
+}
+
+/* Date styling - handwritten feel */
+.notepad-section .quarto-listing-default .quarto-post .listing-date {
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem;
+  color: var(--notepad-text-muted) !important;
+  position: relative;
+  z-index: 2;
+}
+
+/* Description - handwritten font */
+.notepad-section .quarto-listing-default .quarto-post .listing-description,
+.notepad-section .quarto-listing-default .quarto-post .listing-description a,
+.notepad-section .quarto-listing-default .quarto-post .listing-description p,
+.notepad-section .quarto-listing-default .quarto-post .listing-description a p {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: var(--notepad-text) !important;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Category tags */
+.notepad-section .quarto-listing-default .quarto-post .listing-categories {
+  margin-top: 0.75rem;
+  position: relative;
+  z-index: 2;
+}
+
+.notepad-section .quarto-listing-default .quarto-post .listing-category {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  background: transparent;
+  border: 1px dashed var(--notepad-margin-line);
+  color: var(--notepad-text-muted);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  margin-right: 0.5rem;
+}
+
+/* Subtle random rotations for organic feel - using nth-child */
+.notepad-section .quarto-listing-default .quarto-post:nth-child(3n+1) {
+  transform: rotate(-0.3deg);
+}
+
+.notepad-section .quarto-listing-default .quarto-post:nth-child(3n+2) {
+  transform: rotate(0.2deg);
+}
+
+.notepad-section .quarto-listing-default .quarto-post:nth-child(3n) {
+  transform: rotate(-0.1deg);
+}
+
+/* Reset rotation on hover */
+.notepad-section .quarto-listing-default .quarto-post:nth-child(n):hover {
+  transform: translateY(-3px) rotate(0deg);
+}
+
+/* Individual notepad page styling */
+.notepad-section main.content {
+  position: relative;
+  background: var(--notepad-paper);
+  padding: 2rem 2rem 2rem 4rem;
+  margin: 2rem auto;
+  max-width: 900px;
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 2px 8px var(--notepad-shadow);
+  
+  /* Lined paper background */
+  background-image: 
+    repeating-linear-gradient(
+      transparent,
+      transparent 31px,
+      var(--notepad-paper-lines) 31px,
+      var(--notepad-paper-lines) 32px
+    );
+  background-color: var(--notepad-paper);
+}
+
+.notepad-section main.content::after {
+  content: '';
+  position: absolute;
+  left: 3rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--notepad-margin-line);
+}
+
+/* Article text styling - Blue ink in light mode */
+.notepad-section main.content {
+  color: #1E3A5F;  /* Blue ink */
+}
+
+.notepad-section main.content h1,
+.notepad-section main.content h2,
+.notepad-section main.content h3,
+.notepad-section main.content h4 {
+  font-family: 'Caveat', cursive;
+  color: #1E3A5F !important;  /* Blue ink */
+}
+
+/* Article title - larger handwritten style */
+.notepad-section main.content h1.title {
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.notepad-section main.content h2 {
+  font-size: 2rem;
+}
+
+.notepad-section main.content h3 {
+  font-size: 1.6rem;
+}
+
+.notepad-section main.content p,
+.notepad-section main.content li,
+.notepad-section main.content blockquote {
+  color: #1E3A5F;  /* Blue ink */
+}
+
+.notepad-section main.content a {
+  color: #0D47A1;
+}
+
+.notepad-section main.content a:hover {
+  color: #1E3A5F;
+}
+
+/* Muted elements in articles - handwritten style */
+.notepad-section main.content .quarto-title-meta,
+.notepad-section main.content .quarto-title-meta-contents {
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem;
+  color: #4A6A8A;
+}
+
+.notepad-section main.content .quarto-title-meta-heading {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Category buttons in article */
+.notepad-section main.content .quarto-category {
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  background: transparent;
+  border: 1px dashed #4A6A8A;
+  color: #4A6A8A;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+}
+
+/* Description in article header */
+.notepad-section main.content .description,
+.notepad-section main.content .quarto-title .description,
+.notepad-section main.content p.subtitle,
+.notepad-section main.content .lead {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  font-style: italic;
+  color: #4A6A8A;
+}
+
+/* Inline code */
+.notepad-section main.content code {
+  color: #5D4E37;
+  background: #F5F0E6;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* Code blocks - warm beige theme */
+.notepad-section main.content pre {
+  background: linear-gradient(135deg, #FAF8F3 0%, #F0EBE1 100%);
+  border: 1px solid #E5DFD3;
+  border-left: 4px solid #C9A66B;
+  border-radius: 4px;
+  padding: 1rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.notepad-section main.content pre code {
+  background: transparent;
+  padding: 0;
+  color: #4A3F35;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Syntax highlighting - warm tones */
+.notepad-section main.content .sourceCode .co { color: #8B7355; }  /* comments */
+.notepad-section main.content .sourceCode .st { color: #6B8E4E; }  /* strings */
+.notepad-section main.content .sourceCode .kw { color: #8B4513; font-weight: 600; }  /* keywords */
+.notepad-section main.content .sourceCode .fu { color: #5D4E8C; }  /* functions */
+.notepad-section main.content .sourceCode .dv { color: #B5651D; }  /* numbers */
+.notepad-section main.content .sourceCode .op { color: #5D4E37; }  /* operators */
+.notepad-section main.content .sourceCode .va { color: #4A6B8A; }  /* variables */
+
+/* Dark mode article styling - cream/beige text like index */
+body.notepad-section.quarto-dark main.content {
+  color: #F0EBE3;  /* Cream text */
+}
+
+body.notepad-section.quarto-dark main.content h1,
+body.notepad-section.quarto-dark main.content h2,
+body.notepad-section.quarto-dark main.content h3,
+body.notepad-section.quarto-dark main.content h4 {
+  color: #F0EBE3 !important;  /* Cream text */
+}
+
+body.notepad-section.quarto-dark main.content p,
+body.notepad-section.quarto-dark main.content li,
+body.notepad-section.quarto-dark main.content blockquote {
+  color: #F0EBE3;  /* Cream text */
+}
+
+/* Notepad hero image - cozy polaroid style */
+.notepad-hero {
+  display: block;
+  margin: 1.5rem auto 2rem auto;
+  max-width: 45%;
+  padding: 0.8rem 0.8rem 2.5rem 0.8rem;
+  background: linear-gradient(135deg, #FFFEF9 0%, #F5F0E6 100%);
+  border: none;
+  border-radius: 2px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 0 20px rgba(0, 0, 0, 0.02);
+  transform: rotate(-1.5deg);
+  transition: transform 0.3s ease;
+}
+
+.notepad-hero:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.notepad-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tape effect at top */
+.notepad-hero::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 20px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 200, 0.9) 0%, 
+    rgba(255, 255, 180, 0.7) 100%);
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode adjustments */
+body.notepad-section.quarto-dark .notepad-hero {
+  background: linear-gradient(135deg, #3A3632 0%, #2D2A26 100%);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+body.notepad-section.quarto-dark .notepad-hero::before {
+  background: linear-gradient(180deg, 
+    rgba(200, 180, 140, 0.8) 0%, 
+    rgba(180, 160, 120, 0.6) 100%);
+}
+
+body.notepad-section.quarto-dark main.content a {
+  color: #90CAF9;
+}
+
+body.notepad-section.quarto-dark main.content a:hover {
+  color: #F0EBE3;
+}
+
+body.notepad-section.quarto-dark main.content .quarto-title-meta,
+body.notepad-section.quarto-dark main.content .quarto-title-meta-contents {
+  font-family: 'Caveat', cursive;
+  color: #C5C0B5;
+}
+
+body.notepad-section.quarto-dark main.content .quarto-title-meta-heading {
+  font-family: 'Caveat', cursive;
+}
+
+body.notepad-section.quarto-dark main.content .quarto-category {
+  font-family: 'Caveat', cursive;
+  border-color: #C5C0B5;
+  color: #C5C0B5;
+}
+
+body.notepad-section.quarto-dark main.content .description,
+body.notepad-section.quarto-dark main.content .quarto-title .description,
+body.notepad-section.quarto-dark main.content p.subtitle,
+body.notepad-section.quarto-dark main.content .lead {
+  font-family: 'Caveat', cursive;
+  color: #C5C0B5;
+}
+
+/* Dark mode inline code */
+body.notepad-section.quarto-dark main.content code {
+  color: #E8DFD0;
+  background: #3A3632;
+}
+
+/* Dark mode code blocks - warm dark theme */
+body.notepad-section.quarto-dark main.content pre {
+  background: linear-gradient(135deg, #2D2A26 0%, #252320 100%);
+  border: 1px solid #3A3632;
+  border-left: 4px solid #A07840;
+}
+
+body.notepad-section.quarto-dark main.content pre code {
+  background: transparent;
+  color: #E8DFD0;
+}
+
+/* Dark mode syntax highlighting */
+body.notepad-section.quarto-dark main.content .sourceCode .co { color: #9B8B7B; }
+body.notepad-section.quarto-dark main.content .sourceCode .st { color: #98B87E; }
+body.notepad-section.quarto-dark main.content .sourceCode .kw { color: #D4A574; font-weight: 600; }
+body.notepad-section.quarto-dark main.content .sourceCode .fu { color: #B8A8D8; }
+body.notepad-section.quarto-dark main.content .sourceCode .dv { color: #E8A860; }
+body.notepad-section.quarto-dark main.content .sourceCode .op { color: #E8DFD0; }
+body.notepad-section.quarto-dark main.content .sourceCode .va { color: #8AB8D8; }
+
+/* Fix categories visibility in dark mode */
+body.notepad-section.quarto-dark .quarto-listing-default .quarto-post .listing-category {
+  color: #C5C0B5 !important;
+  border-color: #A06060;
+}
+
+/* ============================================
+   END NOTEPAD STYLES
+   ============================================ */
+
+/* ============================================
+   BOOKS SECTION - Modern Coffee Shop Theme
+   ============================================ */
+
+/* Import clean modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:wght@400;600&display=swap');
+
+/* CSS Custom Properties for Books Theme */
+:root {
+  /* Modern coffee shop - warm neutrals */
+  --books-bg: #FAF7F2;
+  --books-card: #FFFFFF;
+  --books-warm: #D4A574;
+  --books-warm-dark: #B8956C;
+  --books-espresso: #3C2A21;
+  --books-text: #2D2D2D;
+  --books-text-muted: #6B6B6B;
+  --books-shadow: rgba(60, 42, 33, 0.08);
+  --books-accent: #8B5A2B;
+  --books-cream: #F5F0E8;
+}
+
+[data-bs-theme="dark"] {
+  /* Evening coffee shop vibes */
+  --books-bg: #1A1614;
+  --books-card: #252019;
+  --books-warm: #C4956A;
+  --books-warm-dark: #A07850;
+  --books-espresso: #0D0A08;
+  --books-text: #F0EBE3;
+  --books-text-muted: #A09080;
+  --books-shadow: rgba(0, 0, 0, 0.3);
+  --books-accent: #D4A574;
+  --books-cream: #2A241E;
+}
+
+/* Books Section Container - clean warm background */
+.books-section {
+  background: var(--books-bg);
+  min-height: 100vh;
+}
+
+/* Books Header - modern minimal with warm accent */
+.books-header {
+  position: relative;
+  background: var(--books-card);
+  padding: 3rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px var(--books-shadow);
+  border-left: 5px solid var(--books-warm);
+}
+
+/* Coffee ring stain decoration */
+.books-header::after {
+  content: '';
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 70px;
+  height: 70px;
+  border: 3px solid var(--books-warm);
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+.books-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  color: var(--books-espresso);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+[data-bs-theme="dark"] .books-title {
+  color: var(--books-text);
+}
+
+.books-header p {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1.1rem;
+  color: var(--books-text-muted);
+  font-style: normal;
+  margin: 0;
+}
+
+/* Books Container */
+.books-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+/* Book Cards - clean modern style */
+.books-section .quarto-grid-item .card {
+  background: var(--books-card);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px var(--books-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.books-section .quarto-grid-item .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 16px 40px var(--books-shadow),
+    0 4px 12px rgba(212, 165, 116, 0.1);
+}
+
+/* Book cover image - natural display */
+.books-section .quarto-grid-item .card-img-top {
+  border-radius: 12px 12px 0 0;
+}
+
+/* Card body */
+.books-section .quarto-grid-item .card-body {
+  padding: 1.25rem;
+}
+
+/* Book titles - clean serif */
+.books-section .quarto-grid-item .card-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.books-section .quarto-grid-item .card-title a {
+  color: var(--books-text);
+  text-decoration: none;
+}
+
+.books-section .quarto-grid-item .card-title a:hover {
+  color: var(--books-accent);
+}
+
+/* Reading time and date */
+.books-section .quarto-grid-item .listing-reading-time,
+.books-section .quarto-grid-item .listing-date {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.85rem;
+  color: var(--books-text-muted);
+}
+
+/* Description */
+.books-section .quarto-grid-item .card-text {
+  font-family: 'Source Sans 3', sans-serif;
+  color: var(--books-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Category tags - subtle pills */
+.books-section .quarto-grid-item .listing-category {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--books-cream);
+  color: var(--books-accent);
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+}
+
+/* ============================================
+   END BOOKS STYLES
+   ============================================ */
+
+/* ============================================
+   MUSIC SECTION - Vinyl Record Store Theme
+   ============================================ */
+
+/* Import retro fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap');
+
+/* CSS Custom Properties for Music Theme */
+:root {
+  /* Vinyl store colors - always dark aesthetic */
+  --music-bg: #121212;
+  --music-card: #1E1E1E;
+  --music-vinyl: #0A0A0A;
+  --music-grooves: #2A2A2A;
+  --music-label: #E53E3E;
+  --music-text: #FFFFFF;
+  --music-text-muted: #B0B0B0;
+  --music-neon: #FF6B35;
+  --music-neon-alt: #00D4AA;
+  --music-shadow: rgba(0, 0, 0, 0.5);
+}
+
+[data-bs-theme="dark"] {
+  /* Same vibe in dark mode */
+  --music-bg: #0A0A0A;
+  --music-card: #151515;
+  --music-vinyl: #050505;
+  --music-grooves: #222;
+  --music-label: #E53E3E;
+  --music-text: #FFFFFF;
+  --music-text-muted: #C0C0C0;
+  --music-neon: #FF7849;
+  --music-neon-alt: #00FFD0;
+  --music-shadow: rgba(0, 0, 0, 0.7);
+}
+
+/* Music Section Container - dark record store vibe */
+.music-section {
+  background: 
+    radial-gradient(ellipse at top, rgba(255, 107, 53, 0.03) 0%, transparent 50%),
+    var(--music-bg);
+  min-height: 100vh;
+}
+
+/* Music Header - neon sign aesthetic */
+.music-header {
+  position: relative;
+  background: var(--music-card);
+  padding: 2.5rem 3rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+  border-radius: 0;
+  border-left: 4px solid var(--music-neon);
+  box-shadow: 
+    0 4px 30px var(--music-shadow),
+    -4px 0 20px rgba(255, 107, 53, 0.2);
+}
+
+/* Vinyl record decoration */
+.music-header::after {
+  content: '';
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 80px;
+  background: 
+    radial-gradient(circle at center, var(--music-label) 15%, transparent 15%),
+    radial-gradient(circle at center, var(--music-vinyl) 30%, transparent 30%),
+    repeating-radial-gradient(circle at center, 
+      var(--music-grooves) 0px, var(--music-grooves) 1px, 
+      var(--music-vinyl) 1px, var(--music-vinyl) 3px);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 0 3px var(--music-vinyl),
+    0 4px 15px rgba(0,0,0,0.5);
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.music-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: var(--music-text);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+/* Neon glow effect on title */
+.music-title::first-letter {
+  color: var(--music-neon);
+  text-shadow: 
+    0 0 10px var(--music-neon),
+    0 0 20px var(--music-neon),
+    0 0 40px var(--music-neon);
+}
+
+.music-header p {
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
+  color: var(--music-text-muted);
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* Music Container */
+.music-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+/* Album Cards - like record sleeves */
+.music-section .quarto-grid-item .card {
+  background: var(--music-card);
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 4px 20px var(--music-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.music-section .quarto-grid-item .card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px var(--music-shadow),
+    0 0 30px rgba(255, 107, 53, 0.1);
+}
+
+/* Album artwork - natural display, no clipping */
+.music-section .quarto-grid-item .card-img-top {
+  border-radius: 0;
+}
+
+/* Card body */
+.music-section .quarto-grid-item .card-body {
+  padding: 1rem;
+  border-top: 2px solid var(--music-neon);
+}
+
+/* Track/Album titles */
+.music-section .quarto-grid-item .card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.music-section .quarto-grid-item .card-title a {
+  color: var(--music-text);
+  text-decoration: none;
+}
+
+.music-section .quarto-grid-item .card-title a:hover {
+  color: var(--music-neon);
+}
+
+/* Meta info - improved contrast */
+.music-section .quarto-grid-item .listing-reading-time,
+.music-section .quarto-grid-item .listing-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--music-text);
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Description - improved contrast */
+.music-section .quarto-grid-item .card-text {
+  font-family: 'Space Mono', monospace;
+  color: var(--music-text);
+  opacity: 0.85;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* Genre tags - like stickers */
+.music-section .quarto-grid-item .listing-category {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  background: transparent;
+  color: var(--music-neon);
+  border: 1px solid var(--music-neon);
+  padding: 0.2rem 0.6rem;
+  border-radius: 0;
+  text-transform: uppercase;
+}
+
+.music-section .quarto-grid-item .listing-category:hover {
+  background: var(--music-neon);
+  color: var(--music-bg);
+}
+
+/* ============================================
+   END MUSIC STYLES
+   ============================================ */
+
 p#fin {
   color: #5A5A5A;
   font-weight: bold;

@@ -1,5 +1,13 @@
 [
   {
+    "listing": "/notepad/index.html",
+    "items": [
+      "/notepad/00-hello-notepad.html",
+      "/notepad/01-git-prune.html",
+      "/notepad/02-cursor-browser-tools.html"
+    ]
+  },
+  {
     "listing": "/music-reviews/index.html",
     "items": [
       "/music-reviews/05-when-worlds-collide.html",
@@ -49,6 +57,9 @@
   {
     "listing": "/index.html",
     "items": [
+      "/notepad/01-git-prune.html",
+      "/notepad/02-cursor-browser-tools.html",
+      "/notepad/00-hello-notepad.html",
       "/blogs/21-codecov-setup.html",
       "/blogs/20-lazy-mocking.html",
       "/blogs/19-github-audit-trail.html",

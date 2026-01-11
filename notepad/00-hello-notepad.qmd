@@ -1,0 +1,19 @@
+---
+title: "Welcome to the Notepad"
+description: "A deliberately scruffy space for ideas, experiments, and snippets."
+date: 2026-01-08
+categories: [meta]
+body-classes: notepad-section
+order: 1
+image: /./www/notepad/00-hello-notepad.jpg
+image-alt: "A cozy notepad sketch"
+---
+<div class="notepad-hero">
+<img src=/./www/notepad/00-hello-notepad.jpg alt="A cozy notepad sketch">
+</div>
+
+In the age of the LLM revolution, I'm currently unsure as to how useful long form blogging will be. 
+
+While I weigh things up, I will go with a demonstrably scruffy and minimal approach to recording ideas, experiments and snippets for things that I've found interesting, tricky or non-trivial.
+
+Some of these ideas may be re-touched with time or grow into fully fledged articles, while others may remain as limited records of stuff done.

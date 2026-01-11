@@ -1,0 +1,106 @@
+# Notepad Section Maintenance Guide
+
+## Overview
+The Notepad is a deliberately scruffy, low-friction space for quick ideas, experiments, and snippets. It follows a "digital garden" philosophy—content can be rough, incomplete, and evolve over time.
+
+## Adding New Notes
+
+### 1. Create the article file
+```bash
+# In notepad/ directory, create a new .qmd file
+touch notepad/XX-slug-name.qmd
+```
+
+### 2. Required YAML frontmatter
+```yaml
+---
+title: "Your Note Title"
+description: "Brief one-liner description"
+date: YYYY-MM-DD
+categories: [category1, category2]
+body-classes: notepad-section
+image: /./www/notepad/XX-slug-name.jpg
+image-alt: "Descriptive alt text"
+---
+```
+
+### 3. Add hero image (optional but recommended)
+After the YAML frontmatter, use the cozy polaroid-style wrapper:
+```html
+<div class="notepad-hero">
+<img src=/./www/notepad/XX-slug-name.jpg alt="Alt text">
+</div>
+```
+This creates a polaroid-style image with:
+- Cream paper frame with extra space at bottom
+- Subtle tape effect at top
+- Slight rotation for a casual, pinned-to-board feel
+- Hover animation that straightens the image
+
+### 4. To pin an article to the top
+Add `order: 1` to the YAML frontmatter (lower numbers appear first).
+
+## Image Guidelines
+
+### Style direction
+- **Aesthetic**: Lofi, cozy, sketchbook/doodle style
+- **NOT**: Cyberpunk (that's for the main blogs)
+- Good subjects: Cozy desk scenes, notebook sketches, warm lighting, coffee, analog feel
+
+### Optimization (REQUIRED before commit)
+```bash
+# Convert PNG to optimized JPG
+cd www/notepad
+sips -s format jpeg -s formatOptions 80 "filename.png" --out "filename.jpg"
+rm filename.png
+```
+Target: Keep images under 400KB.
+
+## The Spirit of the Notepad
+
+### What belongs here
+- ✅ Quick tips and TILs (Today I Learned)
+- ✅ Rough ideas and half-formed thoughts
+- ✅ Code snippets worth remembering
+- ✅ Experiments and explorations
+- ✅ Things that might grow into full articles later
+- ✅ Personal notes that might help others
+
+### What doesn't belong
+- ❌ Polished tutorials (those go in Technical Blog)
+- ❌ Long-form content requiring extensive editing
+- ❌ Anything requiring extensive research/citations
+
+### Writing style
+- Keep it brief and casual
+- Imperfection is acceptable—even encouraged
+- First-person voice is fine
+- No need for extensive structure or headers
+- Link to fuller resources if they exist
+
+### Digital garden principles
+1. **Tend, don't publish**: Notes can be updated, pruned, or expanded over time
+2. **Bi-directional thinking**: Link between notes when relevant
+3. **Show your work**: Rough ideas are valuable
+4. **Low friction**: If adding a note feels like work, simplify
+
+## File Locations
+- Articles: `notepad/*.qmd`
+- Images: `www/notepad/*.jpg`
+- Index config: `notepad/index.qmd`
+- Styling: `www/styles.css` (search for `.notepad-section`)
+
+## Styling Notes
+- Cards use handwritten font (Caveat)
+- Cream/beige paper background with lined texture
+- Spiral binding holes on left edge
+- Torn paper edge at bottom
+- Dark mode supported (switches to darker paper tones)
+
+## Categories
+Keep categories informal and descriptive:
+- `meta` - About the notepad itself
+- `til` - Today I Learned
+- `snippet` - Code snippets
+- `idea` - Half-formed thoughts
+- `experiment` - Things being tried out

@@ -1,0 +1,39 @@
+---
+title: "Pruning Stale Local Branches"
+description: "Tidy up local branches that no longer exist on remote."
+date: 2026-01-11
+categories: [til, git, snippet]
+body-classes: notepad-section
+image: /./www/notepad/01-git-prune.jpg
+image-alt: "Git branches being pruned"
+---
+<div class="notepad-hero">
+<img src=/./www/notepad/01-git-prune.jpg alt="Git branches being pruned">
+</div>
+
+After a while, local branches pile up—especially ones tracking remotes that have since been deleted. Here's how to clean house.
+
+## Prune and find stale branches
+
+```bash
+# Prune stale remote-tracking references
+git fetch --prune
+
+# List local branches with gone remotes
+git branch -vv | grep ': gone]'
+```
+
+## Get just the branch names
+
+```bash
+git branch -vv | grep ': gone]' | awk '{print $1}'
+```
+
+## Delete them all at once
+
+```bash
+git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
+```
+
+Use `-D` instead of `-d` to force-delete branches with unmerged changes.
+

@@ -1,0 +1,57 @@
+---
+title: "Notepad"
+comments: false
+page-layout: full
+body-classes: notepad-section
+listing:
+    id: notepad-notes
+    type: default
+    contents:
+        - "*.qmd"
+        - "!index.qmd"
+    sort:
+        - "order"
+        - "date desc"
+        - "title desc"
+    sort-ui: false
+    filter-ui: false
+    categories: true
+    date-format: "MMM D, YYYY"
+    page-size: 20
+    image-placeholder: /./www/notepad/00-hello-notepad.jpg
+    fields: [image, date, title, categories, description]
+---
+
+::: {.notepad-header}
+# Notepad {.notepad-title}
+
+*Quick notes, fleeting thoughts, and things worth jotting down.*
+:::
+
+::: {#notepad-notes .notepad-notes-container}
+:::
+
+```{=html}
+<script>
+function makeCardsClickable() {
+  document.querySelectorAll('.notepad-section .quarto-post').forEach(function(card) {
+    if (card.dataset.clickHandler) return;
+    card.dataset.clickHandler = 'true';
+    
+    var link = card.querySelector('h3.listing-title a, .listing-title a');
+    if (!link) return;
+    
+    card.addEventListener('click', function(e) {
+      // Don't navigate if clicking directly on a link or category button
+      if (e.target.closest('a') || e.target.closest('.listing-category')) return;
+      window.location.href = link.href;
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  makeCardsClickable();
+  setTimeout(makeCardsClickable, 500);
+});
+</script>
+```
