@@ -389,9 +389,40 @@ body.notepad-section.quarto-dark .notepad-header em {
   color: #1E3A5F;
 }
 
-/* Muted elements in articles */
+/* Muted elements in articles - handwritten style */
 .notepad-section main.content .quarto-title-meta,
 .notepad-section main.content .quarto-title-meta-contents {
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem;
+  color: #4A6A8A;
+}
+
+.notepad-section main.content .quarto-title-meta-heading {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Category buttons in article */
+.notepad-section main.content .quarto-category {
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  background: transparent;
+  border: 1px dashed #4A6A8A;
+  color: #4A6A8A;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+}
+
+/* Description in article header */
+.notepad-section main.content .description,
+.notepad-section main.content .quarto-title .description,
+.notepad-section main.content p.subtitle,
+.notepad-section main.content .lead {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  font-style: italic;
   color: #4A6A8A;
 }
 
@@ -485,6 +516,25 @@ body.notepad-section.quarto-dark main.content a:hover {
 
 body.notepad-section.quarto-dark main.content .quarto-title-meta,
 body.notepad-section.quarto-dark main.content .quarto-title-meta-contents {
+  font-family: 'Caveat', cursive;
+  color: #C5C0B5;
+}
+
+body.notepad-section.quarto-dark main.content .quarto-title-meta-heading {
+  font-family: 'Caveat', cursive;
+}
+
+body.notepad-section.quarto-dark main.content .quarto-category {
+  font-family: 'Caveat', cursive;
+  border-color: #C5C0B5;
+  color: #C5C0B5;
+}
+
+body.notepad-section.quarto-dark main.content .description,
+body.notepad-section.quarto-dark main.content .quarto-title .description,
+body.notepad-section.quarto-dark main.content p.subtitle,
+body.notepad-section.quarto-dark main.content .lead {
+  font-family: 'Caveat', cursive;
   color: #C5C0B5;
 }
 
