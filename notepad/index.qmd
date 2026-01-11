@@ -18,7 +18,8 @@ listing:
     categories: true
     date-format: "MMM D, YYYY"
     page-size: 20
-    fields: [date, title, description, categories]
+    image-placeholder: /./www/notepad/00-hello-notepad.jpg
+    fields: [image, date, title, categories, description]
 ---
 
 ::: {.notepad-header}

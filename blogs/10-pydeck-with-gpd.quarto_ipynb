@@ -1,0 +1,406 @@
+{
+  "cells": [
+    {
+      "cell_type": "raw",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: Getting Pydeck to Play Nicely with GeoPandas.\n",
+        "author: Rich Leyshon\n",
+        "date: February 18 2024\n",
+        "description: Building Pydeck Maps from GeoPandas GeoDataFrames.\n",
+        "categories:\n",
+        "  - How To\n",
+        "  - Geospatial\n",
+        "  - pydeck\n",
+        "  - geopandas\n",
+        "image: /./www/10-pydeck-with-gpd/intro-img.jpg\n",
+        "image-alt: A futuristic topography.\n",
+        "toc: true\n",
+        "---"
+      ],
+      "id": "2f3e294f"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "<img class=shaded_box src=/./www/10-pydeck-with-gpd/intro-img.jpg alt=\"A futuristic topography.\" style=\"display:block;margin-left:auto;margin-right:auto;width:40%;border:none;\">\n",
+        "\n",
+        "## Introduction\n",
+        "\n",
+        "Pydeck is a python client for pydeck.gl, a powerful geospatial visualisation\n",
+        "library. It's a relatively new library and integrating it with the existing\n",
+        "python geospatial ecosystem is currently a little tricky. This article\n",
+        "demonstrates how to build pydeck ScatterplotLayer and GeoJsonLayer from\n",
+        "geopandas GeoDataFrames.\n",
+        "\n",
+        "- <a href=\"https://deckgl.readthedocs.io/en/latest/\" target=\"_blank\">Pydeck documentation</a>\n",
+        "- <a href=\"https://deck.gl/#/\" target=\"_blank\">Deck.gl documentation</a>\n",
+        "\n",
+        ":::{.callout collapse=\"true\"}\n",
+        "\n",
+        "### A Note on the Purpose\n",
+        "\n",
+        "The content of this article was written using pydeck 0.8.0. Future releases may\n",
+        "alter the package behaviour.\n",
+        ":::\n",
+        "\n",
+        "### Intended Audience\n",
+        "\n",
+        "Python practitioners familiar with virtual environments, `requests` and\n",
+        "geospatial analysis with `geopandas`.\n",
+        "\n",
+        "### The Scenario\n",
+        "\n",
+        "You have a geopandas GeoDataFrame with point or polygon geometries. You are\n",
+        "attempting to build a pydeck visualisation but end up with empty basemap tiles.\n",
+        "\n",
+        "### What You'll Need:\n",
+        "\n",
+        "- [ ] Preferred python environment manager (eg `conda`)\n",
+        "- [ ] Python package manager (eg `pip`)\n",
+        "- [ ] `requirements.txt`:\n",
+        "\n",
+        "```{.python filename=requirements.txt eval=false}\n",
+        "geopandas\n",
+        "pandas\n",
+        "pydeck\n",
+        "requests\n",
+        "\n",
+        "```\n",
+        "## Prepare Environment\n",
+        "\n",
+        "1. Create a virtual environment.\n",
+        "2. Install the required dependencies.\n",
+        "3. Activate the virtual environment.\n",
+        "4. Create a python script and import the dependencies."
+      ],
+      "id": "665e1ccd"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import json\n",
+        "\n",
+        "import geopandas as gpd\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import pydeck as pdk\n",
+        "import requests\n",
+        "from sklearn import preprocessing"
+      ],
+      "id": "780f1b7e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Build a `ScatterplotLayer`\n",
+        "\n",
+        "### Ingest Data\n",
+        "\n",
+        "For the point data, I will ingest all Welsh lower super output area 2021\n",
+        "population-weighted centroids from\n",
+        "[ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/79fa1c80981b4e4eb218bbce1afc304b_0/explore).\n",
+        "\n",
+        "For more on working with ONS Open Geography Portal, see\n",
+        "[Getting Data from ONS Open Geography Portal](/./blogs/06-working-with-ONS-open-geo-portal.qmd)."
+      ],
+      "id": "833113d4"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the code\"\n",
+        "ENDPOINT = \"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LSOA_Dec_2001_Address_Weighted_Centroids/FeatureServer/0/query\"\n",
+        "PARAMS = {\n",
+        "    \"where\": \"LSOA01CD like 'W%'\",\n",
+        "    \"f\": \"geoJSON\", \n",
+        "    \"outFields\": \"*\",\n",
+        "    \"outSR\": 4326,\n",
+        "}\n",
+        "resp = requests.get(ENDPOINT, params=PARAMS)\n",
+        "if resp.ok:\n",
+        "    content = resp.json()\n",
+        "else:\n",
+        "    raise requests.RequestException(f\"HTTP {resp.status_code} : {resp.reason}\")\n",
+        "\n",
+        "centroids = gpd.GeoDataFrame.from_features(\n",
+        "    features=content[\"features\"], crs=content[\"crs\"][\"properties\"][\"name\"])\n",
+        "centroids.head()"
+      ],
+      "id": "43c6b48c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The geometry column is not in a format that pydeck will accept. Adding a column\n",
+        "with a list of long,lat values for each coordinate will do the trick."
+      ],
+      "id": "1237a819"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "centroids[\"pydeck_geometry\"] = [[c.x, c.y] for c in centroids[\"geometry\"]]\n",
+        "centroids.head()"
+      ],
+      "id": "91f303d0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Pydeck Visualisation\n",
+        "\n",
+        "With the correct geometry format, the scatterplot is trivial.\n",
+        "\n",
+        ":::{.callout-tip}\n",
+        "Control the map by click and dragging the map with your mouse. Hold shift +\n",
+        "click and drag to yaw or pitch the map. Scroll in and out to alter the zoom.\n",
+        ":::"
+      ],
+      "id": "81d0105a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| output: false\n",
+        "scatter = pdk.Layer(\n",
+        "    \"ScatterplotLayer\",\n",
+        "    centroids,\n",
+        "    pickable=True,\n",
+        "    stroked=True,\n",
+        "    filled=True,\n",
+        "    line_width_min_pixels=1,\n",
+        "    get_position=\"pydeck_geometry\",\n",
+        "    get_fill_color=[255, 140, 0],\n",
+        "    get_line_color=[255, 140, 0],\n",
+        "    radius_min_pixels=3,\n",
+        "    opacity=0.1,\n",
+        ")\n",
+        "# Set the viewport location\n",
+        "view_state = pdk.ViewState(\n",
+        "    longitude=-3.7,\n",
+        "    latitude=52.42,\n",
+        "    zoom=5.8,\n",
+        "    max_zoom=15,\n",
+        "    pitch=0,\n",
+        "    bearing=0,\n",
+        ")\n",
+        "tooltip = {\n",
+        "    \"text\": \"LSOA01CD: {LSOA01CD}\"\n",
+        "}\n",
+        "# Render and save to file\n",
+        "r = pdk.Deck(\n",
+        "    layers=scatter, initial_view_state=view_state, tooltip=tooltip\n",
+        ")\n",
+        "r.to_html(\"../outputs/scatter_layer.html\")"
+      ],
+      "id": "73f66da6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "<iframe src=\"../outputs/scatter_layer.html\" style=\"width: 100%; height: 400px; border: none;\"></iframe>"
+      ],
+      "id": "46b01dc1"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "# tidy up\n",
+        "del resp, content, centroids, scatter, r"
+      ],
+      "id": "2f7ff563",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Build a `GeoJsonLayer`\n",
+        "\n",
+        "GeoJsonLayer is what tends to be used for presenting polygons with pydeck maps.\n",
+        "The pydeck docs [GeoJsonLayer example](https://deckgl.readthedocs.io/en/latest/gallery/geojson_layer.html)\n",
+        "uses geoJSON data hosted on GitHub. But with a little effort, a Geopandas\n",
+        "GeoDataFrame can be coerced to the necessary format.\n",
+        "\n",
+        "### Ingest Data\n",
+        "\n",
+        "To demonstrate working with polygons, the Welsh super generalised 2023 local\n",
+        "authority district boundaries will be ingested from\n",
+        "[ONS Open Geography Portal](https://geoportal.statistics.gov.uk/datasets/2e9f5c259fec4e1c9951ecb974253c66_0/explore?location=55.223511%2C-3.317025%2C6.81).\n",
+        "\n",
+        "As elevation and polygon colour will be controlled by features of the data,\n",
+        "sklearn.prepeocessing is used to scale the \"Shape__Area\" column."
+      ],
+      "id": "665460d2"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Show the code\"\n",
+        "ENDPOINT=\"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LPA_APR_2023_UK_BFC_V2/FeatureServer/0/query\"\n",
+        "PARAMS[\"where\"] = \"LPA23CD like 'W%'\"\n",
+        "resp = requests.get(ENDPOINT, params=PARAMS)\n",
+        "if resp.ok:\n",
+        "    content = resp.json()\n",
+        "else:\n",
+        "    raise requests.RequestException(f\"HTTP {resp.status_code} : {resp.reason}\")\n",
+        "\n",
+        "polygons = gpd.GeoDataFrame.from_features(\n",
+        "    features=content[\"features\"], crs=content[\"crs\"][\"properties\"][\"name\"])\n",
+        "# simplify geometries to reduce file size (tolerance in degrees, ~0.005 ≈ 500m)\n",
+        "polygons[\"geometry\"] = polygons[\"geometry\"].simplify(tolerance=0.005)\n",
+        "# feature engineering for pydeck viz\n",
+        "min_max_scaler = preprocessing.MinMaxScaler()\n",
+        "x = polygons[\"Shape__Area\"].values.reshape(-1, 1)\n",
+        "x_scaled = min_max_scaler.fit_transform(x)\n",
+        "polygons[\"area_norm\"] = pd.Series(x_scaled.flatten())\n",
+        "polygons.head()"
+      ],
+      "id": "13e7181a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "In order to pass the content of this GeoDataFrame to pydeck, use the `to_json`\n",
+        "method to format as a geoJSON string. Then use `json.loads()` to format that\n",
+        "string as a dictionary."
+      ],
+      "id": "90964865"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# format data for use in pydeck\n",
+        "json_out = json.loads(polygons.to_json())\n",
+        "# inspect the first authority\n",
+        "json_out[\"features\"][0][\"properties\"]"
+      ],
+      "id": "c5a2abca",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Pydeck Visualisation\n",
+        "\n",
+        "This format can now be passed to pydeck. One 'gotcha' to be aware of, when\n",
+        "using attributes in the json to control elevation or colour, the json\n",
+        "properties must be explicitly referenced, eg `\"properties.area_norm\"`.\n",
+        "\n",
+        "In contrast, when using json attributes in the tooltip, you can refer to them\n",
+        "directly, eg `\"area_norm\"`."
+      ],
+      "id": "cac4e860"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| output: false\n",
+        "r = \"100\"\n",
+        "g = \"(1 - properties.area_norm) * 255\"\n",
+        "b = \"properties.area_norm * 255\"\n",
+        "fill = f\"[{r},{g},{b}]\"\n",
+        "geojson = pdk.Layer(\n",
+        "        \"GeoJsonLayer\",\n",
+        "        json_out,\n",
+        "        pickable=True,\n",
+        "        opacity=1,\n",
+        "        stroked=True,\n",
+        "        filled=True,\n",
+        "        extruded=True,\n",
+        "        wireframe=True,\n",
+        "        auto_highlight=True,\n",
+        "        get_elevation=\"properties.area_norm * 200\",\n",
+        "        elevation_scale=100,\n",
+        "        get_fill_color=fill,\n",
+        "    )\n",
+        "tooltip = {\"text\": \"{LPA23NM}\\n{LPA23CD}\"}\n",
+        "view_state = pdk.ViewState(\n",
+        "    longitude=-3.7,\n",
+        "    latitude=52.42,\n",
+        "    zoom=6.5,\n",
+        "    max_zoom=15,\n",
+        "    pitch=100,\n",
+        "    bearing=33,\n",
+        ")\n",
+        "r = pdk.Deck(\n",
+        "    layers=geojson,\n",
+        "    initial_view_state=view_state,\n",
+        "    tooltip=tooltip,\n",
+        ")\n",
+        "r.to_html(\"../outputs/geojson_layer.html\")"
+      ],
+      "id": "7c579f2d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "<iframe src=\"../outputs/geojson_layer.html\" style=\"width: 100%; height: 400px; border: none;\"></iframe>\n",
+        "\n",
+        "## Tips\n",
+        "\n",
+        "* `pydeck` does not raise when layer data are not formatted correctly. This\n",
+        "can result in some lengthy render times only to discover you have an empty map.\n",
+        "To combat this, work with the head or some small sample of your data until you\n",
+        "have your map working.\n",
+        "\n",
+        "## Conclusion\n",
+        "\n",
+        "This article has recorded the state of play between `pydeck` and `geopandas` at\n",
+        "the time of writing. Specifically, formatting:\n",
+        "\n",
+        "* geometry columns for pydeck `ScatterplotLayer`\n",
+        "* a GeoDataFrame for use with pydeck `GeoJsonLayer`.\n",
+        "\n",
+        "I hope it saves someone some time bashing geopandas about.\n",
+        "\n",
+        "<p id=fin><i>fin!</i></p>"
+      ],
+      "id": "8e791ed0"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "cycling-env",
+      "language": "python",
+      "display_name": "cycling-env"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

@@ -191,10 +191,26 @@ body.notepad-section.quarto-dark .notepad-header em {
   pointer-events: none;
 }
 
-/* Paper clip decoration */
-.notepad-section .quarto-listing-default .quarto-post .listing-item-img-placeholder,
-.notepad-section .quarto-listing-default .quarto-post .thumbnail {
+/* Hide placeholder images but show actual thumbnails */
+.notepad-section .quarto-listing-default .quarto-post .listing-item-img-placeholder {
   display: none;
+}
+
+/* Style actual thumbnail images */
+.notepad-section .quarto-listing-default .quarto-post .thumbnail {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  margin-left: 1rem;
+  object-fit: cover;
+  transform: rotate(-2deg);
+  border: 3px solid var(--notepad-paper);
+}
+
+/* Move image to left side */
+.notepad-section .quarto-listing-default .quarto-post.image-right {
+  flex-direction: row-reverse !important;
 }
 
 /* Add paper clip to top-right corner */
