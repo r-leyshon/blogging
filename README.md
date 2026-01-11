@@ -1,38 +1,45 @@
 # blogging
-[![Netlify Status](https://api.netlify.com/api/v1/badges/981c5fe4-bbc9-42ee-92b3-2087884fbdc8/deploy-status)](https://app.netlify.com/sites/anothernerdblog/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/981c5fe4-bbc9-42ee-92b3-2087884fbdc8/deploy-status)](https://app.netlify.com/sites/thedatasavvycorner/deploys)
+[![Build and Deploy](https://github.com/r-leyshon/blogging/actions/workflows/build-deploy.yml/badge.svg)](https://github.com/r-leyshon/blogging/actions/workflows/build-deploy.yml)
 
 Musings, ramblings, generally putting things down in text so I don't forget them.
 
+## Deployment
+
+The site is built and deployed automatically via GitHub Actions:
+
+- **Pull requests** → preview deploy to Netlify
+- **Merge to main** → production deploy
+
+The `docs/` folder is gitignored and built fresh in CI.
+
+## Local Development
+
+```bash
+# Preview the site locally
+quarto preview
+
+# Full render (if needed)
+make site
+```
+
+The `make site` command runs `quarto render` followed by a Python script that fixes nested listing files.
+
 ## Quarto Notes
 
-* When re-rendering the site, be sure to use quarto cli `quarto render` rather
-than the GUI render button, which only renders the active quarto doc.
-* Include a .nojekyll file in the root.
-* Ensure the index.qmd references the above .nojekyll in the YAML under
-`resources`. This will ensure it's copied into the output folder `docs` once 
-rendered. 
-* Ensure the site is rendered to a `docs` folder and that GitHub Pages is set to
-build from this directory, instead of root.
-* Be sure to check that the `docs` folder is not gitignored! Some template
-gitignores will blanket ignore a docs folder.
-* Quarto deletes any markdown file with the extension `.MD` on render, but not
-files with the extension `.md`.
-* Create a prefixed conda env called blogging-env, using python 3.11 and
-dependencies from the requirements.txt file. Install nb_conda_kernels with
-conda install. This allows you to select specific environments for each
-qmd.
+- Use `quarto render` (CLI) rather than the GUI render button for full site builds.
+- The site uses `freeze: auto` - code execution results are cached in `_freeze/`.
+- If you modify a blog with code cells, render locally first to update the freeze cache.
+- Article-specific conda environments live in `environments/` (gitignored).
 
 ## Secrets
 
-In order to render the music-reviews, you will need to configure an application
-with the [Spotify Developer API](https://developer.spotify.com/dashboard/) and
-retrieve a valid client ID and secret. Store these in a gitignored 
-`.secrets.toml` file in
-the project root as below:
+For music reviews (Spotify integration), create a `.secrets.toml` in the project root:
 
-```
+```toml
 [spotify]
 client_id = "<INSERT_CLIENT_ID>"
 client_secret = "<INSERT_CLIENT_SECRET>"
-
 ```
+
+Get credentials from the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/).
