@@ -17,10 +17,10 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8e8c483 # v6.0.1
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Setup Python
-        uses: actions/setup-python@83679a8 # v6.1.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -31,14 +31,14 @@ jobs:
           pip install pyprojroot
 
       - name: Setup Quarto
-        uses: quarto-dev/quarto-actions/setup@8a96df1 # v2.2.0
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
 
       - name: Render site
         run: make site
 
       - name: Deploy to Netlify (Preview)
         if: github.event_name == 'pull_request'
-        uses: nwtgck/actions-netlify@4cbaf4c # v3.0.0
+        uses: nwtgck/actions-netlify@4cbaf4c08f1a7bfa537d6113472ef4424e4eb654 # v3.0.0
         with:
           publish-dir: './docs'
           production-deploy: false
@@ -51,7 +51,7 @@ jobs:
 
       - name: Deploy to Netlify (Production)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: nwtgck/actions-netlify@4cbaf4c # v3.0.0
+        uses: nwtgck/actions-netlify@4cbaf4c08f1a7bfa537d6113472ef4424e4eb654 # v3.0.0
         with:
           publish-dir: './docs'
           production-deploy: true
