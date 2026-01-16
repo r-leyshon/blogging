@@ -536,6 +536,70 @@ body.notepad-section.quarto-dark .notepad-hero::before {
     rgba(180, 160, 120, 0.6) 100%);
 }
 
+/* Notepad embed - polaroid style for iframes/demos */
+.notepad-embed {
+  position: relative;
+  display: block;
+  margin: 2rem auto;
+  max-width: 90%;
+  padding: 0.8rem 0.8rem 1.5rem 0.8rem;
+  background: linear-gradient(135deg, #FFFEF9 0%, #F5F0E6 100%);
+  border: none;
+  border-radius: 2px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 0 20px rgba(0, 0, 0, 0.02);
+  transform: rotate(0.5deg);
+  transition: transform 0.3s ease;
+}
+
+.notepad-embed:hover {
+  transform: rotate(0deg) scale(1.01);
+}
+
+.notepad-embed iframe {
+  width: 100%;
+  height: 500px;
+  display: block;
+  border: 1px solid #e8e4df;
+  border-radius: 4px;
+}
+
+/* Tape effect at top */
+.notepad-embed::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 20px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 200, 0.9) 0%, 
+    rgba(255, 255, 180, 0.7) 100%);
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode for embed */
+body.notepad-section.quarto-dark .notepad-embed {
+  background: linear-gradient(135deg, #3A3632 0%, #2D2A26 100%);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+body.notepad-section.quarto-dark .notepad-embed::before {
+  background: linear-gradient(180deg, 
+    rgba(200, 180, 140, 0.8) 0%, 
+    rgba(180, 160, 120, 0.6) 100%);
+}
+
+body.notepad-section.quarto-dark .notepad-embed iframe {
+  border-color: #4a4540;
+}
+
 body.notepad-section.quarto-dark main.content a {
   color: #90CAF9;
 }

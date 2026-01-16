@@ -1,0 +1,51 @@
+---
+title: "Daemon AI Assistants"
+description: "AI companions that live alongside your text, inspired by Maggie Appleton's brilliant sketchbook."
+date: 2026-01-16
+categories: [idea, ai, experiment]
+body-classes: notepad-section
+image: /./www/notepad/03-daemon-ai-assistant.jpg
+image-alt: "A cozy desk with friendly AI daemons floating nearby"
+---
+<div class="notepad-hero">
+<img src=/./www/notepad/03-daemon-ai-assistant.jpg alt="A cozy desk with friendly AI daemons floating nearby">
+</div>
+
+I've been fascinated by [Maggie Appleton's Language Model Sketchbook](https://maggieappleton.com/lm-sketchbook) for a while now. Her "Daemons" concept stuck with me — so I decided to build it.
+
+## The Concept
+
+What if AI assistants weren't chat windows, but *daemons* — little personalities that hover alongside your text, each with their own perspective?
+
+- **Devil's Advocate** — questions your assertions, asks for evidence
+- **Grammar Enthusiast** — spots style issues (purple, naturally)
+- **Clarity Coach** — nudges toward clearer expression
+
+The daemons highlight relevant sections and offer contextual suggestions as you write. It's a fundamentally different UX from the "type a prompt, wait for response" pattern we've all gotten used to.
+
+## Try It
+
+Here's the working prototype, click the daemon swatches to the right and they perform tasks, highlighting relevant blocks of text:
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://daemon-ai-app.vercel.app" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe 
+  src="https://daemon-ai-app.vercel.app" 
+  title="Daemon AI Assistant Demo">
+  </iframe>
+</div>
+
+```
+
+## Why I Built This
+
+I wanted to explore *alternative interfaces* for language models. The chat paradigm is powerful but it's not the only way. Maggie's original sketches proposed all sorts of ideas — daemons, word-level annotations, ambient suggestions.
+
+Building this brought one of those ideas to life. It's rough around the edges, but that's the point of the notepad — showing work in progress.
+
+---
+
+*Credit to [Maggie Appleton](https://maggieappleton.com) for the original "Daemons" concept.*
