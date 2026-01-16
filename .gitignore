@@ -6,6 +6,7 @@ blogging-env/
 environments/**/*-env/
 # quarto things
 .luarc.json
+*.quarto_ipynb
 
 # Rendered site output (built by CI)
 docs/
