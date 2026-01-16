@@ -1,34 +1,36 @@
-# Notepad Section Maintenance Guide
+# New Notepad Entry
+
+Create a new notepad entry following the notepad maintenance guidelines.
 
 ## Overview
 The Notepad is a deliberately scruffy, low-friction space for quick ideas, experiments, and snippets. It follows a "digital garden" philosophy—content can be rough, incomplete, and evolve over time.
 
-## Adding New Notes
+## Instructions
 
-### 1. Create the article file
-```bash
-# In notepad/ directory, create a new .qmd file
-touch notepad/XX-slug-name.qmd
-```
+### 1. Determine the file number
+Count existing `.qmd` files in `notepad/` (excluding `index.qmd`) to determine the next number. Zero-pad to two digits.
 
-### 2. Required YAML frontmatter
+### 2. Create the file
+Create `notepad/XX-${{input:slug}}.qmd` where XX is the zero-padded number.
+
+### 3. Add required YAML frontmatter
 ```yaml
 ---
-title: "Your Note Title"
+title: "${{input:slug}}"
 description: "Brief one-liner description"
-date: YYYY-MM-DD
-categories: [category1, category2]
+date: <today's date YYYY-MM-DD>
+categories: [til]
 body-classes: notepad-section
-image: /./www/notepad/XX-slug-name.jpg
+image: /./www/notepad/XX-${{input:slug}}.jpg
 image-alt: "Descriptive alt text"
 ---
 ```
 
-### 3. Add hero image (optional but recommended)
+### 4. Add hero image wrapper (recommended)
 After the YAML frontmatter, use the cozy polaroid-style wrapper:
 ```html
 <div class="notepad-hero">
-<img src=/./www/notepad/XX-slug-name.jpg alt="Alt text">
+<img src=/./www/notepad/XX-${{input:slug}}.jpg alt="Alt text">
 </div>
 ```
 This creates a polaroid-style image with:
@@ -37,8 +39,13 @@ This creates a polaroid-style image with:
 - Slight rotation for a casual, pinned-to-board feel
 - Hover animation that straightens the image
 
-### 4. To pin an article to the top
+### 5. Add a starting heading
+Add a blank `## ` heading to begin writing content.
+
+### 6. To pin an article to the top
 Add `order: 1` to the YAML frontmatter (lower numbers appear first).
+
+---
 
 ## Image Guidelines
 
@@ -55,6 +62,8 @@ sips -s format jpeg -s formatOptions 80 "filename.png" --out "filename.jpg"
 rm filename.png
 ```
 Target: Keep images under 400KB.
+
+---
 
 ## The Spirit of the Notepad
 
@@ -84,6 +93,18 @@ Target: Keep images under 400KB.
 3. **Show your work**: Rough ideas are valuable
 4. **Low friction**: If adding a note feels like work, simplify
 
+---
+
+## Categories
+Keep categories informal and descriptive:
+- `meta` - About the notepad itself
+- `til` - Today I Learned
+- `snippet` - Code snippets
+- `idea` - Half-formed thoughts
+- `experiment` - Things being tried out
+
+---
+
 ## File Locations
 - Articles: `notepad/*.qmd`
 - Images: `www/notepad/*.jpg`
@@ -96,11 +117,3 @@ Target: Keep images under 400KB.
 - Spiral binding holes on left edge
 - Torn paper edge at bottom
 - Dark mode supported (switches to darker paper tones)
-
-## Categories
-Keep categories informal and descriptive:
-- `meta` - About the notepad itself
-- `til` - Today I Learned
-- `snippet` - Code snippets
-- `idea` - Half-formed thoughts
-- `experiment` - Things being tried out
