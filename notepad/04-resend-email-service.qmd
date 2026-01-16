@@ -1,0 +1,72 @@
+---
+title: "Resend: Email Without SMTP Pain"
+description: "A modern email API that skips the SMTP server headache"
+date: 2026-01-16
+categories: [til]
+body-classes: notepad-section
+image: /./www/notepad/04-resend-email-service.jpg
+image-alt: "Cozy desk with an envelope, coffee cup and laptop"
+---
+
+<div class="notepad-hero">
+<img src=/./www/notepad/04-resend-email-service.jpg alt="Cozy desk with an envelope, coffee cup and laptop">
+</div>
+
+## Sending Emails Without the Fuss
+
+Recently needed to add email notifications to a web form—admin alerts and user confirmations. The thought of configuring an SMTP server made me wince. Then I found [Resend](https://resend.com).
+
+## What Is It?
+
+Resend is an email API for developers. Instead of wrestling with SMTP servers, mail transfer agents, and deliverability nightmares, you just... call an API.
+
+```python
+import resend
+
+resend.api_key = "your-api-key"
+
+resend.Emails.send({
+    "from": "hello@yourdomain.com",
+    "to": "recipient@example.com",
+    "subject": "Hello!",
+    "html": "<p>Your email body here</p>"
+})
+```
+
+That's genuinely it.
+
+## The Good Bits
+
+- **No SMTP configuration** — No ports, no TLS certificates, no authentication headaches
+- **Attachments are easy** — Pass base64 content or file paths
+- **HTML emails just work** — Style them however you like
+- **Generous free tier** — 3,000 emails/month at time of writing
+- **Great dashboard** — See delivery status, bounces, opens
+- **Vercel-friendly** — Works beautifully with serverless functions
+
+## The Trade-offs
+
+- **Vendor lock-in** — You're dependent on their service
+- **Domain verification required** — Need to add DNS records for sending
+- **Not self-hosted** — If that matters to your use case
+- **Rate limits on free tier** — 100 emails/day limit
+
+## My Use Case
+
+For a membership form, I set up two email types:
+
+1. **Admin notification** — HTML email with form data + CSV attachment
+2. **Applicant confirmation** — Friendly receipt with next steps
+
+Both fire when the form submits. If emails fail, the form submission still succeeds (data saved to DB), so nothing gets lost.
+
+## Quick Tips
+
+- Store `RESEND_API_KEY` in environment variables
+- Always handle email failures gracefully—don't break your main flow
+- The `from` address domain must be verified in your Resend dashboard
+- CSV attachments need content as a list of bytes: `list(csv_content.encode())`
+
+## Verdict
+
+For hobby projects, internal tools, or MVPs where you just need email to work, Resend removes a lot of friction. Would reach for it again.
