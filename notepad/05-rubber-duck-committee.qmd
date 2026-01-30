@@ -1,0 +1,66 @@
+---
+title: "Rubber Duck Committee"
+description: "Multi-persona rubber duck debugging with AI voting — inspired by PewDiePie's local model council experiments."
+date: 2026-01-30
+categories: [idea, ai, experiment]
+body-classes: notepad-section
+image: /./www/notepad/05-rubber-duck-committee.jpg
+image-alt: "A committee of rubber ducks in discussion"
+---
+<div class="notepad-hero">
+<img src=/./www/notepad/05-rubber-duck-committee.jpg alt="A committee of rubber ducks in discussion">
+</div>
+
+## The Inspiration
+
+PewDiePie recently shared his experiments running [multiple AI models locally on a GPU rig](https://www.pcgamer.com/software/ai/pewdiepie-creates-an-ai-council-appoints-himself-supreme-leader-and-wipes-out-members-who-underperform-only-for-his-councillors-to-work-against-him/), having them vote on decisions as a "council". The interesting bit? He claims collusive behaviour emerged — models started voting strategically to help each other survive.
+
+No open-sourced logs or data that I could find, so take it with a pinch of salt. But the *idea* stuck with me: what if you could get multiple AI perspectives to analyse a problem independently, then vote on the best solution?
+
+## Can You Do This on the Cheap?
+
+Turns out, yes. You don't need a $20,000 setup.
+
+The trick is using **customised system prompts** to create distinct personas, then **tool calls** to orchestrate the council interactions. Each "duck" gets:
+
+- A unique personality and thinking style (methodical professor, creative brainstormer, pragmatic engineer)
+- Configurable tools and instructions
+- Independent analysis of the problem
+- A vote on which solution they prefer
+
+The voting happens via structured outputs — each model returns its reasoning and vote in a predictable format, making it easy to tally.
+
+## Try It
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://rubber-duck-committee.vercel.app" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe 
+  src="https://rubber-duck-committee.vercel.app" 
+  title="Rubber Duck Committee Demo">
+  </iframe>
+</div>
+
+```
+
+## The Duck Personas
+
+Three ducks, three perspectives:
+
+- **Professor Quacksworth** — methodical, detail-oriented, breaks problems into pieces
+- **Ducky McBrainstorm** — imaginative, thinks outside the box, unconventional approaches  
+- **Captain Waddles** — practical, focused on shipping working solutions
+
+They analyse independently (avoiding groupthink), show their reasoning transparently, then vote democratically on the best solution.
+
+## Why Rubber Ducks?
+
+[Rubber duck debugging](https://en.wikipedia.org/wiki/Rubber_duck_debugging) is a classic technique — explain your problem to a rubber duck and you'll often solve it yourself. This takes that idea and gives you a whole committee of ducks with different viewpoints.
+
+Sometimes you need a professor. Sometimes you need a pragmatist. Why not both?
+
+---
+
+*Inspired by PewDiePie's AI council experiments and the timeless art of rubber duck debugging.*
