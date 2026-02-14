@@ -2,7 +2,7 @@
 title: "Unified Chat Service"
 description: "A global 'chat with your docs' service."
 date: 2026-02-14
-categories: [experiment, til]
+categories: [experiment, til, rag, ai]
 body-classes: notepad-section
 image: /./www/notepad/06-unified-chat.jpg
 image-alt: "Central chat service with multiple consumer apps"
