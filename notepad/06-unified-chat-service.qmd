@@ -1,0 +1,119 @@
+---
+title: "Unified Chat Service"
+description: "A global 'chat with your docs' service."
+date: 2026-02-14
+categories: [experiment, til]
+body-classes: notepad-section
+image: /./www/notepad/06-unified-chat-service.jpg
+image-alt: "Central chat service with multiple consumer apps"
+format:
+  html:
+    mermaid:
+      theme: neutral
+---
+<div class="notepad-hero">
+<img src="/./www/notepad/06-unified-chat.jpg" alt="Architectural sketch of a chat service on a notepad">
+</div>
+
+## What It Is
+
+A **unified chat service** — a frontend component library plus central API for in-product AI chat. Consumer apps all plug into the same backend, which handles RAG via Neon Postgres + pgvector and chat completions via GCP Vertex AI.
+
+```{mermaid}
+%%| fig-cap: "High-level architecture"
+flowchart LR
+    subgraph Consumers["Consumer Apps"]
+        direction TB
+        P[Pomodoro]
+        U[Unit Converter]
+        T[Tip Calculator]
+    end
+
+    subgraph Service["Global Chat Service"]
+        Chat["POST /api/chat"]
+    end
+
+    subgraph External["External Services"]
+        direction TB
+        Neon["Neon Postgres + pgvector"]
+        Vertex["Vertex AI Gemini"]
+    end
+
+    P & U & T --> Chat
+    Chat -->|RAG + vector search| Neon
+    Chat -->|completions + embeddings| Vertex
+```
+
+Consumers call `POST /api/chat` with a `product_id`; the service fetches relevant docs, streams responses, and auto-registers events.
+
+## Architecture
+
+**Services:** Neon Postgres (pgvector) for vector search; GCP Vertex AI (text-embedding-005, Gemini 2.5 Flash) for embeddings and completions; NextAuth with GitHub for doc management at `/library`. Hosted on Vercel.
+
+**RAG flow:** Consumer sends `POST /api/chat` with `product_id`, `user`, and `messages`. The service extracts search terms from the last message, embeds the query, runs cosine similarity search on `document_chunks`, builds a system prompt with the top 5 chunks, then streams the completion.
+
+**Data model:** Projects (one per consumer app) → documents (uploaded via `/library`) → document_chunks (768-dim embeddings). CORS restricted to `ALLOWED_ORIGINS`.
+
+## Try the Apps
+
+The consumer apps below demonstrate distinct styling and RAG tuned to each product's documentation.
+
+### Chat Service Demo
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://unified-chat-service-unified-chat-s.vercel.app" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe 
+  src="https://unified-chat-service-unified-chat-s.vercel.app" 
+  title="Unified Chat Service Demo">
+  </iframe>
+</div>
+```
+
+### Unit Converter
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://unit-converter-chi-ten.vercel.app" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe 
+  src="https://unit-converter-chi-ten.vercel.app" 
+  title="Unit Converter Demo">
+  </iframe>
+</div>
+```
+
+### Minimal Pomodoro
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://minimal-pomodoro-one.vercel.app" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe 
+  src="https://minimal-pomodoro-one.vercel.app" 
+  title="Minimal Pomodoro Demo">
+  </iframe>
+</div>
+```
+
+### Tip Calculator
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://tip-calculator-ruby-eight.vercel.app" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe 
+  src="https://tip-calculator-ruby-eight.vercel.app" 
+  title="Tip Calculator Demo">
+  </iframe>
+</div>
+```
+
+---
+
+*Central service + RAG on Neon + Vertex AI. Consumers stay small; the heavy lifting happens once.*
