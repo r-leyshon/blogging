@@ -1,0 +1,54 @@
+---
+title: "From pg to Neon Serverless"
+description: "Swap the standard Postgres driver for Neon's serverless one on Vercel."
+date: 2026-02-21
+categories: [til, snippet, rag]
+body-classes: notepad-section
+image: /./www/notepad/07-pg-to-neon-serverless.jpg
+image-alt: "Cozy desk with database icon on monitor, coffee and notebook"
+---
+<div class="notepad-hero">
+<img src=/./www/notepad/07-pg-to-neon-serverless.jpg alt="Cozy desk with database icon on monitor, coffee and notebook">
+</div>
+
+## Why switch from pg?
+
+When you run RAG (or any Postgres) on Vercel, the standard `pg` driver is a bad fit. It expects long-lived connections and a pool. In serverless, each invocation is ephemeral—pools don't help, and TCP handshakes to Postgres add latency on every cold start.
+
+**Neon's serverless driver** (`@neondatabase/serverless`) uses HTTP fetch instead of persistent sockets. No pooling headaches, fewer cold-start penalties, and a `Pool` API compatible with `pg` so you can swap implementations without rewriting your queries.
+
+### Benefits
+
+- **HTTP over WebSockets** — `poolQueryViaFetch = true` uses Neon's HTTP query API instead of persistent connections. Matches the request→response model of serverless.
+- **Same API as pg** — Use `Pool` and standard SQL. Drop-in swap when the URL is Neon.
+- **Local dev unchanged** — Keep `pg` for Docker Postgres; only use the Neon driver when the connection string points at Neon.
+- **pgvector native** — Neon supports pgvector out of the box for cosine similarity search over embeddings.
+
+## Implementation snippet
+
+```typescript
+import { Pool as NeonPool, neonConfig } from "@neondatabase/serverless"
+import { Pool as PgPool } from "pg"
+
+const url = process.env.DATABASE_URL!
+
+const isNeon = url.includes("neon.tech") || url.includes("neon.db.ondigitalocean.com")
+
+if (isNeon) {
+  neonConfig.poolQueryViaFetch = true
+}
+
+const PoolClass = isNeon ? NeonPool : PgPool
+const pool = new PoolClass({ connectionString: url })
+
+// Use as normal — RAG vector search example
+const { rows } = await pool.query(
+  `SELECT id, content, 1 - (embedding <=> $1::vector) AS similarity
+   FROM document_chunks
+   ORDER BY embedding <=> $1::vector
+   LIMIT 5`,
+  [queryEmbedding]
+)
+```
+
+Thin abstraction, production-ready. Point `DATABASE_URL` at Neon in prod and local Postgres in dev—no other changes.
