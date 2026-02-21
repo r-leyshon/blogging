@@ -1,6 +1,6 @@
 # blogging
-[![Netlify Status](https://api.netlify.com/api/v1/badges/981c5fe4-bbc9-42ee-92b3-2087884fbdc8/deploy-status)](https://app.netlify.com/sites/thedatasavvycorner/deploys)
-[![Build and Deploy](https://github.com/r-leyshon/blogging/actions/workflows/build-deploy.yml/badge.svg)](https://github.com/r-leyshon/blogging/actions/workflows/build-deploy.yml)
+
+[![Build and Deploy Site](https://github.com/r-leyshon/blogging/actions/workflows/build-deploy.yml/badge.svg)](https://github.com/r-leyshon/blogging/actions/workflows/build-deploy.yml)
 
 Musings, ramblings, generally putting things down in text so I don't forget them.
 
