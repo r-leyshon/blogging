@@ -1,0 +1,73 @@
+---
+title: "UK AI News Crawler"
+description: "An automated UK AI news aggregator with RAG chat"
+date: 2026-03-07
+categories: [til, web-scraping, ai, rag, chat]
+body-classes: notepad-section
+image: /./www/notepad/08-news-crawler.jpg
+image-alt: "A friendly robot reading an AI newspaper at a cozy desk"
+---
+
+<div class="notepad-hero">
+<img src=/./www/notepad/08-news-crawler.jpg alt="A friendly robot reading an AI newspaper at a cozy desk">
+</div>
+
+## What It Is
+
+A side project that crawls, summarises and classifies UK-focused AI/ML news
+articles, and lets you ask questions about them via a RAG chat interface.
+
+### What It Does
+
+- **Weekly crawl**: A GitHub Actions cron job fires every Monday, searching
+  DuckDuckGo for UK AI keywords and scraping the results.
+- **AI summarisation**: Each article is summarised and sentiment-classified
+  using Vertex AI (Gemini 2.5 Flash).
+- **Vector search**: Articles are embedded with `text-embedding-005` (768
+  dims) and stored in Neon PostgreSQL with pgvector.
+- **RAG chat**: Ask a question, the top 5 most relevant articles are
+  retrieved and Gemini generates an answer grounded in the sources.
+- **Admin via GitHub OAuth**: The repo owner can delete articles and trigger
+  reclassification from the UI.
+
+### Live Demo
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://news-crawler-ochre.vercel.app" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe
+  src="https://news-crawler-ochre.vercel.app"
+  title="UK AI News Crawler">
+  </iframe>
+</div>
+```
+
+### Architecture at a Glance
+
+```{mermaid}
+%%| fig-cap: "High-level data flow"
+flowchart TD
+    A["GitHub Actions (weekly cron)"] --> B["DuckDuckGo Search"]
+    B --> C["Scrape & Filter"]
+    C --> D["Vertex AI Summarise & Embed"]
+    D --> E[("Neon Postgres + pgvector")]
+    F["User Question"] --> G["Vector Similarity Search"]
+    E --> G
+    G --> H["Gemini RAG Answer"]
+    H --> I["Streamed Response"]
+    E --> J["Article Listings"]
+```
+
+### Tech Stack
+
+| Layer | Choice |
+|-------|--------|
+| Frontend | Next.js 14, React 18, Tailwind, shadcn/ui |
+| Backend | FastAPI (Python), Mangum ASGI adapter |
+| Database | Neon PostgreSQL + pgvector |
+| AI | Vertex AI: Gemini 2.5 Flash, text-embedding-005 |
+| Auth | NextAuth.js + GitHub OAuth |
+| Hosting | Vercel (two projects: frontend & backend) |
+| CI/CD | GitHub Actions (weekly crawl) + Vercel auto-deploy |
