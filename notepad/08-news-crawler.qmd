@@ -1,8 +1,8 @@
 ---
-title: "news-crawler"
+title: "UK AI News Crawler"
 description: "An automated UK AI news aggregator with RAG chat"
 date: 2026-03-07
-categories: [til]
+categories: [til, web-scraping, ai, rag, chat]
 body-classes: notepad-section
 image: /./www/notepad/08-news-crawler.jpg
 image-alt: "A friendly robot reading an AI newspaper at a cozy desk"
@@ -12,9 +12,9 @@ image-alt: "A friendly robot reading an AI newspaper at a cozy desk"
 <img src=/./www/notepad/08-news-crawler.jpg alt="A friendly robot reading an AI newspaper at a cozy desk">
 </div>
 
-## UK AI News Crawler
+## What It Is
 
-A side project that crawls, summarises and serves UK-focused AI/ML news
+A side project that crawls, summarises and classifies UK-focused AI/ML news
 articles, and lets you ask questions about them via a RAG chat interface.
 
 ### What It Does
