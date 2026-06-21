@@ -1,0 +1,321 @@
+---
+title: "Shell for AI Engineers: Zero to Hero"
+author: "Rich Leyshon"
+date: "June 20 2026"
+description: "A practical shell tutorial for AI engineers, from first commands to glue-workflows, with safe interactive sandbox exercises."
+categories:
+    - Tutorial
+    - Shell
+    - CLI
+    - DevOps
+    - AI Engineering
+image: /./www/22-shell-for-ai-engineers/intro-img.webp
+image-alt: "A glowing cyberpunk Koopa shell hovering above a neon terminal"
+toc: true
+css:
+  - /./www/17-quarto-comments/styles.css
+  - /./www/shell-dock/shell-dock.css
+code-annotations: select
+execute:
+  eval: false
+---
+
+<img class=shaded_box src="/./www/22-shell-for-ai-engineers/intro-img.webp" alt="A glowing cyberpunk Koopa shell hovering above a neon terminal" width="614" height="410" loading="lazy" decoding="async" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;height:auto;">
+
+## Introduction
+
+If you build AI products, sooner or later you end up stitching together a
+small orchestra of tools:
+
+- local scripts
+- API calls
+- logs
+- config files
+- containers
+- CI pipelines
+
+The shell is often the quickest way to make these components cooperate.
+This tutorial starts at the very beginning and works up to practical
+"glue work" you can apply in real AI engineering tasks.
+
+### Intended Audience
+
+Engineers who are comfortable writing code but have little (or no) shell
+experience. If you're already fluent in shell, skip ahead to process control
+and service debugging.
+
+### What You'll Need
+
+- [ ] A terminal (local shell, or the browser sandbox in this article)
+- [ ] Basic familiarity with files and folders
+- [ ] Curiosity and willingness to try small experiments
+
+## How To Use This Article
+
+::: {.callout-note appearance="simple"}
+### Sandbox Rules (Please Read)
+
+- The interactive shell runs in a simulated bash sandbox in your browser, not your local machine.
+- Sessions are ephemeral. Refreshing the page usually resets your environment.
+- Do **not** paste secrets, tokens, private keys, or credentials.
+- This is not full Linux parity (process/network commands may differ from your laptop).
+- Commands here are intentionally low-risk and learning-oriented.
+:::
+
+Open the **shell sandbox** panel at the bottom of the page when you want to
+practice. It loads once and stays available as you scroll through the tutorial.
+
+::: {.callout-tip appearance="simple"}
+### Why not a full Linux VM?
+
+An embedded full Linux VM (like linuxontab) boots Alpine, runs `apk update`, and
+installs packages before you get a prompt — often 30–60+ seconds. This sandbox
+uses **just-bash**, a simulated shell that starts in a few seconds. It is ideal
+for learning `grep`, pipes, permissions, and file operations. For full-fidelity
+process and port debugging, use your local terminal or Codespaces (see section 8).
+:::
+
+```{=html}
+<link rel="preconnect" href="https://esm.sh" crossorigin />
+<div id="shell-dock" class="shell-dock shell-dock--collapsed" aria-label="Interactive shell sandbox panel">
+  <div class="shell-dock-header">
+    <div>
+      <p class="shell-dock-title">Interactive shell sandbox</p>
+      <p class="shell-dock-hint">Click to expand. Starts in a few seconds.</p>
+    </div>
+    <button type="button" class="shell-dock-toggle" aria-expanded="false">Show sandbox</button>
+  </div>
+  <div class="shell-dock-body">
+    <p class="shell-dock-status">Starting sandbox…</p>
+    <iframe
+      data-src="/www/shell-sandbox/index.html"
+      title="Interactive shell sandbox"
+      loading="lazy">
+    </iframe>
+  </div>
+</div>
+```
+
+## 1) Shell Fundamentals
+
+We'll begin with a tiny command set that you will use repeatedly.
+
+```{.bash filename="terminal"}
+pwd          # print current directory
+ls           # list files/folders
+ls -la       # include hidden files and details
+cd /tmp      # change directory
+cd -         # jump back to previous directory
+```
+
+### Try It
+
+Run the commands above in the sandbox and answer:
+
+1. Which directory are you in?
+2. Which entries are hidden (start with `.`)?
+3. What changed after `cd -`?
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+## 2) Data Flow: Pipes and Redirection
+
+The shell gets powerful when you connect simple tools together.
+
+```{.bash filename="terminal"}
+printf "apple\nbanana\napricot\n" > fruits.txt
+cat fruits.txt
+grep '^a' fruits.txt
+grep '^a' fruits.txt | wc -l
+```
+
+- `>` writes output to a file (overwrites existing content).
+- `|` passes output from one command into the next.
+
+### Try It
+
+Add one more fruit, then count how many begin with `b`.
+
+```{.bash filename="terminal"}
+echo "blueberry" >> fruits.txt
+grep '^b' fruits.txt | wc -l
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+## 3) Grep Chaining
+
+`grep` is one of the best shell tools for quick investigations.
+
+```{.bash filename="terminal"}
+printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\n" > app.log
+cat app.log | grep 'ERROR' | grep -v 'retry'
+```
+
+This approach is useful for narrowing noisy logs quickly:
+
+1. broad match (`ERROR`)
+2. exclude known noise (`-v retry`)
+
+### AI Engineer Use Case
+
+When a local model service fails, this pattern helps isolate relevant errors
+before you disappear into a debugging rabbit hole.
+
+## 4) Brace Expansion and Globs
+
+Brace expansion is a tiny feature that saves surprising amounts of time.
+
+```{.bash filename="terminal"}
+mkdir -p project/{data,src,tests,logs}
+touch project/src/{ingest,embed,serve}.py
+ls -R project
+```
+
+This is great for scaffolding small prototypes quickly.
+
+### Try It
+
+Create a second set of files for evaluation scripts in one command.
+
+```{.bash filename="terminal"}
+touch project/src/{eval_metrics,eval_runner}.py
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+## 5) Executables and Permissions
+
+A script file is not executable by default, even if it contains valid shell
+code.
+
+```{.bash filename="terminal"}
+cat > hello.sh <<'EOF'
+#!/usr/bin/env bash
+echo "Hello from shell"
+EOF
+
+ls -l hello.sh
+./hello.sh
+```
+
+You should see a permission error before adding execute permission. That's
+normal.
+
+```{.bash filename="terminal"}
+chmod +x hello.sh
+ls -l hello.sh
+./hello.sh
+```
+
+This pattern matters when packaging helper scripts for teammates, automation,
+or CI jobs.
+
+## 6) Processes, Ports, and Signals
+
+Now we're in classic operations/debugging territory.
+
+### Start and inspect a process
+
+```{.bash filename="terminal"}
+sleep 300 &
+jobs
+ps -ef | grep sleep | grep -v grep
+```
+
+### Stop a process gracefully
+
+```{.bash filename="terminal"}
+kill <PID>
+```
+
+### Force stop (last resort)
+
+```{.bash filename="terminal"}
+kill -9 <PID>
+```
+
+::: {.callout-warning}
+Use `kill -9` sparingly. It bypasses graceful shutdown and can leave temporary
+state or partial writes behind.
+:::
+
+### Check which process is using a port
+
+```{.bash filename="terminal"}
+lsof -i :8000
+```
+
+In real projects, this is often the fastest answer to:
+"Why won't my service start on this port?"
+
+::: {.callout-note appearance="simple"}
+Browser sandboxes may not perfectly reproduce host networking behavior. For
+full-fidelity `lsof -i`, signals, and service debugging, run these commands in
+your local terminal or GitHub Codespaces.
+:::
+
+## 7) Practical AI Glue Workflows
+
+These small shell pipelines can save a lot of time during development.
+
+### Filter noisy logs
+
+```{.bash filename="terminal"}
+cat app.log | grep 'ERROR' | grep -v 'healthcheck'
+```
+
+### Quick file inventory
+
+```{.bash filename="terminal"}
+ls -R project | grep '\.py$'
+```
+
+### Verify executable helpers
+
+```{.bash filename="terminal"}
+ls -l *.sh
+```
+
+## 8) Extension: Run Advanced Commands Locally or in Codespaces
+
+If you want full-fidelity behavior for advanced tasks:
+
+1. Run locally on your machine, or
+2. Open the repository in GitHub and press `.` for browser VSCode
+3. Launch Codespaces for an interactive terminal
+
+This is the best environment for realistic process and network debugging.
+
+::: {.callout-note appearance="simple"}
+### Why bother with the local run?
+
+The browser sandbox is excellent for learning command syntax and flow. Your
+local machine or Codespaces is where process IDs, ports, services, and real
+filesystem state behave as expected for production debugging.
+:::
+
+## 9) Pre-Publish Checklist For Your Own Shell Docs
+
+- Are all interactive commands safe and reversible?
+- Did you clearly warn readers not to paste secrets?
+- Did you distinguish sandbox behavior from real host behavior?
+- Are advanced commands (`kill -9`, `lsof -i`) explained with caution?
+- Does each section include a concrete "why this matters" use case?
+
+## Wrap-up
+
+Shell skills compound quickly. Start with navigation and pipes, add pattern
+matching, permissions, and process control, then apply them to your own tool
+chain. Once these habits click, the shell becomes a dependable orchestration
+layer for AI engineering work.
+
+```{=html}
+<script src="/www/shell-dock/shell-dock.js" defer></script>
+```

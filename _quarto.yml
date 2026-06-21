@@ -3,6 +3,9 @@ project:
   resources:
     - ads.txt 
     - /.outputs/*
+    - /./www/shell-sandbox/sandbox.js
+    - /./www/shell-sandbox/index.html
+    - /./www/shell-dock/shell-dock.js
   output-dir: docs
   render:
     - "*.qmd"
