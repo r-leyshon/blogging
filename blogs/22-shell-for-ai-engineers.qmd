@@ -177,6 +177,42 @@ use **⌘ + ←** and **⌥ + →** to move the cursor without retyping. On Linu
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
+### Search your command history
+
+Pressing **Up** walks back one command at a time. That is fine for recent
+history, but less fine when you ran something useful twenty commands ago and
+only remember a fragment of it.
+
+**Ctrl+R** starts a reverse search through your command history:
+
+1. Press **Ctrl+R**
+2. Type a few characters you remember (e.g. `grep`, `docker`, `curl`)
+3. The shell shows the most recent matching command
+4. Press **Ctrl+R** again to step to the next older match
+5. Press **Enter** to run it, or **Esc** / the arrow keys to edit first
+
+This pays off in specific scenarios:
+
+- You ran a long `curl` or `docker` command yesterday and need it again
+- You are debugging and want to rerun a `grep` pipeline with a small tweak
+- You know *part* of a command but not enough to retype the whole thing
+
+If **Ctrl+R** is not available, you can list and filter history manually:
+
+```{.bash filename="terminal"}
+history | grep grep
+```
+
+::: {.callout-note appearance="simple"}
+The browser sandbox supports **Up** / **Down** history, but may not support
+**Ctrl+R**. Treat this tip as essential for your local terminal or Codespaces.
+:::
+
+### Try It
+
+In your local terminal, run three different commands, then press **Ctrl+R** and
+type a keyword from one of the earlier commands to bring it back.
+
 ## 1) Shell Fundamentals
 
 We'll begin with a tiny command set that you will use repeatedly.
