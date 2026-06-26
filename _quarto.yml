@@ -5,7 +5,9 @@ project:
     - /.outputs/*
     - /./www/shell-sandbox/sandbox.js
     - /./www/shell-sandbox/index.html
+    - /./www/shell-sandbox/exercises.json
     - /./www/shell-dock/shell-dock.js
+    - /./www/shell-challenges/shell-challenges.js
   output-dir: docs
   render:
     - "*.qmd"

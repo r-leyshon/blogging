@@ -15,6 +15,7 @@ toc: true
 css:
   - /./www/17-quarto-comments/styles.css
   - /./www/shell-dock/shell-dock.css
+  - /./www/shell-challenges/shell-challenges.css
 code-annotations: select
 execute:
   eval: false
@@ -78,6 +79,10 @@ and service debugging.
 
 Open the **shell sandbox** panel at the bottom of the page when you want to
 practice. It loads once and stays available as you scroll through the tutorial.
+
+Many sections include a **challenge**: click **Start challenge** to reset the
+sandbox to a clean environment for that exercise, then **Check my work** when you
+think you are done.
 
 ::: {.callout-tip appearance="simple"}
 ### Why not a full Linux VM?
@@ -157,7 +162,13 @@ In the sandbox, create a file with `touch my-long-filename.txt`, then type
 `cat my-l` and press **Tab** to complete the name before pressing **Enter**.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="tab-completion-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ### Jump around the command line with modifier keys
@@ -331,7 +342,13 @@ compare the behaviour. Then try `echo rm ./welcome.txt` before actually
 removing anything.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="dry-run-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ### Know your `~/.zshrc` and history file
@@ -467,7 +484,13 @@ cat "notes draft.txt"
 ```
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="quotes-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ### Environment variables and `.env` files
@@ -551,8 +574,17 @@ Run the commands above in the sandbox and answer:
 2. Which entries are hidden (start with `.`)?
 3. What changed after `cd -`?
 
+After `cd /tmp`, run `touch /tmp/visited.txt` so the checker can confirm you
+reached `/tmp`.
+
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="fundamentals-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ## 2) Data Flow: Pipes and Redirection
@@ -582,7 +614,13 @@ grep '^b' fruits.txt | wc -l
 ```
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="pipes-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ## 3) Grep Chaining {#grep-chaining}
@@ -618,7 +656,13 @@ You should see only `ERROR timeout`. Add another line and adjust the filters
 until the output matches what you expect.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="grep-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ## 4) Globs and Brace Expansion {#globs-and-brace-expansion}
@@ -664,7 +708,13 @@ touch project/src/{eval_metrics,eval_runner}.py
 ```
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="globs-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ## 5) Simple For Loops {#simple-for-loops}
@@ -732,7 +782,13 @@ You should see errors from `beta.log` and `gamma.log`, and `(no errors)` for
 `alpha.log`. Try adding a fourth log file and rerunning the loop.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="for-loops-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ## 6) Executables and Permissions {#executables-and-permissions}
@@ -773,7 +829,13 @@ Walk through the full flow in the sandbox:
    print `Hello from shell`.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="permissions-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ## 7) Processes, Ports, and Signals
@@ -860,16 +922,18 @@ cat app.log | grep 'ERROR' | grep -v 'healthcheck'
 
 ### Try It
 
-If you do not already have `app.log` from [section 3](#grep-chaining), create
-it first. Then add a healthcheck line and confirm your filter excludes it:
-
-```{.bash filename="terminal"}
-echo "ERROR healthcheck failed" >> app.log
-cat app.log | grep 'ERROR' | grep -v healthcheck
-```
+Start the challenge — `app.log` is pre-loaded with noisy lines including a
+healthcheck. Run the filter pipeline above and confirm healthcheck lines are
+excluded.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="glue-logs-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ### Quick file inventory
@@ -880,17 +944,17 @@ ls -R project | grep '\.py$'
 
 ### Try It
 
-Scaffold `project/` from [section 4](#globs-and-brace-expansion) if needed, then
-list every `.py` file under it:
-
-```{.bash filename="terminal"}
-mkdir -p project/src
-touch project/src/{ingest,embed,serve}.py
-ls -R project | grep '\.py$'
-```
+Start the challenge — `project/` is pre-scaffolded with three Python files. Run
+the inventory command above.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="glue-inventory-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ### Verify executable helpers
@@ -901,18 +965,18 @@ ls -l *.sh
 
 ### Try It
 
-After creating `hello.sh` in [section 6](#executables-and-permissions), check
-which shell scripts in the current directory are executable:
-
-```{.bash filename="terminal"}
-ls -l *.sh
-```
-
-Look for an `x` in the permission string (e.g. `-rwxr-xr-x`) next to files you
-can run with `./script.sh`.
+Start the challenge — `hello.sh` exists but is not executable yet. Run
+`chmod +x hello.sh`, then `ls -l *.sh` and look for an `x` in the permission
+string (e.g. `-rwxr-xr-x`).
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge" data-challenge-id="glue-scripts-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
 ```
 
 ### Probe an API with `curl` (and parse JSON with `jq`)
@@ -1045,4 +1109,5 @@ orchestration layer for AI engineering work.
 
 ```{=html}
 <script src="/www/shell-dock/shell-dock.js" defer></script>
+<script src="/www/shell-challenges/shell-challenges.js" defer></script>
 ```

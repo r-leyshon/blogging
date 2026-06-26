@@ -1,0 +1,188 @@
+{
+  "defaultSetup": {
+    "/home/user/welcome.txt": "Welcome. Try tutorial commands here. Refresh to reset.\n"
+  },
+  "exercises": [
+    {
+      "id": "tab-completion-1",
+      "title": "Tab completion",
+      "checks": [
+        {
+          "label": "Created my-long-filename.txt",
+          "run": "test -f my-long-filename.txt",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "dry-run-1",
+      "title": "DRY_RUN preview",
+      "checks": [
+        {
+          "label": "dry_demo.sh exists and is executable",
+          "run": "test -x dry_demo.sh",
+          "expectExit": 0
+        },
+        {
+          "label": "DRY_RUN=1 prints a preview message",
+          "run": "DRY_RUN=1 ./dry_demo.sh",
+          "expectExit": 0,
+          "stdoutContains": "Would delete"
+        }
+      ]
+    },
+    {
+      "id": "quotes-1",
+      "title": "Quoting paths",
+      "checks": [
+        {
+          "label": "Created notes draft.txt (filename with a space)",
+          "run": "test -f 'notes draft.txt'",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "fundamentals-1",
+      "title": "Shell fundamentals",
+      "setup": {
+        "/home/user/.sandbox_marker": "I am a hidden file.\n"
+      },
+      "checks": [
+        {
+          "label": "Left a marker in /tmp (run: touch /tmp/visited.txt)",
+          "run": "test -f /tmp/visited.txt",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "pipes-1",
+      "title": "Pipes and wc -l",
+      "setup": {
+        "/home/user/fruits.txt": "apple\nbanana\napricot\n"
+      },
+      "checks": [
+        {
+          "label": "Added blueberry to fruits.txt",
+          "run": "grep -q blueberry fruits.txt",
+          "expectExit": 0
+        },
+        {
+          "label": "Exactly one fruit starts with b",
+          "run": "grep '^b' fruits.txt | wc -l | tr -d ' '",
+          "expectStdout": "1"
+        }
+      ]
+    },
+    {
+      "id": "grep-1",
+      "title": "Grep chaining",
+      "checks": [
+        {
+          "label": "Filtered log shows only ERROR timeout",
+          "run": "grep 'ERROR' app.log | grep -v retry | grep -v healthcheck",
+          "expectStdout": "ERROR timeout"
+        }
+      ]
+    },
+    {
+      "id": "globs-1",
+      "title": "Brace expansion",
+      "checks": [
+        {
+          "label": "eval_metrics.py exists",
+          "run": "test -f project/src/eval_metrics.py",
+          "expectExit": 0
+        },
+        {
+          "label": "eval_runner.py exists",
+          "run": "test -f project/src/eval_runner.py",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "for-loops-1",
+      "title": "For loops over logs",
+      "checks": [
+        {
+          "label": "logs/alpha.log exists",
+          "run": "test -f logs/alpha.log",
+          "expectExit": 0
+        },
+        {
+          "label": "logs/beta.log contains ERROR",
+          "run": "grep -q ERROR logs/beta.log",
+          "expectExit": 0
+        },
+        {
+          "label": "logs/alpha.log has no ERROR lines",
+          "run": "grep ERROR logs/alpha.log",
+          "expectExit": 1
+        }
+      ]
+    },
+    {
+      "id": "permissions-1",
+      "title": "Executable scripts",
+      "checks": [
+        {
+          "label": "hello.sh is executable",
+          "run": "test -x hello.sh",
+          "expectExit": 0
+        },
+        {
+          "label": "hello.sh prints the greeting",
+          "run": "./hello.sh",
+          "expectExit": 0,
+          "stdoutContains": "Hello from shell"
+        }
+      ]
+    },
+    {
+      "id": "glue-logs-1",
+      "title": "Filter noisy logs",
+      "setup": {
+        "/home/user/app.log": "INFO startup\nERROR oom\nERROR healthcheck failed\nERROR timeout\n"
+      },
+      "checks": [
+        {
+          "label": "ERROR lines exclude healthcheck",
+          "run": "grep 'ERROR' app.log | grep -v healthcheck",
+          "expectStdout": "ERROR oom\nERROR timeout"
+        }
+      ]
+    },
+    {
+      "id": "glue-inventory-1",
+      "title": "Python file inventory",
+      "setup": {
+        "/home/user/project/src/ingest.py": "",
+        "/home/user/project/src/embed.py": "",
+        "/home/user/project/src/serve.py": ""
+      },
+      "checks": [
+        {
+          "label": "Lists at least three .py files under project/",
+          "run": "ls -R project | grep '\\.py$' | wc -l | tr -d ' '",
+          "expectStdoutMin": 3
+        }
+      ]
+    },
+    {
+      "id": "glue-scripts-1",
+      "title": "Verify executable helpers",
+      "setup": {
+        "/home/user/hello.sh": "#!/usr/bin/env bash\necho Hello from shell\n"
+      },
+      "checks": [
+        {
+          "label": "hello.sh is executable",
+          "run": "test -x hello.sh",
+          "expectExit": 0
+        }
+      ]
+    }
+  ]
+}
