@@ -122,6 +122,30 @@ bring an earlier one back to the prompt without retyping it.
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
+### Use Tab to complete matches
+
+Tab completion is the shell's way of finishing your typing for you. Start a
+command or path, press **Tab**, and the shell suggests the rest based on what
+exists in your current directory or what it recognises as a valid command name.
+
+- Type the first few letters of a filename, then press **Tab**
+- If there is only one match, the shell fills in the rest
+- If there are several matches, press **Tab** again (or twice quickly) to see
+  the options
+
+This saves time and cuts down on typos — particularly handy for long paths like
+`project/src/eval_metrics.py` when you only need to type `project/src/e` and
+hit **Tab**.
+
+### Try It
+
+In the sandbox, create a file with `touch my-long-filename.txt`, then type
+`cat my-l` and press **Tab** to complete the name before pressing **Enter**.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
 ## 1) Shell Fundamentals
 
 We'll begin with a tiny command set that you will use repeatedly.
