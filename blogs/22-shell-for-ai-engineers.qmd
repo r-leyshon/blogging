@@ -315,6 +315,51 @@ removing anything.
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
+### Know your `~/.zshrc` and history file
+
+On macOS, your default shell is usually **zsh**. When you open a new terminal
+tab, zsh reads a config file in your home directory called **`~/.zshrc`**
+(pronounced "zsh-R-C"). Think of it as startup instructions for your shell.
+
+Typical things people store in `~/.zshrc`:
+
+- **Aliases** — shortcuts for commands you use often
+- **`export` lines** — environment variables such as `PATH` (where the shell
+  looks for programs)
+- **Tool setup** — many installers (Conda, nvm, Homebrew) ask you to paste a
+  line into `~/.zshrc` so their commands work in every new terminal
+
+That last point is often *why* you need to configure it. A tool installs
+successfully, but the command is "not found" until you add its setup snippet to
+`~/.zshrc` and open a fresh terminal (or run `source ~/.zshrc` to reload).
+
+Your command **history** lives in a separate file — usually **`~/.zsh_history`**.
+That is how **Ctrl+R** and the **Up** arrow can find commands from previous
+days, not just the current session. The history file is the shell's memory;
+`~/.zshrc` is its personality.
+
+On Linux with **bash**, the same ideas apply but the files are often named
+`~/.bashrc` and `~/.bash_history` instead.
+
+::: {.callout-warning appearance="simple"}
+Be careful what you put in `~/.zshrc`. It runs automatically every time you open
+a terminal. Do **not** store secrets (API keys, passwords) here unless you
+understand the security implications — and never commit this file to a public
+repository.
+:::
+
+::: {.callout-note appearance="simple"}
+The browser sandbox in this tutorial does not use your real `~/.zshrc`. These
+files matter on your local machine or in Codespaces.
+:::
+
+### Try It
+
+On your local machine, run `echo $SHELL` to see which shell you are using, then
+`ls -la ~/.zshrc ~/.zsh_history` (or `~/.bashrc` / `~/.bash_history` on Linux).
+Open `~/.zshrc` in your editor and see whether you recognise any aliases or
+`export` lines already there.
+
 ## 1) Shell Fundamentals
 
 We'll begin with a tiny command set that you will use repeatedly.
