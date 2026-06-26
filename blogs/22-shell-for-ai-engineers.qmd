@@ -63,7 +63,8 @@ and service debugging.
 
 ### What You'll Need
 
-- [ ] A terminal (local shell, or the browser sandbox in this article)
+- [ ] A **terminal** — the window where you type shell commands (also called a
+  shell or command line)
 - [ ] Basic familiarity with files and folders
 - [ ] Curiosity and willingness to try small experiments
 
@@ -85,6 +86,19 @@ practice. It loads once and stays available as you scroll through the tutorial.
 Many sections include a **challenge**: click **Start challenge** to reset the
 sandbox to a clean environment for that exercise, then **Check my work** when you
 think you are done.
+
+::: {.callout-note appearance="simple"}
+### A few words we reuse constantly {#core-vocabulary}
+
+- **Command** — a program name you type at the prompt (e.g. `ls`, `grep`)
+- **Flag** — an option after a command, usually starting with `-` (e.g. `ls -la`)
+- **Pipeline** — commands chained with `|`, where each command's output feeds the
+  next (covered properly in [section 2](#data-flow-pipes-and-redirection))
+- **Prompt** — the line where you type, ending in `$` (or `%` on some shells)
+
+See the full [Glossary](#glossary) at the end of this article for every command
+and term with links back to where it is introduced.
+:::
 
 ::: {.callout-tip appearance="simple"}
 ### Why not a full Linux VM?
@@ -122,7 +136,7 @@ process and port debugging, use your local terminal or Codespaces (see section 9
 A handful of habits that pay off immediately. These are worth learning early,
 before the command vocabulary gets more involved.
 
-### Use arrow keys to navigate prior commands (work smart, not hard)
+### Use arrow keys to navigate prior commands (work smart, not hard) {#use-arrow-keys-to-navigate-prior-commands-work-smart-not-hard}
 
 The shell remembers commands you have already run. You do not need to retype a
 long pipeline every time you want to tweak it.
@@ -130,8 +144,11 @@ long pipeline every time you want to tweak it.
 - **Up arrow** — step back through previous commands
 - **Down arrow** — step forward again through that history
 
-This is especially useful when you are iterating on something fiddly: a `grep`
-chain, a `curl` call with flags, or a script you keep running with small edits.
+This is especially useful when you are iterating on something fiddly: a **`grep`**
+search (you will meet it in [section 3](#grep-chaining)), a **`curl`** HTTP call
+([section 8](#probe-an-api-with-curl-and-parse-json-with-jq)), or a script you
+keep running with small edits. A **pipeline** chains commands with `|` — also
+coming in section 2.
 Run the command once, press **Up**, adjust a word or two, press **Enter**.
 
 ### Try It
@@ -143,7 +160,7 @@ bring an earlier one back to the prompt without retyping it.
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-### Use Tab to complete matches
+### Use Tab to complete matches {#use-tab-to-complete-matches}
 
 Tab completion is the shell's way of finishing your typing for you. Start a
 command or path, press **Tab**, and the shell suggests the rest based on what
@@ -160,8 +177,9 @@ hit **Tab**.
 
 ### Try It
 
-In the sandbox, create a file with `touch my-long-filename.txt`, then type
-`cat my-l` and press **Tab** to complete the name before pressing **Enter**.
+In the sandbox, create a file with **`touch`** (creates an empty file), then type
+**`cat`** (prints a file's contents) plus the first few letters of the name —
+`cat my-l` — and press **Tab** to complete the name before pressing **Enter**.
 
 ```{=html}
 <div class="shell-challenge" data-challenge-id="tab-completion-1">
@@ -196,15 +214,22 @@ nothing, try the same exercise in your local terminal or Codespaces.
 
 ### Try It
 
-Type a long command such as `grep ERROR app.log | grep -v retry | wc -l`, then
-use **⌘ + ←** and **⌥ + →** to move the cursor without retyping. On Linux, try
+Type a long command such as the one below — it uses **`grep`** (search lines),
+**`wc -l`** (count lines), and **`|`** (pipe output along). You do not need to
+memorise it yet; the goal is cursor practice:
+
+```{.bash filename="terminal"}
+grep ERROR app.log | grep -v retry | wc -l
+```
+
+Use **⌘ + ←** and **⌥ + →** to move the cursor without retyping. On Linux, try
 **Ctrl+A** and **Alt + →** instead.
 
 ```{=html}
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-### Search your command history
+### Search your command history {#search-your-command-history}
 
 Pressing **Up** walks back one command at a time. That is fine for recent
 history, but less fine when you ran something useful twenty commands ago and
@@ -224,7 +249,8 @@ This pays off in specific scenarios:
 - You are debugging and want to rerun a `grep` pipeline with a small tweak
 - You know *part* of a command but not enough to retype the whole thing
 
-If **Ctrl+R** is not available, you can list and filter history manually:
+If **Ctrl+R** is not available, you can list and filter history manually with
+the built-in **`history`** command:
 
 ```{.bash filename="terminal"}
 history | grep grep
@@ -245,7 +271,7 @@ sandbox may not support reverse search.
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-### Use a DRY_RUN flag before you trust a command
+### Use a DRY_RUN flag before you trust a command {#dry-run-flag}
 
 Oftentimes you may be concerned about running a command. You might be touching
 real files, calling a live API, or changing application state — and hoping for
@@ -255,8 +281,8 @@ A common pattern is a **DRY_RUN** flag. Instead of performing the action, the
 script prints what it *would* do. You inspect the output (on screen or in a log
 file). If it looks right, run again without the flag and trust the result.
 
-Some familiar commands have a built-in safety switch. For example, `rm -i` asks
-you to confirm before each delete:
+Some familiar commands have a built-in safety switch. For example, **`rm`**
+(remove/delete) with the **`-i`** flag asks you to confirm before each delete:
 
 ```{.bash filename="terminal"}
 rm -i notes.txt
@@ -272,7 +298,10 @@ DRY_RUN=1 ./cleanup_old_embeddings.sh
 ./cleanup_old_embeddings.sh
 ```
 
-A minimal pattern inside a script might look like this:
+A minimal pattern inside a script might look like this. **`find`** searches the
+filesystem; **`-type f`** limits to files, **`-mtime +30`** finds files older than
+30 days, and **`-delete`** removes them (we only run that branch when `DRY_RUN`
+is not set):
 
 ```{.bash filename="terminal"}
 if [ "$DRY_RUN" = "1" ]; then
@@ -303,9 +332,9 @@ and save it in one step.
 This is especially wise when a command is destructive, expensive, or hard to
 undo — bulk deletes, deployment scripts, or anything that hits production data.
 
-For quick **one-liners**, you do not always need a full script. You can
-**echo** the command first instead of running it — preview what would happen,
-then enact it once you are satisfied:
+For quick **one-liners**, you do not always need a full script. **`echo`**
+prints text to the terminal — use it to preview a destructive command first,
+then run the real thing once you are satisfied:
 
 ```{.bash filename="terminal"}
 # preview
@@ -338,8 +367,9 @@ its job.
 
 ### Try It
 
-In the sandbox, save the script pattern above as `dry_demo.sh`, make it
-executable, then run `DRY_RUN=1 ./dry_demo.sh` followed by `./dry_demo.sh` and
+In the sandbox, save the script pattern above as `dry_demo.sh` using a heredoc
+(same idea as [section 6](#executables-and-permissions)), make it executable with
+`chmod +x`, then run `DRY_RUN=1 ./dry_demo.sh` followed by `./dry_demo.sh` and
 compare the behaviour. Then try `echo rm ./welcome.txt` before actually
 removing anything.
 
@@ -353,7 +383,7 @@ removing anything.
 </div>
 ```
 
-### Know your `~/.zshrc` and history file
+### Know your `~/.zshrc` and history file {#know-your-zshrc-and-history-file}
 
 On macOS, your default shell is usually **zsh**. When you open a new terminal
 tab, zsh reads a config file in your home directory called **`~/.zshrc`**
@@ -369,7 +399,8 @@ Typical things people store in `~/.zshrc`:
 
 That last point is often *why* you need to configure it. A tool installs
 successfully, but the command is "not found" until you add its setup snippet to
-`~/.zshrc` and open a fresh terminal (or run `source ~/.zshrc` to reload).
+`~/.zshrc` and open a fresh terminal (or run **`source ~/.zshrc`** to reload the
+file into your current shell).
 
 Your command **history** lives in a separate file — usually **`~/.zsh_history`**.
 That is how **Ctrl+R** and the **Up** arrow can find commands from previous
@@ -398,7 +429,7 @@ On your local machine, run `echo $SHELL` to see which shell you are using, then
 Open `~/.zshrc` in your editor and see whether you recognise any aliases or
 `export` lines already there.
 
-### Stop a runaway command with Ctrl+C
+### Stop a runaway command with Ctrl+C {#stop-a-runaway-command-with-ctrlc}
 
 Sometimes you paste the wrong thing, start a command that will not finish, or
 realise mid-run that you made a mistake. **Ctrl+C** sends an interrupt signal
@@ -413,23 +444,27 @@ terminal window when something is hanging.
 
 ### Try It
 
-In the sandbox or your local terminal, run `sleep 60` and press **Ctrl+C** before
-it finishes. You should return to the prompt immediately.
+In the sandbox or your local terminal, run **`sleep`** (pause for N seconds) and
+press **Ctrl+C** before it finishes. You should return to the prompt immediately.
+
+```{.bash filename="terminal"}
+sleep 60
+```
 
 ```{=html}
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-### When things go wrong, read the error first
+### When things go wrong, read the error first {#when-things-go-wrong-read-the-error-first}
 
 Error messages look intimidating, but they usually tell you *which* of a few
 common problems you hit. A quick scan saves a lot of guessing.
 
 | Message | Likely cause | What to try |
 | --- | --- | --- |
-| `command not found` | Typo, or the program is not installed / not on your `PATH` | Check spelling; run `which mycommand`; check install docs |
-| `Permission denied` | You lack rights to read, write, or execute that file | `ls -l` the path; `chmod +x` for scripts; check you own the file |
-| `No such file or directory` | Wrong path, or you are in the wrong folder | `pwd`; `ls`; check for typos in the filename |
+| `command not found` | Typo, or the program is not installed / not on your **`PATH`** (the list of directories the shell searches for programs) | Check spelling; run **`which`** *name* to locate a command; check install docs |
+| `Permission denied` | You lack rights to read, write, or execute that file | **`ls -l`** the path (long listing shows permissions); **`chmod +x`** adds execute permission for scripts; check you own the file |
+| `No such file or directory` | Wrong path, or you are in the wrong folder | **`pwd`** (print working directory); **`ls`** (list files); check for typos in the filename |
 
 The shell is not scolding you — it is pointing at the mismatch between what you
 asked for and what exists on disk (or in your `PATH`).
@@ -444,6 +479,10 @@ typo_command          # command not found
 cat secret.txt          # no such file (until you create it)
 touch locked.txt && chmod 000 locked.txt && cat locked.txt   # permission denied
 ```
+
+**`touch`** creates an empty file; **`chmod`** changes permissions (`000` removes
+all access, so `cat` fails). **`&&`** runs the next command only if the previous
+one succeeded.
 
 ```{=html}
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
@@ -468,8 +507,8 @@ grep "level=$LOG_LEVEL" app.log   # double quotes when you need a variable insid
 ```
 
 If a path or filename might contain spaces, wrap it in **double quotes**. If you
-are passing a fixed pattern to `grep` or `awk`, **single quotes** are often
-simpler.
+are passing a fixed pattern to **`grep`** (search lines), **single quotes** are
+often simpler.
 
 You already saw `"$TARGET"` in the DRY_RUN hints — that is double-quoting a
 variable so the shell treats it as one path even when the value contains spaces.
@@ -495,7 +534,7 @@ cat "notes draft.txt"
 </div>
 ```
 
-### Environment variables and `.env` files
+### Environment variables and `.env` files {#environment-variables}
 
 An **environment variable** is a named value the shell (and child programs) can
 read. You set one for the current session like this:
@@ -533,7 +572,8 @@ them in a public gist. Use `.env` locally and platform secret stores in CI
 :::
 
 For a one-off command in your terminal, you can set a variable inline without
-touching a file:
+touching a file. **`curl`** fetches a URL over HTTP ([section 8](#probe-an-api-with-curl-and-parse-json-with-jq));
+**`head`** prints the first few lines of output — handy when a response is long:
 
 ```{.bash filename="terminal"}
 OPENAI_API_KEY=sk-your-key curl -s https://api.openai.com/v1/models | head
@@ -556,17 +596,20 @@ echo "Model would be: $DEMO_VAR"
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-## 1) Shell Fundamentals
+## 1) Shell Fundamentals {#shell-fundamentals}
 
 We'll begin with a tiny command set that you will use repeatedly.
 
 ```{.bash filename="terminal"}
-pwd          # print current directory
-ls           # list files/folders
-ls -la       # include hidden files and details
+pwd          # print working directory — where am I?
+ls           # list files and folders here
+ls -la       # -l long format; -a include hidden (dot) entries
 cd /tmp      # change directory
 cd -         # jump back to previous directory
 ```
+
+**`touch`** creates an empty file (or updates a timestamp). You will use it in
+several challenges.
 
 ### Try It
 
@@ -589,9 +632,13 @@ reached `/tmp`.
 </div>
 ```
 
-## 2) Data Flow: Pipes and Redirection
+## 2) Data Flow: Pipes and Redirection {#data-flow-pipes-and-redirection}
 
 The shell gets powerful when you connect simple tools together.
+
+- **`printf`** — print formatted text (like `echo`, but handles newlines reliably)
+- **`cat`** — print a file's contents to the terminal
+- **`grep`** — print lines that match a pattern (more in [section 3](#grep-chaining))
 
 ```{.bash filename="terminal"}
 printf "apple\nbanana\napricot\n" > fruits.txt
@@ -608,7 +655,8 @@ grep '^a' fruits.txt | wc -l
 
 ### Try It
 
-Add one more fruit, then count how many begin with `b`.
+Add one more fruit with **`echo`** (quick one-line print), appending with **`>>`**
+instead of overwriting with `>`:
 
 ```{.bash filename="terminal"}
 echo "blueberry" >> fruits.txt
@@ -627,12 +675,18 @@ grep '^b' fruits.txt | wc -l
 
 ## 3) Grep Chaining {#grep-chaining}
 
-`grep` is one of the best shell tools for quick investigations.
+**`grep`** searches text for lines matching a pattern. It is one of the best
+shell tools for quick investigations.
+
+- **`grep 'PATTERN' file`** — lines containing `PATTERN`
+- **`grep -v 'PATTERN'`** — **v**invert: lines that do *not* match (exclude noise)
 
 ```{.bash filename="terminal"}
 printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\n" > app.log
 cat app.log | grep 'ERROR' | grep -v 'retry'
 ```
+
+The `^` in patterns like `'^a'` means "starts with" (used in section 2).
 
 This approach is useful for narrowing noisy logs quickly:
 
@@ -686,12 +740,15 @@ ls project/src/*.py
 
 If you used `echo rm ./logs/*.json` earlier in the hints section, that `*` is a
 glob — `echo` lets you preview which files would be matched before you run
-`rm` for real.
+**`rm`** (remove) for real.
 
 ### Brace expansion
 
 Brace expansion is a different trick — it generates text from a pattern in
-curly braces. It saves surprising amounts of time when scaffolding projects:
+curly braces. It saves surprising amounts of time when scaffolding projects.
+
+- **`mkdir`** — create a directory; **`-p`** creates parent folders too if missing
+- **`ls -R`** — list recursively (every subdirectory)
 
 ```{.bash filename="terminal"}
 mkdir -p project/{data,src,tests,logs}
@@ -765,8 +822,10 @@ done
 
 ### Try It
 
-Create a small `logs/` folder with three files, then loop over every `.log` and
-print any line containing `ERROR`:
+Create a small `logs/` folder with three files (**`mkdir -p`** creates the folder;
+**`printf`** writes each log), then loop over every `.log` and print any line
+containing `ERROR`. The **`||`** means "if the left command fails, run the right
+one instead" — here, print `(no errors)` when `grep` finds nothing:
 
 ```{.bash filename="terminal"}
 mkdir -p logs
@@ -798,6 +857,12 @@ You should see errors from `beta.log` and `gamma.log`, and `(no errors)` for
 A script file is not executable by default, even if it contains valid shell
 code.
 
+- **`cat > file <<'EOF'`** — write several lines to a file (a **heredoc**); text
+  until `EOF` is saved into `file`
+- **`./hello.sh`** — run a script in the current directory (`./` means "here")
+- **`ls -l`** — long listing; shows permission letters including `x` for executable
+- **`chmod +x`** — add e**x**ecute permission so you can run the script
+
 ```{.bash filename="terminal"}
 cat > hello.sh <<'EOF'
 #!/usr/bin/env bash
@@ -807,6 +872,9 @@ EOF
 ls -l hello.sh
 ./hello.sh
 ```
+
+The first line `#!/usr/bin/env bash` is a **shebang** — it tells the system which
+interpreter to use when you run `./hello.sh`.
 
 You should see a permission error before adding execute permission. That's
 normal.
@@ -840,11 +908,17 @@ Walk through the full flow in the sandbox:
 </div>
 ```
 
-## 7) Processes, Ports, and Signals
+## 7) Processes, Ports, and Signals {#processes-ports-and-signals}
 
 Now we're in classic operations/debugging territory.
 
 ### Start and inspect a process
+
+- **`sleep N`** — pause for N seconds (useful for testing)
+- **`&` at the end** — run the command in the **background** so you get your prompt back
+- **`jobs`** — list background tasks started from this shell
+- **`ps`** — list running processes; **`-ef`** shows all processes in full format
+- **PID** — **p**rocess **id**entifier; a numeric handle you pass to `kill`
 
 ```{.bash filename="terminal"}
 sleep 300 &
@@ -852,7 +926,13 @@ jobs
 ps -ef | grep sleep | grep -v grep
 ```
 
+The second `grep -v grep` drops the `grep` process itself from the results — a
+common trick when searching for processes.
+
 ### Stop a process gracefully
+
+**`kill PID`** sends a polite shutdown signal (replace `PID` with the number from
+`ps`):
 
 ```{.bash filename="terminal"}
 kill <PID>
@@ -860,9 +940,7 @@ kill <PID>
 
 ### Force stop (last resort)
 
-```{.bash filename="terminal"}
-kill -9 <PID>
-```
+**`kill -9 PID`** forces immediate termination — no cleanup:
 
 ::: {.callout-warning}
 Use `kill -9` sparingly. It bypasses graceful shutdown and can leave temporary
@@ -870,6 +948,9 @@ state or partial writes behind.
 :::
 
 ### Check which process is using a port
+
+**`lsof`** — **l**ist **o**pen **f**iles; sockets count as files. **`-i :8000`**
+shows what is bound to port 8000:
 
 ```{.bash filename="terminal"}
 lsof -i :8000
@@ -940,6 +1021,9 @@ excluded.
 
 ### Quick file inventory
 
+**`grep '\.py$'`** — lines ending in `.py` (`$` means end of line; `\.` is a
+literal dot). Useful for spotting Python files in a long listing:
+
 ```{.bash filename="terminal"}
 ls -R project | grep '\.py$'
 ```
@@ -981,7 +1065,7 @@ string (e.g. `-rwxr-xr-x`).
 </div>
 ```
 
-### Probe an API with `curl` (and parse JSON with `jq`)
+### Probe an API with `curl` (and parse JSON with `jq`) {#probe-an-api-with-curl-and-parse-json-with-jq}
 
 AI work involves a lot of HTTP — model APIs, embedding services, health checks.
 **`curl`** is the shell's Swiss Army knife for sending requests and inspecting
@@ -995,15 +1079,17 @@ curl -s https://httpbin.org/get
 
 - **`-s`** — silent mode (hides the progress meter so pipes stay clean)
 
-When the response is JSON, **`jq`** filters and formats it. Install `jq` locally
-if you do not have it (`brew install jq` on macOS).
+When the response is JSON, **`jq`** filters and formats it — pass a path like
+`.headers.Host` to pull one field. Install `jq` locally if you do not have it
+(`brew install jq` on macOS).
 
 ```{.bash filename="terminal"}
 curl -s https://httpbin.org/get | jq '.headers.Host'
 ```
 
 For authenticated APIs, pass the key from an environment variable (set in your
-shell or loaded from `.env` — never hard-code it in the command history):
+shell or loaded from `.env` — never hard-code it in the command history).
+**`-H`** adds an HTTP header:
 
 ```{.bash filename="terminal"}
 curl -s -H "Authorization: Bearer $OPENAI_API_KEY" \
@@ -1058,6 +1144,112 @@ filesystem state behave as expected for production debugging.
 - Are advanced commands (`kill -9`, `lsof -i`) explained with caution?
 - Does each section include a concrete "why this matters" use case?
 
+## Glossary {#glossary}
+
+Quick reference for commands and terms in this tutorial. Each entry links to where
+it is introduced — use this when you meet something unfamiliar mid-challenge.
+
+### Concepts
+
+- **[Background job](#processes-ports-and-signals)** — A command running while you
+  keep your prompt (`sleep 300 &`).
+- **[Brace expansion](#globs-and-brace-expansion)** — Generate text from a pattern
+  in curly braces (`project/{data,src}`).
+- **[Command](#core-vocabulary)** — A program name you type at the prompt (`ls`,
+  `grep`).
+- **[DRY_RUN](#dry-run-flag)** — Preview pattern: run with a flag set so nothing
+  destructive happens until you are sure.
+- **[Environment variable](#environment-variables)** — A named value programs can
+  read (`export MODEL_NAME=...`).
+- **[Flag](#core-vocabulary)** — An option after a command, usually starting with
+  `-` (`ls -la`, `grep -v`).
+- **[For loop](#simple-for-loops)** — Repeat commands for each item in a list
+  (`for f in *.log; do ... done`).
+- **[Glob](#globs-and-brace-expansion)** — Wildcard filename pattern (`*.json`,
+  `logs/*.log`).
+- **[Heredoc](#executables-and-permissions)** — Multi-line input into a file
+  (`cat > file <<'EOF'`).
+- **[PATH](#when-things-go-wrong-read-the-error-first)** — Directories the shell
+  searches when you type a command name.
+- **[PID](#processes-ports-and-signals)** — Process identifier — numeric handle for
+  `kill`.
+- **[Pipeline](#data-flow-pipes-and-redirection)** — Commands chained with `|`;
+  output of one feeds the next.
+- **[Prompt](#core-vocabulary)** — Where you type commands, usually ending in `$`.
+- **[Shebang](#executables-and-permissions)** — First line of a script (`#!/usr/bin/env bash`)
+  telling the system which interpreter to use.
+
+### Commands
+
+- **[`cat`](#data-flow-pipes-and-redirection)** — Print a file's contents.
+- **[`cd`](#shell-fundamentals)** — Change directory; **`cd -`** returns to the
+  previous one.
+- **[`chmod`](#executables-and-permissions)** — Change permissions; **`chmod +x`**
+  makes a script executable.
+- **[`curl`](#probe-an-api-with-curl-and-parse-json-with-jq)** — Send HTTP
+  requests from the terminal.
+- **[`echo`](#data-flow-pipes-and-redirection)** — Print text (also used to preview
+  destructive commands in [DRY_RUN](#dry-run-flag)).
+- **[`export`](#environment-variables)** — Set an environment variable for child
+  programs.
+- **[`find`](#dry-run-flag)** — Search the filesystem by name, type, age, etc.
+- **[`grep`](#grep-chaining)** — Search lines matching a pattern; **`-v`** inverts
+  (exclude matches).
+- **[`head`](#environment-variables)** — Print the first few lines of output.
+- **[`history`](#search-your-command-history)** — List commands you have run in this
+  session.
+- **[`jobs`](#processes-ports-and-signals)** — List background tasks from this shell.
+- **[`jq`](#probe-an-api-with-curl-and-parse-json-with-jq)** — Filter and format
+  JSON (`jq '.field'`).
+- **[`kill`](#processes-ports-and-signals)** — Send a signal to a process; **`-9`**
+  forces immediate stop.
+- **[`ls`](#shell-fundamentals)** — List files; **`-l`** long format; **`-a`**
+  includes hidden entries; **`-R`** recursive.
+- **[`lsof`](#processes-ports-and-signals)** — List open files; **`-i :PORT`** shows
+  what is using a port.
+- **[`mkdir`](#globs-and-brace-expansion)** — Create a directory; **`-p`** creates
+  parent folders too.
+- **[`printf`](#data-flow-pipes-and-redirection)** — Print formatted text (reliable
+  newlines for building files).
+- **[`ps`](#processes-ports-and-signals)** — List processes; **`-ef`** shows all in
+  full format.
+- **[`pwd`](#shell-fundamentals)** — Print working directory (where am I?).
+- **[`rm`](#dry-run-flag)** — Remove files; **`-i`** asks before each delete.
+- **[`sleep`](#processes-ports-and-signals)** — Pause for N seconds.
+- **[`source`](#know-your-zshrc-and-history-file)** — Reload a config file into the
+  current shell (`source ~/.zshrc`).
+- **[`tee`](#dry-run-flag)** — Write to a file and print to the terminal at the same
+  time.
+- **[`touch`](#shell-fundamentals)** — Create an empty file (or update timestamp).
+- **[`wc`](#data-flow-pipes-and-redirection)** — Word count; **`-l`** counts lines.
+- **[`which`](#when-things-go-wrong-read-the-error-first)** — Show path to a command
+  executable.
+
+### Operators and syntax
+
+- **[`&`](#processes-ports-and-signals)** — Run a command in the background.
+- **[`&&`](#when-things-go-wrong-read-the-error-first)** — Run the next command only
+  if the previous one succeeded.
+- **[`||`](#simple-for-loops)** — Run the next command only if the previous one
+  failed.
+- **[`|` (pipe)](#data-flow-pipes-and-redirection)** — Send one command's output into
+  the next.
+- **[`>` / `>>`](#data-flow-pipes-and-redirection)** — Redirect output to a file
+  (overwrite / append).
+- **[`./script.sh`](#executables-and-permissions)** — Run an executable in the current
+  directory.
+- **[`$VAR`](#environment-variables)** — Expand an environment variable.
+- **[`'...'` / `"..."`](#quote-paths-and-patterns-carefully)** — Single quotes: literal
+  text. Double quotes: allow variable expansion.
+
+### Keyboard shortcuts
+
+- **[Ctrl+C](#stop-a-runaway-command-with-ctrlc)** — Stop a running command.
+- **[Ctrl+R](#search-your-command-history)** — Reverse-search command history.
+- **[Tab](#use-tab-to-complete-matches)** — Complete filenames and command names.
+- **[Up / Down arrows](#use-arrow-keys-to-navigate-prior-commands-work-smart-not-hard)** —
+  Step through previous commands.
+
 ## Further reading
 
 A short list of resources worth your time. Each one is widely respected, free, and
@@ -1107,7 +1299,8 @@ references, or tools you will use for years.
 Shell skills compound quickly. Start with navigation and pipes, add pattern
 matching and loops, then permissions and process control, and apply them to your
 own tool chain. Once these habits click, the shell becomes a dependable
-orchestration layer for AI engineering work.
+orchestration layer for AI engineering work. Keep the [Glossary](#glossary) handy
+when you forget a flag or command name.
 
 ```{=html}
 <script src="/www/shell-dock/shell-dock.js" defer></script>
