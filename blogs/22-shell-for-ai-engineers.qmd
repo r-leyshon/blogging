@@ -22,6 +22,20 @@ execute:
 
 <img class=shaded_box src="/./www/22-shell-for-ai-engineers/intro-img.webp" alt="A glowing cyberpunk Koopa shell hovering above a neon terminal" width="614" height="410" loading="lazy" decoding="async" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;height:auto;">
 
+::: {.callout-note appearance="simple"}
+### A note on platforms
+
+This tutorial assumes a **Linux-like terminal** — bash or zsh on macOS, Linux,
+Codespaces, or similar. That is where most AI tooling, containers, and CI
+pipelines expect you to work.
+
+On **Windows**, things can look a little different: keyboard shortcuts, path
+separators (`\` vs `/`), and some command names may not match. **WSL**
+(Windows Subsystem for Linux) or **Git Bash** are good ways to follow along with
+minimal friction. If you are using PowerShell or Command Prompt, treat this
+guide as conceptually useful, but expect differences in detail.
+:::
+
 ## Introduction
 
 If you build AI products, sooner or later you end up stitching together a
