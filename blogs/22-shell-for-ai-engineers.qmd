@@ -1,8 +1,9 @@
 ---
-title: "Shell for AI Engineers: Zero to Hero"
+title: "Just Enough Shell to Survive"
+subtitle: "A practical terminal tutorial for AI engineers"
 author: "Rich Leyshon"
 date: "June 20 2026"
-description: "A practical shell tutorial for AI engineers, from first commands to glue-workflows, with safe interactive sandbox exercises."
+description: "A practical shell tutorial for AI engineers — navigation, glue workflows, and interactive challenges. Just enough to get unstuck."
 categories:
     - Tutorial
     - Shell
@@ -50,8 +51,9 @@ small orchestra of tools:
 - CI pipelines
 
 The shell is often the quickest way to make these components cooperate.
-This tutorial starts at the very beginning and works up to practical
-"glue work" you can apply in real AI engineering tasks.
+This tutorial covers **just enough** shell to survive day-to-day AI engineering —
+navigation, safety habits, glue pipelines, and hands-on challenges — without
+pretending you need to become a terminal wizard.
 
 ### Intended Audience
 
