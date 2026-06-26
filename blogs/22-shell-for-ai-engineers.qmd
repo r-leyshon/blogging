@@ -213,6 +213,108 @@ The browser sandbox supports **Up** / **Down** history, but may not support
 In your local terminal, run three different commands, then press **Ctrl+R** and
 type a keyword from one of the earlier commands to bring it back.
 
+### Use a DRY_RUN flag before you trust a command
+
+Oftentimes you may be concerned about running a command. You might be touching
+real files, calling a live API, or changing application state — and hoping for
+the best is not a strategy.
+
+A common pattern is a **DRY_RUN** flag. Instead of performing the action, the
+script prints what it *would* do. You inspect the output (on screen or in a log
+file). If it looks right, run again without the flag and trust the result.
+
+Some familiar commands have a built-in safety switch. For example, `rm -i` asks
+you to confirm before each delete:
+
+```{.bash filename="terminal"}
+rm -i notes.txt
+```
+
+For your own scripts, an environment variable keeps things simple:
+
+```{.bash filename="terminal"}
+# safe preview
+DRY_RUN=1 ./cleanup_old_embeddings.sh
+
+# real run, only after the preview looked correct
+./cleanup_old_embeddings.sh
+```
+
+A minimal pattern inside a script might look like this:
+
+```{.bash filename="terminal"}
+if [ "$DRY_RUN" = "1" ]; then
+  echo "Would delete files older than 30 days in ./cache/"
+else
+  find ./cache/ -type f -mtime +30 -delete
+fi
+```
+
+You can redirect dry-run output to a log for a paper trail. **`>>`** appends
+output to a file (you will not see it on screen unless you open the log):
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./cleanup_old_embeddings.sh >> dry-run.log
+```
+
+**`tee`** does both — it prints to the terminal *and* writes to the file at the
+same time. That is handy when you want to inspect the preview immediately while
+still keeping a record:
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./cleanup_old_embeddings.sh | tee dry-run.log
+```
+
+Use `>>` when you only need the log. Use `tee` when you want to read the output
+and save it in one step.
+
+This is especially wise when a command is destructive, expensive, or hard to
+undo — bulk deletes, deployment scripts, or anything that hits production data.
+
+For quick **one-liners**, you do not always need a full script. You can
+**echo** the command first instead of running it — preview what would happen,
+then enact it once you are satisfied:
+
+```{.bash filename="terminal"}
+# preview
+echo rm ./logs/*.json
+
+# enact
+rm ./logs/*.json
+```
+
+With variables or wildcard patterns like `*.json`, `echo` shows you how the
+shell will expand things before anything irreversible happens (we cover globs
+properly in [section 4](#globs-and-brace-expansion)):
+
+```{.bash filename="terminal"}
+TARGET="./cache/embeddings"
+echo rm -rf "$TARGET"
+# rm -rf "$TARGET"
+```
+
+The same idea works inside pipelines. Swap the destructive command for `echo`
+temporarily:
+
+```{.bash filename="terminal"}
+find ./tmp -name "*.bak" -exec echo rm {} \;
+# find ./tmp -name "*.bak" -exec rm {} \;
+```
+
+If the echoed output looks right, rerun without `echo` and let the command do
+its job.
+
+### Try It
+
+In the sandbox, save the script pattern above as `dry_demo.sh`, make it
+executable, then run `DRY_RUN=1 ./dry_demo.sh` followed by `./dry_demo.sh` and
+compare the behaviour. Then try `echo rm ./welcome.txt` before actually
+removing anything.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
 ## 1) Shell Fundamentals
 
 We'll begin with a tiny command set that you will use repeatedly.
@@ -283,9 +385,31 @@ This approach is useful for narrowing noisy logs quickly:
 When a local model service fails, this pattern helps isolate relevant errors
 before you disappear into a debugging rabbit hole.
 
-## 4) Brace Expansion and Globs
+## 4) Globs and Brace Expansion {#globs-and-brace-expansion}
 
-Brace expansion is a tiny feature that saves surprising amounts of time.
+### Globs
+
+A **glob** is a wildcard pattern the shell uses to match filenames. Before a
+command runs, the shell expands the pattern into a list of matching files.
+
+Common wildcards:
+
+- `*` — matches any characters (e.g. `*.json` → all `.json` files)
+- `?` — matches exactly one character (e.g. `file?.txt` → `file1.txt`, `fileA.txt`)
+
+```{.bash filename="terminal"}
+ls *.txt
+ls project/src/*.py
+```
+
+If you used `echo rm ./logs/*.json` earlier in the hints section, that `*` is a
+glob — `echo` lets you preview which files would be matched before you run
+`rm` for real.
+
+### Brace expansion
+
+Brace expansion is a different trick — it generates text from a pattern in
+curly braces. It saves surprising amounts of time when scaffolding projects:
 
 ```{.bash filename="terminal"}
 mkdir -p project/{data,src,tests,logs}
