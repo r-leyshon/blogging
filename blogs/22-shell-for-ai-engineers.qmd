@@ -146,6 +146,37 @@ In the sandbox, create a file with `touch my-long-filename.txt`, then type
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
+### Jump around the command line with modifier keys
+
+Once a command gets long, tapping the arrow key character-by-character is
+painful. On macOS, modifier keys let you move in bigger jumps:
+
+- **⌘ + ←** — jump to the start of the line
+- **⌘ + →** — jump to the end of the line
+- **⌥ + ←** — jump back one word at a time
+- **⌥ + →** — jump forward one word at a time
+
+This is useful when you need to fix a typo in the middle of a pipeline without
+retyping the whole thing. Jump to the word, edit it, **Enter**.
+
+On Linux terminals, the equivalents are usually **Ctrl+A** / **Ctrl+E** for the
+start and end of the line, and **Alt + ←** / **Alt + →** to move word by word.
+
+::: {.callout-note appearance="simple"}
+The browser sandbox may not support every macOS shortcut. If a key combo does
+nothing, try the same exercise in your local terminal or Codespaces.
+:::
+
+### Try It
+
+Type a long command such as `grep ERROR app.log | grep -v retry | wc -l`, then
+use **⌘ + ←** and **⌥ + →** to move the cursor without retyping. On Linux, try
+**Ctrl+A** and **Alt + →** instead.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
 ## 1) Shell Fundamentals
 
 We'll begin with a tiny command set that you will use repeatedly.
