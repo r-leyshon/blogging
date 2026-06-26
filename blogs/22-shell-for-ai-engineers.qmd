@@ -86,7 +86,7 @@ An embedded full Linux VM (like linuxontab) boots Alpine, runs `apk update`, and
 installs packages before you get a prompt — often 30–60+ seconds. This sandbox
 uses **just-bash**, a simulated shell that starts in a few seconds. It is ideal
 for learning `grep`, pipes, permissions, and file operations. For full-fidelity
-process and port debugging, use your local terminal or Codespaces (see section 8).
+process and port debugging, use your local terminal or Codespaces (see section 9).
 :::
 
 ```{=html}
@@ -430,7 +430,7 @@ touch locked.txt && chmod 000 locked.txt && cat locked.txt   # permission denied
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-### Quote paths and patterns carefully
+### Quote paths and patterns carefully {#quote-paths-and-patterns-carefully}
 
 The shell splits your command on **spaces** unless you tell it not to. Quotes
 control that — and they behave differently.
@@ -568,6 +568,9 @@ grep '^a' fruits.txt | wc -l
 
 - `>` writes output to a file (overwrites existing content).
 - `|` passes output from one command into the next.
+- **`wc -l`** — **w**ord **c**ount, lines only. Counts how many lines are in the
+  input (a file or piped output). Useful when you want a total, not every matching
+  line.
 
 ### Try It
 
@@ -664,7 +667,75 @@ touch project/src/{eval_metrics,eval_runner}.py
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-## 5) Executables and Permissions {#executables-and-permissions}
+## 5) Simple For Loops {#simple-for-loops}
+
+A **for loop** runs the same commands once per item in a list. That is how you
+batch-process files, hit several endpoints, or rerun a check across a folder
+without copy-pasting.
+
+Basic shape:
+
+```{.bash filename="terminal"}
+for name in item1 item2 item3; do
+  echo "Processing $name"
+done
+```
+
+- **`for ... in ...`** — the list can be words you type, or a glob the shell expands
+- **`do` / `done`** — wrap the commands to repeat
+- **`$name`** — the current item (quote it as `"$name"` when it might contain spaces)
+
+Loop over files with a glob (see [section 4](#globs-and-brace-expansion)). Here we
+use **`wc -l`** on each file directly — it prints how many lines that file
+contains (you met `wc -l` on piped output in section 2):
+
+```{.bash filename="terminal"}
+for f in *.txt; do
+  echo "=== $f ==="
+  wc -l "$f"
+done
+```
+
+Quoting `"$f"` matters when filenames contain spaces — the same rule from the
+[quoting hints](#quote-paths-and-patterns-carefully).
+
+### AI Engineer Use Case
+
+Got twelve eval output files and need the same `grep` on each? A loop beats
+running the command twelve times by hand:
+
+```{.bash filename="terminal"}
+for f in outputs/run_*.log; do
+  echo "== $f =="
+  grep 'ERROR' "$f"
+done
+```
+
+### Try It
+
+Create a small `logs/` folder with three files, then loop over every `.log` and
+print any line containing `ERROR`:
+
+```{.bash filename="terminal"}
+mkdir -p logs
+printf "INFO ok\n" > logs/alpha.log
+printf "ERROR timeout\n" > logs/beta.log
+printf "ERROR retry\nWARN slow\n" > logs/gamma.log
+
+for f in logs/*.log; do
+  echo "== $f =="
+  grep 'ERROR' "$f" || echo "(no errors)"
+done
+```
+
+You should see errors from `beta.log` and `gamma.log`, and `(no errors)` for
+`alpha.log`. Try adding a fourth log file and rerunning the loop.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+## 6) Executables and Permissions {#executables-and-permissions}
 
 A script file is not executable by default, even if it contains valid shell
 code.
@@ -705,7 +776,7 @@ Walk through the full flow in the sandbox:
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-## 6) Processes, Ports, and Signals
+## 7) Processes, Ports, and Signals
 
 Now we're in classic operations/debugging territory.
 
@@ -776,7 +847,7 @@ your machine.
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-## 7) Practical AI Glue Workflows
+## 8) Practical AI Glue Workflows
 
 These small shell pipelines can save a lot of time during development. Work
 through them in order — each builds on files you created in earlier sections.
@@ -830,7 +901,7 @@ ls -l *.sh
 
 ### Try It
 
-After creating `hello.sh` in [section 5](#executables-and-permissions), check
+After creating `hello.sh` in [section 6](#executables-and-permissions), check
 which shell scripts in the current directory are executable:
 
 ```{.bash filename="terminal"}
@@ -895,7 +966,7 @@ with `jq`. If `jq` is not available in the sandbox, run the same pipeline locall
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-## 8) Extension: Run Advanced Commands Locally or in Codespaces
+## 9) Extension: Run Advanced Commands Locally or in Codespaces
 
 If you want full-fidelity behavior for advanced tasks:
 
@@ -913,7 +984,7 @@ local machine or Codespaces is where process IDs, ports, services, and real
 filesystem state behave as expected for production debugging.
 :::
 
-## 9) Pre-Publish Checklist For Your Own Shell Docs
+## 10) Pre-Publish Checklist For Your Own Shell Docs
 
 - Are all interactive commands safe and reversible?
 - Did you clearly warn readers not to paste secrets?
@@ -968,9 +1039,9 @@ references, or tools you will use for years.
 ## Wrap-up
 
 Shell skills compound quickly. Start with navigation and pipes, add pattern
-matching, permissions, and process control, then apply them to your own tool
-chain. Once these habits click, the shell becomes a dependable orchestration
-layer for AI engineering work.
+matching and loops, then permissions and process control, and apply them to your
+own tool chain. Once these habits click, the shell becomes a dependable
+orchestration layer for AI engineering work.
 
 ```{=html}
 <script src="/www/shell-dock/shell-dock.js" defer></script>
