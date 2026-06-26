@@ -96,6 +96,32 @@ process and port debugging, use your local terminal or Codespaces (see section 8
 </div>
 ```
 
+## Hints and Tips
+
+A handful of habits that pay off immediately. These are worth learning early,
+before the command vocabulary gets more involved.
+
+### Use arrow keys to navigate prior commands (work smart, not hard)
+
+The shell remembers commands you have already run. You do not need to retype a
+long pipeline every time you want to tweak it.
+
+- **Up arrow** — step back through previous commands
+- **Down arrow** — step forward again through that history
+
+This is especially useful when you are iterating on something fiddly: a `grep`
+chain, a `curl` call with flags, or a script you keep running with small edits.
+Run the command once, press **Up**, adjust a word or two, press **Enter**.
+
+### Try It
+
+Open the sandbox and run a few different commands, then use the arrow keys to
+bring an earlier one back to the prompt without retyping it.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
 ## 1) Shell Fundamentals
 
 We'll begin with a tiny command set that you will use repeatedly.
