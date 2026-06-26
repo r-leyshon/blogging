@@ -224,8 +224,13 @@ The browser sandbox supports **Up** / **Down** history, but may not support
 
 ### Try It
 
-In your local terminal, run three different commands, then press **Ctrl+R** and
-type a keyword from one of the earlier commands to bring it back.
+Run a few commands in the sandbox (they go into history), then use **Up** to
+bring one back. For **Ctrl+R**, use your local terminal or Codespaces — the
+sandbox may not support reverse search.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
 
 ### Use a DRY_RUN flag before you trust a command
 
@@ -374,6 +379,158 @@ On your local machine, run `echo $SHELL` to see which shell you are using, then
 Open `~/.zshrc` in your editor and see whether you recognise any aliases or
 `export` lines already there.
 
+### Stop a runaway command with Ctrl+C
+
+Sometimes you paste the wrong thing, start a command that will not finish, or
+realise mid-run that you made a mistake. **Ctrl+C** sends an interrupt signal
+and stops the command at the current prompt.
+
+- Press **Ctrl+C** once and wait a moment — most commands exit cleanly
+- If nothing happens, press **Ctrl+C** again (some programs need a second nudge)
+- You get a fresh prompt; nothing is "broken" — you can try again
+
+This is the first reflex to build. It is faster and safer than closing the
+terminal window when something is hanging.
+
+### Try It
+
+In the sandbox or your local terminal, run `sleep 60` and press **Ctrl+C** before
+it finishes. You should return to the prompt immediately.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+### When things go wrong, read the error first
+
+Error messages look intimidating, but they usually tell you *which* of a few
+common problems you hit. A quick scan saves a lot of guessing.
+
+| Message | Likely cause | What to try |
+| --- | --- | --- |
+| `command not found` | Typo, or the program is not installed / not on your `PATH` | Check spelling; run `which mycommand`; check install docs |
+| `Permission denied` | You lack rights to read, write, or execute that file | `ls -l` the path; `chmod +x` for scripts; check you own the file |
+| `No such file or directory` | Wrong path, or you are in the wrong folder | `pwd`; `ls`; check for typos in the filename |
+
+The shell is not scolding you — it is pointing at the mismatch between what you
+asked for and what exists on disk (or in your `PATH`).
+
+### Try It
+
+In the sandbox, trigger each error on purpose and read the message before fixing
+it:
+
+```{.bash filename="terminal"}
+typo_command          # command not found
+cat secret.txt          # no such file (until you create it)
+touch locked.txt && chmod 000 locked.txt && cat locked.txt   # permission denied
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+### Quote paths and patterns carefully
+
+The shell splits your command on **spaces** unless you tell it not to. Quotes
+control that — and they behave differently.
+
+- **Single quotes `'...'`** — everything inside is literal. No variable expansion.
+- **Double quotes `"..."`** — variables like `$HOME` expand; most other
+  characters are literal.
+
+```{.bash filename="terminal"}
+FILE="my report.txt"
+touch "$FILE"           # creates one file with a space in the name
+touch $FILE             # without quotes: tries to create two files (my, report.txt)
+
+grep 'ERROR' app.log    # pattern is literal — good for fixed strings
+grep "level=$LOG_LEVEL" app.log   # double quotes when you need a variable inside
+```
+
+If a path or filename might contain spaces, wrap it in **double quotes**. If you
+are passing a fixed pattern to `grep` or `awk`, **single quotes** are often
+simpler.
+
+You already saw `"$TARGET"` in the DRY_RUN hints — that is double-quoting a
+variable so the shell treats it as one path even when the value contains spaces.
+
+### Try It
+
+Create a file with a space in the name, then `cat` it with and without quotes to
+see the difference:
+
+```{.bash filename="terminal"}
+touch "notes draft.txt"
+cat "notes draft.txt"
+# cat notes draft.txt    # uncomment to see the error
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+### Environment variables and `.env` files
+
+An **environment variable** is a named value the shell (and child programs) can
+read. You set one for the current session like this:
+
+```{.bash filename="terminal"}
+export MODEL_NAME=gpt-4o-mini
+echo $MODEL_NAME
+```
+
+- **`export`** makes the variable visible to commands you run from this shell
+- **`echo $NAME`** prints the current value (the `$` tells the shell to expand it)
+- Variables set this way last until you close the terminal tab
+
+Putting `export` lines in `~/.zshrc` (see above) makes them available every
+time you open a new terminal. That is fine for non-secret defaults like
+`export EDITOR=code`.
+
+For **API keys and tokens**, prefer a **`.env` file** in your project root
+instead of hard-coding secrets in your shell config:
+
+```{.bash filename="terminal"}
+# .env — loaded by your app or tooling, not committed to git
+OPENAI_API_KEY=sk-...
+LOG_LEVEL=info
+```
+
+Most Python and Node AI stacks load `.env` automatically (via `python-dotenv`,
+`dotenv`, or framework conventions). Add `.env` to `.gitignore` so secrets never
+land in a public repository.
+
+::: {.callout-warning appearance="simple"}
+Never paste API keys into the browser sandbox, commit them to git, or store
+them in a public gist. Use `.env` locally and platform secret stores in CI
+(GitHub Actions secrets, etc.).
+:::
+
+For a one-off command in your terminal, you can set a variable inline without
+touching a file:
+
+```{.bash filename="terminal"}
+OPENAI_API_KEY=sk-your-key curl -s https://api.openai.com/v1/models | head
+```
+
+That sets the variable only for that single command — useful for quick tests,
+but `.env` is easier to maintain across a project.
+
+### Try It
+
+In the sandbox, set a variable and read it back:
+
+```{.bash filename="terminal"}
+export DEMO_VAR=hello-shell
+echo $DEMO_VAR
+echo "Model would be: $DEMO_VAR"
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
 ## 1) Shell Fundamentals
 
 We'll begin with a tiny command set that you will use repeatedly.
@@ -425,7 +582,7 @@ grep '^b' fruits.txt | wc -l
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-## 3) Grep Chaining
+## 3) Grep Chaining {#grep-chaining}
 
 `grep` is one of the best shell tools for quick investigations.
 
@@ -443,6 +600,23 @@ This approach is useful for narrowing noisy logs quickly:
 
 When a local model service fails, this pattern helps isolate relevant errors
 before you disappear into a debugging rabbit hole.
+
+### Try It
+
+Build `app.log`, then write a pipeline that shows `ERROR` lines but excludes
+anything containing `retry` or `healthcheck`:
+
+```{.bash filename="terminal"}
+printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\n" > app.log
+grep 'ERROR' app.log | grep -v retry | grep -v healthcheck
+```
+
+You should see only `ERROR timeout`. Add another line and adjust the filters
+until the output matches what you expect.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
 
 ## 4) Globs and Brace Expansion {#globs-and-brace-expansion}
 
@@ -490,7 +664,7 @@ touch project/src/{eval_metrics,eval_runner}.py
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
-## 5) Executables and Permissions
+## 5) Executables and Permissions {#executables-and-permissions}
 
 A script file is not executable by default, even if it contains valid shell
 code.
@@ -516,6 +690,20 @@ ls -l hello.sh
 
 This pattern matters when packaging helper scripts for teammates, automation,
 or CI jobs.
+
+### Try It
+
+Walk through the full flow in the sandbox:
+
+1. Create `hello.sh` with the heredoc above and run `./hello.sh` — expect a
+   permission error.
+2. Run `ls -l hello.sh` and note the permission string (no `x` yet).
+3. Run `chmod +x hello.sh`, check `ls -l` again, then `./hello.sh` — it should
+   print `Hello from shell`.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
 
 ## 6) Processes, Ports, and Signals
 
@@ -561,14 +749,56 @@ full-fidelity `lsof -i`, signals, and service debugging, run these commands in
 your local terminal or GitHub Codespaces.
 :::
 
+### Try It
+
+**In the sandbox** — start a background job and find its process ID:
+
+```{.bash filename="terminal"}
+sleep 120 &
+jobs
+ps -ef | grep sleep | grep -v grep
+```
+
+Copy the PID from the `ps` output (the number in the second column).
+
+**Locally or in Codespaces** — stop it gracefully, then check it is gone:
+
+```{.bash filename="terminal"}
+kill <PID>
+ps -ef | grep sleep | grep -v grep
+```
+
+Replace `<PID>` with the number you copied. The second `ps` should return nothing.
+If `kill` or `ps` behave differently in the sandbox, run this full exercise on
+your machine.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
 ## 7) Practical AI Glue Workflows
 
-These small shell pipelines can save a lot of time during development.
+These small shell pipelines can save a lot of time during development. Work
+through them in order — each builds on files you created in earlier sections.
 
 ### Filter noisy logs
 
 ```{.bash filename="terminal"}
 cat app.log | grep 'ERROR' | grep -v 'healthcheck'
+```
+
+### Try It
+
+If you do not already have `app.log` from [section 3](#grep-chaining), create
+it first. Then add a healthcheck line and confirm your filter excludes it:
+
+```{.bash filename="terminal"}
+echo "ERROR healthcheck failed" >> app.log
+cat app.log | grep 'ERROR' | grep -v healthcheck
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
 ### Quick file inventory
@@ -577,10 +807,92 @@ cat app.log | grep 'ERROR' | grep -v 'healthcheck'
 ls -R project | grep '\.py$'
 ```
 
+### Try It
+
+Scaffold `project/` from [section 4](#globs-and-brace-expansion) if needed, then
+list every `.py` file under it:
+
+```{.bash filename="terminal"}
+mkdir -p project/src
+touch project/src/{ingest,embed,serve}.py
+ls -R project | grep '\.py$'
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
 ### Verify executable helpers
 
 ```{.bash filename="terminal"}
 ls -l *.sh
+```
+
+### Try It
+
+After creating `hello.sh` in [section 5](#executables-and-permissions), check
+which shell scripts in the current directory are executable:
+
+```{.bash filename="terminal"}
+ls -l *.sh
+```
+
+Look for an `x` in the permission string (e.g. `-rwxr-xr-x`) next to files you
+can run with `./script.sh`.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+### Probe an API with `curl` (and parse JSON with `jq`)
+
+AI work involves a lot of HTTP — model APIs, embedding services, health checks.
+**`curl`** is the shell's Swiss Army knife for sending requests and inspecting
+responses without opening Postman.
+
+A minimal GET with the response body on stdout:
+
+```{.bash filename="terminal"}
+curl -s https://httpbin.org/get
+```
+
+- **`-s`** — silent mode (hides the progress meter so pipes stay clean)
+
+When the response is JSON, **`jq`** filters and formats it. Install `jq` locally
+if you do not have it (`brew install jq` on macOS).
+
+```{.bash filename="terminal"}
+curl -s https://httpbin.org/get | jq '.headers.Host'
+```
+
+For authenticated APIs, pass the key from an environment variable (set in your
+shell or loaded from `.env` — never hard-code it in the command history):
+
+```{.bash filename="terminal"}
+curl -s -H "Authorization: Bearer $OPENAI_API_KEY" \
+  https://api.openai.com/v1/models | jq '.data[].id'
+```
+
+You can practise the `jq` part in the sandbox without network access — save a
+fake response and parse it locally:
+
+```{.bash filename="terminal"}
+printf '{"choices":[{"message":{"content":"pong"}}]}\n' > response.json
+cat response.json | jq '.choices[0].message.content'
+```
+
+::: {.callout-note appearance="simple"}
+The browser sandbox may not include `curl`, `jq`, or outbound network access.
+Run API probes on your local machine or in Codespaces.
+:::
+
+### Try It
+
+Create `response.json` in the sandbox as above and extract the `content` field
+with `jq`. If `jq` is not available in the sandbox, run the same pipeline locally.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
 ```
 
 ## 8) Extension: Run Advanced Commands Locally or in Codespaces
