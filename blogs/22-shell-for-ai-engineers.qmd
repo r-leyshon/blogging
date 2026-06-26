@@ -921,6 +921,50 @@ filesystem state behave as expected for production debugging.
 - Are advanced commands (`kill -9`, `lsof -i`) explained with caution?
 - Does each section include a concrete "why this matters" use case?
 
+## Further reading
+
+A short list of resources worth your time. Each one is widely respected, free, and
+does something this tutorial does not — deeper courses, correct bash habits, dense
+references, or tools you will use for years.
+
+- [**The Unix Shell** (Software Carpentry)](https://swcarpentry.github.io/shell-novice/) —
+  The best structured follow-on from here. Clear lessons, exercises, and a gentle
+  ramp from navigation through scripting. If you liked the hands-on style of this
+  article, start here next.
+
+- [**Bash Guide**](https://mywiki.wooledge.org/BashGuide) and [**Bash Pitfalls**](https://mywiki.wooledge.org/BashPitfalls) (Greg's Wiki) —
+  The bash community's gold standard for doing things *correctly*. The guide teaches
+  good habits; the pitfalls page is a catalogue of ways bash will surprise you.
+  Essential once you start writing scripts that other people (or CI) will run.
+
+- [**The Art of Command Line**](https://github.com/jlevy/the-art-of-command-line) —
+  One dense page of practical CLI wisdom — file processing, debugging, one-liners,
+  macOS and Windows notes. Legendary for a reason (160k+ GitHub stars). Keep it
+  bookmarked and skim a section when you have five minutes.
+
+- [**explainshell.com**](https://explainshell.com/) —
+  Paste any command; get a visual breakdown of every flag and argument against the
+  man page text. Invaluable when you copy a `curl`, `find`, or `tar` one-liner from
+  Stack Overflow and want to know what it actually does before you run it.
+
+- [**tldr pages**](https://tldr.sh/) —
+  Practical examples for everyday commands (`tldr tar`, `tldr curl`). The man page
+  when you need the full spec; tldr when you need to remember the flags you always
+  forget. Install once (`brew install tldr` on macOS) and never leave home without
+  it.
+
+- [**ShellCheck**](https://www.shellcheck.net/) —
+  Static analysis for shell scripts. Paste a script or hook it into your editor; it
+  catches quoting bugs, portability issues, and logic traps before they bite you in
+  production. Non-negotiable once you are writing glue scripts for real.
+
+- [**Bite size bash**](https://wizardzines.com/zines/bite-size-bash/) (Julia Evans) —
+  A short, illustrated zine on how bash *actually* works — quoting, `if` tests,
+  variables, and the gotchas experienced programmers still trip over. Her
+  [terminal deep-dives](https://jvns.ca/blog/2025/06/24/new-zine--the-secret-rules-of-the-terminal/)
+  are excellent if you want to understand *why* the terminal feels inconsistent
+  (spoiler: it is four different programs pretending to be one).
+
 ## Wrap-up
 
 Shell skills compound quickly. Start with navigation and pipes, add pattern
