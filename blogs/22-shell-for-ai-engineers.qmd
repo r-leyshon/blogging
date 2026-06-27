@@ -18,6 +18,7 @@ css:
   - /./www/17-quarto-comments/styles.css
   - /./www/shell-dock/shell-dock.css
   - /./www/shell-challenges/shell-challenges.css
+  - /./www/shell-challenges/shell-tryit-panels.css
 code-annotations: select
 execute:
   eval: false
@@ -198,6 +199,7 @@ See the full [Glossary](#glossary) at the end of this article for every command
 and term with links back to where it is introduced.
 
 ```{=html}
+<link rel="stylesheet" href="/./www/shell-challenges/shell-tryit-panels.css" />
 <link rel="preconnect" href="https://esm.sh" crossorigin />
 <div id="shell-dock" class="shell-dock shell-dock--collapsed" aria-label="Interactive shell sandbox panel">
   <div class="shell-dock-header">

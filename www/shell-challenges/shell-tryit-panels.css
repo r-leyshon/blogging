@@ -1,0 +1,141 @@
+/* Try It exercise panels — full section glass wrap (indigo accent) */
+
+body:has(#shell-dock) {
+  --shell-tryit-accent: #6366f1;
+  --shell-tryit-accent-soft: rgba(99, 102, 241, 0.42);
+  --shell-tryit-accent-glow: rgba(99, 102, 241, 0.32);
+  --shell-tryit-border: rgba(99, 102, 241, 0.28);
+  --shell-tryit-bg-top: rgba(255, 255, 255, 0.82);
+  --shell-tryit-bg-mid: rgba(238, 242, 255, 0.62);
+  --shell-tryit-bg-bot: rgba(255, 255, 255, 0.72);
+  --shell-tryit-inset: rgba(255, 255, 255, 0.94);
+  --shell-tryit-shadow: rgba(99, 102, 241, 0.16);
+}
+
+body.quarto-dark:has(#shell-dock) {
+  --shell-tryit-accent: #818cf8;
+  --shell-tryit-accent-soft: rgba(129, 140, 248, 0.5);
+  --shell-tryit-accent-glow: rgba(129, 140, 248, 0.38);
+  --shell-tryit-border: rgba(129, 140, 248, 0.3);
+  --shell-tryit-bg-top: rgba(33, 37, 41, 0.78);
+  --shell-tryit-bg-mid: rgba(38, 36, 62, 0.58);
+  --shell-tryit-bg-bot: rgba(33, 37, 41, 0.72);
+  --shell-tryit-inset: rgba(255, 255, 255, 0.05);
+  --shell-tryit-shadow: rgba(0, 0, 0, 0.38);
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] {
+  position: relative;
+  margin: 2rem 0 2.25rem;
+  padding: 1.15rem 1.4rem 1.4rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--shell-tryit-border);
+  border-left: 4px solid var(--shell-tryit-accent);
+  background: linear-gradient(
+    145deg,
+    var(--shell-tryit-bg-top) 0%,
+    var(--shell-tryit-bg-mid) 46%,
+    var(--shell-tryit-bg-bot) 100%
+  );
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    0 8px 28px var(--shell-tryit-shadow),
+    0 1px 0 var(--shell-tryit-inset) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+  scroll-margin-top: 5rem;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8) 35%,
+    rgba(255, 255, 255, 0.8) 65%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+body.quarto-dark:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"]::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(129, 140, 248, 0.35) 35%,
+    rgba(129, 140, 248, 0.35) 65%,
+    transparent
+  );
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] > h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 1rem;
+  padding: 0 0 0.75rem;
+  border: none;
+  border-bottom: 1px solid var(--shell-tryit-border);
+  background: none;
+  box-shadow: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--shell-tryit-accent);
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] > h3::before {
+  content: "▸";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(145deg, var(--shell-tryit-accent) 0%, #4f46e5 100%);
+  color: #fff;
+  font-size: 0.55rem;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: 0 2px 8px var(--shell-tryit-accent-glow);
+  flex-shrink: 0;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] > :last-child {
+  margin-bottom: 0;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] p:last-child,
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .shell-challenge:last-child,
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .shell-dock-open-btn:last-child {
+  margin-bottom: 0;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .code-with-filename {
+  margin-top: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .shell-challenge {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .shell-dock-open-btn {
+  margin-top: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] {
+    padding: 1rem 1rem 1.15rem;
+    margin: 1.65rem 0 1.85rem;
+  }
+}
