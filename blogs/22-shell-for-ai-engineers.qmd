@@ -13,6 +13,7 @@ categories:
 image: /./www/22-shell-for-ai-engineers/intro-img.webp
 image-alt: "A glowing cyberpunk Koopa shell hovering above a neon terminal"
 toc: true
+toc-depth: 2
 css:
   - /./www/17-quarto-comments/styles.css
   - /./www/shell-dock/shell-dock.css
@@ -28,7 +29,7 @@ execute:
 ### A note on platforms {#a-note-on-platforms}
 
 This tutorial assumes a **Linux-like terminal** — bash or zsh on macOS, Linux,
-[GitHub Codespaces](#what-is-codespaces), or similar (see [How to use this
+GitHub Codespaces, or similar (see [How to use this
 article](#choose-your-environment)). That is where most AI tooling, containers,
 and CI pipelines expect you to work.
 
@@ -230,7 +231,7 @@ long pipeline every time you want to tweak it.
 - **Up arrow** — step back through previous commands
 - **Down arrow** — step forward again through that history
 
-Works in the **browser sandbox** (see [Browser sandbox](#browser-sandbox) tab).
+Works in the **browser sandbox**.
 
 This is especially useful when you are iterating on something fiddly: a **`grep`**
 search (you will meet it in [section 3](#grep-chaining)), a **`curl`** HTTP call
@@ -264,8 +265,7 @@ This saves time and cuts down on typos — particularly handy for long paths lik
 hit **Tab**.
 
 Not supported in the **browser sandbox** — practise on a **local terminal** or
-in **GitHub Codespaces** ([Local terminal](#local-terminal) /
-[GitHub Codespaces](#what-is-codespaces) tabs).
+in **GitHub Codespaces**.
 
 ### Try It
 
@@ -290,8 +290,7 @@ On Linux terminals, the equivalents are usually **Ctrl+A** / **Ctrl+E** for the
 start and end of the line, and **Alt + ←** / **Alt + →** to move word by word.
 
 Not supported in the **browser sandbox** — practise on a **local terminal** or
-in **GitHub Codespaces** ([Local terminal](#local-terminal) /
-[GitHub Codespaces](#what-is-codespaces) tabs).
+in **GitHub Codespaces**.
 
 ### Try It
 
@@ -335,8 +334,7 @@ history | grep grep
 ```
 
 **Ctrl+R** is not available in the **browser sandbox** — use a **local terminal**
-or **GitHub Codespaces** ([Local terminal](#local-terminal) /
-[GitHub Codespaces](#what-is-codespaces) tabs).
+or **GitHub Codespaces**.
 
 ### Try It
 
@@ -346,118 +344,6 @@ search is not available in the browser sandbox.
 
 ```{=html}
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
-```
-
-### Use a DRY_RUN flag before you trust a command {#dry-run-flag}
-
-Oftentimes you may be concerned about running a command. You might be touching
-real files, calling a live API, or changing application state — and hoping for
-the best is not a strategy.
-
-A common pattern is a **DRY_RUN** flag. Instead of performing the action, the
-script prints what it *would* do. You inspect the output (on screen or in a log
-file). If it looks right, run again without the flag and trust the result.
-
-Some familiar commands have a built-in safety switch. For example, **`rm`**
-(remove/delete) with the **`-i`** flag asks you to confirm before each delete:
-
-```{.bash filename="terminal"}
-rm -i notes.txt
-```
-
-For your own scripts, an environment variable keeps things simple:
-
-```{.bash filename="terminal"}
-# safe preview
-DRY_RUN=1 ./cleanup_old_embeddings.sh
-
-# real run, only after the preview looked correct
-./cleanup_old_embeddings.sh
-```
-
-A minimal pattern inside a script might look like this. **`find`** searches the
-filesystem; **`-type f`** limits to files, **`-mtime +30`** finds files older than
-30 days, and **`-delete`** removes them (we only run that branch when `DRY_RUN`
-is not set):
-
-```{.bash filename="terminal"}
-if [ "$DRY_RUN" = "1" ]; then
-  echo "Would delete files older than 30 days in ./cache/"
-else
-  find ./cache/ -type f -mtime +30 -delete
-fi
-```
-
-You can redirect dry-run output to a log for a paper trail. **`>>`** appends
-output to a file (you will not see it on screen unless you open the log):
-
-```{.bash filename="terminal"}
-DRY_RUN=1 ./cleanup_old_embeddings.sh >> dry-run.log
-```
-
-**`tee`** does both — it prints to the terminal *and* writes to the file at the
-same time. That is handy when you want to inspect the preview immediately while
-still keeping a record:
-
-```{.bash filename="terminal"}
-DRY_RUN=1 ./cleanup_old_embeddings.sh | tee dry-run.log
-```
-
-Use `>>` when you only need the log. Use `tee` when you want to read the output
-and save it in one step.
-
-This is especially wise when a command is destructive, expensive, or hard to
-undo — bulk deletes, deployment scripts, or anything that hits production data.
-
-For quick **one-liners**, you do not always need a full script. **`echo`**
-prints text to the terminal — use it to preview a destructive command first,
-then run the real thing once you are satisfied:
-
-```{.bash filename="terminal"}
-# preview
-echo rm ./logs/*.json
-
-# enact
-rm ./logs/*.json
-```
-
-With variables or wildcard patterns like `*.json`, `echo` shows you how the
-shell will expand things before anything irreversible happens (we cover globs
-properly in [section 4](#globs-and-brace-expansion)):
-
-```{.bash filename="terminal"}
-TARGET="./cache/embeddings"
-echo rm -rf "$TARGET"
-# rm -rf "$TARGET"
-```
-
-The same idea works inside pipelines. Swap the destructive command for `echo`
-temporarily:
-
-```{.bash filename="terminal"}
-find ./tmp -name "*.bak" -exec echo rm {} \;
-# find ./tmp -name "*.bak" -exec rm {} \;
-```
-
-If the echoed output looks right, rerun without `echo` and let the command do
-its job.
-
-### Try It
-
-In the sandbox, save the script pattern above as `dry_demo.sh` using a heredoc
-(same idea as [section 6](#executables-and-permissions)), make it executable with
-`chmod +x`, then run `DRY_RUN=1 ./dry_demo.sh` followed by `./dry_demo.sh` and
-compare the behaviour. Then try `echo rm ./welcome.txt` before actually
-removing anything.
-
-```{=html}
-<div class="shell-challenge" data-challenge-id="dry-run-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
-</div>
 ```
 
 ### Know your `~/.zshrc` and history file {#know-your-zshrc-and-history-file}
@@ -488,8 +374,7 @@ On Linux with **bash**, the same ideas apply but the files are often named
 `~/.bashrc` and `~/.bash_history` instead.
 
 The browser sandbox does not use your real `~/.zshrc` — these files matter on a
-**local terminal** or in **GitHub Codespaces** ([Local terminal](#local-terminal)
-/ [GitHub Codespaces](#what-is-codespaces) tabs).
+**local terminal** or in **GitHub Codespaces**.
 
 ::: {.callout-warning appearance="simple"}
 Be careful what you put in `~/.zshrc`. It runs automatically every time you open
@@ -586,8 +471,8 @@ If a path or filename might contain spaces, wrap it in **double quotes**. If you
 are passing a fixed pattern to **`grep`** (search lines), **single quotes** are
 often simpler.
 
-You already saw `"$TARGET"` in the DRY_RUN hints — that is double-quoting a
-variable so the shell treats it as one path even when the value contains spaces.
+When you expand a variable in a path, wrap it in double quotes — `"$TARGET"`
+treats the whole value as one path even when it contains spaces.
 
 ### Try It
 
@@ -984,6 +869,115 @@ Walk through the full flow in the sandbox:
 </div>
 ```
 
+### Use a DRY_RUN flag before you trust a script {#dry-run-flag}
+
+Once you are writing scripts, you will often touch real files, call live APIs,
+or change application state — and hoping for the best is not a strategy.
+
+A common pattern is a **DRY_RUN** flag. Instead of performing the action, the
+script prints what it *would* do. You inspect the output (on screen or in a log
+file). If it looks right, run again without the flag and trust the result.
+
+Some familiar commands have a built-in safety switch. For example, **`rm`**
+(remove/delete) with the **`-i`** flag asks you to confirm before each delete:
+
+```{.bash filename="terminal"}
+rm -i notes.txt
+```
+
+For your own scripts, an environment variable keeps things simple:
+
+```{.bash filename="terminal"}
+# safe preview
+DRY_RUN=1 ./cleanup_old_embeddings.sh
+
+# real run, only after the preview looked correct
+./cleanup_old_embeddings.sh
+```
+
+A minimal pattern inside a script might look like this. **`find`** searches the
+filesystem; **`-type f`** limits to files, **`-mtime +30`** finds files older than
+30 days, and **`-delete`** removes them (we only run that branch when `DRY_RUN`
+is not set):
+
+```{.bash filename="terminal"}
+if [ "$DRY_RUN" = "1" ]; then
+  echo "Would delete files older than 30 days in ./cache/"
+else
+  find ./cache/ -type f -mtime +30 -delete
+fi
+```
+
+You can redirect dry-run output to a log for a paper trail. **`>>`** appends
+output to a file (you will not see it on screen unless you open the log):
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./cleanup_old_embeddings.sh >> dry-run.log
+```
+
+**`tee`** does both — it prints to the terminal *and* writes to the file at the
+same time. That is handy when you want to inspect the preview immediately while
+still keeping a record:
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./cleanup_old_embeddings.sh | tee dry-run.log
+```
+
+Use `>>` when you only need the log. Use `tee` when you want to read the output
+and save it in one step.
+
+This is especially wise when a command is destructive, expensive, or hard to
+undo — bulk deletes, deployment scripts, or anything that hits production data.
+
+For quick **one-liners**, you do not always need a full script. **`echo`**
+prints text to the terminal — use it to preview a destructive command first,
+then run the real thing once you are satisfied:
+
+```{.bash filename="terminal"}
+# preview
+echo rm ./logs/*.json
+
+# enact
+rm ./logs/*.json
+```
+
+With variables or wildcard patterns like `*.json`, `echo` shows you how the
+shell will expand things before anything irreversible happens:
+
+```{.bash filename="terminal"}
+TARGET="./cache/embeddings"
+echo rm -rf "$TARGET"
+# rm -rf "$TARGET"
+```
+
+The same idea works inside pipelines. Swap the destructive command for `echo`
+temporarily:
+
+```{.bash filename="terminal"}
+find ./tmp -name "*.bak" -exec echo rm {} \;
+# find ./tmp -name "*.bak" -exec rm {} \;
+```
+
+If the echoed output looks right, rerun without `echo` and let the command do
+its job.
+
+### Try It
+
+In the sandbox, save the script pattern above as `dry_demo.sh` using a heredoc
+(as above), make it executable with `chmod +x`, then run `DRY_RUN=1 ./dry_demo.sh`
+followed by `./dry_demo.sh` and compare the behaviour. Then try
+`echo rm ./welcome.txt` before actually removing anything.
+
+```{=html}
+<div class="shell-challenge" data-challenge-id="dry-run-1">
+  <div class="shell-challenge-actions">
+    <button type="button" class="shell-challenge-start">Start challenge</button>
+    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+  </div>
+  <p class="shell-challenge-status" aria-live="polite"></p>
+</div>
+```
+
 ## 7) Processes, Ports, and Signals {#processes-ports-and-signals}
 
 Now we're in classic operations/debugging territory.
@@ -1036,9 +1030,7 @@ In real projects, this is often the fastest answer to:
 "Why won't my service start on this port?"
 
 Use a **local terminal** or **GitHub Codespaces** for full-fidelity process and
-network debugging ([Local terminal](#local-terminal) / [GitHub
-Codespaces](#what-is-codespaces) tabs) — the browser sandbox may not reproduce
-host networking behaviour.
+network debugging — the browser sandbox may not reproduce host networking behaviour.
 
 ### Try It
 
@@ -1052,7 +1044,7 @@ ps -ef | grep sleep | grep -v grep
 
 Copy the PID from the `ps` output (the number in the second column).
 
-**Locally or in [Codespaces](#what-is-codespaces)** — stop it gracefully, then check it is gone:
+**Locally or in Codespaces** — stop it gracefully, then check it is gone:
 
 ```{.bash filename="terminal"}
 kill <PID>
@@ -1180,14 +1172,13 @@ cat response.json | jq '.choices[0].message.content'
 ```
 
 The browser sandbox may not include `curl`, `jq`, or outbound network access.
-Run API probes on a **local terminal** or in **GitHub Codespaces** ([Local
-terminal](#local-terminal) / [GitHub Codespaces](#what-is-codespaces) tabs).
+Run API probes on a **local terminal** or in **GitHub Codespaces**.
 
 ### Try It
 
 Create `response.json` in the sandbox as above and extract the `content` field
 with `jq`. If `jq` is not available in the sandbox, run the same pipeline on
-your local machine or in [Codespaces](#what-is-codespaces).
+your local machine or in Codespaces.
 
 ```{=html}
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
@@ -1231,7 +1222,7 @@ it is introduced — use this when you meet something unfamiliar mid-challenge.
   `-` (`ls -la`, `grep -v`).
 - **[For loop](#simple-for-loops)** — Repeat commands for each item in a list
   (`for f in *.log; do ... done`).
-- **[GitHub Codespaces](#what-is-codespaces)** — Cloud Linux dev environment with VS
+- **[GitHub Codespaces](#choose-your-environment)** — Cloud Linux dev environment with VS
   Code and a real terminal in the browser.
 - **[Glob](#globs-and-brace-expansion)** — Wildcard filename pattern (`*.json`,
   `logs/*.log`).
