@@ -21,6 +21,7 @@ let history = [];
 let historyIndex = -1;
 let activeExerciseId = null;
 let onDataHandler = null;
+let sessionEnv = {};
 
 function showError(message) {
   const el = document.getElementById("terminal");
@@ -62,16 +63,47 @@ function buildInitialFiles(exercise) {
   return files;
 }
 
+function getExecEnv() {
+  return { ...DEFAULT_ENV, ...sessionEnv };
+}
+
 function createBashInstance(files) {
   return new Bash({
     files,
     cwd: HOME,
-    env: { ...DEFAULT_ENV },
+    env: getExecEnv(),
   });
 }
 
+function parseExportValue(raw) {
+  const trimmed = raw.trim();
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
+function applyExportLine(line) {
+  const trimmed = line.trim();
+  if (!trimmed.startsWith("export ")) {
+    return false;
+  }
+
+  const assignment = trimmed.slice(7).trim();
+  const match = assignment.match(/^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/);
+  if (!match) {
+    return false;
+  }
+
+  sessionEnv[match[1]] = parseExportValue(match[2]);
+  return true;
+}
+
 async function evaluateCheck(check) {
-  const result = await bash.exec(check.run, { cwd: HOME });
+  const result = await bash.exec(check.run, { cwd: HOME, env: getExecEnv() });
   const stdout = normalizeStdout(result.stdout);
   const stderr = normalizeStdout(result.stderr);
   const failures = [];
@@ -163,7 +195,7 @@ async function resolveCd(target) {
     ? `'${destination.replace(/'/g, `'\\''`)}'`
     : destination;
 
-  const result = await bash.exec(`cd ${quoted} && pwd`, { cwd: sessionCwd });
+  const result = await bash.exec(`cd ${quoted} && pwd`, { cwd: sessionCwd, env: getExecEnv() });
   if (result.exitCode !== 0) {
     return { ok: false, message: result.stderr || result.stdout };
   }
@@ -196,7 +228,12 @@ async function runCommand(line) {
     return;
   }
 
-  const result = await bash.exec(trimmed, { cwd: sessionCwd });
+  if (applyExportLine(trimmed)) {
+    writePrompt();
+    return;
+  }
+
+  const result = await bash.exec(trimmed, { cwd: sessionCwd, env: getExecEnv() });
   if (result.stdout) {
     term.write(result.stdout.endsWith("\n") ? result.stdout : `${result.stdout}\n`);
   }
@@ -273,6 +310,7 @@ function resetSessionState() {
   inputBuffer = "";
   history = [];
   historyIndex = -1;
+  sessionEnv = {};
 }
 
 async function resetForExercise(exerciseId) {

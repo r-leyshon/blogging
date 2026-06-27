@@ -6,6 +6,7 @@
     {
       "id": "dry-run-1",
       "title": "DRY_RUN preview",
+      "browserCompat": "partial",
       "checks": [
         {
           "label": "dry_demo.sh exists and is executable",
@@ -23,6 +24,7 @@
     {
       "id": "quotes-1",
       "title": "Quoting paths",
+      "browserCompat": "full",
       "checks": [
         {
           "label": "Created notes draft.txt (filename with a space)",
@@ -34,6 +36,7 @@
     {
       "id": "fundamentals-1",
       "title": "Shell fundamentals",
+      "browserCompat": "full",
       "setup": {
         "/home/user/.sandbox_marker": "I am a hidden file.\n"
       },
@@ -48,6 +51,7 @@
     {
       "id": "pipes-1",
       "title": "Pipes and wc -l",
+      "browserCompat": "full",
       "setup": {
         "/home/user/fruits.txt": "apple\nbanana\napricot\n"
       },
@@ -67,6 +71,10 @@
     {
       "id": "grep-1",
       "title": "Grep chaining",
+      "browserCompat": "full",
+      "setup": {
+        "/home/user/app.log": "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\nlevel=warn cache_miss\nlevel=error oom\n"
+      },
       "checks": [
         {
           "label": "Filtered log shows only ERROR timeout",
@@ -78,6 +86,7 @@
     {
       "id": "globs-1",
       "title": "Brace expansion",
+      "browserCompat": "full",
       "checks": [
         {
           "label": "eval_metrics.py exists",
@@ -94,6 +103,7 @@
     {
       "id": "for-loops-1",
       "title": "For loops over logs",
+      "browserCompat": "partial",
       "checks": [
         {
           "label": "logs/alpha.log exists",
@@ -115,6 +125,7 @@
     {
       "id": "permissions-1",
       "title": "Executable scripts",
+      "browserCompat": "partial",
       "checks": [
         {
           "label": "hello.sh is executable",
@@ -132,6 +143,7 @@
     {
       "id": "glue-logs-1",
       "title": "Filter noisy logs",
+      "browserCompat": "full",
       "setup": {
         "/home/user/app.log": "INFO startup\nERROR oom\nERROR healthcheck failed\nERROR timeout\n"
       },
@@ -146,6 +158,7 @@
     {
       "id": "glue-inventory-1",
       "title": "Python file inventory",
+      "browserCompat": "full",
       "setup": {
         "/home/user/project/src/ingest.py": "",
         "/home/user/project/src/embed.py": "",
@@ -162,6 +175,7 @@
     {
       "id": "glue-scripts-1",
       "title": "Verify executable helpers",
+      "browserCompat": "full",
       "setup": {
         "/home/user/hello.sh": "#!/usr/bin/env bash\necho Hello from shell\n"
       },

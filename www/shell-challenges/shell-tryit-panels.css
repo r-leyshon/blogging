@@ -119,16 +119,6 @@ body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] 
   margin-bottom: 0;
 }
 
-body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .code-with-filename {
-  margin-top: 0.85rem;
-  margin-bottom: 0.85rem;
-}
-
-body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .shell-challenge {
-  margin-top: 1rem;
-  margin-bottom: 0;
-}
-
 body:has(#shell-dock) main#quarto-document-content section.level3[id^="try-it"] .shell-dock-open-btn {
   margin-top: 0.85rem;
 }

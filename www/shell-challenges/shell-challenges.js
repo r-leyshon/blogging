@@ -1,5 +1,5 @@
 (function () {
-  const challenges = document.querySelectorAll(".shell-challenge[data-challenge-id]");
+  const challenges = document.querySelectorAll(".shell-challenge[id], .shell-challenge[data-challenge-id]");
   if (!challenges.length) {
     return;
   }
@@ -111,7 +111,11 @@
       block.prepend(label);
     }
 
-    const exerciseId = block.dataset.challengeId;
+    const exerciseId = block.dataset.challengeId || block.id;
+    if (!exerciseId) {
+      return;
+    }
+
     const startBtn = block.querySelector(".shell-challenge-start");
     const checkBtn = block.querySelector(".shell-challenge-check");
 
@@ -144,7 +148,7 @@
 
     if (data.type === "shell:reset-complete") {
       const block = document.querySelector(
-        `.shell-challenge[data-challenge-id="${data.exerciseId}"]`
+        `#${data.exerciseId}.shell-challenge, .shell-challenge[data-challenge-id="${data.exerciseId}"]`
       );
       if (block) {
         setStatus(
@@ -159,7 +163,7 @@
 
     if (data.type === "shell:check-result") {
       const block = document.querySelector(
-        `.shell-challenge[data-challenge-id="${data.exerciseId}"]`
+        `#${data.exerciseId}.shell-challenge, .shell-challenge[data-challenge-id="${data.exerciseId}"]`
       );
       if (block) {
         renderResults(block, data);
@@ -169,7 +173,7 @@
 
     if (data.type === "shell:error") {
       const block = document.querySelector(
-        `.shell-challenge[data-challenge-id="${data.exerciseId}"]`
+        `#${data.exerciseId}.shell-challenge, .shell-challenge[data-challenge-id="${data.exerciseId}"]`
       );
       if (block) {
         setStatus(block, "is-failed", `Sandbox error: ${data.message}`);

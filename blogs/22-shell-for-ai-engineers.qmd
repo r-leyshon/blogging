@@ -19,6 +19,7 @@ css:
   - /./www/shell-dock/shell-dock.css
   - /./www/shell-challenges/shell-challenges.css
   - /./www/shell-challenges/shell-tryit-panels.css
+  - /./www/shell-challenges/shell-env-filter.css
 code-annotations: select
 execute:
   eval: false
@@ -73,10 +74,10 @@ experience. If you are already fluent in shell, skip ahead to
 
 ## How To Use This Article {#choose-your-environment}
 
-Pick how you want to follow along. The **browser sandbox** is the default for
-interactive challenges; switch to a **local terminal** or **GitHub Codespaces**
-when an exercise needs keyboard shortcuts, process control, or tools the sandbox
-does not provide.
+Pick how you want to follow along. Your choice in the tabs below **filters the
+Try It panels and challenges** in the rest of the article — you only see exercises
+that match your environment. Switch tabs any time; no need to read warnings in
+every section about what works where.
 
 ::: {.panel-tabset}
 
@@ -87,7 +88,7 @@ does not provide.
 ```
 
 Use the **shell sandbox** panel at the bottom of this page — a simulated bash
-environment (**just-bash**) that runs in your browser, not on your machine.
+environment that runs in your browser, not on your machine.
 
 **Getting started**
 
@@ -97,29 +98,19 @@ environment (**just-bash**) that runs in your browser, not on your machine.
   clean environment, complete the task, then **Check my work** for automated
   feedback.
 
-**Rules**
+**Good to know**
 
+- This is a learning sandbox, not a full Linux terminal — behaviour differs in
+  places (permissions, processes, networking, keyboard shortcuts).
 - Sessions are ephemeral — refreshing the page usually resets your environment.
 - Do **not** paste secrets, tokens, private keys, or credentials.
-- Commands here are intentionally low-risk and learning-oriented.
-- This is not full Linux parity: process, network, and some tooling may differ
-  from your laptop.
 
-**Keyboard shortcuts that work here**
+**Best for:** navigation, pipes, grep, globs, quoting, glue workflows, and
+automated challenges.
 
-- **Up** / **Down** arrow — step through command history.
-
-**Not supported in the sandbox** (use the **Local terminal** or **GitHub
-Codespaces** tabs instead)
-
-- **Tab** completion
-- **Ctrl+R** reverse history search
-- Line-jump **modifier keys** (⌘/⌥ on macOS; Ctrl+A/E or Alt+arrows on Linux)
-
-**Best for**
-
-- Fundamentals, pipes, grep, globs, loops, permissions, and other
-  challenge-backed exercises in this article.
+**Switch to Local or Codespaces for:** Tab completion, Ctrl+R/C, line-editing
+shortcuts, background jobs, `curl`, your real shell config files, and anything
+that needs full host fidelity.
 
 ### Local terminal {#local-terminal}
 
@@ -133,8 +124,8 @@ on Linux, **WSL** or **Git Bash** on Windows, or similar.
 **Getting started**
 
 - Open your terminal application and follow the **Try It** steps in each section.
-- Challenge **Check my work** buttons target the browser sandbox only — here you
-  self-check against the expected output described in each exercise.
+- Challenge **Check my work** buttons use the browser sandbox — here, self-check
+  against the expected output in each exercise.
 
 **What you get**
 
@@ -179,9 +170,7 @@ machine with VS Code in your browser and a real terminal, hosted by GitHub.
 
 **Best for**
 
-- Everything the browser sandbox cannot do, without installing tools locally.
-  Especially keyboard shortcuts, section 7 (processes), and section 8 (`curl` /
-  `jq`).
+- Same as **Local terminal** when you want a real Linux shell without local setup.
 
 <a href="https://docs.github.com/en/codespaces" target="_blank" rel="noopener noreferrer">GitHub Codespaces documentation</a> (opens in a new tab).
 
@@ -233,19 +222,31 @@ long pipeline every time you want to tweak it.
 - **Up arrow** — step back through previous commands
 - **Down arrow** — step forward again through that history
 
-Works in the **browser sandbox**.
-
 This is especially useful when you are iterating on something fiddly: a **`grep`**
 search (you will meet it in [section 3](#grep-chaining)), a **`curl`** HTTP call
 ([section 8](#probe-an-api-with-curl-and-parse-json-with-jq)), or a script you
 keep running with small edits. A **pipeline** chains commands with `|` — also
-coming in section 2.
-Run the command once, press **Up**, adjust a word or two, press **Enter**.
+coming in section 2. Run the command once, press **Up**, adjust a word or two,
+press **Enter**.
 
 ### Try It
 
-Open the sandbox and run a few different commands, then use the arrow keys to
-bring an earlier one back to the prompt without retyping it.
+Open the panel and build a little history, then walk back through it with the
+arrow keys:
+
+1. Run **`pwd`**
+2. Run **`ls`**
+3. Run **`echo "history practice"`**
+4. Run **`ls -la`**
+
+Now navigate without retyping:
+
+5. Press **Up** once — you should see `ls -la` at the prompt
+6. Press **Up** again — `echo "history practice"`
+7. Press **Up** again — `ls`
+8. Press **Down** twice — forward again to `echo "history practice"`, then
+   `ls -la`
+9. Press **Enter** to run whichever command is showing
 
 ```{=html}
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
@@ -266,14 +267,18 @@ This saves time and cuts down on typos — particularly handy for long paths lik
 `project/src/eval_metrics.py` when you only need to type `project/src/e` and
 hit **Tab**.
 
-Not supported in the **browser sandbox** — practise on a **local terminal** or
-in **GitHub Codespaces**.
-
 ### Try It
 
-On your **local terminal** or in **Codespaces** (not the browser sandbox): create
-a file with **`touch my-long-filename.txt`**, then type **`cat my-l`** and press
-**Tab** to complete the name before pressing **Enter**.
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Create a file with **`touch my-long-filename.txt`**, then type **`cat my-l`**
+and press **Tab** to complete the name before pressing **Enter**.
+
+```{=html}
+</div>
+```
 
 ### Jump around the command line with modifier keys {#jump-around-the-command-line-with-modifier-keys}
 
@@ -291,13 +296,13 @@ retyping the whole thing. Jump to the word, edit it, **Enter**.
 On Linux terminals, the equivalents are usually **Ctrl+A** / **Ctrl+E** for the
 start and end of the line, and **Alt + ←** / **Alt + →** to move word by word.
 
-Not supported in the **browser sandbox** — practise on a **local terminal** or
-in **GitHub Codespaces**.
-
 ### Try It
 
-On your **local terminal** or in **Codespaces** (not the browser sandbox), type
-a long command such as the one below — it uses **`grep`** (search lines),
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Type a long command such as the one below — it uses **`grep`** (search lines),
 **`wc -l`** (count lines), and **`|`** (pipe output along). You do not need to
 memorise it yet; the goal is cursor practice:
 
@@ -307,6 +312,10 @@ grep ERROR app.log | grep -v retry | wc -l
 
 Use **⌘ + ←** and **⌥ + →** to move the cursor without retyping. On Linux, try
 **Ctrl+A** and **Alt + →** instead.
+
+```{=html}
+</div>
+```
 
 ### Search your command history {#search-your-command-history}
 
@@ -335,17 +344,23 @@ the built-in **`history`** command:
 history | grep grep
 ```
 
-**Ctrl+R** is not available in the **browser sandbox** — use a **local terminal**
-or **GitHub Codespaces**.
-
 ### Try It
 
-In the **sandbox**, run a few commands and use **Up** to bring an earlier one
-back. For **Ctrl+R**, use your **local terminal** or **Codespaces** — reverse
-search is not available in the browser sandbox.
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+If you have not done the [arrow-key exercise](#use-arrow-keys-to-navigate-prior-commands-work-smart-not-hard)
+above, run through steps 1–9 there first. With those four commands already in
+your history, try reverse search:
+
+1. Press **Ctrl+R**
+2. Type **`echo`** — the shell should surface `echo "history practice"`
+3. Press **Ctrl+R** again to step to any older match that contains `echo`
+4. Press **Enter** to run the command, or use the arrow keys to edit it first
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+</div>
 ```
 
 ### Know your `~/.zshrc` and history file {#know-your-zshrc-and-history-file}
@@ -375,9 +390,6 @@ days, not just the current session. The history file is the shell's memory;
 On Linux with **bash**, the same ideas apply but the files are often named
 `~/.bashrc` and `~/.bash_history` instead.
 
-The browser sandbox does not use your real `~/.zshrc` — these files matter on a
-**local terminal** or in **GitHub Codespaces**.
-
 ::: {.callout-warning appearance="simple"}
 Be careful what you put in `~/.zshrc`. It runs automatically every time you open
 a terminal. Do **not** store secrets (API keys, passwords) here unless you
@@ -387,10 +399,18 @@ repository.
 
 ### Try It
 
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
 On your local machine, run `echo $SHELL` to see which shell you are using, then
 `ls -la ~/.zshrc ~/.zsh_history` (or `~/.bashrc` / `~/.bash_history` on Linux).
 Open `~/.zshrc` in your editor and see whether you recognise any aliases or
 `export` lines already there.
+
+```{=html}
+</div>
+```
 
 ### Stop a runaway command with Ctrl+C {#stop-a-runaway-command-with-ctrlc}
 
@@ -407,15 +427,19 @@ terminal window when something is hanging.
 
 ### Try It
 
-In the sandbox or your local terminal, run **`sleep`** (pause for N seconds) and
-press **Ctrl+C** before it finishes. You should return to the prompt immediately.
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Run **`sleep 60`**, then press **Ctrl+C** before the minute is up. You should
+return to the prompt immediately.
 
 ```{.bash filename="terminal"}
 sleep 60
 ```
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+</div>
 ```
 
 ### When things go wrong, read the error first {#when-things-go-wrong-read-the-error-first}
@@ -434,17 +458,39 @@ asked for and what exists on disk (or in your `PATH`).
 
 ### Try It
 
-In the sandbox, trigger each error on purpose and read the message before fixing
-it:
+Trigger each error on purpose and read the message before fixing it. Run these
+one at a time.
 
 ```{.bash filename="terminal"}
-typo_command          # command not found
-cat secret.txt          # no such file (until you create it)
-touch locked.txt && chmod 000 locked.txt && cat locked.txt   # permission denied
+typo_command
 ```
 
-**`touch`** creates an empty file; **`chmod`** changes permissions (`000` removes
-all access, so `cat` fails). **`&&`** runs the next command only if the previous
+```{.bash filename="terminal"}
+cat secret.txt
+```
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+```{.bash filename="terminal"}
+touch locked.txt
+```
+
+```{.bash filename="terminal"}
+chmod 000 locked.txt
+```
+
+```{.bash filename="terminal"}
+cat locked.txt
+```
+
+```{=html}
+</div>
+```
+
+**`touch`** creates an empty file. **`chmod`** changes permissions. Elsewhere in
+this tutorial, **`&&`** chains commands so each step runs only if the previous
 one succeeded.
 
 ```{=html}
@@ -456,46 +502,71 @@ one succeeded.
 The shell splits your command on **spaces** unless you tell it not to. Quotes
 control that — and they behave differently.
 
-- **Single quotes `'...'`** — everything inside is literal. No variable expansion.
-- **Double quotes `"..."`** — variables like `$HOME` expand; most other
+Before the shell runs a command, it often **replaces** shorthand in what you typed
+with the real value. That replacement step is called **expansion**. For example,
+if you write `echo $HOME`, the shell expands `$HOME` to your home directory path
+(such as `/Users/you`) and then runs `echo` with that path. Globs like `*.txt`
+expand to a list of matching filenames — you will meet those in
+[section 4](#globs-and-brace-expansion).
+
+Quotes tell the shell how much expansion to allow:
+
+- **Single quotes `'...'`** — everything inside is literal. The shell does not
+  expand anything; it passes the text exactly as you typed it.
+- **Double quotes `"..."`** — variables like `$HOME` still expand; most other
   characters are literal.
+
+Set a filename with a space:
 
 ```{.bash filename="terminal"}
 FILE="my report.txt"
-touch "$FILE"           # creates one file with a space in the name
-touch $FILE             # without quotes: tries to create two files (my, report.txt)
-
-grep 'ERROR' app.log    # pattern is literal — good for fixed strings
-grep "level=$LOG_LEVEL" app.log   # double quotes when you need a variable inside
 ```
 
-If a path or filename might contain spaces, wrap it in **double quotes**. If you
-are passing a fixed pattern to **`grep`** (search lines), **single quotes** are
-often simpler.
+With quotes, one file:
 
-When you expand a variable in a path, wrap it in double quotes — `"$TARGET"`
-treats the whole value as one path even when it contains spaces.
+```{.bash filename="terminal"}
+touch "$FILE"
+```
 
-### Try It
+Without quotes, the shell splits on spaces — with `FILE="my report.txt"`,
+`touch $FILE` tries to create `my` and `report.txt` as two separate files
+instead of one:
 
-Create a file with a space in the name, then `cat` it with and without quotes to
-see the difference:
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+```{.bash filename="terminal"}
+touch $FILE
+```
+
+```{=html}
+</div>
+```
+
+If a path or filename might contain spaces, wrap it in **double quotes**. When
+you expand a variable in a path, wrap it in double quotes — `"$TARGET"` treats
+the whole value as one path even when it contains spaces. For **`grep`** patterns
+and quotes, see [section 3](#grep-chaining).
+
+::: {#quotes-1 .shell-challenge}
+
+Create a file with a space in the name, then `cat` it:
 
 ```{.bash filename="terminal"}
 touch "notes draft.txt"
 cat "notes draft.txt"
-# cat notes draft.txt    # uncomment to see the error
 ```
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="quotes-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ### Environment variables and `.env` files {#environment-variables}
 
@@ -538,8 +609,16 @@ For a one-off command in your terminal, you can set a variable inline without
 touching a file. **`curl`** fetches a URL over HTTP ([section 8](#probe-an-api-with-curl-and-parse-json-with-jq));
 **`head`** prints the first few lines of output — handy when a response is long:
 
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
 ```{.bash filename="terminal"}
 OPENAI_API_KEY=sk-your-key curl -s https://api.openai.com/v1/models | head
+```
+
+```{=html}
+</div>
 ```
 
 That sets the variable only for that single command — useful for quick tests,
@@ -547,7 +626,7 @@ but `.env` is easier to maintain across a project.
 
 ### Try It
 
-In the sandbox, set a variable and read it back:
+Set a variable and read it back:
 
 ```{.bash filename="terminal"}
 export DEMO_VAR=hello-shell
@@ -574,9 +653,9 @@ cd -         # jump back to previous directory
 **`touch`** creates an empty file (or updates a timestamp). You will use it in
 several challenges.
 
-### Try It
+::: {#fundamentals-1 .shell-challenge}
 
-Run the commands above in the sandbox and answer:
+Run the commands above and answer:
 
 1. Which directory are you in?
 2. Which entries are hidden (start with `.`)?
@@ -586,14 +665,14 @@ After `cd /tmp`, run `touch /tmp/visited.txt` so the checker can confirm you
 reached `/tmp`.
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="fundamentals-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ## 2) Data Flow: Pipes and Redirection {#data-flow-pipes-and-redirection}
 
@@ -616,7 +695,7 @@ grep '^a' fruits.txt | wc -l
   input (a file or piped output). Useful when you want a total, not every matching
   line.
 
-### Try It
+::: {#pipes-1 .shell-challenge}
 
 Add one more fruit with **`echo`** (quick one-line print), appending with **`>>`**
 instead of overwriting with `>`:
@@ -627,14 +706,14 @@ grep '^b' fruits.txt | wc -l
 ```
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="pipes-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ## 3) Grep Chaining {#grep-chaining}
 
@@ -644,45 +723,90 @@ shell tools for quick investigations.
 - **`grep 'PATTERN' file`** — lines containing `PATTERN`
 - **`grep -v 'PATTERN'`** — **v**invert: lines that do *not* match (exclude noise)
 
+### Set up a practice log
+
+Create **`app.log`** once — you will reuse it for every exercise in this section:
+
 ```{.bash filename="terminal"}
-printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\n" > app.log
-cat app.log | grep 'ERROR' | grep -v 'retry'
+printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\nlevel=warn cache_miss\nlevel=error oom\n" > app.log
 ```
 
-The `^` in patterns like `'^a'` means "starts with" (used in section 2).
+See what you are working with:
+
+```{.bash filename="terminal"}
+cat app.log
+```
+
+Try a few searches:
+
+```{.bash filename="terminal"}
+grep 'ERROR' app.log
+```
+
+```{.bash filename="terminal"}
+grep 'INFO' app.log
+```
+
+You should see every line that contains `ERROR`, and only the startup line for
+`INFO`.
+
+### Quotes and patterns
+
+Single quotes keep the search pattern literal; double quotes let variables expand
+(see [quoting](#quote-paths-and-patterns-carefully) if **expansion** is new).
+
+Variable in the pattern — set the variable, then use double quotes:
+
+```{.bash filename="terminal"}
+export LOG_LEVEL=warn
+grep "level=$LOG_LEVEL" app.log
+```
+
+You should see the line containing `level=warn`.
+
+### Chaining filters
+
+Pipe **`grep`** commands together to narrow noisy logs:
+
+```{.bash filename="terminal"}
+grep 'ERROR' app.log | grep -v retry | grep -v healthcheck
+```
+
+You should see only `ERROR timeout`.
+
+The `^` in patterns like `'^a'` means "starts with" (used in [section 2](#data-flow-pipes-and-redirection)).
 
 This approach is useful for narrowing noisy logs quickly:
 
 1. broad match (`ERROR`)
-2. exclude known noise (`-v retry`)
+2. exclude known noise (`-v retry`, `-v healthcheck`)
 
 ### AI Engineer Use Case
 
 When a local model service fails, this pattern helps isolate relevant errors
 before you disappear into a debugging rabbit hole.
 
-### Try It
+::: {#grep-1 .shell-challenge}
 
-Build `app.log`, then write a pipeline that shows `ERROR` lines but excludes
-anything containing `retry` or `healthcheck`:
+Using the **`app.log`** you created above, write a pipeline that shows `ERROR`
+lines but excludes anything containing `retry` or `healthcheck`:
 
 ```{.bash filename="terminal"}
-printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\n" > app.log
 grep 'ERROR' app.log | grep -v retry | grep -v healthcheck
 ```
 
-You should see only `ERROR timeout`. Add another line and adjust the filters
-until the output matches what you expect.
+You should see only `ERROR timeout`. Add another line to `app.log` and adjust
+the filters until the output matches what you expect.
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="grep-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ## 4) Globs and Brace Expansion {#globs-and-brace-expansion}
 
@@ -721,23 +845,23 @@ ls -R project
 
 This is great for scaffolding small prototypes quickly.
 
-### Try It
+::: {#globs-1 .shell-challenge}
 
-Create a second set of files for evaluation scripts in one command.
+Create a second set of files for evaluation scripts in one command:
 
 ```{.bash filename="terminal"}
 touch project/src/{eval_metrics,eval_runner}.py
 ```
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="globs-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ## 5) Simple For Loops {#simple-for-loops}
 
@@ -783,7 +907,7 @@ for f in outputs/run_*.log; do
 done
 ```
 
-### Try It
+::: {#for-loops-1 .shell-challenge}
 
 Create a small `logs/` folder with three files (**`mkdir -p`** creates the folder;
 **`printf`** writes each log), then loop over every `.log` and print any line
@@ -806,14 +930,14 @@ You should see errors from `beta.log` and `gamma.log`, and `(no errors)` for
 `alpha.log`. Try adding a fourth log file and rerunning the loop.
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="for-loops-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ## 6) Executables and Permissions {#executables-and-permissions}
 
@@ -851,9 +975,9 @@ ls -l hello.sh
 This pattern matters when packaging helper scripts for teammates, automation,
 or CI jobs.
 
-### Try It
+::: {#permissions-1 .shell-challenge}
 
-Walk through the full flow in the sandbox:
+Walk through the full flow:
 
 1. Create `hello.sh` with the heredoc above and run `./hello.sh` — expect a
    permission error.
@@ -862,14 +986,14 @@ Walk through the full flow in the sandbox:
    print `Hello from shell`.
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="permissions-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ### Use a DRY_RUN flag before you trust a script {#dry-run-flag}
 
@@ -963,22 +1087,22 @@ find ./tmp -name "*.bak" -exec echo rm {} \;
 If the echoed output looks right, rerun without `echo` and let the command do
 its job.
 
-### Try It
+::: {#dry-run-1 .shell-challenge}
 
-In the sandbox, save the script pattern above as `dry_demo.sh` using a heredoc
+Save the script pattern above as `dry_demo.sh` using a heredoc
 (as above), make it executable with `chmod +x`, then run `DRY_RUN=1 ./dry_demo.sh`
 followed by `./dry_demo.sh` and compare the behaviour. Then try
 `echo rm ./welcome.txt` before actually removing anything.
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="dry-run-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ## 7) Processes, Ports, and Signals {#processes-ports-and-signals}
 
@@ -1031,12 +1155,13 @@ lsof -i :8000
 In real projects, this is often the fastest answer to:
 "Why won't my service start on this port?"
 
-Use a **local terminal** or **GitHub Codespaces** for full-fidelity process and
-network debugging — the browser sandbox may not reproduce host networking behaviour.
-
 ### Try It
 
-**In the sandbox** — start a background job and find its process ID:
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Start a background job and find its process ID:
 
 ```{.bash filename="terminal"}
 sleep 120 &
@@ -1046,7 +1171,7 @@ ps -ef | grep sleep | grep -v grep
 
 Copy the PID from the `ps` output (the number in the second column).
 
-**Locally or in Codespaces** — stop it gracefully, then check it is gone:
+Stop it gracefully, then check it is gone:
 
 ```{.bash filename="terminal"}
 kill <PID>
@@ -1054,11 +1179,9 @@ ps -ef | grep sleep | grep -v grep
 ```
 
 Replace `<PID>` with the number you copied. The second `ps` should return nothing.
-If `kill` or `ps` behave differently in the sandbox, run this full exercise on
-your machine.
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+</div>
 ```
 
 ## 8) Practical AI Glue Workflows
@@ -1072,21 +1195,24 @@ through them in order — each builds on files you created in earlier sections.
 cat app.log | grep 'ERROR' | grep -v 'healthcheck'
 ```
 
-### Try It
+::: {#glue-logs-1 .shell-challenge}
 
-Start the challenge — `app.log` is pre-loaded with noisy lines including a
-healthcheck. Run the filter pipeline above and confirm healthcheck lines are
-excluded.
+`app.log` is pre-loaded with noisy lines including a healthcheck. Run this filter
+pipeline and confirm healthcheck lines are excluded:
+
+```{.bash filename="terminal"}
+grep 'ERROR' app.log | grep -v healthcheck
+```
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="glue-logs-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ### Quick file inventory
 
@@ -1097,20 +1223,23 @@ literal dot). Useful for spotting Python files in a long listing:
 ls -R project | grep '\.py$'
 ```
 
-### Try It
+::: {#glue-inventory-1 .shell-challenge}
 
-Start the challenge — `project/` is pre-scaffolded with three Python files. Run
-the inventory command above.
+`project/` is pre-scaffolded with three Python files. Run the inventory command:
+
+```{.bash filename="terminal"}
+ls -R project | grep '\.py$'
+```
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="glue-inventory-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ### Verify executable helpers
 
@@ -1118,21 +1247,20 @@ the inventory command above.
 ls -l *.sh
 ```
 
-### Try It
+::: {#glue-scripts-1 .shell-challenge}
 
-Start the challenge — `hello.sh` exists but is not executable yet. Run
-`chmod +x hello.sh`, then `ls -l *.sh` and look for an `x` in the permission
-string (e.g. `-rwxr-xr-x`).
+`hello.sh` exists but is not executable yet. Run `chmod +x hello.sh`, then
+`ls -l *.sh` and look for an `x` in the permission string (e.g. `-rwxr-xr-x`).
 
 ```{=html}
-<div class="shell-challenge" data-challenge-id="glue-scripts-1">
-  <div class="shell-challenge-actions">
-    <button type="button" class="shell-challenge-start">Start challenge</button>
-    <button type="button" class="shell-challenge-check" disabled>Check my work</button>
-  </div>
-  <p class="shell-challenge-status" aria-live="polite"></p>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
 </div>
+<p class="shell-challenge-status" aria-live="polite"></p>
 ```
+
+:::
 
 ### Probe an API with `curl` (and parse JSON with `jq`) {#probe-an-api-with-curl-and-parse-json-with-jq}
 
@@ -1165,35 +1293,38 @@ curl -s -H "Authorization: Bearer $OPENAI_API_KEY" \
   https://api.openai.com/v1/models | jq '.data[].id'
 ```
 
-You can practise the `jq` part in the sandbox without network access — save a
-fake response and parse it locally:
+You can practise the `jq` part without network access — save a fake response and
+parse it locally:
 
 ```{.bash filename="terminal"}
 printf '{"choices":[{"message":{"content":"pong"}}]}\n' > response.json
 cat response.json | jq '.choices[0].message.content'
 ```
 
-The browser sandbox may not include `curl`, `jq`, or outbound network access.
-Run API probes on a **local terminal** or in **GitHub Codespaces**.
-
 ### Try It
 
-Create `response.json` in the sandbox as above and extract the `content` field
-with `jq`. If `jq` is not available in the sandbox, run the same pipeline on
-your local machine or in Codespaces.
+Create `response.json` as above and extract the `content` field with `jq`.
 
 ```{=html}
 <button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div data-shell-compat="local codespaces">
+```
+
+Probe a live URL with **`curl`** and **`jq`**:
+
+```{.bash filename="terminal"}
+curl -s https://httpbin.org/get | jq '.headers.Host'
+```
+
+```{=html}
+</div>
 ```
 
 ## 9) Extension: Run Advanced Commands Locally or in Codespaces {#extension-codespaces}
 
-For full-fidelity behaviour — process IDs, ports, `curl`, `jq`, and every
-keyboard shortcut — use a **local terminal** or **GitHub Codespaces** rather than
-the browser sandbox. See [How to use this article](#choose-your-environment) for
-details on each option.
-
-This is the best environment for realistic process and network debugging.
+Process debugging, live API calls, and advanced keyboard shortcuts assume a full
+terminal. Select **Local terminal** or **GitHub Codespaces** at the
+[top of this article](#choose-your-environment) if you have not already.
 
 ## 10) Pre-Publish Checklist For Your Own Shell Docs
 
@@ -1306,14 +1437,12 @@ it is introduced — use this when you meet something unfamiliar mid-challenge.
 ### Keyboard shortcuts
 
 - **[Ctrl+C](#stop-a-runaway-command-with-ctrlc)** — Stop a running command.
-- **[Ctrl+R](#search-your-command-history)** — Reverse-search command history (not
-  available in the browser sandbox).
-- **[Tab](#use-tab-to-complete-matches)** — Complete filenames and command names
-  (not available in the browser sandbox).
+- **[Ctrl+R](#search-your-command-history)** — Reverse-search command history.
+- **[Tab](#use-tab-to-complete-matches)** — Complete filenames and command names.
 - **[Modifier keys](#jump-around-the-command-line-with-modifier-keys)** — Jump by
-  word or to the start/end of the line (not available in the browser sandbox).
+  word or to the start/end of the line.
 - **[Up / Down arrows](#use-arrow-keys-to-navigate-prior-commands-work-smart-not-hard)** —
-  Step through previous commands (works in the browser sandbox).
+  Step through previous commands.
 
 ## Further reading
 
@@ -1370,4 +1499,5 @@ when you forget a flag or command name.
 ```{=html}
 <script src="/www/shell-dock/shell-dock.js" defer></script>
 <script src="/www/shell-challenges/shell-challenges.js" defer></script>
+<script src="/www/shell-challenges/shell-env-filter.js" defer></script>
 ```
