@@ -104,6 +104,13 @@
   }
 
   challenges.forEach((block) => {
+    if (!block.querySelector(".shell-challenge-label")) {
+      const label = document.createElement("p");
+      label.className = "shell-challenge-label";
+      label.textContent = "Interactive challenge";
+      block.prepend(label);
+    }
+
     const exerciseId = block.dataset.challengeId;
     const startBtn = block.querySelector(".shell-challenge-start");
     const checkBtn = block.querySelector(".shell-challenge-check");

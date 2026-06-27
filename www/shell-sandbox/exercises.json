@@ -4,17 +4,6 @@
   },
   "exercises": [
     {
-      "id": "tab-completion-1",
-      "title": "Tab completion",
-      "checks": [
-        {
-          "label": "Created my-long-filename.txt",
-          "run": "test -f my-long-filename.txt",
-          "expectExit": 0
-        }
-      ]
-    },
-    {
       "id": "dry-run-1",
       "title": "DRY_RUN preview",
       "checks": [
