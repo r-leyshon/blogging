@@ -1,0 +1,237 @@
+{
+  "defaultSetup": {
+    "/home/user/welcome.txt": "Welcome. Try tutorial commands here. Refresh to reset.\n"
+  },
+  "exercises": [
+    {
+      "id": "dry-run-1",
+      "title": "DRY_RUN preview",
+      "subtitle": "Preview destructive actions safely before you run them for real.",
+      "browserCompat": "partial",
+      "checks": [
+        {
+          "label": "dry_demo.sh exists and is executable",
+          "run": "test -x dry_demo.sh",
+          "expectExit": 0
+        },
+        {
+          "label": "DRY_RUN=1 prints a preview message",
+          "run": "DRY_RUN=1 ./dry_demo.sh",
+          "expectExit": 0,
+          "stdoutContains": "Would delete"
+        }
+      ]
+    },
+    {
+      "id": "quotes-1",
+      "title": "Quoting paths",
+      "subtitle": "Quote paths with spaces so the shell treats them as one filename.",
+      "browserCompat": "full",
+      "checks": [
+        {
+          "label": "Created notes draft.txt (filename with a space)",
+          "run": "test -f 'notes draft.txt'",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "fundamentals-1",
+      "title": "Shell fundamentals",
+      "subtitle": "Practice pwd, ls, mkdir, touch, and cd in a short navigation workflow.",
+      "browserCompat": "full",
+      "setup": {
+        "/home/user/.sandbox_marker": "I am a hidden file.\n"
+      },
+      "checks": [
+        {
+          "label": "Created tmp/visited.txt",
+          "run": "test -f tmp/visited.txt",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "pipes-1",
+      "title": "Pipes and wc -l",
+      "subtitle": "Chain grep and wc with a pipe, then save the count to a file.",
+      "browserCompat": "full",
+      "checks": [
+        {
+          "label": "fruits.txt contains apple, apricot, and blueberry",
+          "run": "grep -q apple fruits.txt && grep -q apricot fruits.txt && grep -q blueberry fruits.txt",
+          "expectExit": 0
+        },
+        {
+          "label": "Exactly one fruit starts with b (blueberry)",
+          "run": "grep '^b' fruits.txt | wc -l | tr -d ' '",
+          "expectStdout": "1"
+        },
+        {
+          "label": "Appended the count to b-count.txt",
+          "run": "tr -d ' \\n' < b-count.txt",
+          "expectStdout": "1"
+        }
+      ]
+    },
+    {
+      "id": "grep-1",
+      "title": "Grep chaining",
+      "subtitle": "Filter noisy logs with grep, then save the cleaned output to a file.",
+      "browserCompat": "full",
+      "setup": {
+        "/home/user/app.log": "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\nlevel=warn cache_miss\nlevel=error oom\n"
+      },
+      "checks": [
+        {
+          "label": "grep-results.txt exists",
+          "run": "test -f grep-results.txt",
+          "expectExit": 0
+        },
+        {
+          "label": "Filtered log shows only ERROR timeout",
+          "run": "cat grep-results.txt",
+          "expectStdout": "ERROR timeout"
+        }
+      ]
+    },
+    {
+      "id": "globs-1",
+      "title": "Brace expansion",
+      "subtitle": "Create several related filenames at once with brace expansion.",
+      "browserCompat": "full",
+      "checks": [
+        {
+          "label": "eval_metrics.py exists",
+          "run": "test -f project/src/eval_metrics.py",
+          "expectExit": 0
+        },
+        {
+          "label": "eval_runner.py exists",
+          "run": "test -f project/src/eval_runner.py",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "for-loops-1",
+      "title": "For loops over logs",
+      "subtitle": "Loop over every .log file and grep each one for errors.",
+      "browserCompat": "partial",
+      "checks": [
+        {
+          "label": "logs/alpha.log exists",
+          "run": "test -f logs/alpha.log",
+          "expectExit": 0
+        },
+        {
+          "label": "logs/beta.log contains ERROR",
+          "run": "grep -q ERROR logs/beta.log",
+          "expectExit": 0
+        },
+        {
+          "label": "logs/alpha.log has no ERROR lines",
+          "run": "grep ERROR logs/alpha.log",
+          "expectExit": 1
+        }
+      ]
+    },
+    {
+      "id": "permissions-1",
+      "title": "Executable scripts",
+      "subtitle": "Write a script, make it executable with chmod, and run it.",
+      "browserCompat": "partial",
+      "checks": [
+        {
+          "label": "hello.sh is executable",
+          "run": "test -x hello.sh",
+          "expectExit": 0
+        },
+        {
+          "label": "hello.sh prints the greeting",
+          "run": "./hello.sh",
+          "expectExit": 0,
+          "stdoutContains": "Hello from shell"
+        }
+      ]
+    },
+    {
+      "id": "glue-logs-1",
+      "title": "Filter noisy logs",
+      "subtitle": "Run a grep pipeline and redirect the cleaned output to a file.",
+      "browserCompat": "full",
+      "setup": {
+        "/home/user/app.log": "INFO startup\nERROR oom\nERROR healthcheck failed\nERROR timeout\n"
+      },
+      "checks": [
+        {
+          "label": "filtered-errors.txt exists",
+          "run": "test -f filtered-errors.txt",
+          "expectExit": 0
+        },
+        {
+          "label": "filtered-errors.txt excludes healthcheck lines",
+          "run": "cat filtered-errors.txt",
+          "expectStdout": "ERROR oom\nERROR timeout"
+        }
+      ]
+    },
+    {
+      "id": "glue-inventory-1",
+      "title": "Python file inventory",
+      "subtitle": "Find Python files under a project tree and save the listing.",
+      "browserCompat": "full",
+      "setup": {
+        "/home/user/project/src/ingest.py": "",
+        "/home/user/project/src/embed.py": "",
+        "/home/user/project/src/serve.py": ""
+      },
+      "checks": [
+        {
+          "label": "python-inventory.txt exists",
+          "run": "test -f python-inventory.txt",
+          "expectExit": 0
+        },
+        {
+          "label": "Inventory lists ingest.py, embed.py, and serve.py",
+          "run": "grep -q ingest.py python-inventory.txt && grep -q embed.py python-inventory.txt && grep -q serve.py python-inventory.txt",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "glue-scripts-1",
+      "title": "Verify executable helpers",
+      "subtitle": "Confirm a helper script is executable before you rely on it.",
+      "browserCompat": "full",
+      "setup": {
+        "/home/user/hello.sh": "#!/usr/bin/env bash\necho Hello from shell\n"
+      },
+      "checks": [
+        {
+          "label": "hello.sh is executable",
+          "run": "test -x hello.sh",
+          "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "jq-1",
+      "title": "Parse JSON with jq",
+      "subtitle": "Extract one field from JSON API-style output with jq.",
+      "browserCompat": "full",
+      "checks": [
+        {
+          "label": "response.json exists",
+          "run": "test -f response.json",
+          "expectExit": 0
+        },
+        {
+          "label": "jq extracts the content field",
+          "run": "cat response.json | jq '.choices[0].message.content'",
+          "stdoutContains": "pong"
+        }
+      ]
+    }
+  ]
+}

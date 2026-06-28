@@ -1,0 +1,297 @@
+/* Interactive challenge blocks — blog page only */
+
+.shell-challenge {
+  position: relative;
+  margin: 1.35rem 0;
+  padding: 1.1rem 1.25rem 1.2rem;
+  border: 1px solid #2dd4a8;
+  border-left: 5px solid #20c997;
+  border-radius: 0.55rem;
+  background: linear-gradient(145deg, #ecfffa 0%, #f8fffd 45%, #f4fbf8 100%);
+  box-shadow:
+    0 4px 18px rgba(32, 201, 151, 0.14),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+.shell-challenge-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0d9488;
+}
+
+.shell-challenge-label::before {
+  content: "▶";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: #20c997;
+  color: #fff;
+  font-size: 0.55rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.shell-challenge > p:not(.shell-challenge-label):not(.shell-challenge-goal):not(.shell-challenge-status),
+.shell-challenge > ol,
+.shell-challenge > ul {
+  margin: 0 0 0.85rem;
+}
+
+.shell-challenge-goal {
+  margin: 0 0 1rem;
+}
+
+.shell-challenge-steps {
+  margin: 0 0 0.85rem;
+  padding-left: 1.25rem;
+}
+
+.shell-challenge-steps > li {
+  margin: 0 0 1rem;
+}
+
+.shell-challenge-steps > li:last-child {
+  margin-bottom: 0;
+}
+
+.shell-challenge-reveal {
+  margin: 0.45rem 0 0;
+  border: 1px solid rgba(32, 201, 151, 0.35);
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.shell-challenge-reveal > summary {
+  cursor: pointer;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0d9488;
+  list-style: none;
+}
+
+.shell-challenge-reveal > summary::-webkit-details-marker {
+  display: none;
+}
+
+.shell-challenge-reveal > summary::before {
+  content: "▸ ";
+}
+
+.shell-challenge-reveal[open] > summary::before {
+  content: "▾ ";
+}
+
+.shell-challenge-reveal .code-with-filename {
+  margin: 0;
+  border-top: 1px solid rgba(32, 201, 151, 0.2);
+  border-radius: 0 0 0.35rem 0.35rem;
+}
+
+.shell-challenge .code-with-filename,
+.shell-challenge > div:not(.shell-challenge-actions) .code-with-filename {
+  margin: 0.85rem 0;
+}
+
+.shell-challenge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.shell-challenge-start,
+.shell-challenge-check {
+  border-radius: 0.4rem;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+.shell-challenge-start {
+  border: 1px solid #1aa87e;
+  background: linear-gradient(180deg, #2ee4b0 0%, #20c997 100%);
+  color: #053d31;
+  box-shadow: 0 2px 8px rgba(32, 201, 151, 0.35);
+}
+
+.shell-challenge-start:hover {
+  background: linear-gradient(180deg, #3aedbc 0%, #22d4a5 100%);
+  box-shadow: 0 3px 12px rgba(32, 201, 151, 0.45);
+  transform: translateY(-1px);
+}
+
+.shell-challenge-start:active {
+  transform: translateY(0);
+}
+
+.shell-challenge-check {
+  border: 1px solid #20c997;
+  background: #fff;
+  color: #0f766e;
+}
+
+.shell-challenge-check:hover:not(:disabled) {
+  background: #f0fdf8;
+  border-color: #1aa87e;
+  box-shadow: 0 2px 8px rgba(32, 201, 151, 0.15);
+}
+
+.shell-challenge-check:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: #adb5bd;
+  color: #6c757d;
+  background: #f1f3f5;
+  box-shadow: none;
+}
+
+.shell-challenge-status {
+  margin: 0.85rem 0 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.35rem;
+  font-size: 0.88rem;
+  color: #495057;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(32, 201, 151, 0.2);
+}
+
+.shell-challenge-status:empty {
+  display: none;
+}
+
+.shell-challenge-status.is-active {
+  color: #0c5460;
+  background: #e7f8ff;
+  border-color: #9eeaf9;
+}
+
+.shell-challenge-status.is-passed {
+  color: #0f5132;
+  background: #d1e7dd;
+  border-color: #a3cfbb;
+}
+
+.shell-challenge-status.is-failed {
+  color: #842029;
+  background: #f8d7da;
+  border-color: #f1aeb5;
+}
+
+.shell-challenge-status strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.shell-challenge-results {
+  margin: 0.45rem 0 0;
+  padding-left: 1.15rem;
+  font-size: 0.84rem;
+}
+
+.shell-challenge-results li {
+  margin: 0.25rem 0;
+}
+
+.shell-challenge-results li.is-passed {
+  color: #146c43;
+}
+
+.shell-challenge-results li.is-failed {
+  color: #b02a37;
+}
+
+/* Dark mode (superhero theme) */
+
+body.quarto-dark .shell-challenge {
+  border-color: #2dd4a8;
+  border-left-color: #20c997;
+  background: linear-gradient(145deg, #1a2e28 0%, #212529 50%, #1c2622 100%);
+  box-shadow:
+    0 4px 22px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(45, 212, 168, 0.12) inset;
+}
+
+body.quarto-dark .shell-challenge-label {
+  color: #5eead4;
+}
+
+body.quarto-dark .shell-challenge-reveal {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(45, 212, 168, 0.3);
+}
+
+body.quarto-dark .shell-challenge-reveal > summary {
+  color: #5eead4;
+}
+
+body.quarto-dark .shell-challenge-reveal .code-with-filename {
+  border-top-color: rgba(45, 212, 168, 0.2);
+}
+
+body.quarto-dark .shell-challenge-start {
+  color: #042f2e;
+}
+
+body.quarto-dark .shell-challenge-check {
+  background: #1a2220;
+  border-color: #2dd4a8;
+  color: #99f6e4;
+}
+
+body.quarto-dark .shell-challenge-check:hover:not(:disabled) {
+  background: #24302c;
+}
+
+body.quarto-dark .shell-challenge-check:disabled {
+  background: #2b3035;
+  border-color: #495057;
+  color: #868e96;
+}
+
+body.quarto-dark .shell-challenge-status {
+  color: #dee2e6;
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(45, 212, 168, 0.25);
+}
+
+body.quarto-dark .shell-challenge-status.is-active {
+  color: #9eeaf9;
+  background: rgba(13, 110, 253, 0.15);
+  border-color: rgba(13, 202, 240, 0.35);
+}
+
+body.quarto-dark .shell-challenge-status.is-passed {
+  color: #75b798;
+  background: rgba(25, 135, 84, 0.18);
+  border-color: rgba(25, 135, 84, 0.45);
+}
+
+body.quarto-dark .shell-challenge-status.is-failed {
+  color: #ea868f;
+  background: rgba(220, 53, 69, 0.18);
+  border-color: rgba(220, 53, 69, 0.45);
+}
+
+body.quarto-dark .shell-challenge-results li.is-passed {
+  color: #75b798;
+}
+
+body.quarto-dark .shell-challenge-results li.is-failed {
+  color: #ea868f;
+}

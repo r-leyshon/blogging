@@ -1,0 +1,2001 @@
+---
+title: "Just Enough Shell to Survive"
+subtitle: "A practical terminal tutorial for AI engineers"
+author: "Rich Leyshon"
+date: "June 20 2026"
+description: "A practical shell tutorial for AI engineers — navigation, glue workflows, and interactive challenges. Just enough to get unstuck."
+categories:
+    - Tutorial
+    - Shell
+    - CLI
+    - DevOps
+    - AI Engineering
+image: /./www/22-shell-for-ai-engineers/intro-img.webp
+image-alt: "A glowing cyberpunk Koopa shell hovering above a neon terminal"
+toc: true
+toc-depth: 2
+css:
+  - /./www/17-quarto-comments/styles.css
+  - /./www/shell-dock/shell-dock.css
+  - /./www/shell-challenges/shell-challenges.css
+  - /./www/shell-challenges/shell-tryit-panels.css
+  - /./www/shell-challenges/shell-env-filter.css
+code-annotations: select
+execute:
+  eval: false
+---
+
+<img class=shaded_box src="/./www/22-shell-for-ai-engineers/intro-img.webp" alt="A glowing cyberpunk Koopa shell hovering above a neon terminal" width="614" height="410" loading="lazy" decoding="async" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;height:auto;">
+
+::: {.callout-note appearance="simple"}
+### A note on platforms {#a-note-on-platforms}
+
+This tutorial assumes a **Linux-like terminal** — bash or zsh on macOS, Linux,
+GitHub Codespaces, or similar (see [How to use this
+tutorial](#choose-your-environment)). That is where most AI tooling, containers,
+and CI pipelines expect you to work.
+
+On **Windows**, things can look a little different: keyboard shortcuts, path
+separators (`\` vs `/`), and some command names may not match. **WSL**
+(Windows Subsystem for Linux) or **Git Bash** are good ways to follow along with
+minimal friction. If you are using PowerShell or Command Prompt, treat this
+guide as conceptually useful, but expect differences in detail.
+:::
+
+## Introduction
+
+If you build AI products, sooner or later you end up stitching together a
+small orchestra of tools:
+
+- local scripts
+- API calls
+- logs
+- config files
+- containers
+- CI pipelines
+
+The shell is often the quickest way to make these components cooperate.
+This tutorial covers **just enough** shell to survive day-to-day AI engineering —
+navigation, safety habits, glue pipelines, and hands-on challenges — without
+pretending you need to become a terminal wizard.
+
+### Intended Audience
+
+Engineers who are comfortable writing code but have little (or no) shell
+experience. If you are already fluent in shell, skip ahead to
+[process control and service debugging](#processes-ports-and-signals).
+
+### What You'll Need
+
+- [ ] A **terminal** — the window where you type shell commands (also called a
+  shell or command line)
+- [ ] Basic familiarity with files and folders
+- [ ] Curiosity and willingness to try small experiments
+
+## How To Use This Tutorial {#choose-your-environment}
+
+Pick how you want to follow along. Your choice in the tabs below **filters the
+Try It panels and challenges** in the rest of the tutorial — you only see exercises
+that match your environment. Switch tabs any time; no need to read warnings in
+every section about what works where.
+
+::: {.panel-tabset}
+
+### Browser sandbox {#browser-sandbox}
+
+```{=html}
+<a id="browser-sandbox"></a>
+```
+
+Use the **shell sandbox** panel at the bottom of this page — a simulated bash
+environment that runs in your browser, not on your machine.
+
+**Getting started**
+
+- Click **Show sandbox** to expand the panel. It loads once and stays available
+  as you scroll.
+- Many sections include a **challenge**: click **Start challenge** to reset a
+  clean environment, complete the task, then **Check my work** for automated
+  feedback.
+
+**Good to know**
+
+- This is a learning sandbox, not a full Linux terminal — behaviour differs in
+  places (permissions, processes, networking, keyboard shortcuts).
+- Sessions are ephemeral — refreshing the page usually resets your environment.
+- Do **not** paste secrets, tokens, private keys, or credentials.
+
+**Best for:** navigation, pipes, grep, globs, quoting, glue workflows, and
+automated challenges.
+
+**Switch to Local or Codespaces for:** Tab completion, Ctrl+R/C, line-editing
+shortcuts, background jobs, `curl`, your real shell config files, and anything
+that needs full host fidelity.
+
+### Local terminal {#local-terminal}
+
+```{=html}
+<a id="local-terminal"></a>
+```
+
+Your machine's own shell — Terminal.app or iTerm on macOS, the default terminal
+on Linux, **WSL** or **Git Bash** on Windows, or similar.
+
+**Getting started**
+
+- Open your terminal application and follow the **Try It** steps in each section.
+- Challenge **Check my work** buttons use the browser sandbox — here, self-check
+  against the expected output in each exercise.
+
+**What you get**
+
+- Full keyboard support: **Tab** completion, **Ctrl+R**, modifier keys, and the
+  rest of the shortcuts in the hints section.
+- Real process IDs, signals, ports, and filesystem behaviour.
+- **`curl`**, **`jq`**, and outbound network access (when installed).
+
+**Platform notes**
+
+- This tutorial assumes a **Linux-like** shell (bash or zsh). See [A note on
+  platforms](#a-note-on-platforms) for Windows differences.
+- Your config files (`~/.zshrc`, `~/.bashrc`) and command history behave as on
+  any normal system.
+
+**Best for**
+
+- Tab completion, modifier-key practice, Ctrl+R, process debugging (section 7),
+  and API probes (section 8).
+
+### GitHub Codespaces {#what-is-codespaces}
+
+```{=html}
+<a id="what-is-codespaces"></a>
+```
+
+**GitHub Codespaces** is a cloud development environment — a Linux virtual
+machine with VS Code in your browser and a real terminal, hosted by GitHub.
+
+**Getting started**
+
+- <a href="https://docs.github.com/en/codespaces/getting-started/quickstart" target="_blank" rel="noopener noreferrer">Codespaces quickstart</a> (opens in a new tab)
+- Or open a repository on GitHub and launch a Codespace from the green
+  **Code** button.
+
+**What you get**
+
+- The same full terminal capabilities as a **local terminal** tab — real Linux,
+  full keyboard shortcuts, processes, ports, and network tools.
+- A good option if you do not have a local shell set up yet, or you want Linux
+  parity without installing WSL.
+
+**Best for**
+
+- Same as **Local terminal** when you want a real Linux shell without local setup.
+
+<a href="https://docs.github.com/en/codespaces" target="_blank" rel="noopener noreferrer">GitHub Codespaces documentation</a> (opens in a new tab).
+
+:::
+
+### A few words we reuse constantly {#core-vocabulary}
+
+- **Command** — a program name you type at the prompt (e.g. `ls`, `grep`)
+- **Flag** — an option after a command, usually starting with `-` (e.g. `ls -la`)
+- **Pipeline** — commands chained with `|`, where each command's output feeds the
+  next (covered properly in [section 2](#data-flow-pipes-and-redirection))
+- **Prompt** — the line where you type, ending in `$` (or `%` on some shells)
+
+See the full [Glossary](#glossary) at the end of this tutorial for every command
+and term with links back to where it is introduced.
+
+```{=html}
+<link rel="stylesheet" href="/./www/shell-challenges/shell-tryit-panels.css" />
+<link rel="preconnect" href="https://esm.sh" crossorigin />
+<div id="shell-dock" class="shell-dock shell-dock--collapsed" aria-label="Interactive shell sandbox panel">
+  <div class="shell-dock-header">
+    <div>
+      <p class="shell-dock-title">Interactive shell sandbox</p>
+      <p class="shell-dock-hint">Click to expand. Starts in a few seconds.</p>
+    </div>
+    <button type="button" class="shell-dock-toggle" aria-expanded="false">Show sandbox</button>
+  </div>
+  <div class="shell-dock-body">
+    <p class="shell-dock-status">Starting sandbox…</p>
+    <iframe
+      data-src="/www/shell-sandbox/index.html"
+      title="Interactive shell sandbox"
+      loading="lazy">
+    </iframe>
+  </div>
+</div>
+```
+
+## Hints and Tips
+
+A handful of habits that pay off immediately. These are worth learning early,
+before the command vocabulary gets more involved.
+
+### Use arrow keys to navigate prior commands (work smart, not hard) {#use-arrow-keys-to-navigate-prior-commands-work-smart-not-hard}
+
+The shell remembers commands you have already run. You do not need to retype a
+long pipeline every time you want to tweak it.
+
+- **Up arrow** — step back through previous commands
+- **Down arrow** — step forward again through that history
+
+This is especially useful when you are iterating on something fiddly: a **`grep`**
+search (you will meet it in [section 3](#grep-chaining)), a **`curl`** HTTP call
+([section 8](#probe-an-api-with-curl-and-parse-json-with-jq)), or a script you
+keep running with small edits. A **pipeline** chains commands with `|` — also
+coming in section 2. Run the command once, press **Up**, adjust a word or two,
+press **Enter**.
+
+### Try It
+
+Open the panel and build a little history, then walk back through it with the
+arrow keys:
+
+1. Run **`pwd`**
+2. Run **`ls`**
+3. Run **`echo "history practice"`**
+4. Run **`ls -la`**
+
+Now navigate without retyping:
+
+5. Press **Up** once — you should see `ls -la` at the prompt
+6. Press **Up** again — `echo "history practice"`
+7. Press **Up** again — `ls`
+8. Press **Down** twice — forward again to `echo "history practice"`, then
+   `ls -la`
+9. Press **Enter** to run whichever command is showing
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+### Use Tab to complete matches {#use-tab-to-complete-matches}
+
+Tab completion is the shell's way of finishing your typing for you. Start a
+command or path, press **Tab**, and the shell suggests the rest based on what
+exists in your current directory or what it recognises as a valid command name.
+
+- Type the first few letters of a filename, then press **Tab**
+- If there is only one match, the shell fills in the rest
+- If there are several matches, press **Tab** again (or twice quickly) to see
+  the options
+
+This saves time and cuts down on typos — particularly handy for long paths like
+`project/src/eval_metrics.py` when you only need to type `project/src/e` and
+hit **Tab**.
+
+### Try It
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Create a file with **`touch my-long-filename.txt`**, then type **`cat my-l`**
+and press **Tab** to complete the name before pressing **Enter**.
+
+```{=html}
+</div>
+```
+
+### Jump around the command line with modifier keys {#jump-around-the-command-line-with-modifier-keys}
+
+Once a command gets long, tapping the arrow key character-by-character is
+painful. On macOS, modifier keys let you move in bigger jumps:
+
+- **⌘ + ←** — jump to the start of the line
+- **⌘ + →** — jump to the end of the line
+- **⌥ + ←** — jump back one word at a time
+- **⌥ + →** — jump forward one word at a time
+
+This is useful when you need to fix a typo in the middle of a pipeline without
+retyping the whole thing. Jump to the word, edit it, **Enter**.
+
+On Linux terminals, the equivalents are usually **Ctrl+A** / **Ctrl+E** for the
+start and end of the line, and **Alt + ←** / **Alt + →** to move word by word.
+
+### Try It
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Type a long command such as the one below — it uses **`grep`** (search lines),
+**`wc -l`** (count lines), and **`|`** (pipe output along). You do not need to
+memorise it yet; the goal is cursor practice:
+
+```{.bash filename="terminal"}
+grep ERROR app.log | grep -v retry | wc -l
+```
+
+Use **⌘ + ←** and **⌥ + →** to move the cursor without retyping. On Linux, try
+**Ctrl+A** and **Alt + →** instead.
+
+```{=html}
+</div>
+```
+
+### Search your command history {#search-your-command-history}
+
+Pressing **Up** walks back one command at a time. That is fine for recent
+history, but less fine when you ran something useful twenty commands ago and
+only remember a fragment of it.
+
+**Ctrl+R** starts a reverse search through your command history:
+
+1. Press **Ctrl+R**
+2. Type a few characters you remember (e.g. `grep`, `docker`, `curl`)
+3. The shell shows the most recent matching command
+4. Press **Ctrl+R** again to step to the next older match
+5. Press **Enter** to run it, or **Esc** / the arrow keys to edit first
+
+This pays off in specific scenarios:
+
+- You ran a long `curl` or `docker` command yesterday and need it again
+- You are debugging and want to rerun a `grep` pipeline with a small tweak
+- You know *part* of a command but not enough to retype the whole thing
+
+If **Ctrl+R** is not available, you can list and filter history manually with
+the built-in **`history`** command:
+
+```{.bash filename="terminal"}
+history | grep grep
+```
+
+### Try It
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+If you have not done the [arrow-key exercise](#use-arrow-keys-to-navigate-prior-commands-work-smart-not-hard)
+above, run through steps 1–9 there first. With those four commands already in
+your history, try reverse search:
+
+1. Press **Ctrl+R**
+2. Type **`echo`** — the shell should surface `echo "history practice"`
+3. Press **Ctrl+R** again to step to any older match that contains `echo`
+4. Press **Enter** to run the command, or use the arrow keys to edit it first
+
+```{=html}
+</div>
+```
+
+### Know your `~/.zshrc` and history file {#know-your-zshrc-and-history-file}
+
+On macOS, your default shell is usually **zsh**. When you open a new terminal
+tab, zsh reads a config file in your home directory called **`~/.zshrc`**
+(pronounced "zsh-R-C"). Think of it as startup instructions for your shell.
+
+Typical things people store in `~/.zshrc`:
+
+- **Aliases** — shortcuts for commands you use often
+- **`export` lines** — environment variables such as `PATH` (where the shell
+  looks for programs)
+- **Tool setup** — many installers (Conda, nvm, Homebrew) ask you to paste a
+  line into `~/.zshrc` so their commands work in every new terminal
+
+That last point is often *why* you need to configure it. A tool installs
+successfully, but the command is "not found" until you add its setup snippet to
+`~/.zshrc` and open a fresh terminal (or run **`source ~/.zshrc`** to reload the
+file into your current shell).
+
+Your command **history** lives in a separate file — usually **`~/.zsh_history`**.
+That is how **Ctrl+R** and the **Up** arrow can find commands from previous
+days, not just the current session. The history file is the shell's memory;
+`~/.zshrc` is its personality.
+
+On Linux with **bash**, the same ideas apply but the files are often named
+`~/.bashrc` and `~/.bash_history` instead.
+
+::: {.callout-warning appearance="simple"}
+Be careful what you put in `~/.zshrc`. It runs automatically every time you open
+a terminal. Do **not** store secrets (API keys, passwords) here unless you
+understand the security implications — and never commit this file to a public
+repository.
+:::
+
+### Try It
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+On your local machine, run `echo $SHELL` to see which shell you are using, then
+`ls -la ~/.zshrc ~/.zsh_history` (or `~/.bashrc` / `~/.bash_history` on Linux).
+Open `~/.zshrc` in your editor and see whether you recognise any aliases or
+`export` lines already there.
+
+```{=html}
+</div>
+```
+
+### Stop a runaway command with Ctrl+C {#stop-a-runaway-command-with-ctrlc}
+
+Sometimes you paste the wrong thing, start a command that will not finish, or
+realise mid-run that you made a mistake. **Ctrl+C** sends an interrupt signal
+and stops the command at the current prompt.
+
+- Press **Ctrl+C** once and wait a moment — most commands exit cleanly
+- If nothing happens, press **Ctrl+C** again (some programs need a second nudge)
+- You get a fresh prompt; nothing is "broken" — you can try again
+
+This is the first reflex to build. It is faster and safer than closing the
+terminal window when something is hanging.
+
+### Try It
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Run **`sleep 60`**, then press **Ctrl+C** before the minute is up. You should
+return to the prompt immediately.
+
+```{.bash filename="terminal"}
+sleep 60
+```
+
+```{=html}
+</div>
+```
+
+### When things go wrong, read the error first {#when-things-go-wrong-read-the-error-first}
+
+Error messages look intimidating, but they usually tell you *which* of a few
+common problems you hit. A quick scan saves a lot of guessing.
+
+| Message | Likely cause | What to try |
+| --- | --- | --- |
+| `command not found` | Typo, or the program is not installed / not on your **`PATH`** (the list of directories the shell searches for programs) | Check spelling; run **`which`** *name* to locate a command; check install docs |
+| `Permission denied` | You lack rights to read, write, or execute that file | **`ls -l`** the path (long listing shows permissions); **`chmod +x`** adds execute permission for scripts; check you own the file |
+| `No such file or directory` | Wrong path, or you are in the wrong folder | **`pwd`** (print working directory); **`ls`** (list files); check for typos in the filename |
+
+The shell is not scolding you — it is pointing at the mismatch between what you
+asked for and what exists on disk (or in your `PATH`).
+
+### Try It
+
+Trigger each error on purpose and read the message before fixing it. Run these
+one at a time.
+
+```{.bash filename="terminal"}
+typo_command
+```
+
+```{.bash filename="terminal"}
+cat secret.txt
+```
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+```{.bash filename="terminal"}
+touch locked.txt
+```
+
+```{.bash filename="terminal"}
+chmod 000 locked.txt
+```
+
+```{.bash filename="terminal"}
+cat locked.txt
+```
+
+```{=html}
+</div>
+```
+
+**`touch`** creates an empty file. **`chmod`** changes permissions. Elsewhere in
+this tutorial, **`&&`** chains commands so each step runs only if the previous
+one succeeded.
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+### Quote paths and patterns carefully {#quote-paths-and-patterns-carefully}
+
+The shell splits your command on **spaces** unless you tell it not to. Quotes
+control that — and they behave differently.
+
+Before the shell runs a command, it often **replaces** shorthand in what you typed
+with the real value. That replacement step is called **expansion**. For example,
+if you write `echo $HOME`, the shell expands `$HOME` to your home directory path
+(such as `/Users/you`) and then runs `echo` with that path. Globs like `*.txt`
+expand to a list of matching filenames — you will meet those in
+[section 4](#globs-and-brace-expansion).
+
+Quotes tell the shell how much expansion to allow:
+
+- **Single quotes `'...'`** — everything inside is literal. The shell does not
+  expand anything; it passes the text exactly as you typed it.
+- **Double quotes `"..."`** — variables like `$HOME` still expand; most other
+  characters are literal.
+
+Set a filename with a space:
+
+```{.bash filename="terminal"}
+FILE="my report.txt"
+```
+
+With quotes, one file:
+
+```{.bash filename="terminal"}
+touch "$FILE"
+```
+
+Without quotes, the shell splits on spaces — with `FILE="my report.txt"`,
+`touch $FILE` tries to create `my` and `report.txt` as two separate files
+instead of one:
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+```{.bash filename="terminal"}
+touch $FILE
+```
+
+```{=html}
+</div>
+```
+
+If a path or filename might contain spaces, wrap it in **double quotes**. When
+you expand a variable in a path, wrap it in double quotes — `"$TARGET"` treats
+the whole value as one path even when it contains spaces. For **`grep`** patterns
+and quotes, see [section 3](#grep-chaining).
+
+::: {#quotes-1 .shell-challenge}
+
+<ol class="shell-challenge-steps">
+
+<li>Create a file whose name contains a space.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+touch "notes draft.txt"
+```
+
+</details>
+</li>
+
+<li>Print the file's contents to confirm it exists.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cat "notes draft.txt"
+```
+
+</details>
+</li>
+
+</ol>
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+### Environment variables and `.env` files {#environment-variables}
+
+An **environment variable** is a named value the shell (and child programs) can
+read. You set one for the current session like this:
+
+```{.bash filename="terminal"}
+export MODEL_NAME=gpt-4o-mini
+echo $MODEL_NAME
+```
+
+- **`export`** makes the variable visible to commands you run from this shell
+- **`echo $NAME`** prints the current value (the `$` tells the shell to expand it)
+- Variables set this way last until you close the terminal tab
+
+Putting `export` lines in `~/.zshrc` (see above) makes them available every
+time you open a new terminal. That is fine for non-secret defaults like
+`export EDITOR=code`.
+
+For **API keys and tokens**, prefer a **`.env` file** in your project root
+instead of hard-coding secrets in your shell config:
+
+```{.bash filename="terminal"}
+# .env — loaded by your app or tooling, not committed to git
+OPENAI_API_KEY=sk-...
+LOG_LEVEL=info
+```
+
+Most Python and Node AI stacks load `.env` automatically (via `python-dotenv`,
+`dotenv`, or framework conventions). Add `.env` to `.gitignore` so secrets never
+land in a public repository.
+
+::: {.callout-warning appearance="simple"}
+Never paste API keys into the browser sandbox, commit them to git, or store
+them in a public gist. Use `.env` locally and platform secret stores in CI
+(GitHub Actions secrets, etc.).
+:::
+
+For a one-off command in your terminal, you can set a variable inline without
+touching a file. **`curl`** fetches a URL over HTTP ([section 8](#probe-an-api-with-curl-and-parse-json-with-jq));
+**`head`** prints the first few lines of output — handy when a response is long:
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+```{.bash filename="terminal"}
+OPENAI_API_KEY=sk-your-key curl -s https://api.openai.com/v1/models | head
+```
+
+```{=html}
+</div>
+```
+
+That sets the variable only for that single command — useful for quick tests,
+but `.env` is easier to maintain across a project.
+
+### Try It
+
+Set a variable and read it back:
+
+```{.bash filename="terminal"}
+export DEMO_VAR=hello-shell
+echo $DEMO_VAR
+echo "Model would be: $DEMO_VAR"
+```
+
+```{=html}
+<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+```
+
+## 1) Shell Fundamentals {#shell-fundamentals}
+
+We'll begin with a tiny command set that you will use repeatedly.
+
+```{.bash filename="terminal"}
+pwd          # print working directory — where am I?
+ls           # list files and folders here
+ls -la       # -l long format; -a include hidden (dot) entries
+mkdir tmp    # create a folder called tmp here
+ls           # tmp should appear in this listing
+cd tmp       # change directory
+touch visited.txt
+cd -         # jump back to previous directory
+```
+
+**`mkdir`** creates a directory. **`touch`** creates an empty file (or updates
+a timestamp).
+
+::: {#fundamentals-1 .shell-challenge}
+
+**Start challenge** seeds a hidden **`.sandbox_marker`** file — you will need
+**`ls -la`** in step 3 to spot it.
+
+<ol class="shell-challenge-steps">
+
+<li>Print your current working directory.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+pwd
+```
+
+</details>
+</li>
+
+<li>List files in the current directory (without hidden entries).
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+ls
+```
+
+</details>
+</li>
+
+<li>List all files, including hidden ones.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+ls -la
+```
+
+</details>
+</li>
+
+<li>Create a folder named **`tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+mkdir tmp
+```
+
+</details>
+</li>
+
+<li>List files again and confirm **`tmp`** appears.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+ls
+```
+
+</details>
+</li>
+
+<li>Change into **`tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cd tmp
+```
+
+</details>
+</li>
+
+<li>Create an empty file named **`visited.txt`** inside **`tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+touch visited.txt
+```
+
+</details>
+</li>
+
+<li>Return to the directory you were in before **`cd tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cd -
+```
+
+</details>
+</li>
+
+</ol>
+
+**Check yourself:** Where were you before **`cd tmp`**? What hidden entries did
+**`ls -la`** show? Where did **`cd -`** take you?
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+## 2) Data Flow: Pipes and Redirection {#data-flow-pipes-and-redirection}
+
+The shell gets powerful when you connect simple tools together.
+
+- **`printf`** — print formatted text (like `echo`, but handles newlines reliably)
+- **`cat`** — print a file's contents to the terminal
+- **`grep`** — print lines that match a pattern (more in [section 3](#grep-chaining))
+
+```{.bash filename="terminal"}
+printf "apple\nbanana\napricot\n" > fruits.txt
+cat fruits.txt
+grep '^a' fruits.txt
+grep '^a' fruits.txt | wc -l
+```
+
+The **`^`** in `'^a'` means “starts with” — only lines that **begin with** **`a`**
+match (`apple`, `apricot`, but not `banana`).
+
+- `>` writes output to a file (overwrites existing content).
+- `|` passes output from one command into the next.
+- **`wc -l`** — **w**ord **c**ount, lines only. Counts how many lines are in the
+  input (a file or piped output). Useful when you want a total, not every matching
+  line.
+
+::: {#pipes-1 .shell-challenge}
+
+Only **`blueberry`** starts with **`b`** — that is the line your count should
+find.
+
+<ol class="shell-challenge-steps">
+
+<li>Create **`fruits.txt`** with three lines: **`apple`**, **`apricot`**, and
+**`blueberry`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+printf '%s\n' apple apricot blueberry > fruits.txt
+```
+
+</details>
+</li>
+
+<li>Count how many fruits start with **`b`** and append that number to
+**`b-count.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+grep '^b' fruits.txt | wc -l >> b-count.txt
+```
+
+</details>
+</li>
+
+</ol>
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+## 3) Grep Chaining {#grep-chaining}
+
+**`grep`** searches text for lines matching a pattern. It is one of the best
+shell tools for quick investigations.
+
+- **`grep 'PATTERN' file`** — lines containing `PATTERN`
+- **`grep -v 'PATTERN'`** — **v** invert: lines that do *not* match (exclude noise)
+
+### Set up a practice log
+
+Create **`app.log`** before the Try Its below:
+
+```{.bash filename="terminal"}
+printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\nlevel=warn cache_miss\nlevel=error oom\n" > app.log
+```
+
+On a **local terminal**, create it once and reuse it for every exercise in this
+section.
+
+In the **browser sandbox**, files persist while you work — but **Start
+challenge** on any exercise wipes the environment and starts fresh. When you
+**Start** the **`grep-1`** challenge later in this section, **`app.log`** is
+reloaded for you with the same content as above. Until then, run the
+**`printf`** yourself whenever you need the file.
+
+See what you are working with:
+
+```{.bash filename="terminal"}
+cat app.log
+```
+
+Try a few searches:
+
+```{.bash filename="terminal"}
+grep 'ERROR' app.log
+```
+
+```{.bash filename="terminal"}
+grep 'INFO' app.log
+```
+
+You should see every line that contains `ERROR`, and only the startup line for
+`INFO`.
+
+### Quotes and patterns
+
+Single quotes keep the search pattern literal; double quotes let variables expand
+(see [quoting](#quote-paths-and-patterns-carefully) if **expansion** is new).
+
+Variable in the pattern — set the variable, then use double quotes:
+
+```{.bash filename="terminal"}
+export LOG_LEVEL=warn
+grep "level=$LOG_LEVEL" app.log
+```
+
+You should see the line containing `level=warn`.
+
+### Chaining filters
+
+Pipe **`grep`** commands together to narrow noisy logs:
+
+```{.bash filename="terminal"}
+grep 'ERROR' app.log | grep -v retry | grep -v healthcheck
+```
+
+You should see only `ERROR timeout`.
+
+The `^` in patterns like `'^a'` means "starts with" (used in [section 2](#data-flow-pipes-and-redirection)).
+
+This approach is useful for narrowing noisy logs quickly:
+
+1. broad match (`ERROR`)
+2. exclude known noise (`-v retry`, `-v healthcheck`)
+
+### AI Engineer Use Case
+
+When a local model service fails, this pattern helps isolate relevant errors
+before you disappear into a debugging rabbit hole.
+
+::: {#grep-1 .shell-challenge}
+
+**Start challenge** pre-loads **`app.log`**. If you are practising without
+**Start**, create it first with the **`printf`** from [Set up a practice
+log](#grep-chaining).
+
+<ol class="shell-challenge-steps">
+
+<li>Filter **`app.log`** for **`ERROR`** lines, excluding anything containing
+**`retry`** or **`healthcheck`**, and save the result to **`grep-results.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+grep 'ERROR' app.log | grep -v retry | grep -v healthcheck > grep-results.txt
+```
+
+</details>
+</li>
+
+<li>Display **`grep-results.txt`** to verify the filter worked.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cat grep-results.txt
+```
+
+</details>
+</li>
+
+</ol>
+
+You should see only **`ERROR timeout`**.
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+## 4) Globs and Brace Expansion {#globs-and-brace-expansion}
+
+### Globs
+
+A **glob** is a wildcard pattern the shell uses to match filenames. Before a
+command runs, the shell expands the pattern into a list of matching files.
+
+Common wildcards:
+
+- `*` — matches any characters (e.g. `*.json` → all `.json` files)
+- `?` — matches exactly one character (e.g. `file?.txt` → `file1.txt`, `fileA.txt`)
+
+```{.bash filename="terminal"}
+ls *.txt
+ls project/src/*.py
+```
+
+If you used `echo rm ./logs/*.json` earlier in the hints section, that `*` is a
+glob — `echo` lets you preview which files would be matched before you run
+**`rm`** (remove) for real.
+
+### Brace expansion
+
+Brace expansion is a different trick — it generates text from a pattern in
+curly braces. It saves surprising amounts of time when scaffolding projects.
+
+- **`mkdir`** — create a directory; **`-p`** creates parent folders too if missing
+- **`ls -R`** — list recursively (every subdirectory)
+
+```{.bash filename="terminal"}
+mkdir -p project/{data,src,tests,logs}
+touch project/src/{ingest,embed,serve}.py
+ls -R project
+```
+
+This is great for scaffolding small prototypes quickly.
+
+::: {#globs-1 .shell-challenge}
+
+<ol class="shell-challenge-steps">
+
+<li>Create the **`project/src`** directory (create parent folders if needed).
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+mkdir -p project/src
+```
+
+</details>
+</li>
+
+<li>Create **`eval_metrics.py`** and **`eval_runner.py`** in one step using
+brace expansion.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+touch project/src/{eval_metrics,eval_runner}.py
+```
+
+</details>
+</li>
+
+</ol>
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+## 5) Simple For Loops {#simple-for-loops}
+
+A **for loop** runs the same commands once per item in a list. That is how you
+batch-process files, hit several endpoints, or rerun a check across a folder
+without copy-pasting.
+
+Basic shape:
+
+```{.bash filename="terminal"}
+for name in item1 item2 item3; do
+  echo "Processing $name"
+done
+```
+
+- **`for ... in ...`** — the list can be words you type, or a glob the shell expands
+- **`do` / `done`** — wrap the commands to repeat
+- **`$name`** — the current item (quote it as `"$name"` when it might contain spaces)
+
+Loop over files with a glob (see [section 4](#globs-and-brace-expansion)). Here we
+use **`wc -l`** on each file directly — it prints how many lines that file
+contains (you met `wc -l` on piped output in section 2):
+
+```{.bash filename="terminal"}
+for f in *.txt; do
+  echo "=== $f ==="
+  wc -l "$f"
+done
+```
+
+Quoting `"$f"` matters when filenames contain spaces — the same rule from the
+[quoting hints](#quote-paths-and-patterns-carefully).
+
+### AI Engineer Use Case
+
+Got twelve eval output files and need the same `grep` on each? A loop beats
+running the command twelve times by hand:
+
+```{.bash filename="terminal"}
+for f in outputs/run_*.log; do
+  echo "== $f =="
+  grep 'ERROR' "$f"
+done
+```
+
+::: {#for-loops-1 .shell-challenge}
+
+The **`||`** in step 2 means "if **`grep`** finds nothing, run the command on
+the right instead" — here, print **`(no errors)`**.
+
+<ol class="shell-challenge-steps">
+
+<li>Create a **`logs/`** folder with three files: **`alpha.log`** (INFO only),
+**`beta.log`** (one ERROR line), and **`gamma.log`** (ERROR plus WARN).
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+mkdir logs && printf 'INFO ok\n' > logs/alpha.log && printf 'ERROR timeout\n' > logs/beta.log && printf 'ERROR retry\nWARN slow\n' > logs/gamma.log
+```
+
+</details>
+</li>
+
+<li>Loop over every **`.log`** file in **`logs/`** and print any line containing
+**`ERROR`**. If a file has no errors, print **`(no errors)`** instead.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+for f in logs/*.log; do echo "== $f =="; grep 'ERROR' "$f" || echo "(no errors)"; done
+```
+
+</details>
+</li>
+
+</ol>
+
+You should see errors from **`beta.log`** and **`gamma.log`**, and
+**`(no errors)`** for **`alpha.log`**.
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+## 6) Executables and Permissions {#executables-and-permissions}
+
+A script file is not executable by default, even if it contains valid shell
+code.
+
+- **`cat > file <<'EOF'`** — write several lines to a file (a **heredoc**); text
+  until `EOF` is saved into `file`
+- **`./hello.sh`** — run a script in the current directory (`./` means "here")
+- **`ls -l`** — long listing; shows permission letters including `x` for executable
+- **`chmod +x`** — add e**x**ecute permission so you can run the script
+
+```{.bash filename="terminal"}
+cat > hello.sh <<'EOF'
+#!/usr/bin/env bash
+echo "Hello from shell"
+EOF
+
+ls -l hello.sh
+./hello.sh
+```
+
+The first line `#!/usr/bin/env bash` is a **shebang** — it tells the system which
+interpreter to use when you run `./hello.sh`.
+
+You should see a permission error before adding execute permission. That's
+normal.
+
+```{.bash filename="terminal"}
+chmod +x hello.sh
+ls -l hello.sh
+./hello.sh
+```
+
+This pattern matters when packaging helper scripts for teammates, automation,
+or CI jobs.
+
+::: {#permissions-1 .shell-challenge}
+
+<ol class="shell-challenge-steps">
+
+<li>Create **`hello.sh`** — a script that prints **`Hello from shell`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+printf '%s\n' '#!/usr/bin/env bash' 'echo "Hello from shell"' > hello.sh
+```
+
+</details>
+</li>
+
+<li>Try to run the script. You should get **Permission denied** — it is not
+executable yet.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+./hello.sh
+```
+
+</details>
+</li>
+
+<li>Check the file permissions with a long listing.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+ls -l hello.sh
+```
+
+</details>
+</li>
+
+<li>Make the script executable.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+chmod +x hello.sh
+```
+
+</details>
+</li>
+
+<li>Check permissions again.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+ls -l hello.sh
+```
+
+</details>
+</li>
+
+<li>Run the script successfully.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+./hello.sh
+```
+
+</details>
+</li>
+
+</ol>
+
+You should see **Permission denied** on the first run, then **`Hello from shell`**
+after **`chmod +x`**. **Check my work** verifies that behaviour — even if
+**`ls -l`** still shows **`-rw-r--r--`** in the sandbox. On a **local terminal**
+or in **Codespaces**, **`ls -l`** updates to show **`x`** after **`chmod +x`**.
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+### Use a DRY_RUN flag before you trust a script {#dry-run-flag}
+
+Once you are writing scripts, you will often touch real files, call live APIs,
+or change application state — and hoping for the best is not a strategy.
+
+A common pattern is a **DRY_RUN** flag. Instead of performing the action, the
+script prints what it *would* do. You inspect the output (on screen or in a log
+file). If it looks right, run again without the flag and trust the result.
+
+Some familiar commands have a built-in safety switch. For example, **`rm`**
+(remove/delete) with the **`-i`** flag asks you to confirm before each delete:
+
+```{.bash filename="terminal"}
+rm -i notes.txt
+```
+
+For your own scripts, an environment variable keeps things simple:
+
+```{.bash filename="terminal"}
+# safe preview
+DRY_RUN=1 ./cleanup_old_embeddings.sh
+
+# real run, only after the preview looked correct
+./cleanup_old_embeddings.sh
+```
+
+A minimal pattern inside a script might look like this. **`find`** searches the
+filesystem; **`-type f`** limits to files, **`-mtime +30`** finds files older than
+30 days, and **`-delete`** removes them (we only run that branch when `DRY_RUN`
+is not set):
+
+```{.bash filename="terminal"}
+if [ "$DRY_RUN" = "1" ]; then
+  echo "Would delete files older than 30 days in ./cache/"
+else
+  find ./cache/ -type f -mtime +30 -delete
+fi
+```
+
+You can redirect dry-run output to a log for a paper trail. **`>>`** appends
+output to a file (you will not see it on screen unless you open the log):
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./cleanup_old_embeddings.sh >> dry-run.log
+```
+
+**`tee`** does both — it prints to the terminal *and* writes to the file at the
+same time. That is handy when you want to inspect the preview immediately while
+still keeping a record:
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./cleanup_old_embeddings.sh | tee dry-run.log
+```
+
+Use `>>` when you only need the log. Use `tee` when you want to read the output
+and save it in one step.
+
+This is especially wise when a command is destructive, expensive, or hard to
+undo — bulk deletes, deployment scripts, or anything that hits production data.
+
+For quick **one-liners**, you do not always need a full script. **`echo`**
+prints text to the terminal — use it to preview a destructive command first,
+then run the real thing once you are satisfied:
+
+```{.bash filename="terminal"}
+# preview
+echo rm ./logs/*.json
+
+# enact
+rm ./logs/*.json
+```
+
+With variables or wildcard patterns like `*.json`, `echo` shows you how the
+shell will expand things before anything irreversible happens:
+
+```{.bash filename="terminal"}
+TARGET="./cache/embeddings"
+echo rm -rf "$TARGET"
+# rm -rf "$TARGET"
+```
+
+The same idea works inside pipelines. Swap the destructive command for `echo`
+temporarily:
+
+```{.bash filename="terminal"}
+find ./tmp -name "*.bak" -exec echo rm {} \;
+# find ./tmp -name "*.bak" -exec rm {} \;
+```
+
+If the echoed output looks right, rerun without `echo` and let the command do
+its job.
+
+::: {#dry-run-1 .shell-challenge}
+
+<ol class="shell-challenge-steps">
+
+<li>Create **`dry_demo.sh`**. When **`DRY_RUN=1`**, it should print a preview
+message instead of doing anything destructive.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+printf '%s\n' '#!/usr/bin/env bash' 'if [ "$DRY_RUN" = "1" ]; then' '  echo "Would delete files older than 30 days in ./cache/"' 'fi' > dry_demo.sh
+```
+
+</details>
+</li>
+
+<li>Make the script executable.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+chmod +x dry_demo.sh
+```
+
+</details>
+</li>
+
+<li>Run the script with **`DRY_RUN=1`** to preview what it would do.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./dry_demo.sh
+```
+
+</details>
+</li>
+
+<li>Run the script without **`DRY_RUN`** — it should do nothing visible.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+./dry_demo.sh
+```
+
+</details>
+</li>
+
+<li>Preview a destructive command safely with **`echo`** before you would run it
+for real.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+echo rm ./welcome.txt
+```
+
+</details>
+</li>
+
+</ol>
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+## 7) Processes, Ports, and Signals {#processes-ports-and-signals}
+
+Now we're in classic operations/debugging territory.
+
+### Start and inspect a process
+
+- **`sleep N`** — pause for N seconds (useful for testing)
+- **`&` at the end** — run the command in the **background** so you get your prompt back
+- **`jobs`** — list background tasks started from this shell
+- **`ps`** — list running processes; **`-ef`** shows all processes in full format
+- **PID** — **p**rocess **id**entifier; a numeric handle you pass to `kill`
+
+```{.bash filename="terminal"}
+sleep 300 &
+jobs
+ps -ef | grep sleep | grep -v grep
+```
+
+The second `grep -v grep` drops the `grep` process itself from the results — a
+common trick when searching for processes.
+
+### Stop a process gracefully
+
+**`kill PID`** sends a polite shutdown signal (replace `PID` with the number from
+`ps`):
+
+```{.bash filename="terminal"}
+kill <PID>
+```
+
+### Force stop (last resort)
+
+**`kill -9 PID`** forces immediate termination — no cleanup:
+
+::: {.callout-warning}
+Use `kill -9` sparingly. It bypasses graceful shutdown and can leave temporary
+state or partial writes behind.
+:::
+
+### Check which process is using a port
+
+**`lsof`** — **l**ist **o**pen **f**iles; sockets count as files. **`-i :8000`**
+shows what is bound to port 8000:
+
+```{.bash filename="terminal"}
+lsof -i :8000
+```
+
+In real projects, this is often the fastest answer to:
+"Why won't my service start on this port?"
+
+### Try It
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+Start a background job and find its process ID:
+
+```{.bash filename="terminal"}
+sleep 120 &
+jobs
+ps -ef | grep sleep | grep -v grep
+```
+
+Copy the PID from the `ps` output (the number in the second column).
+
+Stop it gracefully, then check it is gone:
+
+```{.bash filename="terminal"}
+kill <PID>
+ps -ef | grep sleep | grep -v grep
+```
+
+Replace `<PID>` with the number you copied. The second `ps` should return nothing.
+
+```{=html}
+</div>
+```
+
+## 8) Practical AI Glue Workflows
+
+These small shell pipelines can save a lot of time during development. Work
+through them in order — each builds on files you created in earlier sections.
+
+### Filter noisy logs
+
+```{.bash filename="terminal"}
+cat app.log | grep 'ERROR' | grep -v 'healthcheck'
+```
+
+::: {#glue-logs-1 .shell-challenge}
+
+**Start challenge** loads **`app.log`**.
+
+<ol class="shell-challenge-steps">
+
+<li>Filter **`app.log`** for **`ERROR`** lines, exclude anything containing
+**`healthcheck`**, and save the result to **`filtered-errors.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+grep 'ERROR' app.log | grep -v healthcheck > filtered-errors.txt
+```
+
+</details>
+</li>
+
+<li>Review **`filtered-errors.txt`** to see what you captured.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cat filtered-errors.txt
+```
+
+</details>
+</li>
+
+</ol>
+
+You should see **`ERROR oom`** and **`ERROR timeout`** — no healthcheck line.
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+### Quick file inventory
+
+**`grep '\.py$'`** — lines ending in `.py` (`$` means end of line; `\.` is a
+literal dot). Useful for spotting Python files in a long listing:
+
+```{.bash filename="terminal"}
+ls -R project | grep '\.py$'
+```
+
+::: {#glue-inventory-1 .shell-challenge}
+
+**Start challenge** loads **`project/`** with three Python files.
+
+<ol class="shell-challenge-steps">
+
+<li>Find every **`.py`** file under **`project/`** and save the listing to
+**`python-inventory.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+ls -R project | grep '\.py$' > python-inventory.txt
+```
+
+</details>
+</li>
+
+<li>Review **`python-inventory.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cat python-inventory.txt
+```
+
+</details>
+</li>
+
+</ol>
+
+You should see at least three lines ending in **`.py`**.
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+### Verify executable helpers
+
+```{.bash filename="terminal"}
+ls -l *.sh
+```
+
+::: {#glue-scripts-1 .shell-challenge}
+
+**Start challenge** loads **`hello.sh`** (not executable yet).
+
+<ol class="shell-challenge-steps">
+
+<li>Make **`hello.sh`** executable.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+chmod +x hello.sh
+```
+
+</details>
+</li>
+
+<li>Verify permissions with a long listing.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+ls -l *.sh
+```
+
+</details>
+</li>
+
+<li>Run the script.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+./hello.sh
+```
+
+</details>
+</li>
+
+</ol>
+
+On a **local terminal** or in **Codespaces**, **`ls -l`** would also show **`x`**
+in the permission string after **`chmod +x`**.
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+### Probe an API with `curl` (and parse JSON with `jq`) {#probe-an-api-with-curl-and-parse-json-with-jq}
+
+AI work involves a lot of HTTP — model APIs, embedding services, health checks.
+**`curl`** is the shell's Swiss Army knife for sending requests and inspecting
+responses without opening Postman.
+
+A minimal GET with the response body on stdout:
+
+```{.bash filename="terminal"}
+curl -s https://httpbin.org/get
+```
+
+- **`-s`** — silent mode (hides the progress meter so pipes stay clean)
+
+When the response is JSON, **`jq`** filters and formats it — pass a path like
+`.headers.Host` to pull one field. Install `jq` locally if you do not have it
+(`brew install jq` on macOS).
+
+```{.bash filename="terminal"}
+curl -s https://httpbin.org/get | jq '.headers.Host'
+```
+
+For authenticated APIs, pass the key from an environment variable (set in your
+shell or loaded from `.env` — never hard-code it in the command history).
+**`-H`** adds an HTTP header:
+
+```{.bash filename="terminal"}
+curl -s -H "Authorization: Bearer $OPENAI_API_KEY" \
+  https://api.openai.com/v1/models | jq '.data[].id'
+```
+
+You can practise the `jq` part without network access — save a fake response and
+parse it locally:
+
+::: {#jq-1 .shell-challenge}
+
+<ol class="shell-challenge-steps">
+
+<li>Create **`response.json`** with sample API-style JSON.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+printf '{"choices":[{"message":{"content":"pong"}}]}\n' > response.json
+```
+
+</details>
+</li>
+
+<li>Inspect the file to see the raw JSON.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cat response.json
+```
+
+</details>
+</li>
+
+<li>Extract the **`content`** field with **`jq`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
+```{.bash filename="terminal"}
+cat response.json | jq '.choices[0].message.content'
+```
+
+</details>
+</li>
+
+</ol>
+
+You should see **`"pong"`** (JSON strings include the quote marks in **`jq`**
+output).
+
+```{=html}
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+```{=html}
+<div data-shell-compat="local codespaces">
+```
+
+On a **local terminal** or in **Codespaces**, probe a live URL with **`curl`**
+and **`jq`**:
+
+```{.bash filename="terminal"}
+curl -s https://httpbin.org/get | jq '.headers.Host'
+```
+
+```{=html}
+</div>
+```
+
+## 9) Extension: Run Advanced Commands Locally or in Codespaces {#extension-codespaces}
+
+Process debugging, live API calls, and advanced keyboard shortcuts assume a full
+terminal. Select **Local terminal** or **GitHub Codespaces** at the
+[top of this tutorial](#choose-your-environment) if you have not already.
+
+## 10) Pre-Publish Checklist For Your Own Shell Docs
+
+- Are all interactive commands safe and reversible?
+- Did you clearly warn readers not to paste secrets?
+- Did you distinguish sandbox behavior from real host behavior?
+- Are advanced commands (`kill -9`, `lsof -i`) explained with caution?
+- Does each section include a concrete "why this matters" use case?
+
+## Glossary {#glossary}
+
+Quick reference for commands and terms in this tutorial. Each entry links to where
+it is introduced — use this when you meet something unfamiliar mid-challenge.
+
+### Concepts
+
+- **[Background job](#processes-ports-and-signals)** — A command running while you
+  keep your prompt (`sleep 300 &`).
+- **[Brace expansion](#globs-and-brace-expansion)** — Generate text from a pattern
+  in curly braces (`project/{data,src}`).
+- **[Command](#core-vocabulary)** — A program name you type at the prompt (`ls`,
+  `grep`).
+- **[DRY_RUN](#dry-run-flag)** — Preview pattern: run with a flag set so nothing
+  destructive happens until you are sure.
+- **[Environment variable](#environment-variables)** — A named value programs can
+  read (`export MODEL_NAME=...`).
+- **[Flag](#core-vocabulary)** — An option after a command, usually starting with
+  `-` (`ls -la`, `grep -v`).
+- **[For loop](#simple-for-loops)** — Repeat commands for each item in a list
+  (`for f in *.log; do ... done`).
+- **[GitHub Codespaces](#choose-your-environment)** — Cloud Linux dev environment with VS
+  Code and a real terminal in the browser.
+- **[Glob](#globs-and-brace-expansion)** — Wildcard filename pattern (`*.json`,
+  `logs/*.log`).
+- **[Heredoc](#executables-and-permissions)** — Multi-line input into a file
+  (`cat > file <<'EOF'`).
+- **[PATH](#when-things-go-wrong-read-the-error-first)** — Directories the shell
+  searches when you type a command name.
+- **[PID](#processes-ports-and-signals)** — Process identifier — numeric handle for
+  `kill`.
+- **[Pipeline](#data-flow-pipes-and-redirection)** — Commands chained with `|`;
+  output of one feeds the next.
+- **[Prompt](#core-vocabulary)** — Where you type commands, usually ending in `$`.
+- **[Shebang](#executables-and-permissions)** — First line of a script (`#!/usr/bin/env bash`)
+  telling the system which interpreter to use.
+
+### Commands
+
+- **[`cat`](#data-flow-pipes-and-redirection)** — Print a file's contents.
+- **[`cd`](#shell-fundamentals)** — Change directory; **`cd -`** returns to the
+  previous one.
+- **[`chmod`](#executables-and-permissions)** — Change permissions; **`chmod +x`**
+  makes a script executable.
+- **[`curl`](#probe-an-api-with-curl-and-parse-json-with-jq)** — Send HTTP
+  requests from the terminal.
+- **[`echo`](#data-flow-pipes-and-redirection)** — Print text (also used to preview
+  destructive commands in [DRY_RUN](#dry-run-flag)).
+- **[`export`](#environment-variables)** — Set an environment variable for child
+  programs.
+- **[`find`](#dry-run-flag)** — Search the filesystem by name, type, age, etc.
+- **[`grep`](#grep-chaining)** — Search lines matching a pattern; **`-v`** inverts
+  (exclude matches).
+- **[`head`](#environment-variables)** — Print the first few lines of output.
+- **[`history`](#search-your-command-history)** — List commands you have run in this
+  session.
+- **[`jobs`](#processes-ports-and-signals)** — List background tasks from this shell.
+- **[`jq`](#probe-an-api-with-curl-and-parse-json-with-jq)** — Filter and format
+  JSON (`jq '.field'`).
+- **[`kill`](#processes-ports-and-signals)** — Send a signal to a process; **`-9`**
+  forces immediate stop.
+- **[`ls`](#shell-fundamentals)** — List files; **`-l`** long format; **`-a`**
+  includes hidden entries; **`-R`** recursive.
+- **[`lsof`](#processes-ports-and-signals)** — List open files; **`-i :PORT`** shows
+  what is using a port.
+- **[`mkdir`](#globs-and-brace-expansion)** — Create a directory; **`-p`** creates
+  parent folders too.
+- **[`printf`](#data-flow-pipes-and-redirection)** — Print formatted text (reliable
+  newlines for building files).
+- **[`ps`](#processes-ports-and-signals)** — List processes; **`-ef`** shows all in
+  full format.
+- **[`pwd`](#shell-fundamentals)** — Print working directory (where am I?).
+- **[`rm`](#dry-run-flag)** — Remove files; **`-i`** asks before each delete.
+- **[`sleep`](#processes-ports-and-signals)** — Pause for N seconds.
+- **[`source`](#know-your-zshrc-and-history-file)** — Reload a config file into the
+  current shell (`source ~/.zshrc`).
+- **[`tee`](#dry-run-flag)** — Write to a file and print to the terminal at the same
+  time.
+- **[`touch`](#shell-fundamentals)** — Create an empty file (or update timestamp).
+- **[`wc`](#data-flow-pipes-and-redirection)** — Word count; **`-l`** counts lines.
+- **[`which`](#when-things-go-wrong-read-the-error-first)** — Show path to a command
+  executable.
+
+### Operators and syntax
+
+- **[`&`](#processes-ports-and-signals)** — Run a command in the background.
+- **[`&&`](#when-things-go-wrong-read-the-error-first)** — Run the next command only
+  if the previous one succeeded.
+- **[`||`](#simple-for-loops)** — Run the next command only if the previous one
+  failed.
+- **[`|` (pipe)](#data-flow-pipes-and-redirection)** — Send one command's output into
+  the next.
+- **[`>` / `>>`](#data-flow-pipes-and-redirection)** — Redirect output to a file
+  (overwrite / append).
+- **[`./script.sh`](#executables-and-permissions)** — Run an executable in the current
+  directory.
+- **[`$VAR`](#environment-variables)** — Expand an environment variable.
+- **[`'...'` / `"..."`](#quote-paths-and-patterns-carefully)** — Single quotes: literal
+  text. Double quotes: allow variable expansion.
+
+### Keyboard shortcuts
+
+- **[Ctrl+C](#stop-a-runaway-command-with-ctrlc)** — Stop a running command.
+- **[Ctrl+R](#search-your-command-history)** — Reverse-search command history.
+- **[Tab](#use-tab-to-complete-matches)** — Complete filenames and command names.
+- **[Modifier keys](#jump-around-the-command-line-with-modifier-keys)** — Jump by
+  word or to the start/end of the line.
+- **[Up / Down arrows](#use-arrow-keys-to-navigate-prior-commands-work-smart-not-hard)** —
+  Step through previous commands.
+
+## Further reading
+
+A short list of resources worth your time. Each one is widely respected, free, and
+does something this tutorial does not — deeper courses, correct bash habits, dense
+references, or tools you will use for years.
+
+- [**The Unix Shell** (Software Carpentry)](https://swcarpentry.github.io/shell-novice/) —
+  The best structured follow-on from here. Clear lessons, exercises, and a gentle
+  ramp from navigation through scripting. If you liked the hands-on style of this
+  tutorial, start here next.
+
+- [**Bash Guide**](https://mywiki.wooledge.org/BashGuide) and [**Bash Pitfalls**](https://mywiki.wooledge.org/BashPitfalls) (Greg's Wiki) —
+  The bash community's gold standard for doing things *correctly*. The guide teaches
+  good habits; the pitfalls page is a catalogue of ways bash will surprise you.
+  Essential once you start writing scripts that other people (or CI) will run.
+
+- [**The Art of Command Line**](https://github.com/jlevy/the-art-of-command-line) —
+  One dense page of practical CLI wisdom — file processing, debugging, one-liners,
+  macOS and Windows notes. Legendary for a reason (160k+ GitHub stars). Keep it
+  bookmarked and skim a section when you have five minutes.
+
+- [**explainshell.com**](https://explainshell.com/) —
+  Paste any command; get a visual breakdown of every flag and argument against the
+  man page text. Invaluable when you copy a `curl`, `find`, or `tar` one-liner from
+  Stack Overflow and want to know what it actually does before you run it.
+
+- [**tldr pages**](https://tldr.sh/) —
+  Practical examples for everyday commands (`tldr tar`, `tldr curl`). The man page
+  when you need the full spec; tldr when you need to remember the flags you always
+  forget. Install once (`brew install tldr` on macOS) and never leave home without
+  it.
+
+- [**ShellCheck**](https://www.shellcheck.net/) —
+  Static analysis for shell scripts. Paste a script or hook it into your editor; it
+  catches quoting bugs, portability issues, and logic traps before they bite you in
+  production. Non-negotiable once you are writing glue scripts for real.
+
+- [**Bite size bash**](https://wizardzines.com/zines/bite-size-bash/) (Julia Evans) —
+  A short, illustrated zine on how bash *actually* works — quoting, `if` tests,
+  variables, and the gotchas experienced programmers still trip over. Her
+  [terminal deep-dives](https://jvns.ca/blog/2025/06/24/new-zine--the-secret-rules-of-the-terminal/)
+  are excellent if you want to understand *why* the terminal feels inconsistent
+  (spoiler: it is four different programs pretending to be one).
+
+## Wrap-up
+
+Shell skills compound quickly. Start with navigation and pipes, add pattern
+matching and loops, then permissions and process control, and apply them to your
+own tool chain. Once these habits click, the shell becomes a dependable
+orchestration layer for AI engineering work. Keep the [Glossary](#glossary) handy
+when you forget a flag or command name.
+
+```{=html}
+<script src="/www/shell-dock/shell-dock.js" defer></script>
+<script src="/www/shell-challenges/shell-challenges.js" defer></script>
+<script src="/www/shell-challenges/shell-env-filter.js" defer></script>
+```

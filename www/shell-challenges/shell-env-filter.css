@@ -1,0 +1,47 @@
+.shell-env-hidden {
+  display: none !important;
+}
+
+section.level3.shell-env-hidden {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+
+.shell-challenge-partial-note,
+.shell-challenge-local-note {
+  margin: 0.65rem 0 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.shell-challenge-partial-note {
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.35);
+  color: inherit;
+}
+
+.shell-challenge-local-note {
+  background: rgba(13, 110, 253, 0.08);
+  border: 1px solid rgba(13, 110, 253, 0.25);
+  color: inherit;
+}
+
+body.quarto-dark .shell-challenge-partial-note {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: rgba(255, 193, 7, 0.3);
+}
+
+body.quarto-dark .shell-challenge-local-note {
+  background: rgba(13, 110, 253, 0.15);
+  border-color: rgba(13, 110, 253, 0.35);
+}
+
+body[data-shell-env="local"] #shell-dock,
+body[data-shell-env="codespaces"] #shell-dock {
+  display: none !important;
+}

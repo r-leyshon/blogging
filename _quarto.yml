@@ -3,6 +3,13 @@ project:
   resources:
     - ads.txt 
     - /.outputs/*
+    - /./www/shell-sandbox/sandbox.js
+    - /./www/shell-sandbox/index.html
+    - /./www/shell-sandbox/exercises.json
+    - /./www/shell-dock/shell-dock.js
+    - /./www/shell-challenges/shell-challenges.js
+    - /./www/shell-challenges/shell-env-filter.js
+    - /./www/shell-challenges/shell-env-filter.css
   output-dir: docs
   render:
     - "*.qmd"

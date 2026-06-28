@@ -1,0 +1,286 @@
+/* Fixed bottom shell panel — blog page only */
+
+.shell-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  background: #f8f9fa;
+  border-top: 1px solid #ced4da;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12);
+  transition: height 0.25s ease;
+}
+
+.shell-dock--collapsed {
+  height: 3rem;
+}
+
+.shell-dock--open {
+  height: min(45vh, 520px);
+}
+
+.shell-dock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 3rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+}
+
+.shell-dock-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.shell-dock-hint {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.shell-dock-toggle {
+  flex-shrink: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.35rem;
+  background: #fff;
+  color: #212529;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.shell-dock-toggle:hover {
+  background: #e9ecef;
+}
+
+.shell-dock-body {
+  position: relative;
+  height: calc(100% - 3rem);
+  display: none;
+}
+
+.shell-dock--open .shell-dock-body {
+  display: block;
+}
+
+.shell-dock-status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1e1e1e;
+  color: #ced4da;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85rem;
+  z-index: 1;
+}
+
+.shell-dock-body.is-ready .shell-dock-status {
+  display: none;
+}
+
+.shell-dock-body iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #1e1e1e;
+}
+
+body.shell-dock-open {
+  padding-bottom: min(45vh, 520px);
+}
+
+.shell-dock-open-btn {
+  display: inline-block;
+  margin: 0.5rem 0 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.35rem;
+  background: #f8f9fa;
+  color: #212529;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.shell-dock-open-btn:hover {
+  background: #e9ecef;
+}
+
+body.quarto-dark .shell-dock {
+  background: #212529;
+  border-top-color: #495057;
+}
+
+body.quarto-dark .shell-dock-hint {
+  color: #adb5bd;
+}
+
+body.quarto-dark .shell-dock-toggle,
+body.quarto-dark .shell-dock-open-btn {
+  background: #2b3035;
+  border-color: #495057;
+  color: #f8f9fa;
+}
+
+body.quarto-dark .shell-dock-toggle:hover,
+body.quarto-dark .shell-dock-open-btn:hover {
+  background: #343a40;
+}
+
+@media (max-width: 768px) {
+  .shell-dock-hint {
+    display: none;
+  }
+
+  .shell-dock--open {
+    height: 55vh;
+  }
+
+  body.shell-dock-open {
+    padding-bottom: 55vh;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell tutorial — glass section headings (page with #shell-dock only) */
+/* ------------------------------------------------------------------ */
+
+body:has(#shell-dock) {
+  --shell-glass-accent: #20c997;
+  --shell-glass-accent-soft: rgba(32, 201, 151, 0.45);
+  --shell-glass-accent-glow: rgba(45, 212, 168, 0.35);
+  --shell-glass-border: rgba(32, 201, 151, 0.32);
+  --shell-glass-bg-top: rgba(255, 255, 255, 0.78);
+  --shell-glass-bg-mid: rgba(236, 255, 250, 0.58);
+  --shell-glass-bg-bot: rgba(255, 255, 255, 0.68);
+  --shell-glass-inset: rgba(255, 255, 255, 0.92);
+  --shell-glass-shadow: rgba(32, 201, 151, 0.14);
+}
+
+body.quarto-dark:has(#shell-dock) {
+  --shell-glass-accent: #2dd4a8;
+  --shell-glass-accent-soft: rgba(45, 212, 168, 0.55);
+  --shell-glass-accent-glow: rgba(45, 212, 168, 0.45);
+  --shell-glass-border: rgba(45, 212, 168, 0.28);
+  --shell-glass-bg-top: rgba(33, 37, 41, 0.72);
+  --shell-glass-bg-mid: rgba(26, 46, 40, 0.55);
+  --shell-glass-bg-bot: rgba(33, 37, 41, 0.68);
+  --shell-glass-inset: rgba(255, 255, 255, 0.06);
+  --shell-glass-shadow: rgba(0, 0, 0, 0.35);
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level2:not(:first-of-type)::before {
+  content: "";
+  display: block;
+  height: 2.25rem;
+  margin: 0.5rem auto 1.35rem;
+  max-width: min(480px, 78%);
+  background:
+    radial-gradient(
+      circle at center 1.1rem,
+      var(--shell-glass-accent) 2.5px,
+      transparent 2.5px
+    ),
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--shell-glass-accent-soft) 18%,
+      var(--shell-glass-accent) 50%,
+      var(--shell-glass-accent-soft) 82%,
+      transparent 100%
+    )
+    center 1.1rem / 100% 1px no-repeat;
+  filter: drop-shadow(0 0 6px var(--shell-glass-accent-glow));
+  opacity: 0.9;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level2:not(:first-of-type) {
+  margin-top: 0.25rem;
+  padding-top: 0.15rem;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level2 > h2 {
+  position: relative;
+  margin: 0 0 1.35rem;
+  padding: 0.95rem 1.35rem 1rem 1.45rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--shell-glass-border);
+  border-left: 4px solid var(--shell-glass-accent);
+  background: linear-gradient(
+    135deg,
+    var(--shell-glass-bg-top) 0%,
+    var(--shell-glass-bg-mid) 48%,
+    var(--shell-glass-bg-bot) 100%
+  );
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    0 8px 32px var(--shell-glass-shadow),
+    0 1px 0 var(--shell-glass-inset) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level2 > h2:hover {
+  border-color: var(--shell-glass-accent-soft);
+  box-shadow:
+    0 10px 36px var(--shell-glass-shadow),
+    0 0 24px var(--shell-glass-accent-glow),
+    0 1px 0 var(--shell-glass-inset) inset;
+}
+
+body:has(#shell-dock) main#quarto-document-content section.level2 > h2::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.75) 35%,
+    rgba(255, 255, 255, 0.75) 65%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+body.quarto-dark:has(#shell-dock) main#quarto-document-content section.level2 > h2::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(45, 212, 168, 0.35) 35%,
+    rgba(45, 212, 168, 0.35) 65%,
+    transparent
+  );
+}
+
+@media (max-width: 768px) {
+  body:has(#shell-dock) main#quarto-document-content section.level2 > h2 {
+    padding: 0.85rem 1rem 0.9rem 1.1rem;
+    font-size: 1.35rem;
+  }
+
+  body:has(#shell-dock) main#quarto-document-content section.level2:not(:first-of-type)::before {
+    max-width: 88%;
+    margin-bottom: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:has(#shell-dock) main#quarto-document-content section.level2 > h2 {
+    transition: none;
+  }
+}
