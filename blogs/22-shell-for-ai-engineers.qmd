@@ -551,15 +551,33 @@ and quotes, see [section 3](#grep-chaining).
 
 ::: {#quotes-1 .shell-challenge}
 
-Create a file with a space in the name, then `cat` it:
+<ol class="shell-challenge-steps">
+
+<li>Create a file whose name contains a space.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 touch "notes draft.txt"
 ```
 
+</details>
+</li>
+
+<li>Print the file's contents to confirm it exists.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 cat "notes draft.txt"
 ```
+
+</details>
+</li>
+
+</ol>
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -661,41 +679,108 @@ a timestamp).
 
 ::: {#fundamentals-1 .shell-challenge}
 
-**Start challenge** seeds a hidden **`.sandbox_marker`** file — useful for step 2.
+**Start challenge** seeds a hidden **`.sandbox_marker`** file — you will need
+**`ls -la`** in step 3 to spot it.
 
-**Do this:**
+<ol class="shell-challenge-steps">
+
+<li>Print your current working directory.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 pwd
 ```
 
+</details>
+</li>
+
+<li>List files in the current directory (without hidden entries).
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 ls
 ```
+
+</details>
+</li>
+
+<li>List all files, including hidden ones.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 ls -la
 ```
 
+</details>
+</li>
+
+<li>Create a folder named **`tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 mkdir tmp
 ```
+
+</details>
+</li>
+
+<li>List files again and confirm **`tmp`** appears.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 ls
 ```
 
+</details>
+</li>
+
+<li>Change into **`tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 cd tmp
 ```
+
+</details>
+</li>
+
+<li>Create an empty file named **`visited.txt`** inside **`tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 touch visited.txt
 ```
 
+</details>
+</li>
+
+<li>Return to the directory you were in before **`cd tmp`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 cd -
 ```
+
+</details>
+</li>
+
+</ol>
 
 **Check yourself:** Where were you before **`cd tmp`**? What hidden entries did
 **`ls -la`** show? Where did **`cd -`** take you?
@@ -736,19 +821,38 @@ match (`apple`, `apricot`, but not `banana`).
 
 ::: {#pipes-1 .shell-challenge}
 
-Build **`fruits.txt`**, then count how many fruits **start with `b`** and save
-that count to **`b-count.txt`**.
+Only **`blueberry`** starts with **`b`** — that is the line your count should
+find.
 
-The pattern **`'^b'`** uses **`^`** — “starts with **`b`**”. Only **`blueberry`**
-should match.
+<ol class="shell-challenge-steps">
+
+<li>Create **`fruits.txt`** with three lines: **`apple`**, **`apricot`**, and
+**`blueberry`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 printf '%s\n' apple apricot blueberry > fruits.txt
 ```
 
+</details>
+</li>
+
+<li>Count how many fruits start with **`b`** and append that number to
+**`b-count.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 grep '^b' fruits.txt | wc -l >> b-count.txt
 ```
+
+</details>
+</li>
+
+</ol>
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -842,22 +946,40 @@ before you disappear into a debugging rabbit hole.
 
 ::: {#grep-1 .shell-challenge}
 
-Write a pipeline that shows `ERROR` lines but excludes anything containing
-`retry` or `healthcheck`, then save the result:
+**Start challenge** pre-loads **`app.log`**. If you are practising without
+**Start**, create it first with the **`printf`** from [Set up a practice
+log](#grep-chaining).
+
+<ol class="shell-challenge-steps">
+
+<li>Filter **`app.log`** for **`ERROR`** lines, excluding anything containing
+**`retry`** or **`healthcheck`**, and save the result to **`grep-results.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 grep 'ERROR' app.log | grep -v retry | grep -v healthcheck > grep-results.txt
 ```
 
+</details>
+</li>
+
+<li>Display **`grep-results.txt`** to verify the filter worked.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 cat grep-results.txt
 ```
 
-**Start challenge** pre-loads **`app.log`**. If you are practising without
-**Start**, create it first with the **`printf`** from [Set up a practice
-log](#grep-chaining).
+</details>
+</li>
 
-You should see only `ERROR timeout`.
+</ol>
+
+You should see only **`ERROR timeout`**.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -908,15 +1030,34 @@ This is great for scaffolding small prototypes quickly.
 
 ::: {#globs-1 .shell-challenge}
 
-Create the evaluation script files:
+<ol class="shell-challenge-steps">
+
+<li>Create the **`project/src`** directory (create parent folders if needed).
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 mkdir -p project/src
 ```
 
+</details>
+</li>
+
+<li>Create **`eval_metrics.py`** and **`eval_runner.py`** in one step using
+brace expansion.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 touch project/src/{eval_metrics,eval_runner}.py
 ```
+
+</details>
+</li>
+
+</ol>
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -974,20 +1115,41 @@ done
 
 ::: {#for-loops-1 .shell-challenge}
 
-Create a small `logs/` folder with three files, then loop over every `.log` and
-print any line containing `ERROR`. The **`||`** means "if the left command fails,
-run the right one instead" — here, print `(no errors)` when `grep` finds nothing:
+The **`||`** in step 2 means "if **`grep`** finds nothing, run the command on
+the right instead" — here, print **`(no errors)`**.
+
+<ol class="shell-challenge-steps">
+
+<li>Create a **`logs/`** folder with three files: **`alpha.log`** (INFO only),
+**`beta.log`** (one ERROR line), and **`gamma.log`** (ERROR plus WARN).
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 mkdir logs && printf 'INFO ok\n' > logs/alpha.log && printf 'ERROR timeout\n' > logs/beta.log && printf 'ERROR retry\nWARN slow\n' > logs/gamma.log
 ```
 
+</details>
+</li>
+
+<li>Loop over every **`.log`** file in **`logs/`** and print any line containing
+**`ERROR`**. If a file has no errors, print **`(no errors)`** instead.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 for f in logs/*.log; do echo "== $f =="; grep 'ERROR' "$f" || echo "(no errors)"; done
 ```
 
-You should see errors from `beta.log` and `gamma.log`, and `(no errors)` for
-`alpha.log`. Try adding a fourth log file and rerunning the loop.
+</details>
+</li>
+
+</ol>
+
+You should see errors from **`beta.log`** and **`gamma.log`**, and
+**`(no errors)`** for **`alpha.log`**.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1037,39 +1199,87 @@ or CI jobs.
 
 ::: {#permissions-1 .shell-challenge}
 
-Create **`hello.sh`**, then work through permissions step by step. Use
-**`printf`** here instead of a heredoc so each line pastes cleanly into the
-sandbox:
+<ol class="shell-challenge-steps">
+
+<li>Create **`hello.sh`** — a script that prints **`Hello from shell`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 printf '%s\n' '#!/usr/bin/env bash' 'echo "Hello from shell"' > hello.sh
 ```
 
+</details>
+</li>
+
+<li>Try to run the script. You should get **Permission denied** — it is not
+executable yet.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 ./hello.sh
 ```
 
+</details>
+</li>
+
+<li>Check the file permissions with a long listing.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 ls -l hello.sh
 ```
+
+</details>
+</li>
+
+<li>Make the script executable.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 chmod +x hello.sh
 ```
 
+</details>
+</li>
+
+<li>Check permissions again.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 ls -l hello.sh
 ```
+
+</details>
+</li>
+
+<li>Run the script successfully.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 ./hello.sh
 ```
 
-You should see **Permission denied** on the first **`./hello.sh`**, then
-**`Hello from shell`** after **`chmod +x`**. That behaviour is what **Check my
-work** verifies — even if **`ls -l`** still shows `-rw-r--r--` in the sandbox.
-On a **local terminal** or in **Codespaces**, **`ls -l`** updates to show **`x`**
-after **`chmod +x`**.
+</details>
+</li>
+
+</ol>
+
+You should see **Permission denied** on the first run, then **`Hello from shell`**
+after **`chmod +x`**. **Check my work** verifies that behaviour — even if
+**`ls -l`** still shows **`-rw-r--r--`** in the sandbox. On a **local terminal**
+or in **Codespaces**, **`ls -l`** updates to show **`x`** after **`chmod +x`**.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1175,42 +1385,71 @@ its job.
 
 ::: {#dry-run-1 .shell-challenge}
 
-Build **`dry_demo.sh`** line by line, make it executable, then preview with
-**`DRY_RUN=1`**. Each block is one paste into the sandbox:
+<ol class="shell-challenge-steps">
+
+<li>Create **`dry_demo.sh`**. When **`DRY_RUN=1`**, it should print a preview
+message instead of doing anything destructive.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
-printf '%s\n' '#!/usr/bin/env bash' > dry_demo.sh
+printf '%s\n' '#!/usr/bin/env bash' 'if [ "$DRY_RUN" = "1" ]; then' '  echo "Would delete files older than 30 days in ./cache/"' 'fi' > dry_demo.sh
 ```
 
-```{.bash filename="terminal"}
-printf '%s\n' 'if [ "$DRY_RUN" = "1" ]; then' >> dry_demo.sh
-```
+</details>
+</li>
 
-```{.bash filename="terminal"}
-printf '%s\n' '  echo "Would delete files older than 30 days in ./cache/"' >> dry_demo.sh
-```
+<li>Make the script executable.
 
-```{.bash filename="terminal"}
-printf '%s\n' 'fi' >> dry_demo.sh
-```
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 chmod +x dry_demo.sh
 ```
 
+</details>
+</li>
+
+<li>Run the script with **`DRY_RUN=1`** to preview what it would do.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 DRY_RUN=1 ./dry_demo.sh
 ```
+
+</details>
+</li>
+
+<li>Run the script without **`DRY_RUN`** — it should do nothing visible.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 ./dry_demo.sh
 ```
 
-Preview a destructive command safely before running it for real:
+</details>
+</li>
+
+<li>Preview a destructive command safely with **`echo`** before you would run it
+for real.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 echo rm ./welcome.txt
 ```
+
+</details>
+</li>
+
+</ol>
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1315,18 +1554,36 @@ cat app.log | grep 'ERROR' | grep -v 'healthcheck'
 
 ::: {#glue-logs-1 .shell-challenge}
 
-**Start challenge** loads **`app.log`**. Filter out healthcheck noise and save
-the result to a file with **`>`**:
+**Start challenge** loads **`app.log`**.
+
+<ol class="shell-challenge-steps">
+
+<li>Filter **`app.log`** for **`ERROR`** lines, exclude anything containing
+**`healthcheck`**, and save the result to **`filtered-errors.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 grep 'ERROR' app.log | grep -v healthcheck > filtered-errors.txt
 ```
 
-Check what you captured:
+</details>
+</li>
+
+<li>Review **`filtered-errors.txt`** to see what you captured.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 cat filtered-errors.txt
 ```
+
+</details>
+</li>
+
+</ol>
 
 You should see **`ERROR oom`** and **`ERROR timeout`** — no healthcheck line.
 
@@ -1351,21 +1608,38 @@ ls -R project | grep '\.py$'
 
 ::: {#glue-inventory-1 .shell-challenge}
 
-**Start challenge** loads **`project/`** with three Python files. Save the
-inventory to a file:
+**Start challenge** loads **`project/`** with three Python files.
+
+<ol class="shell-challenge-steps">
+
+<li>Find every **`.py`** file under **`project/`** and save the listing to
+**`python-inventory.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 ls -R project | grep '\.py$' > python-inventory.txt
 ```
 
-Review the listing:
+</details>
+</li>
+
+<li>Review **`python-inventory.txt`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 cat python-inventory.txt
 ```
 
-You should see at least three lines ending in **`.py`** — one per file under
-**`project/`**.
+</details>
+</li>
+
+</ol>
+
+You should see at least three lines ending in **`.py`**.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1385,21 +1659,47 @@ ls -l *.sh
 
 ::: {#glue-scripts-1 .shell-challenge}
 
-**Start challenge** loads **`hello.sh`** (not executable yet):
+**Start challenge** loads **`hello.sh`** (not executable yet).
+
+<ol class="shell-challenge-steps">
+
+<li>Make **`hello.sh`** executable.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 chmod +x hello.sh
 ```
 
+</details>
+</li>
+
+<li>Verify permissions with a long listing.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 ls -l *.sh
 ```
 
-Confirm the script runs:
+</details>
+</li>
+
+<li>Run the script.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 ./hello.sh
 ```
+
+</details>
+</li>
+
+</ol>
 
 On a **local terminal** or in **Codespaces**, **`ls -l`** would also show **`x`**
 in the permission string after **`chmod +x`**.
@@ -1450,19 +1750,45 @@ parse it locally:
 
 ::: {#jq-1 .shell-challenge}
 
-Build **`response.json`**, then extract the **`content`** field with **`jq`**:
+<ol class="shell-challenge-steps">
+
+<li>Create **`response.json`** with sample API-style JSON.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
 
 ```{.bash filename="terminal"}
 printf '{"choices":[{"message":{"content":"pong"}}]}\n' > response.json
 ```
 
+</details>
+</li>
+
+<li>Inspect the file to see the raw JSON.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 cat response.json
 ```
 
+</details>
+</li>
+
+<li>Extract the **`content`** field with **`jq`**.
+
+<details class="shell-challenge-reveal">
+<summary>Show command</summary>
+
 ```{.bash filename="terminal"}
 cat response.json | jq '.choices[0].message.content'
 ```
+
+</details>
+</li>
+
+</ol>
 
 You should see **`"pong"`** (JSON strings include the quote marks in **`jq`**
 output).
