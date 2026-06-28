@@ -319,7 +319,7 @@ async function resetForExercise(exerciseId) {
     throw new Error(`Unknown exercise: ${exerciseId}`);
   }
 
-  bash = createBashInstance(exercise);
+  bash = createBashInstance(buildInitialFiles(exercise));
   activeExerciseId = exerciseId;
   resetSessionState();
   writeGreeting(exercise);

@@ -42,8 +42,8 @@
       },
       "checks": [
         {
-          "label": "Left a marker in /tmp (run: touch /tmp/visited.txt)",
-          "run": "test -f /tmp/visited.txt",
+          "label": "Created tmp/visited.txt",
+          "run": "test -f tmp/visited.txt",
           "expectExit": 0
         }
       ]
@@ -52,18 +52,20 @@
       "id": "pipes-1",
       "title": "Pipes and wc -l",
       "browserCompat": "full",
-      "setup": {
-        "/home/user/fruits.txt": "apple\nbanana\napricot\n"
-      },
       "checks": [
         {
-          "label": "Added blueberry to fruits.txt",
-          "run": "grep -q blueberry fruits.txt",
+          "label": "fruits.txt contains apple, apricot, and blueberry",
+          "run": "grep -q apple fruits.txt && grep -q apricot fruits.txt && grep -q blueberry fruits.txt",
           "expectExit": 0
         },
         {
-          "label": "Exactly one fruit starts with b",
+          "label": "Exactly one fruit starts with b (blueberry)",
           "run": "grep '^b' fruits.txt | wc -l | tr -d ' '",
+          "expectStdout": "1"
+        },
+        {
+          "label": "Appended the count to b-count.txt",
+          "run": "tr -d ' \\n' < b-count.txt",
           "expectStdout": "1"
         }
       ]

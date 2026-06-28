@@ -646,23 +646,29 @@ We'll begin with a tiny command set that you will use repeatedly.
 pwd          # print working directory — where am I?
 ls           # list files and folders here
 ls -la       # -l long format; -a include hidden (dot) entries
-cd /tmp      # change directory
+mkdir tmp    # create a folder called tmp here
+ls           # tmp should appear in this listing
+cd tmp       # change directory
+touch visited.txt
 cd -         # jump back to previous directory
 ```
 
-**`touch`** creates an empty file (or updates a timestamp). You will use it in
-several challenges.
+**`mkdir`** creates a directory. **`touch`** creates an empty file (or updates
+a timestamp).
 
 ::: {#fundamentals-1 .shell-challenge}
 
-Run the commands above and answer:
+**Start challenge** seeds a hidden **`.sandbox_marker`** file — useful for step 2.
 
-1. Which directory are you in?
-2. Which entries are hidden (start with `.`)?
-3. What changed after `cd -`?
+**Do this:**
 
-After `cd /tmp`, run `touch /tmp/visited.txt` so the checker can confirm you
-reached `/tmp`.
+1. **`pwd`**
+2. **`ls`**, then **`ls -la`**
+3. **`mkdir tmp`**, then **`ls`** — confirm **`tmp`** appears
+4. **`cd tmp`**, **`touch visited.txt`**, **`cd -`**
+
+**Check yourself:** Where were you before **`cd tmp`**? What hidden entries did
+**`ls -la`** show? Where did **`cd -`** take you?
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -689,6 +695,9 @@ grep '^a' fruits.txt
 grep '^a' fruits.txt | wc -l
 ```
 
+The **`^`** in `'^a'` means “starts with” — only lines that **begin with** **`a`**
+match (`apple`, `apricot`, but not `banana`).
+
 - `>` writes output to a file (overwrites existing content).
 - `|` passes output from one command into the next.
 - **`wc -l`** — **w**ord **c**ount, lines only. Counts how many lines are in the
@@ -697,12 +706,26 @@ grep '^a' fruits.txt | wc -l
 
 ::: {#pipes-1 .shell-challenge}
 
-Add one more fruit with **`echo`** (quick one-line print), appending with **`>>`**
-instead of overwriting with `>`:
+Build **`fruits.txt`** line by line, then count how many fruits **start with `b`**
+and save that count to **`b-count.txt`**.
+
+The pattern **`'^b'`** uses **`^`** — “starts with **`b`**”. Only **`blueberry`**
+should match.
+
+```{.bash filename="terminal"}
+echo "apple" > fruits.txt
+```
+
+```{.bash filename="terminal"}
+echo "apricot" >> fruits.txt
+```
 
 ```{.bash filename="terminal"}
 echo "blueberry" >> fruits.txt
-grep '^b' fruits.txt | wc -l
+```
+
+```{.bash filename="terminal"}
+grep '^b' fruits.txt | wc -l >> b-count.txt
 ```
 
 ```{=html}
@@ -721,15 +744,24 @@ grep '^b' fruits.txt | wc -l
 shell tools for quick investigations.
 
 - **`grep 'PATTERN' file`** — lines containing `PATTERN`
-- **`grep -v 'PATTERN'`** — **v**invert: lines that do *not* match (exclude noise)
+- **`grep -v 'PATTERN'`** — **v** invert: lines that do *not* match (exclude noise)
 
 ### Set up a practice log
 
-Create **`app.log`** once — you will reuse it for every exercise in this section:
+Create **`app.log`** before the Try Its below:
 
 ```{.bash filename="terminal"}
 printf "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\nlevel=warn cache_miss\nlevel=error oom\n" > app.log
 ```
+
+On a **local terminal**, create it once and reuse it for every exercise in this
+section.
+
+In the **browser sandbox**, files persist while you work — but **Start
+challenge** on any exercise wipes the environment and starts fresh. When you
+**Start** the **`grep-1`** challenge later in this section, **`app.log`** is
+reloaded for you with the same content as above. Until then, run the
+**`printf`** yourself whenever you need the file.
 
 See what you are working with:
 
@@ -788,15 +820,18 @@ before you disappear into a debugging rabbit hole.
 
 ::: {#grep-1 .shell-challenge}
 
-Using the **`app.log`** you created above, write a pipeline that shows `ERROR`
-lines but excludes anything containing `retry` or `healthcheck`:
+Write a pipeline that shows `ERROR` lines but excludes anything containing
+`retry` or `healthcheck`:
 
 ```{.bash filename="terminal"}
 grep 'ERROR' app.log | grep -v retry | grep -v healthcheck
 ```
 
-You should see only `ERROR timeout`. Add another line to `app.log` and adjust
-the filters until the output matches what you expect.
+**Start challenge** pre-loads **`app.log`**. If you are practising without
+**Start**, create it first with the **`printf`** from [Set up a practice
+log](#grep-chaining).
+
+You should see only `ERROR timeout`.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -847,7 +882,11 @@ This is great for scaffolding small prototypes quickly.
 
 ::: {#globs-1 .shell-challenge}
 
-Create a second set of files for evaluation scripts in one command:
+Create the evaluation script files:
+
+```{.bash filename="terminal"}
+mkdir -p project/src
+```
 
 ```{.bash filename="terminal"}
 touch project/src/{eval_metrics,eval_runner}.py
@@ -1197,8 +1236,8 @@ cat app.log | grep 'ERROR' | grep -v 'healthcheck'
 
 ::: {#glue-logs-1 .shell-challenge}
 
-`app.log` is pre-loaded with noisy lines including a healthcheck. Run this filter
-pipeline and confirm healthcheck lines are excluded:
+**Start challenge** loads **`app.log`**. Run this filter pipeline and confirm
+healthcheck lines are excluded:
 
 ```{.bash filename="terminal"}
 grep 'ERROR' app.log | grep -v healthcheck
@@ -1225,7 +1264,8 @@ ls -R project | grep '\.py$'
 
 ::: {#glue-inventory-1 .shell-challenge}
 
-`project/` is pre-scaffolded with three Python files. Run the inventory command:
+**Start challenge** loads **`project/`** with three Python files. Run the
+inventory command:
 
 ```{.bash filename="terminal"}
 ls -R project | grep '\.py$'
@@ -1249,8 +1289,9 @@ ls -l *.sh
 
 ::: {#glue-scripts-1 .shell-challenge}
 
-`hello.sh` exists but is not executable yet. Run `chmod +x hello.sh`, then
-`ls -l *.sh` and look for an `x` in the permission string (e.g. `-rwxr-xr-x`).
+**Start challenge** loads **`hello.sh`** (not executable yet). Run
+**`chmod +x hello.sh`**, then **`ls -l *.sh`** and look for an **`x`** in the
+permission string (e.g. `-rwxr-xr-x`).
 
 ```{=html}
 <div class="shell-challenge-actions">
