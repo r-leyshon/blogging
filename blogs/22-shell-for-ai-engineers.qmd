@@ -32,7 +32,7 @@ execute:
 
 This tutorial assumes a **Linux-like terminal** — bash or zsh on macOS, Linux,
 GitHub Codespaces, or similar (see [How to use this
-article](#choose-your-environment)). That is where most AI tooling, containers,
+tutorial](#choose-your-environment)). That is where most AI tooling, containers,
 and CI pipelines expect you to work.
 
 On **Windows**, things can look a little different: keyboard shortcuts, path
@@ -72,10 +72,10 @@ experience. If you are already fluent in shell, skip ahead to
 - [ ] Basic familiarity with files and folders
 - [ ] Curiosity and willingness to try small experiments
 
-## How To Use This Article {#choose-your-environment}
+## How To Use This Tutorial {#choose-your-environment}
 
 Pick how you want to follow along. Your choice in the tabs below **filters the
-Try It panels and challenges** in the rest of the article — you only see exercises
+Try It panels and challenges** in the rest of the tutorial — you only see exercises
 that match your environment. Switch tabs any time; no need to read warnings in
 every section about what works where.
 
@@ -184,7 +184,7 @@ machine with VS Code in your browser and a real terminal, hosted by GitHub.
   next (covered properly in [section 2](#data-flow-pipes-and-redirection))
 - **Prompt** — the line where you type, ending in `$` (or `%` on some shells)
 
-See the full [Glossary](#glossary) at the end of this article for every command
+See the full [Glossary](#glossary) at the end of this tutorial for every command
 and term with links back to where it is introduced.
 
 ```{=html}
@@ -736,22 +736,14 @@ match (`apple`, `apricot`, but not `banana`).
 
 ::: {#pipes-1 .shell-challenge}
 
-Build **`fruits.txt`** line by line, then count how many fruits **start with `b`**
-and save that count to **`b-count.txt`**.
+Build **`fruits.txt`**, then count how many fruits **start with `b`** and save
+that count to **`b-count.txt`**.
 
 The pattern **`'^b'`** uses **`^`** — “starts with **`b`**”. Only **`blueberry`**
 should match.
 
 ```{.bash filename="terminal"}
-echo "apple" > fruits.txt
-```
-
-```{.bash filename="terminal"}
-echo "apricot" >> fruits.txt
-```
-
-```{.bash filename="terminal"}
-echo "blueberry" >> fruits.txt
+printf '%s\n' apple apricot blueberry > fruits.txt
 ```
 
 ```{.bash filename="terminal"}
@@ -851,10 +843,14 @@ before you disappear into a debugging rabbit hole.
 ::: {#grep-1 .shell-challenge}
 
 Write a pipeline that shows `ERROR` lines but excludes anything containing
-`retry` or `healthcheck`:
+`retry` or `healthcheck`, then save the result:
 
 ```{.bash filename="terminal"}
-grep 'ERROR' app.log | grep -v retry | grep -v healthcheck
+grep 'ERROR' app.log | grep -v retry | grep -v healthcheck > grep-results.txt
+```
+
+```{.bash filename="terminal"}
+cat grep-results.txt
 ```
 
 **Start challenge** pre-loads **`app.log`**. If you are practising without
@@ -983,19 +979,7 @@ print any line containing `ERROR`. The **`||`** means "if the left command fails
 run the right one instead" — here, print `(no errors)` when `grep` finds nothing:
 
 ```{.bash filename="terminal"}
-mkdir logs
-```
-
-```{.bash filename="terminal"}
-printf "INFO ok\n" > logs/alpha.log
-```
-
-```{.bash filename="terminal"}
-printf "ERROR timeout\n" > logs/beta.log
-```
-
-```{.bash filename="terminal"}
-printf "ERROR retry\nWARN slow\n" > logs/gamma.log
+mkdir logs && printf 'INFO ok\n' > logs/alpha.log && printf 'ERROR timeout\n' > logs/beta.log && printf 'ERROR retry\nWARN slow\n' > logs/gamma.log
 ```
 
 ```{.bash filename="terminal"}
@@ -1512,7 +1496,7 @@ curl -s https://httpbin.org/get | jq '.headers.Host'
 
 Process debugging, live API calls, and advanced keyboard shortcuts assume a full
 terminal. Select **Local terminal** or **GitHub Codespaces** at the
-[top of this article](#choose-your-environment) if you have not already.
+[top of this tutorial](#choose-your-environment) if you have not already.
 
 ## 10) Pre-Publish Checklist For Your Own Shell Docs
 
@@ -1641,7 +1625,7 @@ references, or tools you will use for years.
 - [**The Unix Shell** (Software Carpentry)](https://swcarpentry.github.io/shell-novice/) —
   The best structured follow-on from here. Clear lessons, exercises, and a gentle
   ramp from navigation through scripting. If you liked the hands-on style of this
-  article, start here next.
+  tutorial, start here next.
 
 - [**Bash Guide**](https://mywiki.wooledge.org/BashGuide) and [**Bash Pitfalls**](https://mywiki.wooledge.org/BashPitfalls) (Greg's Wiki) —
   The bash community's gold standard for doing things *correctly*. The guide teaches

@@ -170,6 +170,9 @@ function writeGreeting(exercise) {
   term.writeln("Shell sandbox (just-bash).");
   if (exercise) {
     term.writeln(`\x1b[36mChallenge:\x1b[0m ${exercise.title}`);
+    if (exercise.subtitle) {
+      term.writeln(`\x1b[1mGoal:\x1b[0m ${exercise.subtitle}`);
+    }
     term.writeln("Environment reset. Complete the task, then click Check my work.");
   } else {
     term.writeln("Try tutorial commands here. Refresh to reset.");
@@ -324,7 +327,7 @@ async function resetForExercise(exerciseId) {
   resetSessionState();
   writeGreeting(exercise);
 
-  return { exerciseId, title: exercise.title };
+  return { exerciseId, title: exercise.title, subtitle: exercise.subtitle || "" };
 }
 
 async function handleParentMessage(event) {

@@ -6,6 +6,7 @@
     {
       "id": "dry-run-1",
       "title": "DRY_RUN preview",
+      "subtitle": "Preview destructive actions safely before you run them for real.",
       "browserCompat": "partial",
       "checks": [
         {
@@ -24,6 +25,7 @@
     {
       "id": "quotes-1",
       "title": "Quoting paths",
+      "subtitle": "Quote paths with spaces so the shell treats them as one filename.",
       "browserCompat": "full",
       "checks": [
         {
@@ -36,6 +38,7 @@
     {
       "id": "fundamentals-1",
       "title": "Shell fundamentals",
+      "subtitle": "Practice pwd, ls, mkdir, touch, and cd in a short navigation workflow.",
       "browserCompat": "full",
       "setup": {
         "/home/user/.sandbox_marker": "I am a hidden file.\n"
@@ -51,6 +54,7 @@
     {
       "id": "pipes-1",
       "title": "Pipes and wc -l",
+      "subtitle": "Chain grep and wc with a pipe, then save the count to a file.",
       "browserCompat": "full",
       "checks": [
         {
@@ -73,14 +77,20 @@
     {
       "id": "grep-1",
       "title": "Grep chaining",
+      "subtitle": "Filter noisy logs with grep, then save the cleaned output to a file.",
       "browserCompat": "full",
       "setup": {
         "/home/user/app.log": "INFO startup\nWARN cache_miss\nERROR timeout\nERROR retry_failed\nERROR healthcheck ping\nlevel=warn cache_miss\nlevel=error oom\n"
       },
       "checks": [
         {
+          "label": "grep-results.txt exists",
+          "run": "test -f grep-results.txt",
+          "expectExit": 0
+        },
+        {
           "label": "Filtered log shows only ERROR timeout",
-          "run": "grep 'ERROR' app.log | grep -v retry | grep -v healthcheck",
+          "run": "cat grep-results.txt",
           "expectStdout": "ERROR timeout"
         }
       ]
@@ -88,6 +98,7 @@
     {
       "id": "globs-1",
       "title": "Brace expansion",
+      "subtitle": "Create several related filenames at once with brace expansion.",
       "browserCompat": "full",
       "checks": [
         {
@@ -105,6 +116,7 @@
     {
       "id": "for-loops-1",
       "title": "For loops over logs",
+      "subtitle": "Loop over every .log file and grep each one for errors.",
       "browserCompat": "partial",
       "checks": [
         {
@@ -127,6 +139,7 @@
     {
       "id": "permissions-1",
       "title": "Executable scripts",
+      "subtitle": "Write a script, make it executable with chmod, and run it.",
       "browserCompat": "partial",
       "checks": [
         {
@@ -145,6 +158,7 @@
     {
       "id": "glue-logs-1",
       "title": "Filter noisy logs",
+      "subtitle": "Run a grep pipeline and redirect the cleaned output to a file.",
       "browserCompat": "full",
       "setup": {
         "/home/user/app.log": "INFO startup\nERROR oom\nERROR healthcheck failed\nERROR timeout\n"
@@ -165,6 +179,7 @@
     {
       "id": "glue-inventory-1",
       "title": "Python file inventory",
+      "subtitle": "Find Python files under a project tree and save the listing.",
       "browserCompat": "full",
       "setup": {
         "/home/user/project/src/ingest.py": "",
@@ -187,6 +202,7 @@
     {
       "id": "glue-scripts-1",
       "title": "Verify executable helpers",
+      "subtitle": "Confirm a helper script is executable before you rely on it.",
       "browserCompat": "full",
       "setup": {
         "/home/user/hello.sh": "#!/usr/bin/env bash\necho Hello from shell\n"
@@ -202,6 +218,7 @@
     {
       "id": "jq-1",
       "title": "Parse JSON with jq",
+      "subtitle": "Extract one field from JSON API-style output with jq.",
       "browserCompat": "full",
       "checks": [
         {

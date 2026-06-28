@@ -4,6 +4,9 @@
     return;
   }
 
+  const EXERCISES_URL = "/www/shell-sandbox/exercises.json";
+  let exerciseById = {};
+
   const dock = document.getElementById("shell-dock");
   const iframe = dock?.querySelector("iframe[data-src]");
   let sandboxReady = false;
@@ -103,7 +106,7 @@
     }
   }
 
-  challenges.forEach((block) => {
+  function decorateChallengeBlock(block, exercise) {
     if (!block.querySelector(".shell-challenge-label")) {
       const label = document.createElement("p");
       label.className = "shell-challenge-label";
@@ -111,28 +114,53 @@
       block.prepend(label);
     }
 
-    const exerciseId = block.dataset.challengeId || block.id;
-    if (!exerciseId) {
-      return;
+    if (exercise?.subtitle && !block.querySelector(".shell-challenge-goal")) {
+      const goal = document.createElement("p");
+      goal.className = "shell-challenge-goal";
+      const label = document.createElement("strong");
+      label.textContent = "Goal:";
+      goal.append(label, ` ${exercise.subtitle}`);
+      block.querySelector(".shell-challenge-label")?.insertAdjacentElement("afterend", goal);
     }
+  }
 
-    const startBtn = block.querySelector(".shell-challenge-start");
-    const checkBtn = block.querySelector(".shell-challenge-check");
-
-    startBtn?.addEventListener("click", () => {
-      openDock();
-      setStatus(block, "is-active", "Resetting sandbox for this challenge…");
-      if (checkBtn) {
-        checkBtn.disabled = true;
+  function initChallenges() {
+    challenges.forEach((block) => {
+      const exerciseId = block.dataset.challengeId || block.id;
+      if (!exerciseId) {
+        return;
       }
-      postToSandbox({ type: "shell:reset", exerciseId });
-    });
 
-    checkBtn?.addEventListener("click", () => {
-      setStatus(block, "is-active", "Checking your work…");
-      postToSandbox({ type: "shell:check", exerciseId });
+      decorateChallengeBlock(block, exerciseById[exerciseId]);
+
+      const startBtn = block.querySelector(".shell-challenge-start");
+      const checkBtn = block.querySelector(".shell-challenge-check");
+
+      startBtn?.addEventListener("click", () => {
+        openDock();
+        setStatus(block, "is-active", "Resetting sandbox for this challenge…");
+        if (checkBtn) {
+          checkBtn.disabled = true;
+        }
+        postToSandbox({ type: "shell:reset", exerciseId });
+      });
+
+      checkBtn?.addEventListener("click", () => {
+        setStatus(block, "is-active", "Checking your work…");
+        postToSandbox({ type: "shell:check", exerciseId });
+      });
     });
-  });
+  }
+
+  fetch(EXERCISES_URL)
+    .then((response) => (response.ok ? response.json() : null))
+    .then((data) => {
+      if (data?.exercises) {
+        exerciseById = Object.fromEntries(data.exercises.map((exercise) => [exercise.id, exercise]));
+      }
+    })
+    .catch(() => {})
+    .finally(initChallenges);
 
   window.addEventListener("message", (event) => {
     const data = event.data;
@@ -151,10 +179,11 @@
         `#${data.exerciseId}.shell-challenge, .shell-challenge[data-challenge-id="${data.exerciseId}"]`
       );
       if (block) {
+        const goal = data.subtitle ? ` <strong>Goal:</strong> ${data.subtitle}` : "";
         setStatus(
           block,
           "is-active",
-          `Challenge ready: <strong>${data.title}</strong>. Complete the task in the sandbox, then check your work.`
+          `Challenge ready: <strong>${data.title}</strong>.${goal} Complete the task in the sandbox, then check your work.`
         );
         enableCheckButton(block);
       }
