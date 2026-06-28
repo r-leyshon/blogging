@@ -555,6 +555,9 @@ Create a file with a space in the name, then `cat` it:
 
 ```{.bash filename="terminal"}
 touch "notes draft.txt"
+```
+
+```{.bash filename="terminal"}
 cat "notes draft.txt"
 ```
 
@@ -662,10 +665,37 @@ a timestamp).
 
 **Do this:**
 
-1. **`pwd`**
-2. **`ls`**, then **`ls -la`**
-3. **`mkdir tmp`**, then **`ls`** — confirm **`tmp`** appears
-4. **`cd tmp`**, **`touch visited.txt`**, **`cd -`**
+```{.bash filename="terminal"}
+pwd
+```
+
+```{.bash filename="terminal"}
+ls
+```
+
+```{.bash filename="terminal"}
+ls -la
+```
+
+```{.bash filename="terminal"}
+mkdir tmp
+```
+
+```{.bash filename="terminal"}
+ls
+```
+
+```{.bash filename="terminal"}
+cd tmp
+```
+
+```{.bash filename="terminal"}
+touch visited.txt
+```
+
+```{.bash filename="terminal"}
+cd -
+```
 
 **Check yourself:** Where were you before **`cd tmp`**? What hidden entries did
 **`ls -la`** show? Where did **`cd -`** take you?
@@ -948,21 +978,28 @@ done
 
 ::: {#for-loops-1 .shell-challenge}
 
-Create a small `logs/` folder with three files (**`mkdir -p`** creates the folder;
-**`printf`** writes each log), then loop over every `.log` and print any line
-containing `ERROR`. The **`||`** means "if the left command fails, run the right
-one instead" — here, print `(no errors)` when `grep` finds nothing:
+Create a small `logs/` folder with three files, then loop over every `.log` and
+print any line containing `ERROR`. The **`||`** means "if the left command fails,
+run the right one instead" — here, print `(no errors)` when `grep` finds nothing:
 
 ```{.bash filename="terminal"}
-mkdir -p logs
-printf "INFO ok\n" > logs/alpha.log
-printf "ERROR timeout\n" > logs/beta.log
-printf "ERROR retry\nWARN slow\n" > logs/gamma.log
+mkdir logs
+```
 
-for f in logs/*.log; do
-  echo "== $f =="
-  grep 'ERROR' "$f" || echo "(no errors)"
-done
+```{.bash filename="terminal"}
+printf "INFO ok\n" > logs/alpha.log
+```
+
+```{.bash filename="terminal"}
+printf "ERROR timeout\n" > logs/beta.log
+```
+
+```{.bash filename="terminal"}
+printf "ERROR retry\nWARN slow\n" > logs/gamma.log
+```
+
+```{.bash filename="terminal"}
+for f in logs/*.log; do echo "== $f =="; grep 'ERROR' "$f" || echo "(no errors)"; done
 ```
 
 You should see errors from `beta.log` and `gamma.log`, and `(no errors)` for
@@ -1016,13 +1053,39 @@ or CI jobs.
 
 ::: {#permissions-1 .shell-challenge}
 
-Walk through the full flow:
+Create **`hello.sh`**, then work through permissions step by step. Use
+**`printf`** here instead of a heredoc so each line pastes cleanly into the
+sandbox:
 
-1. Create `hello.sh` with the heredoc above and run `./hello.sh` — expect a
-   permission error.
-2. Run `ls -l hello.sh` and note the permission string (no `x` yet).
-3. Run `chmod +x hello.sh`, check `ls -l` again, then `./hello.sh` — it should
-   print `Hello from shell`.
+```{.bash filename="terminal"}
+printf '%s\n' '#!/usr/bin/env bash' 'echo "Hello from shell"' > hello.sh
+```
+
+```{.bash filename="terminal"}
+./hello.sh
+```
+
+```{.bash filename="terminal"}
+ls -l hello.sh
+```
+
+```{.bash filename="terminal"}
+chmod +x hello.sh
+```
+
+```{.bash filename="terminal"}
+ls -l hello.sh
+```
+
+```{.bash filename="terminal"}
+./hello.sh
+```
+
+You should see **Permission denied** on the first **`./hello.sh`**, then
+**`Hello from shell`** after **`chmod +x`**. That behaviour is what **Check my
+work** verifies — even if **`ls -l`** still shows `-rw-r--r--` in the sandbox.
+On a **local terminal** or in **Codespaces**, **`ls -l`** updates to show **`x`**
+after **`chmod +x`**.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1128,10 +1191,42 @@ its job.
 
 ::: {#dry-run-1 .shell-challenge}
 
-Save the script pattern above as `dry_demo.sh` using a heredoc
-(as above), make it executable with `chmod +x`, then run `DRY_RUN=1 ./dry_demo.sh`
-followed by `./dry_demo.sh` and compare the behaviour. Then try
-`echo rm ./welcome.txt` before actually removing anything.
+Build **`dry_demo.sh`** line by line, make it executable, then preview with
+**`DRY_RUN=1`**. Each block is one paste into the sandbox:
+
+```{.bash filename="terminal"}
+printf '%s\n' '#!/usr/bin/env bash' > dry_demo.sh
+```
+
+```{.bash filename="terminal"}
+printf '%s\n' 'if [ "$DRY_RUN" = "1" ]; then' >> dry_demo.sh
+```
+
+```{.bash filename="terminal"}
+printf '%s\n' '  echo "Would delete files older than 30 days in ./cache/"' >> dry_demo.sh
+```
+
+```{.bash filename="terminal"}
+printf '%s\n' 'fi' >> dry_demo.sh
+```
+
+```{.bash filename="terminal"}
+chmod +x dry_demo.sh
+```
+
+```{.bash filename="terminal"}
+DRY_RUN=1 ./dry_demo.sh
+```
+
+```{.bash filename="terminal"}
+./dry_demo.sh
+```
+
+Preview a destructive command safely before running it for real:
+
+```{.bash filename="terminal"}
+echo rm ./welcome.txt
+```
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1236,12 +1331,20 @@ cat app.log | grep 'ERROR' | grep -v 'healthcheck'
 
 ::: {#glue-logs-1 .shell-challenge}
 
-**Start challenge** loads **`app.log`**. Run this filter pipeline and confirm
-healthcheck lines are excluded:
+**Start challenge** loads **`app.log`**. Filter out healthcheck noise and save
+the result to a file with **`>`**:
 
 ```{.bash filename="terminal"}
-grep 'ERROR' app.log | grep -v healthcheck
+grep 'ERROR' app.log | grep -v healthcheck > filtered-errors.txt
 ```
+
+Check what you captured:
+
+```{.bash filename="terminal"}
+cat filtered-errors.txt
+```
+
+You should see **`ERROR oom`** and **`ERROR timeout`** — no healthcheck line.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1264,12 +1367,21 @@ ls -R project | grep '\.py$'
 
 ::: {#glue-inventory-1 .shell-challenge}
 
-**Start challenge** loads **`project/`** with three Python files. Run the
-inventory command:
+**Start challenge** loads **`project/`** with three Python files. Save the
+inventory to a file:
 
 ```{.bash filename="terminal"}
-ls -R project | grep '\.py$'
+ls -R project | grep '\.py$' > python-inventory.txt
 ```
+
+Review the listing:
+
+```{.bash filename="terminal"}
+cat python-inventory.txt
+```
+
+You should see at least three lines ending in **`.py`** — one per file under
+**`project/`**.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1289,9 +1401,24 @@ ls -l *.sh
 
 ::: {#glue-scripts-1 .shell-challenge}
 
-**Start challenge** loads **`hello.sh`** (not executable yet). Run
-**`chmod +x hello.sh`**, then **`ls -l *.sh`** and look for an **`x`** in the
-permission string (e.g. `-rwxr-xr-x`).
+**Start challenge** loads **`hello.sh`** (not executable yet):
+
+```{.bash filename="terminal"}
+chmod +x hello.sh
+```
+
+```{.bash filename="terminal"}
+ls -l *.sh
+```
+
+Confirm the script runs:
+
+```{.bash filename="terminal"}
+./hello.sh
+```
+
+On a **local terminal** or in **Codespaces**, **`ls -l`** would also show **`x`**
+in the permission string after **`chmod +x`**.
 
 ```{=html}
 <div class="shell-challenge-actions">
@@ -1337,21 +1464,41 @@ curl -s -H "Authorization: Bearer $OPENAI_API_KEY" \
 You can practise the `jq` part without network access — save a fake response and
 parse it locally:
 
+::: {#jq-1 .shell-challenge}
+
+Build **`response.json`**, then extract the **`content`** field with **`jq`**:
+
 ```{.bash filename="terminal"}
 printf '{"choices":[{"message":{"content":"pong"}}]}\n' > response.json
+```
+
+```{.bash filename="terminal"}
+cat response.json
+```
+
+```{.bash filename="terminal"}
 cat response.json | jq '.choices[0].message.content'
 ```
 
-### Try It
-
-Create `response.json` as above and extract the `content` field with `jq`.
+You should see **`"pong"`** (JSON strings include the quote marks in **`jq`**
+output).
 
 ```{=html}
-<button type="button" class="shell-dock-open-btn">Open sandbox for this exercise</button>
+<div class="shell-challenge-actions">
+  <button type="button" class="shell-challenge-start">Start challenge</button>
+  <button type="button" class="shell-challenge-check" disabled>Check my work</button>
+</div>
+<p class="shell-challenge-status" aria-live="polite"></p>
+```
+
+:::
+
+```{=html}
 <div data-shell-compat="local codespaces">
 ```
 
-Probe a live URL with **`curl`** and **`jq`**:
+On a **local terminal** or in **Codespaces**, probe a live URL with **`curl`**
+and **`jq`**:
 
 ```{.bash filename="terminal"}
 curl -s https://httpbin.org/get | jq '.headers.Host'

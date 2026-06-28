@@ -151,8 +151,13 @@
       },
       "checks": [
         {
-          "label": "ERROR lines exclude healthcheck",
-          "run": "grep 'ERROR' app.log | grep -v healthcheck",
+          "label": "filtered-errors.txt exists",
+          "run": "test -f filtered-errors.txt",
+          "expectExit": 0
+        },
+        {
+          "label": "filtered-errors.txt excludes healthcheck lines",
+          "run": "cat filtered-errors.txt",
           "expectStdout": "ERROR oom\nERROR timeout"
         }
       ]
@@ -168,9 +173,14 @@
       },
       "checks": [
         {
-          "label": "Lists at least three .py files under project/",
-          "run": "ls -R project | grep '\\.py$' | wc -l | tr -d ' '",
-          "expectStdoutMin": 3
+          "label": "python-inventory.txt exists",
+          "run": "test -f python-inventory.txt",
+          "expectExit": 0
+        },
+        {
+          "label": "Inventory lists ingest.py, embed.py, and serve.py",
+          "run": "grep -q ingest.py python-inventory.txt && grep -q embed.py python-inventory.txt && grep -q serve.py python-inventory.txt",
+          "expectExit": 0
         }
       ]
     },
@@ -186,6 +196,23 @@
           "label": "hello.sh is executable",
           "run": "test -x hello.sh",
           "expectExit": 0
+        }
+      ]
+    },
+    {
+      "id": "jq-1",
+      "title": "Parse JSON with jq",
+      "browserCompat": "full",
+      "checks": [
+        {
+          "label": "response.json exists",
+          "run": "test -f response.json",
+          "expectExit": 0
+        },
+        {
+          "label": "jq extracts the content field",
+          "run": "cat response.json | jq '.choices[0].message.content'",
+          "stdoutContains": "pong"
         }
       ]
     }
