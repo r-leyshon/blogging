@@ -1,0 +1,74 @@
+---
+title: "PDP Assist"
+description: "An AI learning coach that turns a self-assessment into a scheduled pathway"
+date: 2026-08-02
+categories: [idea, experiment, ai]
+body-classes: notepad-section
+image: /./www/notepad/09-pdp-assist.jpg
+image-alt: "A cozy desk with an open notebook showing a winding learning path"
+---
+
+<div class="notepad-hero">
+<img src=/./www/notepad/09-pdp-assist.jpg alt="A cozy desk with an open notebook showing a winding learning path">
+</div>
+
+## What It Is
+
+A side-project demo of an AI learning coach for junior engineers. You pick a
+career journey, rate your skills, answer a few coach questions, and get a
+pathway built from real course modules — then put the training on a calendar.
+
+The learning content is aimed at Azure skills. The coach uses Google Vertex
+Gemini when it is set up; if not, a local fallback still runs the demo. There
+is no sign-in. Progress is saved in the browser. Use **Reset demo** if you
+want to start over.
+
+Live at
+[pdp-assist.vercel.app](https://pdp-assist.vercel.app/){target="_blank"}.
+
+## The Interesting Bit
+
+You curate a library of training. The coach then builds a plan from that
+library, tailored to the individual developer — their journey, skill gaps,
+and how much time they can give. Same catalogue; different pathway for each
+person.
+
+## Try It
+
+```{=html}
+<p style="text-align: center; margin-top: 0.5rem;">
+  <a href="https://pdp-assist.vercel.app/" target="_blank" rel="noopener noreferrer">Open in new window ↗</a>
+</p>
+<div class="notepad-embed">
+  <iframe
+  src="https://pdp-assist.vercel.app/"
+  title="PDP Assist Demo">
+  </iframe>
+</div>
+```
+
+## Next Steps
+
+The demo is rough on purpose. Natural next steps:
+
+- **From demo to workplace tool** — real sign-in and saved accounts, so a
+  personal development plan survives more than one browser.
+- **Capability frameworks** — map skills to something like the
+  [DDaT Capability Framework](https://ddat-capability-framework.service.gov.uk/){target="_blank"}
+  so pathways can support promotion evidence, not just a reading list.
+- **A wider catalogue** — plug in Microsoft Learn, Pluralsight, or internal
+  courses, while still only picking real catalogue IDs.
+- **A closed loop** — finish sessions, reassess skills, refresh the pathway.
+  Optional views for managers or L&D for check-ins and cohorts.
+- **Calendar outside the tab** — export to ICS, sync with Outlook or Google,
+  Slack reminders before a study block.
+- **Nearby use cases** — graduate programmes, contractor onboarding, career
+  switches (analyst to engineer), anonymised skill-gap views across a team.
+
+Static learning catalogues are easy. Sticking to a plan is the hard part —
+that is the gap this is aiming at.
+
+---
+
+*Between "here's a learning portal" and "I actually did the modules" is a lot
+of empty calendar.*
