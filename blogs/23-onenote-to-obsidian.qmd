@@ -10,15 +10,17 @@ categories:
     - OneNote
     - Personal Knowledge Management
     - AI Engineering
-image: /./www/23-onenote-to-obsidian/intro-img.jpg
-image-alt: "Obsidian graph view after Map of Content notes are added, showing clustered hubs of linked notes"
+image: /./www/23-onenote-to-obsidian/intro-img.webp
+image-alt: "A glowing obsidian crystal between dissolving notebooks and a neon knowledge graph"
 toc: true
 toc-depth: 2
 css: /./www/17-quarto-comments/styles.css
 resources:
     - ../www/23-onenote-to-obsidian/graph-view-transformation.mp4
-    - ../www/23-onenote-to-obsidian/intro-img.jpg
+    - ../www/23-onenote-to-obsidian/intro-img.webp
 ---
+
+<img class=shaded_box src="/./www/23-onenote-to-obsidian/intro-img.webp" alt="A glowing obsidian crystal between dissolving notebooks and a neon knowledge graph" width="1024" height="1024" loading="lazy" decoding="async" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;height:auto;">
 
 ```{=html}
 <video
@@ -26,10 +28,9 @@ resources:
   controls
   playsinline
   preload="metadata"
-  poster="/./www/23-onenote-to-obsidian/intro-img.jpg"
   title="Obsidian graph view transforming as Map of Content notes are added"
   style="display:block;margin-left:auto;margin-right:auto;width:100%;max-width:900px;height:auto;border:none;">
-  <source src="/./www/23-onenote-to-obsidian/graph-view-transformation.mp4" type="video/mp4">
+  <source src="/./www/23-onenote-to-obsidian/graph-view-transformation.mp4#t=0.1" type="video/mp4">
   Your browser does not support embedded video.
 </video>
 ```
