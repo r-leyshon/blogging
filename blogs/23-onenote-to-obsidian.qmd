@@ -1,0 +1,440 @@
+---
+title: "Migrating from OneNote to Obsidian"
+subtitle: "From a raw importer dump to a vault you can search, navigate, and share with an agent"
+author: "Rich Leyshon"
+date: "August 18 2026"
+description: "Export a large OneNote notebook into Obsidian, clean up the importer mess, and build a vault you can search, navigate, and hand to an agent."
+categories:
+    - Tutorial
+    - Obsidian
+    - OneNote
+    - Personal Knowledge Management
+    - AI Engineering
+image: /./www/23-onenote-to-obsidian/intro-img.jpg
+image-alt: "Obsidian graph view after Map of Content notes are added, showing clustered hubs of linked notes"
+toc: true
+toc-depth: 2
+css: /./www/17-quarto-comments/styles.css
+resources:
+    - ../www/23-onenote-to-obsidian/graph-view-transformation.mp4
+    - ../www/23-onenote-to-obsidian/intro-img.jpg
+---
+
+```{=html}
+<video
+  class="shaded_box"
+  controls
+  playsinline
+  preload="metadata"
+  poster="/./www/23-onenote-to-obsidian/intro-img.jpg"
+  title="Obsidian graph view transforming as Map of Content notes are added"
+  style="display:block;margin-left:auto;margin-right:auto;width:100%;max-width:900px;height:auto;border:none;">
+  <source src="/./www/23-onenote-to-obsidian/graph-view-transformation.mp4" type="video/mp4">
+  Your browser does not support embedded video.
+</video>
+```
+
+*This is the destination: Obsidian's graph view after Map of Content
+notes exist. You will get here in the [Navigation](#navigation) section.*
+
+## Introduction
+
+If your OneNote second brain has grown to hundreds of notes across dozens
+of sections, search starts to fail you. It is not that search does not
+work — it is that it requires you to already know roughly *where* a note
+lives. If you cannot remember the section, you get swamped with results
+and spend time hunting. The mental overhead of maintaining a
+location-based memory on top of the actual content defeats the purpose of
+having a second brain at all.
+
+This tutorial takes you from that notebook to a **clean Obsidian vault**:
+plain markdown files you can search without remembering the folder,
+navigate from index notes, and (optionally) hand to an AI agent without
+re-explaining the whole project every session.
+
+The [Obsidian Importer](https://github.com/obsidianmd/obsidian-importer)
+will get the text across. It will not leave you with a usable vault. The
+work is the cleanup: attachments, metadata, structure, and a handful of
+index notes that turn a pile of files into something you can actually
+move around in.
+
+::: {.callout-note appearance="simple"}
+### Why leave OneNote at all?
+
+I wrote about consolidating notes into a second brain in my review of
+[Building a Second Brain](/book-reviews/06-second-brain.qmd). OneNote
+served that job for years. Two things eventually broke it.
+
+**Search at scale.** A location-based notebook asks you to remember the
+map as well as the content. At a few hundred notes that tax becomes the
+main cost of using the system.
+
+**Open files.** A vault of markdown is readable by any tool, any script,
+any agent with filesystem access. OneNote's proprietary format and closed
+API make that basically impossible. That openness is what the last
+section of this tutorial is for.
+:::
+
+### Intended audience
+
+People with a **large OneNote notebook** who want to land in a clean,
+usable Obsidian vault. You do not need prior Obsidian experience. You
+should be comfortable installing a desktop app, signing into a Microsoft
+account, and moving files on your computer.
+
+If you already live in Obsidian and only want the agent-oriented
+conventions, skip to [Make it agent-ready](#make-it-agent-ready).
+
+### What you'll need
+
+- [ ] [Obsidian](https://obsidian.md/) desktop (not only the mobile app)
+- [ ] The notebook you want to migrate, available in OneNote via a
+  **Microsoft account** (the Importer talks to Microsoft's API, not to
+  local `.one` files)
+- [ ] A **backup** of that notebook — copy it, or at least confirm it
+  still lives in OneNote until you trust the vault
+- [ ] A spare hour for a medium notebook; a large one will take longer
+  because you will export in phases
+- [ ] Optional: a terminal and a text editor that can search-and-replace
+  across a folder (VS Code, Cursor, or similar). Useful once you have
+  hundreds of files; not required to follow the path
+
+You do not need Claude Code, Dataview, or git to finish. Those show up
+later as accelerators.
+
+## Export in phases
+
+1. Create a new vault in Obsidian. Use an empty folder. Do not import
+   into a vault you already care about until you have practised on a
+   copy.
+2. Settings → Community plugins → turn off Restricted mode → Browse →
+   install **Importer**. Enable it.
+3. Open the Importer command (`Importer: Open importer`) and choose
+   **OneNote**. Sign into the Microsoft account that holds the notebook.
+4. Export **one section, or one small notebook, at a time** rather than
+   the entire second brain in one go.
+
+Phased export is the difference between a complete dump and a stalled
+one. The Microsoft Graph API will throttle or time out on a large
+notebook. In my case the full vault was hundreds of notes across dozens
+of sections; running the export in several passes was the only way to
+get everything across.
+
+When a phase finishes, glance at the target folder. You should see
+markdown files nested under something like `OneNote/<Notebook name>/`,
+plus a pile of image files. If a section comes through empty, run that
+section again before moving on.
+
+::: {.callout-tip}
+Keep OneNote available until you have finished the cleanup and used the
+vault for a week. The importer is a copy, not a cut. You are allowed to
+go back.
+:::
+
+## Recognise a raw import
+
+Before you tidy anything, walk the vault and write down what you see.
+The importer's job is text. Everything else is leftover OneNote
+structure. A raw dump typically looks like this — these numbers are from
+my vault, so you can calibrate; yours will differ.
+
+- **Image files dumped at the vault root.** I had 672, with no folder
+  of their own.
+- **Frontmatter that is not useful yet.** Every note carried an
+  `onenote-id` and nothing else: no tags, no dates, no aliases.
+- **Almost no knowledge graph.** I had one genuine cross-note wikilink
+  in the entire vault. OneNote sections do not become Obsidian links.
+- **Formatting noise.** Escaped angle brackets (`\<like this\>`),
+  `==highlight==` markers from the export, numbered lists that no longer
+  number.
+- **Empty stub notes.** Pages that existed in OneNote but had no body
+  (19 in my dump, plus a few directories that only existed to hold
+  them).
+- **A redundant path prefix.** Everything nested under
+  `OneNote/2nd Brain/`, so the real topic folders sat two levels too
+  deep.
+- **No Obsidian-native structure.** No tags, no templates, no Daily
+  Notes configuration pointing at the dated notes you already have.
+
+Open Graph view now. It will look sparse: a cloud of unlinked dots, maybe
+a couple of accidental links. That is the "before" in the video at the
+top of this page. You are not done until that view has hubs.
+
+Make a short checklist from *your* dump before you change files. The
+next two sections are easier if you know whether you have 20 images or
+700.
+
+::: {.callout-warning}
+Work on a **copy of the vault folder** until the cleanup looks right.
+Moving and deleting notes is hard to undo if you have not yet put the
+vault in git.
+:::
+
+## Immediate fixes
+
+Do the mechanical work first. None of it requires judgement about how
+you think; it just stops the vault from being unpleasant to open.
+
+### Put attachments in one folder
+
+Create an `attachments/` folder at the vault root and move the image
+files into it. Obsidian resolves wikilink embeds by filename across the
+vault, so `![[some-image.png]]` keeps working — you do not have to edit
+every note.
+
+In the system file browser that is a select-and-move. From a terminal,
+something like:
+
+```bash
+mkdir -p attachments
+mv *.png *.jpg *.jpeg *.gif *.webp attachments/ 2>/dev/null
+```
+
+Adjust the glob if your importer used different extensions. Spot-check a
+note that embeds an image before you continue.
+
+### Strip export artefacts
+
+Search the vault for `\<` and `\>`. In my dump that was 1,101 backslash
+escapes across 118 files. Replace `\<` with `<` and `\>` with `>`.
+
+Obsidian's search can find them; a folder-wide replace in a text editor
+is faster once you have confirmed the pattern is really an export
+artefact and not a code snippet you meant to keep. Then search for
+`==` and decide whether to keep highlight markers or turn them into
+plain bold / nothing.
+
+Numbered lists that restart at `1.` on every line are a similar pass:
+fix them when you next edit that note, or tidy the worst files now.
+
+### Delete empty stubs
+
+Open notes that have no body — often only the `onenote-id` frontmatter.
+If they were accidental OneNote pages, delete them. If they were
+placeholders you still want, leave them and give them a one-line
+description so they stop looking like importer debris.
+
+After deleting, remove any folders that are now empty.
+
+### Flatten the path prefix
+
+If every topic folder sits under `OneNote/<Notebook name>/`, move those
+topic folders up to the vault root. In my vault that meant 13 top-level
+folders sitting directly in the vault, instead of two extra layers of
+"I used to be a notebook."
+
+Rename in Obsidian rather than the system file browser if you have
+already created any wikilinks — see [automatic link
+updating](#turn-on-automatic-link-updating) below, and turn that setting
+on before you move things.
+
+## Structure
+
+The vault should now open without a junk drawer of images at the root.
+Next you give notes metadata Obsidian (and later, you) can filter on.
+
+### Folder-derived tags
+
+Pick a tagging rule and apply it everywhere, including notes you have
+not opened yet. The rule I used: **each folder segment becomes a tag**,
+kebab-cased, with noise words dropped.
+
+Examples from my vault:
+
+- `Developer/LLMs/` → `[developer, llm]`
+- `Ai Justice Unit/Magic-Mail/` → `[ai-justice, magic-mail]`
+
+That produced 38 tag combinations across 420 notes. The exact vocabulary
+matters less than consistency. An agent, or future you, should be able
+to filter `[ai-justice, magic-mail]` and get that project without the
+rest of the vault attached.
+
+Replace the `onenote-id` field while you are in the frontmatter. It is
+not something you will search for. A note ends up looking like this:
+
+```yaml
+---
+tags:
+  - developer
+  - llm
+---
+```
+
+For a handful of folders you can do this by hand. For hundreds of notes,
+a small script or an agent with filesystem access is a reasonable
+accelerator — you are applying a rule, not composing prose. Either way,
+**you** decide the tag set; do not let a tool invent a parallel
+vocabulary.
+
+### Point Daily Notes at the notes you already have
+
+If OneNote (or your own habit) already produced dated notes, do not
+invent a second daily-note scheme. Configure the Daily Notes core plugin
+to match what you have.
+
+Mine lived at `TODO/YYYY.MM.DD`. The settings that made them navigable:
+
+- **Date format** matching the filename (`YYYY.MM.DD` in my case)
+- **New file location** set to that folder (`TODO`)
+
+Install the community **Calendar** plugin so those dates appear in the
+sidebar. I had 74 daily notes that went from "files in a folder" to
+"click the date" once this was set.
+
+If you do not have dated notes yet, you can skip this and add Daily
+Notes later. Do not create empty dailies just to fill the calendar.
+
+### Turn on automatic link updating
+
+Settings → Files and links → **Automatically update internal links**.
+With this on, renaming or moving a note in Obsidian rewrites every
+wikilink that pointed at it. Turn it on before the next section, where
+you will create index notes and will want to rename things without
+breaking them.
+
+## Navigation
+
+A vault of tagged markdown is still a pile of files until it has entry
+points. Maps of Content (MOCs) are ordinary notes that link out to
+everything in a section. They are the hubs in the graph video.
+
+### Create MOC notes in the richest folders
+
+You do not need an MOC for every folder. Start with the sections that
+already have a lot of notes.
+
+1. In that folder, create a note named `_MOC.md` (the underscore keeps
+   it at the top of the file list).
+2. Add a short heading and a wikilink to every note in the folder.
+3. Repeat for the next dense section.
+
+I ended up with 10 MOCs, in places like `Developer/LLMs/_MOC.md` and
+`Ai Justice Unit/Justice Transcribe/_MOC.md`. Each one is both a human
+table of contents and a graph-view hub: one node with many edges, instead
+of a cloud of orphans.
+
+A minimal MOC looks like this:
+
+```markdown
+# LLMs
+
+- [[some-model-notes]]
+- [[prompt-patterns]]
+- [[eval-gotchas]]
+```
+
+You can generate the link list with a file listing and a bit of editing.
+The value is the *existence* of the hub, not a perfect taxonomy on day
+one.
+
+### Confirm the graph
+
+Open Graph view. You should now see clusters around each `_MOC` — the
+"after" in the video at the top of this page. If a section you care
+about is still a scatter of unlinked dots, it needs an MOC (or a few
+wikilinks between notes that actually relate).
+
+The Calendar plugin in the sidebar is the other navigation surface:
+daily notes by date, MOCs by topic.
+
+## Make it agent-ready
+
+Plain markdown is the reason this vault is more useful than the OneNote
+notebook you started with. An agent with filesystem access can read,
+search, and write notes directly — no proprietary format, no API, no
+export step. Tags and MOCs are how that agent orients without opening
+every file.
+
+The steps below are what I would do on a vault I expected to share with
+a teammate or with Claude Code. Do them on yours once the structure
+above feels stable.
+
+### Add a `VAULT.md` at the root
+
+This is the first file an agent should read, and a useful orientation
+note for humans too. It is the vault equivalent of a `CLAUDE.md` in a
+code repository: a single entry point that explains the map.
+
+Include:
+
+- what the top-level folders are and what belongs in each
+- the tagging convention you actually use
+- where daily notes live and how they are named
+- where the MOCs are
+- anything an agent must not do (for example: do not delete notes, do
+  not rewrite history)
+
+### Add `_PROJECT.md` notes for active work
+
+For each live project, keep a structured state note — current status,
+key decisions, open questions, links to the relevant notes and people.
+That is the highest-value context to hand an agent (or yourself) at the
+start of a session. Name them consistently (`_PROJECT.md` in the project
+folder, or a single `Projects/` folder with one note per effort) so they
+are findable.
+
+Daily notes then become the temporal log. An agent can read the last
+handful of dailies to see what moved recently, instead of needing a
+recap.
+
+### Put the vault in git
+
+A private remote beats relying solely on Obsidian Sync if you care about
+history you can diff. Markdown merge conflicts are readable; OneNote
+ones are not.
+
+A sensible starting `.gitignore`:
+
+```gitignore
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+.trash/
+```
+
+Commit the rest of `.obsidian/` if you want plugin lists and settings to
+travel with the vault. Push to a **private** remote.
+
+Meaningful commit messages ("Added notes from Docker workshop") give you
+a changelog. Do not expect 47 auto-saves to be useful later.
+
+### Keep tagging as you go
+
+The folder-derived tags only help if new notes get them. When you create
+a note in `Developer/LLMs/`, give it `[developer, llm]` in the same
+motion. Inconsistent tags are how the filter becomes noisy again.
+
+::: {.callout-note collapse="true"}
+### Optional stretch (not required to finish)
+
+**`created` dates in frontmatter.** Agents (and you) can reason about
+recency. A 2024 note about a deprecated tool is less relevant than
+something from last week. You can backfill from file modification times
+as a rough approximation.
+
+**Dataview.** Once enough notes are tagged, the Dataview community
+plugin can generate lists inside a note ("all `[ai-justice]` notes
+modified in the last 30 days"). Those dynamic summaries are compact
+context for humans and for agents. Install it after the tagging
+convention is stable, not before.
+:::
+
+## Wrap-up
+
+You should now have:
+
+- a vault of markdown, not a OneNote notebook
+- attachments in one place
+- tags you can filter on, instead of `onenote-id`
+- Daily Notes (if you had dated pages) wired to the Calendar
+- MOC notes, and a graph that looks like it has a shape
+- optionally, a `VAULT.md`, project state notes, and git history
+
+What you can do that you could not do in OneNote: search without already
+knowing the section; rename a note without breaking the map; point an
+agent at a folder and have it read the same files you do.
+
+This is not a PKM theory piece, and it is not an Obsidian plugin
+catalogue. The migration overhead is real, but it is a one-time cost.
+The combination of structured markdown, consistent tagging, navigable
+MOCs, and git history is what makes the vault worth the afternoon.

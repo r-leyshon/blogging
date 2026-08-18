@@ -10,6 +10,8 @@ project:
     - /./www/shell-challenges/shell-challenges.js
     - /./www/shell-challenges/shell-env-filter.js
     - /./www/shell-challenges/shell-env-filter.css
+    - /./www/23-onenote-to-obsidian/graph-view-transformation.mp4
+    - /./www/23-onenote-to-obsidian/intro-img.jpg
   output-dir: docs
   render:
     - "*.qmd"
