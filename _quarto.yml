@@ -13,6 +13,14 @@ project:
     - /./www/23-onenote-to-obsidian/graph-view-transformation.mp4
     - /./www/23-onenote-to-obsidian/intro-img.webp
     - /./www/23-onenote-to-obsidian/dataview-table.webp
+    - /./www/24-apim-load-balance-perf/intro-img.webp
+    - /./www/24-apim-load-balance-perf/runs.json
+    - /./www/24-apim-load-balance-perf/scatter.html
+    - /./www/24-apim-load-balance-perf/request-path.svg
+    - /./www/24-apim-load-balance-perf/logos/k6.svg
+    - /./www/24-apim-load-balance-perf/logos/apim.svg
+    - /./www/24-apim-load-balance-perf/logos/foundry.svg
+    - /./www/24-apim-load-balance-perf/logos/foundry.png
   output-dir: docs
   render:
     - "*.qmd"

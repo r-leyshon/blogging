@@ -1,0 +1,16 @@
+<div class="exp-grid">
+<article class="exp-card">
+<h4><code>direct_sequential</code></h4>
+<p>No APIM. The client tries UK South, then West Europe, then Sweden Central, using API keys.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:16.5"></i></span><span class="v">16.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:15.7"></i></span><span class="v">37.4/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:3.8"></i></span><span class="v">6.18/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>direct_weighted</code></h4>
+<p>No APIM. The client picks a region at random (60/25/15) and does not fall back when that region is exhausted.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:16.5"></i></span><span class="v">16.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:28.3"></i></span><span class="v">67.4/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:6.8"></i></span><span class="v">11.1/s</span></div>
+</article>
+</div>

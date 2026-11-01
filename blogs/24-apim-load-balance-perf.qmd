@@ -1,0 +1,624 @@
+---
+title: "Throughput vs Success Rate in Azure APIM"
+subtitle: "What load balancing levers do under AI Foundry quota saturation"
+author: "Rich Leyshon"
+date: "November 1 2026"
+description: "An explanation of Azure API Management load-balancing experiments across three AI Foundry regions — ranking configs on throughput and success rate, then folding both into goodput."
+categories:
+    - Explanation
+    - Azure
+    - APIM
+    - AI Foundry
+    - Load Testing
+    - Performance
+image: /./www/24-apim-load-balance-perf/intro-img.webp
+image-alt: "A neon master switch above three glass fuses; the left fuse is dark while current arcs to the two live ones"
+toc: true
+toc-depth: 2
+css: /./www/17-quarto-comments/styles.css
+format:
+  html:
+    link-external-newwindow: true
+resources:
+    - ../www/24-apim-load-balance-perf/intro-img.webp
+    - ../www/24-apim-load-balance-perf/runs.json
+    - ../www/24-apim-load-balance-perf/scatter.html
+    - ../www/24-apim-load-balance-perf/request-path.svg
+    - ../www/24-apim-load-balance-perf/logos/k6.svg
+    - ../www/24-apim-load-balance-perf/logos/apim.svg
+    - ../www/24-apim-load-balance-perf/logos/foundry.svg
+    - ../www/24-apim-load-balance-perf/logos/foundry.png
+---
+
+<img class=shaded_box src="/./www/24-apim-load-balance-perf/intro-img.webp" alt="A neon master switch above three glass fuses; the left fuse is dark while current arcs to the two live ones" width="1024" height="1024" loading="lazy" decoding="async" style="display:block;margin-left:auto;margin-right:auto;width:40%;border:none;height:auto;">
+
+```{=html}
+<style>
+.phase-legend { display: flex; flex-wrap: wrap; gap: .45rem 1rem; margin: .25rem 0 1.25rem; }
+.phase-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.swatch { width: .85rem; height: .85rem; border-radius: 2px; display: inline-block; }
+.exp-grid { display: grid; grid-template-columns: 1fr; gap: .75rem; margin: .75rem 0 1.25rem; }
+@media (min-width: 800px) { .exp-grid { grid-template-columns: 1fr 1fr; } }
+.exp-card { border: 1px solid rgba(127,127,127,.28); border-radius: 6px; padding: .75rem .9rem; }
+.exp-card h4 { margin: 0 0 .3rem; font-size: 1rem; }
+.exp-card p { margin: 0 0 .65rem; }
+.mbar { display: grid; grid-template-columns: 6.2rem 1fr auto; align-items: center; gap: .45rem; margin-top: .35rem; }
+.mbar .k { font-size: .72rem; letter-spacing: .03em; text-transform: uppercase; opacity: .75; }
+.mbar .track { height: 8px; background: rgba(127,127,127,.16); border-radius: 99px; overflow: hidden; }
+.mbar .track i {
+  display: block;
+  height: 100%;
+  width: calc(var(--pct) * 1%);
+  min-width: 2px;
+  border-radius: 99px;
+  background-image: linear-gradient(to right, #c0392b 0%, #f1c40f 50%, #1e8449 100%);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: calc(10000% / max(var(--pct), 0.5)) 100%;
+}
+.mbar .v { font-variant-numeric: tabular-nums; font-size: .85rem; min-width: 4.2rem; text-align: right; }
+.card-legend { display: grid; grid-template-columns: 1fr; gap: .75rem; margin: .75rem 0 1.5rem; align-items: center; }
+@media (min-width: 800px) { .card-legend { grid-template-columns: minmax(0, 1.2fr) minmax(12rem, .8fr); } }
+.card-legend .exp-card { margin: 0; }
+.card-legend-notes { display: flex; flex-direction: column; gap: .65rem; margin: 0; padding: 0; list-style: none; }
+.card-legend-notes li { display: flex; gap: .55rem; align-items: flex-start; line-height: 1.35; }
+.card-legend-notes b { flex: none; width: 1.35rem; height: 1.35rem; border-radius: 99px; background: #1f7a8c; color: #fff; font-size: .75rem; display: inline-flex; align-items: center; justify-content: center; }
+.card-sample .part { color: #1f7a8c; font-weight: 650; margin-right: .35rem; }
+.card-sample h4,
+.card-sample p,
+.card-sample .mbars { border-radius: 6px; transition: background-color .15s ease; }
+.card-legend:has(li[data-part="1"]:hover) .card-sample h4,
+.card-legend:has(li[data-part="2"]:hover) .card-sample p,
+.card-legend:has(li[data-part="3"]:hover) .card-sample .mbars { background: rgba(31, 122, 140, .12); }
+.card-legend-notes li { cursor: default; border-radius: 6px; padding: .15rem .2rem; }
+.card-legend-notes li:hover { background: rgba(31, 122, 140, .08); }
+.rp-fig { margin: 1.25rem auto 1.5rem; max-width: 640px; }
+.rp { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+.rp-card, .rp-panel { border-radius: 14px; box-shadow: 0 10px 28px rgba(15, 23, 42, .08); }
+.rp-k6 { display: flex; align-items: center; gap: .85rem; align-self: center; width: min(100%, 420px); padding: .85rem 1rem; background: #fff; border: 1px solid #e6e0f5; border-left: 6px solid #7D64FF; }
+.rp-k6 img, .rp-head img, .rp-region img { width: 36px; height: 36px; flex: none; }
+.rp-copy { display: flex; flex-direction: column; line-height: 1.25; }
+.rp-copy strong, .rp-head strong, .rp-region strong { font-size: 1.02rem; }
+.rp-copy span, .rp-step span, .rp-region span { color: #52606d; font-size: .9rem; }
+.rp-stem { display: flex; flex-direction: column; align-items: center; height: 46px; }
+.rp-stem::before { content: ""; width: 2px; flex: 1; background: linear-gradient(#7D64FF, #198ab3); }
+.rp-stem span { font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; color: #52606d; background: #fff; padding: 0 .4rem; margin-top: -0.2rem; }
+.rp-panel { padding: .9rem; display: flex; flex-direction: column; gap: .55rem; }
+.rp-head { margin-bottom: 0; }
+.rp-apim { background: linear-gradient(180deg, #f4fbff 0%, #e7f5fb 100%); border: 1px solid #b7dff0; }
+.rp-foundry { background: linear-gradient(180deg, #f3fbfb 0%, #e5f6f4 100%); border: 1px solid #b7e4dc; }
+.rp-head { display: flex; align-items: center; gap: .7rem; margin-bottom: 0; }
+.rp-head img, .rp-region img { object-fit: contain; }
+.rp-step { background: #fff; border-radius: 10px; padding: .65rem .75rem; display: flex; flex-direction: column; gap: .15rem; border: 1px solid rgba(25, 138, 179, .18); }
+.rp-step strong { font-size: .95rem; }
+.rp-down { width: 2px; height: 16px; margin: 4px auto; background: #198ab3; position: relative; }
+.rp-down::after { content: ""; position: absolute; left: -4px; bottom: -1px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #198ab3; }
+.rp-split { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .15rem; }
+.rp-regions { display: flex; flex-direction: column; gap: .55rem; }
+.rp-region { display: flex; align-items: center; gap: .7rem; background: #fff; border-radius: 10px; padding: .55rem .7rem; border: 1px solid rgba(25, 137, 178, .2); }
+.rp-fig figcaption { margin-top: .75rem; text-align: center; color: #52606d; font-size: .92rem; }
+@media (max-width: 640px) { .rp-split { grid-template-columns: 1fr; } }
+</style>
+```
+
+## Introduction
+
+When an LLM (large language model) deployment hits its tokens-per-minute (TPM)
+quota, callers start seeing HTTP 429s. Considering an an architecture that
+requires multi-region fallback, what does Azure API Management (APIM) buy you?
+Compare a purely client-side fallback that keeps three Azure AI Foundry regions
+and walks them in order with an APIM gateway. The first region, then the next,
+then the last, and only on a 429. There are no weights. The later regions stay
+quiet until the one in front has refused, and every caller makes the same walk.
+That is a sensible safety net for one request. It is a poor way to share a
+quota, because the spare regions only see traffic once the front one is already
+dry.
+
+[Azure API Management](https://learn.microsoft.com/en-us/azure/api-management/api-management-key-concepts)
+(APIM) can hold those three endpoints as
+[backends in one pool](https://learn.microsoft.com/en-us/azure/api-management/backends)
+and send each call there with
+[`set-backend-service`](https://learn.microsoft.com/en-us/azure/api-management/set-backend-service-policy).
+Microsoft documents weighted pools, circuit breakers, and retries in that
+same place, and again under the
+[AI gateway capabilities](https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities).
+I put a Developer-tier gateway in front of three Foundry deployments and
+ran k6 against it, with the quotas deliberately tiny so the regions ran out
+of tokens in seconds. The Terraform, the k6 scripts, and the raw results are
+in
+<a href="https://github.com/r-leyshon/azure-load-balance-perf" target="_blank" rel="noopener noreferrer">r-leyshon/azure-load-balance-perf</a>.
+I wanted to know which of those knobs actually help under saturation, and
+which ones only look helpful.
+
+Three numbers matter:
+
+| Metric | What I measured | The question it answers |
+|---|---|---|
+| **Success rate** | Eventual HTTP 200s ÷ original requests | Did the caller get an answer? |
+| **Throughput** | Original requests ÷ wall-clock seconds | How fast are attempts finishing? |
+| **Goodput** | Successful completions ÷ wall-clock seconds (throughput × success rate) | How much useful work landed per second? |
+
+## Experiment overview
+
+| Parameter | Value |
+|---|---|
+| Gateway | APIM Developer tier (UK South) |
+| Backends | 3 × Azure AI Foundry: UK South, West Europe, Sweden Central |
+| Model | `gpt-4.1-mini`, `max_tokens: 5`, one fixed prompt |
+| Quota | 10 000 TPM per region, the minimum, so saturation is easy to trigger |
+| Load | Grafana k6, usually 20 virtual users and 200 iterations |
+| Longer check | Winning setup held for 5 minutes (~50 000 requests) |
+
+That quota is the smallest I could set, so a region runs dry in a burst instead
+of after an hour of polite traffic. The shape of the problem is what I care
+about: one region goes dry, the others may still have tokens, and the gateway
+either notices or it does not.
+
+::: {.callout-note appearance="simple"}
+### Tiers
+
+The code uses a weighted backend pool, a circuit breaker, a pool retry, and a managed identity. Microsoft documents that set on every [API Management tier](https://learn.microsoft.com/en-us/azure/api-management/api-management-features) except Consumption, which has no backend circuit breaker. Developer has the features and no SLA, so it was the sandbox: one gateway unit, and the breaker behaviour here was global. A higher tier does not raise the goodput in this study. The ceiling was the 10,000 TPM on each region.
+:::
+
+### Request path
+
+```{=html}
+<figure class="rp-fig">
+  <div class="rp">
+    <div class="rp-card rp-k6">
+      <img src="/./www/24-apim-load-balance-perf/logos/k6.svg" alt="" width="36" height="36">
+      <div class="rp-copy">
+        <strong>Grafana k6</strong>
+        <span>Local load · subscription key</span>
+      </div>
+    </div>
+    <div class="rp-stem"><span>HTTPS</span></div>
+    <section class="rp-panel rp-apim">
+      <header class="rp-head">
+        <img src="/./www/24-apim-load-balance-perf/logos/apim.svg" alt="" width="36" height="36">
+        <strong>Azure API Management</strong>
+      </header>
+      <div class="rp-step"><strong>Inbound policy</strong><span>Caps how many calls one subscriber can make each minute, then hands the request to the pool.</span></div>
+      <div class="rp-step"><strong>Weighted backend pool</strong><span>Sends each call to a region in proportion to that region's weight.</span></div>
+      <div class="rp-split">
+        <div class="rp-step"><strong>Circuit breakers</strong><span>After repeated server errors, takes that backend out of the pool for a while.</span></div>
+        <div class="rp-step"><strong>Retry on 429</strong><span>When a region is out of quota, asks the pool for a different one. This sits in the backend section, not inbound.</span></div>
+      </div>
+    </section>
+    <div class="rp-stem"><span>managed identity</span></div>
+    <section class="rp-panel rp-foundry">
+      <header class="rp-head">
+        <img src="/./www/24-apim-load-balance-perf/logos/foundry.png" alt="" width="36" height="36">
+        <strong>Azure AI Foundry</strong>
+      </header>
+      <div class="rp-regions">
+        <div class="rp-region"><div class="rp-copy"><strong>UK South</strong><span>10 000 TPM</span></div></div>
+        <div class="rp-region"><div class="rp-copy"><strong>West Europe</strong><span>10 000 TPM</span></div></div>
+        <div class="rp-region"><div class="rp-copy"><strong>Sweden Central</strong><span>10 000 TPM</span></div></div>
+      </div>
+    </section>
+  </div>
+  <figcaption>k6 calls APIM. Inbound admits the call. The pool picks a region. A 5xx can remove a backend; a 429 asks the pool again. Each Foundry region has 10 000 TPM.</figcaption>
+</figure>
+```
+
+::: {.callout-note collapse="true"}
+### Auth (held constant)
+
+Callers present a subscription key to APIM. APIM calls Foundry with a
+managed identity and the Cognitive Services OpenAI User role. No Foundry
+keys sit on the gateway. I did not vary auth between runs.
+:::
+
+## The levers
+
+Four things changed between runs. The pool, the breaker, and the gateway
+retry are the pieces Microsoft describes on the
+[backends](https://learn.microsoft.com/en-us/azure/api-management/backends)
+page and in the
+[retry](https://learn.microsoft.com/en-us/azure/api-management/retry-policy)
+policy. The RPM cap is
+[`rate-limit-by-key`](https://learn.microsoft.com/en-us/azure/api-management/rate-limit-by-key-policy):
+the policy is always there, the calls-per-minute number is not. APIM also
+documents an
+[LLM token-limit policy](https://learn.microsoft.com/en-us/azure/api-management/llm-token-limit-policy).
+This experiment did not use it. The gateway lever here was requests per
+minute, not tokens.
+
+Client retry and APIM retry are two positions of the **same** lever: either
+the caller tries again, or the gateway tries another pool member (or both,
+with the caller as a backstop). The policies themselves sit in the inbound,
+backend, outbound, and on-error sections
+[Microsoft describes](https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-policies).
+
+| Lever | What moves | Success rate | Throughput |
+|---|---|---|---|
+| **Pool weights** | How often each region is chosen | Changes who runs out first, not the total TPM | Matters once a breaker can send later calls somewhere else |
+| **Circuit breaker** | Drop a backend after N failures (429 and/or 5xx) | On its own, with every region dry, it can empty the pool and **cut** success | Stops waiting on a dead backend, if a live one remains |
+| **Gateway RPM cap** | Reject at APIM before Foundry | A tight cap refuses work that would otherwise have succeeded | Fast 429s look busy and deliver nothing useful |
+| **Retry** | Client retries the gateway, or APIM retries the pool | Sleeping for `Retry-After` eventually succeeds; on equal weights, APIM retry without a breaker does not | Client sleeps wreck throughput; pool retry keeps pace when a later region still has quota |
+
+## The experiments
+
+Each run is one card.
+
+```{=html}
+<div class="card-legend">
+  <article class="exp-card card-sample">
+    <h4><code><span class="part">1</span>run_id</code></h4>
+    <p><span class="part">2</span>What this run changed.</p>
+    <div class="mbars">
+      <div class="mbar"><span class="k"><span class="part">3</span>Success</span><span class="track"><i style="--pct:100"></i></span><span class="v">100%</span></div>
+      <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100"></i></span><span class="v">100/s</span></div>
+      <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100"></i></span><span class="v">100/s</span></div>
+    </div>
+  </article>
+  <ol class="card-legend-notes">
+    <li data-part="1"><b>1</b><span>Name of the run.</span></li>
+    <li data-part="2"><b>2</b><span>The levers for this run.</span></li>
+    <li data-part="3"><b>3</b><span>Success, throughput, and goodput. Bar length is this run against the best run of that metric. Colour runs red, through yellow, to green along that scale.</span></li>
+  </ol>
+</div>
+<div class="phase-legend">
+  <span><i class="swatch" style="background:#1f7a8c"></i> Baseline</span>
+  <span><i class="swatch" style="background:#5c6b73"></i> Direct (no APIM)</span>
+  <span><i class="swatch" style="background:#e09f3e"></i> Client retry</span>
+  <span><i class="swatch" style="background:#2a9d8f"></i> APIM retry</span>
+  <span><i class="swatch" style="background:#bc4749"></i> Combined</span>
+  <span><i class="swatch" style="background:#264653"></i> Sustained</span>
+</div>
+```
+
+### Baseline
+
+No retry. I am only moving weights, the circuit breaker, and the gateway
+cap, to see what the pool does when quota is the bottleneck.
+
+{{< include includes/24-baseline.html >}}
+
+`baseline` is the short-burst control: about 18% of calls succeed, and they
+do so at a modest pace. That burst caught a fresh quota window. Over five
+minutes (`sustained_baseline`) the same config falls to about 2.4% success.
+Turning on a breaker without a retry (`circuit_breaker`) makes the short
+burst worse. `full_resilience` and `gateway_throttle` show the other trap:
+the gateway can get very fast at saying no.
+
+### Direct (no APIM)
+
+Same model, no gateway. `direct_sequential` is that client-side walk: first
+region, then the next, then the last, and only on failure.
+Useful as a check on whether APIM is earning its keep, not as a perfect
+like-for-like. These clients hold API keys and the weights are not identical
+to every APIM run.
+
+{{< include includes/24-direct.html >}}
+
+### Client retry
+
+Equal weights, no breaker, no APIM retry. The only change is how the k6
+script behaves after a 429.
+
+{{< include includes/24-client.html >}}
+
+Short pauses (`retry_fixed_1s`, backoff, jitter) are worse than not retrying.
+They burn time and still land inside the same exhausted quota window.
+`retry_after_header` is the exception on success, and the disaster on pace:
+it waits out the window, so almost every call eventually works, and almost
+none of them are quick.
+
+### APIM retry
+
+The client does not retry. APIM may retry the pool, up to three times, a
+second apart. Each try can land on a different region. A 429 is the retry's
+job. The breaker is for hard failures (5xx), not for quota.
+
+{{< include includes/24-apim.html >}}
+
+On equal weights, retry without a breaker (`apim_retry_equal`) looks like
+the control. Add the breaker and every call in the burst succeeds
+(`apim_retry_cb`, `apim_retry_asym`). The fastest of that family is
+`asym_retry_cb_5xx`: 90/5/5, the breaker ignores 429s, and goodput is about
+162. Turning 429 into a trip signal (`apim_retry_asym`) is a couple of
+points slower. On the same skew, taking the breaker away entirely
+(`asym_retry_no_cb`) still reaches 100% success in the burst, at about 142
+goodput. The skew is doing a lot of the work. The breaker is the guard for
+a dead backend, not the thing that should react to quota.
+
+### Combined
+
+These stack a client `Retry-After` on top of a gateway setup, to see whether
+the extra safety net is free.
+
+{{< include includes/24-combined.html >}}
+
+It is not free. `optimal_combined` still succeeds every time, but the few
+calls that fall through to the client sleep stretch the test and pull
+goodput back down towards the control. `optimal_equal_client` is
+`retry_after_header` again, with a different name.
+
+### Sustained
+
+Five minutes, so the run crosses several quota windows rather than one burst.
+
+{{< include includes/24-sustained.html >}}
+
+`sustained_apim_asym` sits next to its short burst: about 99% success and
+164 goodput. Equal weights with a breaker and pool retry
+(`sustained_apim_retry_cb`) hold too, about 97% and 159 goodput. The skew
+helps a burst. It is not what keeps the five-minute run alive.
+
+A breaker with nothing to retry onto does not. `sustained_cb_only` makes
+about 49 000 calls and succeeds about 2.8% of them. The pool drains between
+window resets. Trip count 1 instead of 3, on the 90/5/5 stack, lands at
+about 165 goodput. That is the same result as trip count 3, within noise.
+
+## Throughput × success rate
+
+Each point is one run from the cards above, in the same colour. **X** is
+success rate. **Y** is throughput: original requests per second, not the raw
+HTTP call rate. Retries inflate that raw rate, and I do not want a retry
+storm to look like a win.
+
+Hover a point for the run id, the config, and the same three numbers as the
+cards. The grey curves are constant goodput.
+
+```{=html}
+<iframe
+  class="shaded_box"
+  title="Interactive scatter of APIM experiment outcomes"
+  src="/./www/24-apim-load-balance-perf/scatter.html"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  style="display:block;width:100%;max-width:960px;height:720px;margin:0 auto;border:none;overflow:hidden;">
+</iframe>
+<p class="rp-fig" style="text-align:center;margin-top:.35rem;color:#52606d;">goodput = throughput × success rate</p>
+```
+
+The place you want a production interactive API is the **top-right**: high
+success and high throughput. That is also where the goodput curves are
+highest. Bottom-left is "most calls fail". Hard against the right edge and
+flat on the floor is "they succeed, eventually, if the user is prepared to
+wait half a minute".
+
+`full_resilience` is the tall point on the left axis. Highest throughput on
+the chart, zero successes. Busy is not the same as useful.
+
+## Goodput
+
+| Rank | Run | Success | Throughput | Goodput | What it means in production |
+|---|---|---:|---:|---:|---|
+| 1 | `sustained_apim_asym` | 98.9% | 166 /s | 164 /s | 90/5/5, breaker on 429+5xx, held for 5 minutes |
+| 2 | `asym_retry_cb_5xx` | 100% | 162 /s | 162 /s | Fastest burst: breaker on 5xx only |
+| 3 | `apim_retry_asym` | 100% | 160 /s | 160 /s | Same skew, breaker also trips on 429 |
+| 4 | `apim_retry_cb` | 100% | 153 /s | 153 /s | Equal weights, breaker, APIM retry |
+| 5 | `apim_retry_equal` | 16.5% | 68 /s | 11 /s | Equal weights, retry, no breaker |
+
+::: {.callout-important appearance="simple"}
+### High success is not a ship decision
+
+`retry_after_header` gets almost every call a 200, at about half a request
+a second. Fine for a nightly job. Poor for a chat request. `full_resilience`
+is the mirror image: the gateway is quick, and nobody gets a completion.
+If the product needs both, read the goodput column.
+:::
+
+## Why breaker + APIM retry is the one that works
+
+The top-right is not "trip the breaker on every 429". The sequence I would
+ship is more specific.
+
+1. A region returns 429.
+2. APIM retries the pool and can land on a member that still has quota. The breaker does not treat that 429 as a failure.
+3. A 5xx is different. After N of those, the breaker takes that backend out.
+4. The caller sees one fast 200. On `asym_retry_cb_5xx`, median time-to-success was about 13 ms, and goodput was about 162.
+
+A client retrying the gateway URL cannot make that choice. It hits the same
+front door.
+
+On equal weights, take the breaker away (`apim_retry_equal`) and the retries
+hammer the same exhausted set. Success stays around 17%. On 90/5/5, the same
+removal (`asym_retry_no_cb`) still reaches 100% in a burst, because almost
+all of the load hits UK South first and the retries find the quiet regions.
+The fastest burst is the one that keeps the breaker and points it at 5xx
+only.
+
+Take the retry away and keep the breaker (`sustained_cb_only`) and the pool
+drains between quota windows. About 2.8% of calls succeed. A breaker with
+nothing to send the next try to is worse than no breaker.
+
+**90/5/5 weights** still have a use. UK South takes the load, and the other
+two keep a reserve. Equal weights with a breaker and pool retry hold up over
+five minutes (about 97%, 159 goodput), so the skew is not what makes the
+steady state work. Avoid the middle: 80/10/10 reached 100% success in a
+burst and about halved goodput, because the fallback share was large enough
+to get busy and small enough to run dry. 70/15/15 sat with 90/5/5.
+
+`optimal_combined` adds a client `Retry-After` behind that stack. Success
+stays at 100%. The handful of calls that miss at the gateway then sleep for
+the quota window, and goodput collapses. For interactive traffic I would
+rather fail those calls, or shed load, than pin the whole test (and the
+user) to a 30 second wait.
+
+## What I would take into production
+
+1. **Score the gateway on goodput**, not on success rate alone and not on how
+   fast it can emit 429s. Interactive callers need answers and they need them
+   while they are still waiting.
+2. **Retry inside APIM, against the pool**, so a second attempt can change
+   region. A client retry of the same URL cannot do that.
+3. **Do not enable a circuit breaker without that pool retry.** Under global
+   saturation the breaker removes backends and then has nowhere to send the
+   call. Success gets worse.
+4. **On equal weights, do not enable pool retry without a breaker.** The
+   retries land on the same dry members. With a hard skew, retry alone still
+   reached 100% in the burst. I would still keep the breaker, and point it
+   at hard failures.
+5. **Skew the weights, and trip the breaker on 5xx only, not on 429.** 429s
+   are the pool retry. A breaker that also trips on 429 can pull a live
+   backend out. In this sandbox, 90/5/5 with a 5xx-only breaker and APIM
+   retry was the fastest burst (about 162 goodput). The same skew with the
+   breaker also watching 429s held for five minutes at about 164. Trip count
+   1 instead of 3 did not move that five-minute result. The values I would
+   start from, and what I would watch, are in
+   [Standing it up](#standing-it-up).
+6. **Treat client `Retry-After` as a batch tool.** It is the right behaviour
+   when a job can wait for the quota window. It is the wrong default for a
+   user-facing request. Stacked behind a working gateway, it is a safety net
+   that taxes the tail.
+7. **A gateway RPM cap below the traffic you mean to serve will protect
+   nothing.** `full_resilience` and `gateway_throttle` rejected callers
+   before the model was involved. Goodput was ~0.
+
+## Standing it up {#standing-it-up}
+
+The sandbox used 10 000 TPM and Developer tier. The ratios and the failure
+modes are what I would carry over. The absolute request rates are not.
+
+### Starting configuration
+
+| Piece | Start here | Why |
+|---|---|---|
+| Weights | 90 / 5 / 5 | Primary takes the load. The other two stay quiet until it fails or runs dry. Stay off 80/10/10. 70/15/15 was fine. |
+| Circuit breaker | 5xx only, 3 failures in 60s, tripped for 30s, honour `Retry-After` | 429 is not a trip. Trip count 1 was no better over five minutes, and 3 ignores a single blip. |
+| APIM retry | 3 times, 1 second apart, only on 429 | Enough to reach the quiet regions. A 5xx should trip the breaker, not spin the retry. |
+| Gateway RPM cap | Off | Let the model quota be the ceiling. Turn a cap on only for a real fair-use or cost brake, and set it above the peak you mean to serve. |
+
+If the heavy region is provisioned throughput and the other two are
+pay-as-you-go, 90/5/5 spends the reserved capacity first and keeps the
+metered regions for overflow. That split is a production choice. The
+sandbox regions were the same tiny quota.
+
+Callers of the gateway should not invent their own backoff. If they must
+retry, sleep for `Retry-After`. For an interactive call, fail fast and
+surface the 429. A 30 second wait belongs in a batch job.
+
+### Before any real traffic
+
+Leave Developer. Pick a tier with an SLA that still has backend pools and
+circuit breakers, which is every tier except Consumption. Premium is the
+one that adds an internal virtual network, zones, and multi-region. Confirm
+the pool and breaker resources on the tier you pick. This sandbox set them
+through the preview backend schema.
+
+Keep the managed identity from APIM to Foundry. Do not leave subscription
+keys or publisher secrets in `terraform.tfvars`. Read those from Key Vault,
+and give the gateway's subscription key to callers from there too.
+
+Wire monitoring before the first caller. Diagnostic logs to Log Analytics,
+Application Insights on the gateway, and the Cognitive Services token
+metric per region. The sandbox already emits a `foundry-request` metric
+with the status code. In production, replace the run id on that metric
+with something that names the caller, such as the product or the team.
+
+### What I would watch
+
+The number I would look at first is how much traffic the quiet regions are
+actually taking. At 90/5/5 they should be a small share. If they are taking
+far more than their weight, the primary is saturated or unhealthy, and the
+metered regions are where the bill is going.
+
+| Signal | Fine | Look | Act |
+|---|---|---|---|
+| Gateway 5xx | under 0.1% | 0.1–1% | over 1% |
+| 429s returned to callers | under 5% | 5–20% | over 20% |
+| Share of calls on the reserve regions | under 15% | 15–40% | over 40% |
+| Primary token use | under 80% of its TPM | 80–95% | over 95% |
+| Gateway capacity | under 70% | 70–85% | over 85% |
+
+Page someone if successful requests drop to zero for two minutes, or if the
+gateway error rate stays above 5% for five minutes. Email the team if
+callers are seeing 429s above 20% for ten minutes, if a reserve region is
+taking more than 40% of calls, or if gateway capacity sits above 80%. The
+queries behind those signals are in the
+[production guide](https://github.com/r-leyshon/azure-load-balance-perf/blob/main/PRODUCTION_GUIDE.md)
+in the experiment repo.
+
+### Order of work
+
+Networking and private endpoints first, then the three Foundry accounts,
+then the role assignment for the gateway identity, then APIM with no
+callers, then the alerts, then a smoke test, then a small slice of real
+traffic, then the rest. Do not point production at the gateway until a
+test request shows up in Application Insights. If the reserve regions
+suddenly take more than about 40% of calls, or successful requests fall to
+zero, go back a step before sending more traffic.
+
+### Limits of this sandbox
+
+- Quotas were 10 000 TPM so the regions would run dry on a laptop-sized
+  test. Copy the shape (spare region, breaker, pool retry). Retune the trip
+  count and the retry interval to your real TPM and your real mix of callers.
+- k6 ran from my machine, so absolute latency includes that round trip.
+  Comparisons between runs share the path.
+- APIM was the Developer tier, one unit. On every multi-unit tier, breaker
+  state is per instance, and Microsoft notes that pool load balancing is
+  approximate because instances do not share that state
+  ([backends](https://learn.microsoft.com/en-us/azure/api-management/backends)).
+  Do not assume one unit's trip is everyone's trip.
+- The direct-to-Foundry runs use API keys and a slightly different weight
+  split. They are a sanity check, not a clean overhead A/B.
+
+The setup and the result files are in
+<a href="https://github.com/r-leyshon/azure-load-balance-perf" target="_blank" rel="noopener noreferrer">github.com/r-leyshon/azure-load-balance-perf</a>.
+
+::: {.callout-note appearance="simple"}
+### Acknowledgements
+
+Thanks to Harry, Francis and Adela for their thoughts and feedback.
+:::
+
+```{=html}
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function parseValue(text) {
+    var match = String(text).trim().match(/^([\d.]+)(.*)$/);
+    if (!match) return null;
+    return { n: parseFloat(match[1]), suffix: match[2] || "" };
+  }
+  function decimals(n) {
+    var s = String(n);
+    var i = s.indexOf(".");
+    return i === -1 ? 0 : s.length - i - 1;
+  }
+  document.querySelectorAll(".exp-grid .exp-card").forEach(function (card) {
+    var bars = [];
+    card.querySelectorAll(".mbar").forEach(function (row) {
+      var fill = row.querySelector(".track i");
+      var label = row.querySelector(".v");
+      if (!fill || !label) return;
+      var pct = parseFloat(getComputedStyle(fill).getPropertyValue("--pct")) || parseFloat(fill.style.getPropertyValue("--pct")) || 0;
+      var parsed = parseValue(label.textContent);
+      if (!parsed) return;
+      bars.push({ fill: fill, label: label, pct: pct, n: parsed.n, suffix: parsed.suffix, d: decimals(parsed.n) });
+      if (!reduce) {
+        fill.style.setProperty("--pct", "0");
+        label.textContent = (0).toFixed(parsed.d) + parsed.suffix;
+      }
+    });
+    if (!bars.length || reduce || !("IntersectionObserver" in window)) return;
+    var played = false;
+    var observer = new IntersectionObserver(function (entries) {
+      if (played || !entries.some(function (e) { return e.isIntersecting; })) return;
+      played = true;
+      observer.disconnect();
+      var start = performance.now();
+      var duration = 900;
+      function frame(now) {
+        var t = Math.min(1, (now - start) / duration);
+        var eased = 1 - Math.pow(1 - t, 3);
+        bars.forEach(function (bar) {
+          bar.fill.style.setProperty("--pct", String(bar.pct * eased));
+          bar.label.textContent = (bar.n * eased).toFixed(bar.d) + bar.suffix;
+        });
+        if (t < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }, { threshold: 0.35 });
+    observer.observe(card);
+  });
+})();
+</script>
+```
+
+<p id=fin><i>fin!</i></p>

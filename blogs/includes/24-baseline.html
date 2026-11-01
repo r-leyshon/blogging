@@ -1,0 +1,51 @@
+<div class="exp-grid">
+<article class="exp-card">
+<h4><code>baseline</code></h4>
+<p>Equal weights across the three regions. No circuit breaker, no retry. This is the control.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:17.5"></i></span><span class="v">17.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:16.4"></i></span><span class="v">39.0/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:4.2"></i></span><span class="v">6.83/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>weighted_primary</code></h4>
+<p>UK South takes 60% of the traffic, West Europe 25%, Sweden Central 15%. Still no breaker and no retry.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:16.5"></i></span><span class="v">16.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:14.2"></i></span><span class="v">33.8/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:3.4"></i></span><span class="v">5.58/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>circuit_breaker</code></h4>
+<p>Equal weights, but a backend is pulled from the pool after three failures inside 60 seconds. Nothing retries onto whoever is left.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:4.5"></i></span><span class="v">4.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:35.0"></i></span><span class="v">83.2/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:2.3"></i></span><span class="v">3.75/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>gateway_throttle</code></h4>
+<p>The gateway is capped at 10 requests a minute, so APIM refuses the call before Foundry sees it.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:3.5"></i></span><span class="v">3.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:34.7"></i></span><span class="v">82.6/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.8"></i></span><span class="v">2.89/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>full_resilience</code></h4>
+<p>Weights, a circuit breaker, and a 500 rpm gateway cap, with no retry. Every dial except the one that changes region.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:0.5"></i></span><span class="v">0.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">238/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:0.5"></i></span><span class="v">0.00/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>asymmetric_cb</code></h4>
+<p>90% of traffic lands on UK South so that region saturates first and the breaker has something obvious to trip. No retry.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:16.5"></i></span><span class="v">16.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:21.7"></i></span><span class="v">51.7/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:5.2"></i></span><span class="v">8.53/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>cb_5xx_only</code></h4>
+<p>The breaker ignores 429s and only trips on server errors. Quota exhaustion does not count as a failure.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:3.0"></i></span><span class="v">3.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:32.1"></i></span><span class="v">76.3/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.4"></i></span><span class="v">2.29/s</span></div>
+</article>
+</div>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>APIM experiments: throughput vs success rate</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #fff; overflow: hidden; font-family: system-ui, sans-serif; }
+    #chart { width: 100%; height: 640px; }
+    .err { padding: 1rem; color: #bc4749; }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script>
+    const DATA = {
+  "metrics": {
+    "success_rate": "Eventual HTTP 200s / original iterations \u00d7 100",
+    "throughput": "Original iterations / wall-clock seconds",
+    "goodput": "Successful completions / wall-clock seconds (= throughput \u00d7 success rate)"
+  },
+  "source": "https://github.com/r-leyshon/azure-load-balance-perf",
+  "runs": [
+    {
+      "run_id": "sustained_apim_asym",
+      "phase": "Sustained",
+      "config": "5-min continuous \u00b7 weights 90/5/5 \u00b7 CB on 429+5xx \u00b7 APIM pool retry 3\u00d7 @ 1s",
+      "load": "sustained 5 min",
+      "iterations": 49832,
+      "successes": 49298,
+      "success_rate_pct": 98.93,
+      "duration_s": 300.102,
+      "throughput_rps": 166.05,
+      "goodput_rps": 164.271,
+      "tts_p50_ms": 16
+    },
+    {
+      "run_id": "asym_retry_cb_5xx",
+      "phase": "APIM retry",
+      "config": "Weights 90/5/5 \u00b7 CB on 5xx only \u00b7 APIM pool retry 3\u00d7 @ 1s \u00b7 no client retry",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 200,
+      "success_rate_pct": 100.0,
+      "duration_s": 1.232,
+      "throughput_rps": 162.392,
+      "goodput_rps": 162.392,
+      "tts_p50_ms": 13
+    },
+    {
+      "run_id": "apim_retry_asym",
+      "phase": "APIM retry",
+      "config": "Weights 90/5/5 \u00b7 CB on 429+5xx \u00b7 APIM pool retry 3\u00d7 @ 1s \u00b7 no client retry",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 200,
+      "success_rate_pct": 100.0,
+      "duration_s": 1.253,
+      "throughput_rps": 159.635,
+      "goodput_rps": 159.635,
+      "tts_p50_ms": 15
+    },
+    {
+      "run_id": "sustained_apim_retry_cb",
+      "phase": "Sustained",
+      "config": "5-min continuous \u00b7 equal weights \u00b7 CB on 429+5xx \u00b7 APIM pool retry 3\u00d7 @ 1s",
+      "load": "sustained 5 min",
+      "iterations": 49122,
+      "successes": 47739,
+      "success_rate_pct": 97.18,
+      "duration_s": 300.065,
+      "throughput_rps": 163.705,
+      "goodput_rps": 159.096,
+      "tts_p50_ms": 16
+    },
+    {
+      "run_id": "apim_retry_cb",
+      "phase": "APIM retry",
+      "config": "Equal weights \u00b7 CB on 429+5xx \u00b7 APIM pool retry 3\u00d7 @ 1s \u00b7 no client retry",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 200,
+      "success_rate_pct": 100.0,
+      "duration_s": 1.307,
+      "throughput_rps": 153.055,
+      "goodput_rps": 153.055,
+      "tts_p50_ms": 16
+    },
+    {
+      "run_id": "asym_retry_no_cb",
+      "phase": "APIM retry",
+      "config": "Weights 90/5/5 \u00b7 no CB \u00b7 APIM pool retry 3\u00d7 @ 1s \u00b7 no client retry",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 200,
+      "success_rate_pct": 100.0,
+      "duration_s": 1.409,
+      "throughput_rps": 141.964,
+      "goodput_rps": 141.964,
+      "tts_p50_ms": 15
+    },
+    {
+      "run_id": "apim_retry_equal",
+      "phase": "APIM retry",
+      "config": "Equal weights \u00b7 no CB \u00b7 APIM pool retry 3\u00d7 @ 1s \u00b7 no client retry",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 2.936,
+      "throughput_rps": 68.11,
+      "goodput_rps": 11.238,
+      "tts_p50_ms": 448
+    },
+    {
+      "run_id": "direct_weighted",
+      "phase": "Direct (no APIM)",
+      "config": "Direct Foundry \u00b7 weighted random 60/25/15 \u00b7 no fallback",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 2.968,
+      "throughput_rps": 67.38,
+      "goodput_rps": 11.118,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "asymmetric_cb",
+      "phase": "Baseline",
+      "config": "Weights 90/5/5 \u00b7 CB on 429+5xx \u00b7 no retry \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 3.869,
+      "throughput_rps": 51.687,
+      "goodput_rps": 8.528,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "baseline",
+      "phase": "Baseline",
+      "config": "Equal weights 33/33/34 \u00b7 no CB \u00b7 no retry \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 35,
+      "success_rate_pct": 17.5,
+      "duration_s": 5.122,
+      "throughput_rps": 39.047,
+      "goodput_rps": 6.833,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "optimal_combined",
+      "phase": "Combined",
+      "config": "Weights 90/5/5 \u00b7 CB on 429+5xx \u00b7 APIM retry 3\u00d7 + client Retry-After backstop",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 200,
+      "success_rate_pct": 100.0,
+      "duration_s": 31.62,
+      "throughput_rps": 6.325,
+      "goodput_rps": 6.325,
+      "tts_p50_ms": 15
+    },
+    {
+      "run_id": "direct_sequential",
+      "phase": "Direct (no APIM)",
+      "config": "Direct Foundry \u00b7 sequential fallback UK\u2192WE\u2192SC \u00b7 API keys",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 5.341,
+      "throughput_rps": 37.443,
+      "goodput_rps": 6.178,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "weighted_primary",
+      "phase": "Baseline",
+      "config": "Weights 60/25/15 \u00b7 no CB \u00b7 no retry \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 5.916,
+      "throughput_rps": 33.809,
+      "goodput_rps": 5.578,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "retry_immediate",
+      "phase": "Client retry",
+      "config": "Equal weights \u00b7 no CB \u00b7 client retry immediate \u00d73 \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 35,
+      "success_rate_pct": 17.5,
+      "duration_s": 7.034,
+      "throughput_rps": 28.434,
+      "goodput_rps": 4.976,
+      "tts_p50_ms": 548
+    },
+    {
+      "run_id": "sustained_cb_only",
+      "phase": "Sustained",
+      "config": "5-min continuous \u00b7 equal weights \u00b7 CB on 429+5xx \u00b7 no APIM retry",
+      "load": "sustained 5 min",
+      "iterations": 48929,
+      "successes": 1368,
+      "success_rate_pct": 2.8,
+      "duration_s": 300.04,
+      "throughput_rps": 163.075,
+      "goodput_rps": 4.559,
+      "tts_p50_ms": 16
+    },
+    {
+      "run_id": "circuit_breaker",
+      "phase": "Baseline",
+      "config": "Equal weights \u00b7 CB trip after 3 failures/60s \u00b7 no retry \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 9,
+      "success_rate_pct": 4.5,
+      "duration_s": 2.403,
+      "throughput_rps": 83.22,
+      "goodput_rps": 3.745,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "gateway_throttle",
+      "phase": "Baseline",
+      "config": "Equal weights \u00b7 no CB \u00b7 no retry \u00b7 gateway RPM 10 (throttle first)",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 7,
+      "success_rate_pct": 3.5,
+      "duration_s": 2.421,
+      "throughput_rps": 82.609,
+      "goodput_rps": 2.891,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "cb_5xx_only",
+      "phase": "Baseline",
+      "config": "Equal weights \u00b7 CB on 5xx only (not 429) \u00b7 no retry \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 6,
+      "success_rate_pct": 3.0,
+      "duration_s": 2.621,
+      "throughput_rps": 76.293,
+      "goodput_rps": 2.289,
+      "tts_p50_ms": null
+    },
+    {
+      "run_id": "sustained_baseline",
+      "phase": "Sustained",
+      "config": "5-min continuous \u00b7 equal weights \u00b7 no CB \u00b7 no retry",
+      "load": "sustained 5 min",
+      "iterations": 25992,
+      "successes": 627,
+      "success_rate_pct": 2.41,
+      "duration_s": 312.45,
+      "throughput_rps": 83.188,
+      "goodput_rps": 2.007,
+      "tts_p50_ms": 15
+    },
+    {
+      "run_id": "retry_backoff",
+      "phase": "Client retry",
+      "config": "Equal weights \u00b7 no CB \u00b7 client exponential backoff \u00d73 \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 26,
+      "success_rate_pct": 13.0,
+      "duration_s": 40.194,
+      "throughput_rps": 4.976,
+      "goodput_rps": 0.647,
+      "tts_p50_ms": 920
+    },
+    {
+      "run_id": "retry_backoff_jitter",
+      "phase": "Client retry",
+      "config": "Equal weights \u00b7 no CB \u00b7 client backoff+jitter \u00d73 \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 26,
+      "success_rate_pct": 13.0,
+      "duration_s": 41.782,
+      "throughput_rps": 4.787,
+      "goodput_rps": 0.622,
+      "tts_p50_ms": 1078
+    },
+    {
+      "run_id": "retry_fixed_1s",
+      "phase": "Client retry",
+      "config": "Equal weights \u00b7 no CB \u00b7 client retry fixed 1s \u00d73 \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 24,
+      "success_rate_pct": 12.0,
+      "duration_s": 40.509,
+      "throughput_rps": 4.937,
+      "goodput_rps": 0.592,
+      "tts_p50_ms": 1568
+    },
+    {
+      "run_id": "optimal_asym_client",
+      "phase": "Combined",
+      "config": "Weights 90/5/5 \u00b7 CB on 429+5xx \u00b7 client Retry-After \u00b7 no APIM retry",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 72,
+      "success_rate_pct": 36.0,
+      "duration_s": 124.107,
+      "throughput_rps": 1.612,
+      "goodput_rps": 0.58,
+      "tts_p50_ms": 429.5
+    },
+    {
+      "run_id": "optimal_equal_client",
+      "phase": "Combined",
+      "config": "Equal weights \u00b7 no CB \u00b7 client Retry-After \u00d73 (best client strategy on baseline pool)",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 198,
+      "success_rate_pct": 99.0,
+      "duration_s": 426.212,
+      "throughput_rps": 0.469,
+      "goodput_rps": 0.465,
+      "tts_p50_ms": 30450.5
+    },
+    {
+      "run_id": "retry_after_header",
+      "phase": "Client retry",
+      "config": "Equal weights \u00b7 no CB \u00b7 client Retry-After header \u00d73 \u00b7 gateway RPM 10000",
+      "load": "burst 200 iterations",
+      "iterations": 200,
+      "successes": 199,
+      "success_rate_pct": 99.5,
+      "duration_s": 456.422,
+      "throughput_rps": 0.438,
+      "goodput_rps": 0.436,
+      "tts_p50_ms": 30516
+    },
+    {
+      "run_id": "full_resilience",
+      "phase": "Baseline",
+      "config": "Weights 50/30/20 \u00b7 CB on \u00b7 no client/APIM retry \u00b7 gateway RPM 500 \u00b7 30 VUs / 300 iters",
+      "load": "burst 300 iterations",
+      "iterations": 300,
+      "successes": 0,
+      "success_rate_pct": 0.0,
+      "duration_s": 1.261,
+      "throughput_rps": 237.95,
+      "goodput_rps": 0.0,
+      "tts_p50_ms": null
+    }
+  ]
+};
+    const colours = {
+      'Baseline': '#1f7a8c',
+      'Direct (no APIM)': '#5c6b73',
+      'Client retry': '#e09f3e',
+      'APIM retry': '#2a9d8f',
+      'Combined': '#bc4749',
+      'Sustained': '#264653',
+    };
+    const landmarks = new Set([
+      'apim_retry_asym',
+      'retry_after_header',
+      'full_resilience',
+      'baseline',
+      'sustained_apim_asym',
+      'circuit_breaker',
+      'optimal_combined',
+      'asym_retry_cb_5xx',
+      'sustained_cb_only',
+      'sustained_baseline',
+    ]);
+    const phaseOrder = [
+      'Baseline',
+      'Direct (no APIM)',
+      'Client retry',
+      'APIM retry',
+      'Combined',
+      'Sustained',
+    ];
+
+    function isoTraces() {
+      const levels = [
+        { g: 1, dash: 'dot' },
+        { g: 10, dash: 'dash' },
+        { g: 50, dash: 'dash' },
+        { g: 100, dash: 'solid' },
+        { g: 150, dash: 'solid' },
+      ];
+      return levels.map(({ g, dash }) => {
+        const x = [];
+        const y = [];
+        for (let s = 2; s <= 100; s += 2) {
+          const thr = g / (s / 100);
+          if (thr <= 260) {
+            x.push(s);
+            y.push(thr);
+          }
+        }
+        return {
+          type: 'scatter',
+          mode: 'lines',
+          x,
+          y,
+          name: `goodput ≈ ${g}/s`,
+          line: { color: 'rgba(90,90,90,0.45)', width: 2, dash },
+          showlegend: false,
+          hovertemplate: 'goodput = ' + g + '/s<extra></extra>',
+        };
+      });
+    }
+
+    function pointTraces(runs) {
+      return phaseOrder
+        .map((phase) => {
+          const pts = runs.filter((r) => r.phase === phase);
+          if (!pts.length) return null;
+          return {
+            type: 'scatter',
+            mode: 'markers+text',
+            name: phase,
+            x: pts.map((r) => r.success_rate_pct),
+            y: pts.map((r) => r.throughput_rps),
+            text: pts.map(() => ''),
+            marker: {
+              size: 12,
+              color: colours[phase],
+              line: { width: 1, color: '#fff' },
+            },
+            customdata: pts.map((r) => [
+              r.run_id,
+              r.goodput_rps,
+              r.config,
+              r.load,
+              r.tts_p50_ms == null ? 'n/a' : r.tts_p50_ms,
+            ]),
+            hovertemplate:
+              '<b>%{customdata[0]}</b><br>' +
+              'Success rate: %{x:.1f}%<br>' +
+              'Throughput: %{y:.2f} req/s<br>' +
+              'Goodput: %{customdata[1]:.2f} succ/s<br>' +
+              'Load: %{customdata[3]}<br>' +
+              'TTS p50: %{customdata[4]} ms<br><br>' +
+              '%{customdata[2]}' +
+              '<extra></extra>',
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function draw() {
+      if (typeof Plotly === 'undefined') {
+        document.getElementById('chart').innerHTML =
+          '<p class="err">Plotly failed to load (needs network). Use quarto preview or a local server.</p>';
+        return;
+      }
+      const el = document.getElementById('chart');
+      const w = Math.max(320, el.clientWidth || 900);
+      Plotly.newPlot(
+        el,
+        [...isoTraces(), ...pointTraces(DATA.runs)],
+        {
+          title: { text: 'APIM experiments: throughput vs success rate', font: { size: 16 } },
+          xaxis: { title: 'Success rate (%)', range: [-2, 105] },
+          yaxis: { title: 'Throughput (original req/s)', range: [-5, 260] },
+            legend: { orientation: 'h', yanchor: 'top', y: -0.18, x: 0 },
+            margin: { l: 64, r: 24, t: 64, b: 110 },
+          hovermode: 'closest',
+          width: w,
+          height: 640,
+        },
+        {
+          responsive: false,
+          displayModeBar: true,
+          staticPlot: false,
+        }
+      );
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', draw);
+    } else {
+      draw();
+    }
+  </script>
+</body>
+</html>

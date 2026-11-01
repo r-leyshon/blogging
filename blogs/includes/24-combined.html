@@ -1,0 +1,23 @@
+<div class="exp-grid">
+<article class="exp-card">
+<h4><code>optimal_equal_client</code></h4>
+<p>The plain equal-weight pool, plus the client Retry-After strategy on top.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:99.0"></i></span><span class="v">99.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.2"></i></span><span class="v">0.47/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:0.3"></i></span><span class="v">0.47/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>optimal_asym_client</code></h4>
+<p>Asymmetric weights and a breaker, but the client does the waiting. APIM does not retry.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:36.0"></i></span><span class="v">36.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.7"></i></span><span class="v">1.61/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:0.4"></i></span><span class="v">0.58/s</span></div>
+</article>
+<article class="exp-card">
+<h4><code>optimal_combined</code></h4>
+<p>90/5/5, breaker, and APIM retry, with a client Retry-After backstop for the calls the gateway still misses.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:2.7"></i></span><span class="v">6.33/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:3.9"></i></span><span class="v">6.33/s</span></div>
+</article>
+</div>
