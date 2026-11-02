@@ -1,0 +1,27 @@
+<script>
+// Listing pages: clicking the category that is already applied clears the filter.
+// Covers both the sidebar categories and the tags on each card. Clicking any
+// other category behaves as normal.
+document.addEventListener("click", function (event) {
+  var el = event.target.closest(".quarto-listing-category .category, div.listing-category");
+  if (!el || typeof activateCategory !== "function" || typeof setCategoryHash !== "function") return;
+
+  var clicked;
+  if (el.classList.contains("category")) {
+    clicked = el.getAttribute("data-category");
+  } else {
+    var match = (el.getAttribute("onclick") || "").match(/quartoListingCategory\('([^']*)'\)/);
+    clicked = match ? match[1] : null;
+  }
+  if (!clicked) return; // "All", or something unexpected: leave the default behaviour
+
+  var active = document.querySelector(".quarto-listing-category .category.active");
+  var current = active ? active.getAttribute("data-category") : "";
+  if (clicked !== current) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  activateCategory("");
+  setCategoryHash("");
+}, true);
+</script>

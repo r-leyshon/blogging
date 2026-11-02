@@ -68,6 +68,7 @@ format:
       light: cosmo
       dark: superhero
     css: /www/styles.css
+    include-after-body: www/listing-toggle.html
     toc: true
     comments:
       giscus: 
