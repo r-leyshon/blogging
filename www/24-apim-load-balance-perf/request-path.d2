@@ -1,0 +1,56 @@
+direction: down
+
+k6: Grafana k6 {
+  icon: logos/k6.svg
+  shape: rectangle
+  label: "Grafana k6\nlocal load · subscription key"
+}
+
+apim: Azure API Management {
+  icon: logos/apim.svg
+  direction: down
+
+  inbound: "Inbound policy\nrate-limit-by-key\nset-backend-service" {
+    shape: rectangle
+  }
+  pool: "Weighted backend pool\nchooses a region" {
+    shape: rectangle
+  }
+  levers: {
+    direction: right
+    label: ""
+    cb: "Circuit breakers\ntrip after N × 429 / 5xx" {
+      shape: rectangle
+    }
+    retry: "Retry on 429\nre-selects a pool member" {
+      shape: rectangle
+    }
+  }
+
+  inbound -> pool
+  pool -> levers.cb
+  pool -> levers.retry
+}
+
+foundry: Azure AI Foundry {
+  icon: logos/foundry.svg
+  grid-rows: 3
+  grid-columns: 1
+  grid-gap: 16
+
+  uk: "UK South\n10 000 TPM" {
+    icon: logos/foundry.svg
+    shape: rectangle
+  }
+  we: "West Europe\n10 000 TPM" {
+    icon: logos/foundry.svg
+    shape: rectangle
+  }
+  sc: "Sweden Central\n10 000 TPM" {
+    icon: logos/foundry.svg
+    shape: rectangle
+  }
+}
+
+k6 -> apim.inbound
+apim -> foundry: managed identity

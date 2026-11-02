@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>APIM experiments: throughput vs success rate</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #fff; overflow: hidden; font-family: system-ui, sans-serif; }
+    #chart { width: 100%; height: 640px; }
+    .err { padding: 1rem; color: #bc4749; }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script>
+    const DATA = {
+  "metrics": {
+    "success_rate": "Eventual HTTP 200s with a valid body / original requests x 100",
+    "throughput": "Original requests / wall-clock seconds",
+    "goodput": "Successful completions / wall-clock seconds (= throughput x success rate)"
+  },
+  "source": "https://github.com/r-leyshon/azure-load-balance-perf",
+  "sustained_ceiling_completions": 1080,
+  "runs": [
+    {
+      "run_id": "retry_after_header",
+      "group": "Client retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 199,
+      "success_rate_pct": 99.5,
+      "duration_s": 456.42,
+      "throughput_rps": 0.438,
+      "goodput_rps": 0.436,
+      "label": "Client retry, wait for Retry-After",
+      "description": "The client sleeps for the Retry-After value Azure returns, usually the rest of the quota window.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "optimal_equal_client",
+      "group": "Client retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 198,
+      "success_rate_pct": 99.0,
+      "duration_s": 426.21,
+      "throughput_rps": 0.469,
+      "goodput_rps": 0.465,
+      "label": "Client retry, wait for Retry-After (repeat)",
+      "description": "A repeat of the same setup, run again under another name.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "apim_retry_equal_r2",
+      "group": "Quota to spare",
+      "quota_tpm": 60000,
+      "iterations": 200,
+      "successes": 193,
+      "success_rate_pct": 96.5,
+      "duration_s": 5.59,
+      "throughput_rps": 35.792,
+      "goodput_rps": 34.539,
+      "label": "Pool retry, even split, no breaker",
+      "description": "The pool-retry setup from the 10,000 TPM group, with six times the quota. 200 requests fit inside one minute's quota.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "asym_retry_no_cb_r2",
+      "group": "Quota to spare",
+      "quota_tpm": 60000,
+      "iterations": 200,
+      "successes": 190,
+      "success_rate_pct": 95.0,
+      "duration_s": 7.38,
+      "throughput_rps": 27.089,
+      "goodput_rps": 25.734,
+      "label": "Pool retry, 90/5/5, no breaker",
+      "description": "Skewed weights and pool retry with the breaker off, at 60,000 TPM.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "optimal_equal_apim_r2",
+      "group": "Quota to spare",
+      "quota_tpm": 60000,
+      "iterations": 200,
+      "successes": 181,
+      "success_rate_pct": 90.5,
+      "duration_s": 14.2,
+      "throughput_rps": 14.083,
+      "goodput_rps": 12.745,
+      "label": "Pool retry, even split, no breaker (repeat)",
+      "description": "The same configuration again, run on its own later.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "optimal_asym_client",
+      "group": "Stacked retries",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 72,
+      "success_rate_pct": 36.0,
+      "duration_s": 124.11,
+      "throughput_rps": 1.612,
+      "goodput_rps": 0.58,
+      "label": "Breaker plus client Retry-After, no pool retry",
+      "description": "Skewed weights and breaker on 429 and 5xx, with the client sleeping for Retry-After instead of the gateway retrying.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "apim_retry_equal",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 37,
+      "success_rate_pct": 18.5,
+      "duration_s": 12.85,
+      "throughput_rps": 15.567,
+      "goodput_rps": 2.88,
+      "label": "Pool retry, even split, no breaker",
+      "description": "Equal weights. The gateway retries the pool up to three times. With no breaker, the pool never shrinks.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "optimal_equal_apim",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 36,
+      "success_rate_pct": 18.0,
+      "duration_s": 12.73,
+      "throughput_rps": 15.717,
+      "goodput_rps": 2.829,
+      "label": "Pool retry, even split, no breaker (repeat)",
+      "description": "A repeat of the same configuration, run again under another name.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "apim_retry_asym",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 36,
+      "success_rate_pct": 18.0,
+      "duration_s": 9.72,
+      "throughput_rps": 20.576,
+      "goodput_rps": 3.704,
+      "label": "Pool retry and breaker (429 + 5xx), 90/5/5",
+      "description": "Skewed weights, breaker on 429 and 5xx, pool retry. UK South is expected to trip first.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "asym_retry_no_cb",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 36,
+      "success_rate_pct": 18.0,
+      "duration_s": 12.1,
+      "throughput_rps": 16.532,
+      "goodput_rps": 2.976,
+      "label": "Pool retry, 90/5/5, no breaker",
+      "description": "Skewed weights and pool retry with the breaker off.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "baseline",
+      "group": "No retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 35,
+      "success_rate_pct": 17.5,
+      "duration_s": 5.12,
+      "throughput_rps": 39.047,
+      "goodput_rps": 6.833,
+      "label": "Control: even split, no policies",
+      "description": "Equal weights across the three regions. No circuit breaker, no retry.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "direct_equal",
+      "group": "Direct (no gateway)",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 35,
+      "success_rate_pct": 17.5,
+      "duration_s": 11.4,
+      "throughput_rps": 17.545,
+      "goodput_rps": 3.07,
+      "label": "Direct to Foundry, even split",
+      "description": "No gateway. The client splits calls evenly across the three regions and does not fall back. The matched pair for the control.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "retry_immediate",
+      "group": "Client retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 35,
+      "success_rate_pct": 17.5,
+      "duration_s": 7.03,
+      "throughput_rps": 28.434,
+      "goodput_rps": 4.976,
+      "label": "Client retry, immediately",
+      "description": "The client retries a 429 straight away, up to three times, against an equal-weight pool with no breaker.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "asym_retry_cb_5xx",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 34,
+      "success_rate_pct": 17.0,
+      "duration_s": 12.47,
+      "throughput_rps": 16.035,
+      "goodput_rps": 2.726,
+      "label": "Pool retry and breaker (5xx only), 90/5/5",
+      "description": "Skewed weights, breaker on 5xx only, pool retry. Running out of quota never trips the breaker.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "weighted_primary",
+      "group": "No retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 5.92,
+      "throughput_rps": 33.809,
+      "goodput_rps": 5.578,
+      "label": "Weighted 60/25/15, nothing else",
+      "description": "UK South takes 60% of the traffic, West Europe 25%, Sweden Central 15%. Still no breaker and no retry.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "asymmetric_cb",
+      "group": "No retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 3.87,
+      "throughput_rps": 51.687,
+      "goodput_rps": 8.528,
+      "label": "Skewed 90/5/5 and breaker, no retry",
+      "description": "90% of traffic lands on UK South, which runs out first and can trip the breaker. No retry.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "cb_5xx_only",
+      "group": "No retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 5.57,
+      "throughput_rps": 35.893,
+      "goodput_rps": 5.922,
+      "label": "Breaker on server errors only, no retry",
+      "description": "The breaker ignores 429s and only trips on 5xx, so running out of quota never removes a region. No retry.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "direct_weighted",
+      "group": "Direct (no gateway)",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 2.97,
+      "throughput_rps": 67.38,
+      "goodput_rps": 11.118,
+      "label": "Direct, 60/25/15, no fallback",
+      "description": "No gateway. The client picks a region at random (60/25/15) and does not fall back when that region is exhausted.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "direct_sequential",
+      "group": "Direct (no gateway)",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 5.34,
+      "throughput_rps": 37.443,
+      "goodput_rps": 6.178,
+      "label": "Direct, walk the regions in order",
+      "description": "No gateway. The client tries UK South, then West Europe, then Sweden Central, moving on only after a failure. It made 567 HTTP calls to land 33 successes.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "weight_70_15_15",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 4.13,
+      "throughput_rps": 48.388,
+      "goodput_rps": 7.984,
+      "label": "Pool retry and breaker, 70/15/15",
+      "description": "A gentler skew than 90/5/5, with the breaker on 429 and 5xx and pool retry.",
+      "fast_refusals": true
+    },
+    {
+      "run_id": "weight_80_10_10",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 4.34,
+      "throughput_rps": 46.128,
+      "goodput_rps": 7.611,
+      "label": "Pool retry and breaker, 80/10/10",
+      "description": "An in-between skew: the spare regions get 10% each, with breaker on 429 and 5xx and pool retry.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "trip_count_1",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 3.32,
+      "throughput_rps": 60.203,
+      "goodput_rps": 9.933,
+      "label": "Pool retry, breaker trips on first failure",
+      "description": "90/5/5 weights and pool retry, with the breaker tripping on the first failure instead of the third.",
+      "fast_refusals": true
+    },
+    {
+      "run_id": "optimal_combined",
+      "group": "Stacked retries",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 33,
+      "success_rate_pct": 16.5,
+      "duration_s": 2.49,
+      "throughput_rps": 80.443,
+      "goodput_rps": 13.273,
+      "label": "Pool retry, breaker and client Retry-After, 90/5/5",
+      "description": "The gateway setup from the pool-retry group with a client Retry-After sleep as a backstop. The run ended in about 2.5 seconds, so the client sleep never fired.",
+      "fast_refusals": true
+    },
+    {
+      "run_id": "retry_backoff",
+      "group": "Client retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 26,
+      "success_rate_pct": 13.0,
+      "duration_s": 40.19,
+      "throughput_rps": 4.976,
+      "goodput_rps": 0.647,
+      "label": "Client retry, exponential backoff",
+      "description": "Client retry with exponential backoff: 500 ms, then 1 s, then 2 s.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "retry_backoff_jitter",
+      "group": "Client retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 26,
+      "success_rate_pct": 13.0,
+      "duration_s": 41.78,
+      "throughput_rps": 4.787,
+      "goodput_rps": 0.622,
+      "label": "Client retry, backoff with jitter",
+      "description": "Backoff plus jitter, so the virtual users do not all wake up on the same tick.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "retry_fixed_1s",
+      "group": "Client retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 24,
+      "success_rate_pct": 12.0,
+      "duration_s": 40.51,
+      "throughput_rps": 4.937,
+      "goodput_rps": 0.592,
+      "label": "Client retry, fixed 1 s pause",
+      "description": "The same client retry, with a fixed one second pause between attempts.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "optimal_asym_apim",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 11,
+      "success_rate_pct": 5.5,
+      "duration_s": 6.85,
+      "throughput_rps": 29.184,
+      "goodput_rps": 1.605,
+      "label": "Pool retry and breaker (429 + 5xx), 90/5/5 (repeat)",
+      "description": "A repeat of the identical configuration, run again under another name. The two results differ.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "circuit_breaker",
+      "group": "No retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 9,
+      "success_rate_pct": 4.5,
+      "duration_s": 2.4,
+      "throughput_rps": 83.22,
+      "goodput_rps": 3.745,
+      "label": "Circuit breaker only",
+      "description": "Equal weights. A region leaves the pool after three failures inside 60 seconds, and a 429 counts as a failure. Nothing retries onto whoever is left.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "apim_retry_cb",
+      "group": "Pool retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 9,
+      "success_rate_pct": 4.5,
+      "duration_s": 8.07,
+      "throughput_rps": 24.78,
+      "goodput_rps": 1.115,
+      "label": "Pool retry and breaker (429 + 5xx), even split",
+      "description": "Equal weights, breaker on 429 and 5xx, and the gateway retries whichever regions are still in the pool.",
+      "fast_refusals": false
+    },
+    {
+      "run_id": "gateway_throttle",
+      "group": "No retry",
+      "quota_tpm": 10000,
+      "iterations": 200,
+      "successes": 7,
+      "success_rate_pct": 3.5,
+      "duration_s": 2.42,
+      "throughput_rps": 82.609,
+      "goodput_rps": 2.891,
+      "label": "Gateway cap of 10 requests a minute",
+      "description": "The gateway refuses calls beyond 10 a minute, before Foundry sees them.",
+      "fast_refusals": true
+    },
+    {
+      "run_id": "full_resilience",
+      "group": "No retry",
+      "quota_tpm": 10000,
+      "iterations": 300,
+      "successes": 0,
+      "success_rate_pct": 0.0,
+      "duration_s": 1.26,
+      "throughput_rps": 237.95,
+      "goodput_rps": 0.0,
+      "label": "Weights, breaker and a 500-a-minute cap",
+      "description": "Weights, a circuit breaker and a 500 requests-a-minute gateway cap, with no retry. Every call was refused in about 12 ms, too fast to have reached the model.",
+      "fast_refusals": true
+    }
+  ]
+};
+    const colours = {
+      'No retry': '#1f7a8c',
+      'Direct (no gateway)': '#5c6b73',
+      'Client retry': '#e09f3e',
+      'Pool retry': '#2a9d8f',
+      'Stacked retries': '#bc4749',
+      'Quota to spare': '#8e7dbe',
+    };
+    const groupLabels = {
+      'Quota to spare': 'Quota to spare (60,000 TPM)',
+    };
+    const symbols = { 'Quota to spare': 'diamond' };
+    const phaseOrder = [
+      'No retry',
+      'Direct (no gateway)',
+      'Client retry',
+      'Pool retry',
+      'Stacked retries',
+      'Quota to spare',
+    ];
+    const Y_MIN = 0.3;
+    const Y_MAX = 400;
+
+    const isoLevels = [
+      { g: 0.5, dash: 'dot' },
+      { g: 2, dash: 'dot' },
+      { g: 10, dash: 'dash' },
+      { g: 30, dash: 'solid' },
+    ];
+
+    function isoTraces() {
+      const lines = isoLevels.map(({ g, dash }) => {
+        const x = [];
+        const y = [];
+        for (let s = 1; s <= 100; s += 1) {
+          const thr = g / (s / 100);
+          if (thr <= Y_MAX) {
+            x.push(s);
+            y.push(thr);
+          }
+        }
+        return {
+          type: 'scatter',
+          mode: 'lines',
+          x,
+          y,
+          name: `goodput = ${g}/s`,
+          line: { color: 'rgba(90,90,90,0.45)', width: 2, dash },
+          showlegend: false,
+          hovertemplate: 'goodput = ' + g + '/s<extra></extra>',
+        };
+      });
+      const labels = {
+        type: 'scatter',
+        mode: 'text',
+        x: isoLevels.map(() => 55),
+        y: isoLevels.map((l) => (l.g / 0.55) * 1.1),
+        text: isoLevels.map((l) => `${l.g}/s`),
+        textposition: 'top right',
+        textfont: { size: 11, color: 'rgba(70,70,70,0.9)' },
+        showlegend: false,
+        hoverinfo: 'skip',
+      };
+      return [...lines, labels];
+    }
+
+    function pointTraces(runs) {
+      return phaseOrder
+        .map((phase) => {
+          const pts = runs.filter((r) => r.group === phase);
+          if (!pts.length) return null;
+          return {
+            type: 'scatter',
+            mode: 'markers',
+            name: groupLabels[phase] || phase,
+            x: pts.map((r) => r.success_rate_pct),
+            y: pts.map((r) => Math.max(r.throughput_rps, Y_MIN)),
+            marker: {
+              size: 12,
+              symbol: symbols[phase] || 'circle',
+              color: colours[phase],
+              line: { width: 1, color: '#fff' },
+            },
+            customdata: pts.map((r) => [
+              r.label,
+              r.run_id,
+              `${r.successes} of ${r.iterations}`,
+              r.throughput_rps,
+              r.goodput_rps,
+            ]),
+            hoverlabel: { align: 'left' },
+            hovertemplate:
+              '<b>%{customdata[0]}</b><br>' +
+              '%{customdata[1]}<br>' +
+              '%{x:.1f}% success (%{customdata[2]})<br>' +
+              '%{customdata[3]:.2f}/s throughput, %{customdata[4]:.2f}/s goodput' +
+              '<extra></extra>',
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function draw() {
+      if (typeof Plotly === 'undefined') {
+        document.getElementById('chart').innerHTML =
+          '<p class="err">Plotly failed to load (needs network). Use quarto preview or a local server.</p>';
+        return;
+      }
+      const el = document.getElementById('chart');
+      const w = Math.max(320, el.clientWidth || 900);
+      Plotly.newPlot(
+        el,
+        [...isoTraces(), ...pointTraces(DATA.runs)],
+        {
+          title: { text: 'The 200-request bursts: throughput vs success rate', font: { size: 16 } },
+          xaxis: { title: 'Success rate (%)', range: [-2, 106] },
+          yaxis: {
+            title: 'Throughput (original requests per second, log scale)',
+            type: 'log',
+            range: [Math.log10(Y_MIN), Math.log10(Y_MAX)],
+            tickvals: [0.5, 1, 2, 5, 10, 20, 50, 100, 200],
+            ticktext: ['0.5', '1', '2', '5', '10', '20', '50', '100', '200'],
+          },
+          legend: { orientation: 'h', yanchor: 'top', y: -0.18, x: 0 },
+          margin: { l: 64, r: 24, t: 64, b: 110 },
+          hovermode: 'closest',
+          width: w,
+          height: 640,
+        },
+        {
+          responsive: false,
+          displayModeBar: true,
+          staticPlot: false,
+        }
+      );
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', draw);
+    } else {
+      draw();
+    }
+  </script>
+</body>
+</html>

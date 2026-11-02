@@ -1,0 +1,39 @@
+<p class="tab-note">200-request bursts, 10,000 TPM per region. Calling Foundry directly gives the same result as the gateway with no policies. Walking the regions in order only burns calls.</p>
+<div class="exp-grid">
+<article class="exp-card exp-ref" style="--edge:#1f7a8c">
+<h4>Control: even split, no policies<span class="ref-tag">Reference, 10,000 TPM</span></h4>
+<code class="run-id">baseline</code>
+<p>Equal weights across the three regions. No circuit breaker, no retry.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:17.5"></i></span><span class="v">17.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:16.4"></i></span><span class="v">39.0/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:19.8"></i></span><span class="v">6.83/s</span></div>
+<p class="meta">Completed <b>35</b> of 200 requests in 5.1 s &middot; 10,000 TPM per region</p>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct to Foundry, even split</h4>
+<code class="run-id">direct_equal</code>
+<p>No gateway. The client splits calls evenly across the three regions and does not fall back. The matched pair for the control.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:17.5"></i></span><span class="v">17.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:7.4"></i></span><span class="v">17.5/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:8.9"></i></span><span class="v">3.07/s</span></div>
+<p class="meta">Completed <b>35</b> of 200 requests in 11.4 s &middot; 10,000 TPM per region</p>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, 60/25/15, no fallback</h4>
+<code class="run-id">direct_weighted</code>
+<p>No gateway. The client picks a region at random (60/25/15) and does not fall back when that region is exhausted.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:16.5"></i></span><span class="v">16.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:28.3"></i></span><span class="v">67.4/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:32.2"></i></span><span class="v">11.1/s</span></div>
+<p class="meta">Completed <b>33</b> of 200 requests in 3.0 s &middot; 10,000 TPM per region</p>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, walk the regions in order</h4>
+<code class="run-id">direct_sequential</code>
+<p>No gateway. The client tries UK South, then West Europe, then Sweden Central, moving on only after a failure. It made 567 HTTP calls to land 33 successes.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:16.5"></i></span><span class="v">16.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:15.7"></i></span><span class="v">37.4/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:17.9"></i></span><span class="v">6.18/s</span></div>
+<p class="meta">Completed <b>33</b> of 200 requests in 5.3 s &middot; 10,000 TPM per region</p>
+</article>
+</div>
