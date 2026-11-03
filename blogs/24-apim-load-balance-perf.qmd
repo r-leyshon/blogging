@@ -1,9 +1,9 @@
 ---
-title: "What Does an API Gateway Buy You When Quota Runs Out?"
-subtitle: "Azure APIM load balancing across three AI Foundry regions, tested under quota exhaustion"
+title: "Will an API Gateway Optimise Token Consumption at Scale?"
+subtitle: "Azure APIM load balancing across three AI Foundry regions"
 author: "Rich Leyshon"
 date: "November 2 2026"
-description: "An explanation of what an Azure API Management gateway can and cannot do when AI Foundry quota runs out: nothing when every region is short, a lot when only the primary is, and why quota set the ceiling in every test."
+description: "An explanation of what an Azure API Management gateway can and cannot do when AI Foundry quota runs out: nothing when every region is short, a lot when only the primary region is."
 categories:
     - Explanation
     - Azure
@@ -108,16 +108,14 @@ resources:
 ```
 
 
-*For engineers deciding whether to put a gateway between an application and several LLM deployments. No Azure API Management experience is assumed.*
+*For engineers deciding whether to put a gateway between an application and LLM deployments.*
 
 ::: {.callout-note appearance="simple"}
 ### The short answer
 
-A gateway cannot create quota. In every test, quota set the ceiling on how much work got done. What the gateway could change was which region absorbed a shortfall, and that mattered in only one of the situations I tested.
-
-- **Every region out of quota at once:** the gateway made no useful difference. Spreading load, retrying inside the gateway and tuning weights nearly all landed in the same 16-18% band for a 200-request burst. With an even split, a circuit breaker (a rule that stops sending to a region after repeated failures) cut that to 4.5%. Only a client that sleeps until the service says to retry got nearly everything through (99.5%), at about 30 seconds a call.
-- **Only the primary region out of quota (the one taking most of the traffic), two with room:** this is where a gateway helps, if it is set up for it. Retrying inside the gateway did nothing on its own (68-69%, against 70% with no recovery). Retries plus a circuit breaker that counts quota errors raised success to 96.5%, or 99.3% when the breaker tripped on the first failure (one run). A client that simply tried the primary region and then the next reached 100%, although that comparison is not like for like (see the limits at the end).
-- **Five minutes of steady load:** the four setups I tried all finished within about 6% of what the quota allowed.
+- **No spare capacity anywhere:** the gateway made no useful difference. Spreading load, server-side retries inside the gateway and tuning weights nearly all landed in the same **16-18% success rate** band for a 200-request burst. With an even split, a circuit breaker (a rule that stops sending to a region after repeated failures) cut that to 4.5%. Only a client that honours APIM's Retry-After header got nearly everything through (99.5%), at about 30 seconds per call.
+- **Limited capacity in the primary region:** this is where a gateway helps, if it is set up for it. Retrying inside the gateway did nothing on its own (68-69%, against 70% with no recovery). Retries plus a circuit breaker that counts quota errors raised success to 96.5%, or 99.3% when the breaker tripped on the first failure (one run). A client that simply tried the primary region and then the next reached 100%, although that comparison is not like for like (see the limits at the end).
+- **Five minutes of steady load:** all four setups completed between 3.4 to 3.6 calls per second, the settings made almost no difference to how much work got done.
 
 So the case for APIM here is about operations, not throughput: one endpoint for callers, credentials kept in one place, and central policy and monitoring. Once the breaker is set up, performance was close to a failover chain written into the client.
 :::
