@@ -28,6 +28,15 @@
 <p class="meta">Completed <b>198</b> of 200 requests in 426.2 s &middot; 10,000 TPM per region</p>
 </article>
 <article class="exp-card" style="--edge:#e09f3e">
+<h4>Breaker plus client Retry-After</h4>
+<code class="run-id">optimal_asym_client</code>
+<p>Skewed 90/5/5 weights and a breaker on 429 and 5xx, with the client sleeping for Retry-After.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:36.0"></i></span><span class="v">36.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.7"></i></span><span class="v">1.61/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.7"></i></span><span class="v">0.58/s</span></div>
+<p class="meta">Completed <b>72</b> of 200 requests in 124.1 s &middot; 10,000 TPM per region</p>
+</article>
+<article class="exp-card" style="--edge:#e09f3e">
 <h4>Client retry, immediately</h4>
 <code class="run-id">retry_immediate</code>
 <p>The client retries a 429 straight away, up to three times, against an equal-weight pool with no breaker.</p>

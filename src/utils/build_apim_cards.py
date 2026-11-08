@@ -4,12 +4,16 @@
 Inputs
   * ../azure-load-balance-perf/experiment/results/*.json (k6 summaries; git-ignored upstream)
     If that folder is absent, the committed www/24-apim-load-balance-perf/runs.json is reused.
-  * The RUNS table below: group, regime, quota, friendly name and description per run id.
+  * The RUNS table (200-request bursts) and the MATCHED table (steady-rate matched pairs of
+    gateway and client) below: tab, friendly name and description per run or arm.
 
 Outputs
   * www/24-apim-load-balance-perf/runs.json     (the only committed copy of the data)
   * www/24-apim-load-balance-perf/scatter.html  (refreshes the embedded DATA)
   * blogs/includes/24-runs-*.html               (one card set per tab)
+
+Validity rule for the matched pairs (set in the experiment repo before the runs): a run is
+discarded if k6 ran for more than 330 s (the laptop slept) or dropped iterations.
 
 Run from anywhere:  python3 src/utils/build_apim_cards.py
 """
@@ -26,20 +30,21 @@ WWW = ROOT / "www" / "24-apim-load-balance-perf"
 INC = ROOT / "blogs" / "includes"
 RESULTS = ROOT.parent / "azure-load-balance-perf" / "experiment" / "results"
 
-# Measured sustained ceiling at 60,000 TPM: 3 regions x 72 requests a minute x 5 minutes.
-SUSTAINED_CEILING = 3 * 72 * 5
+MAX_VALID_SECONDS = 330
 
 # ---------------------------------------------------------------------------
-# Run catalogue: run_id -> (group, regime, quota_tpm, friendly name, description)
-# regime: burst | sustained | spill
+# 200-request bursts: run_id -> (tab, regime, quota_tpm, friendly name, description)
+#
+# Bug note: in the burst runs whose tab is "Breaker and weights" or "Quota to spare" a gateway
+# retry rule was configured, but a bug (the request body was lost on the second attempt) meant
+# it never reached the model. They are valid runs of what actually ran: a breaker and weights,
+# with no working retry. Names and descriptions say so.
 # ---------------------------------------------------------------------------
 B = "burst"
-S = "sustained"
-P = "spill"
 K10, K60 = 10_000, 60_000
 
 RUNS: dict[str, tuple[str, str, int, str, str]] = {
-    # --- 200-request bursts at 10,000 TPM: no retry ---------------------------------
+    # --- no retry ---------------------------------------------------------------------
     "baseline": ("No retry", B, K10, "Control: even split, no policies",
                  "Equal weights across the three regions. No circuit breaker, no retry."),
     "weighted_primary": ("No retry", B, K10, "Weighted 60/25/15, nothing else",
@@ -78,94 +83,158 @@ RUNS: dict[str, tuple[str, str, int, str, str]] = {
                            "The client sleeps for the Retry-After value Azure returns, usually the rest of the quota window."),
     "optimal_equal_client": ("Client retry", B, K10, "Client retry, wait for Retry-After (repeat)",
                              "A repeat of the same setup, run again under another name."),
-    # --- pool retry ------------------------------------------------------------------
-    "apim_retry_equal": ("Pool retry", B, K10, "Pool retry, even split, no breaker",
-                         "Equal weights. The gateway retries the pool up to three times. With no breaker, the pool never shrinks."),
-    "optimal_equal_apim": ("Pool retry", B, K10, "Pool retry, even split, no breaker (repeat)",
+    "optimal_asym_client": ("Client retry", B, K10, "Breaker plus client Retry-After",
+                            "Skewed 90/5/5 weights and a breaker on 429 and 5xx, with the client sleeping for Retry-After."),
+    # --- breaker and weights (a gateway retry rule was set but never worked) ----------
+    "apim_retry_equal": ("Breaker and weights", B, K10, "Even split, no breaker",
+                         "Equal weights and no breaker. A gateway retry rule was set but never worked, so this is the control again."),
+    "optimal_equal_apim": ("Breaker and weights", B, K10, "Even split, no breaker (repeat)",
                            "A repeat of the same configuration, run again under another name."),
-    "apim_retry_cb": ("Pool retry", B, K10, "Pool retry and breaker (429 + 5xx), even split",
-                      "Equal weights, breaker on 429 and 5xx, and the gateway retries whichever regions are still in the pool."),
-    "apim_retry_asym": ("Pool retry", B, K10, "Pool retry and breaker (429 + 5xx), 90/5/5",
-                        "Skewed weights, breaker on 429 and 5xx, pool retry. UK South is expected to trip first."),
-    "optimal_asym_apim": ("Pool retry", B, K10, "Pool retry and breaker (429 + 5xx), 90/5/5 (repeat)",
+    "apim_retry_cb": ("Breaker and weights", B, K10, "Breaker on 429 and 5xx, even split (repeat)",
+                      "Equal weights and a breaker on 429 and 5xx: the same as the breaker-only run, run again. "
+                      "The gateway retry rule set here never worked."),
+    "apim_retry_asym": ("Breaker and weights", B, K10, "Breaker on 429 and 5xx, 90/5/5",
+                        "Skewed weights and a breaker on 429 and 5xx. UK South is expected to trip first."),
+    "optimal_asym_apim": ("Breaker and weights", B, K10, "Breaker on 429 and 5xx, 90/5/5 (repeat)",
                           "A repeat of the identical configuration, run again under another name. The two results differ."),
-    "asym_retry_no_cb": ("Pool retry", B, K10, "Pool retry, 90/5/5, no breaker",
-                         "Skewed weights and pool retry with the breaker off."),
-    "asym_retry_cb_5xx": ("Pool retry", B, K10, "Pool retry and breaker (5xx only), 90/5/5",
-                          "Skewed weights, breaker on 5xx only, pool retry. Running out of quota never trips the breaker."),
-    "weight_70_15_15": ("Pool retry", B, K10, "Pool retry and breaker, 70/15/15",
-                        "A gentler skew than 90/5/5, with the breaker on 429 and 5xx and pool retry."),
-    "weight_80_10_10": ("Pool retry", B, K10, "Pool retry and breaker, 80/10/10",
-                        "An in-between skew: the spare regions get 10% each, with breaker on 429 and 5xx and pool retry."),
-    "trip_count_1": ("Pool retry", B, K10, "Pool retry, breaker trips on first failure",
-                     "90/5/5 weights and pool retry, with the breaker tripping on the first failure instead of the third."),
-    # --- stacked ---------------------------------------------------------------------
-    "optimal_asym_client": ("Stacked retries", B, K10, "Breaker plus client Retry-After, no pool retry",
-                            "Skewed weights and breaker on 429 and 5xx, with the client sleeping for Retry-After instead of the gateway retrying."),
-    "optimal_combined": ("Stacked retries", B, K10, "Pool retry, breaker and client Retry-After, 90/5/5",
-                         "The gateway setup from the pool-retry group with a client Retry-After sleep as a backstop. "
-                         "The run ended in about 2.5 seconds, so the client sleep never fired."),
+    "asym_retry_no_cb": ("Breaker and weights", B, K10, "Skewed 90/5/5, no breaker",
+                         "Skewed weights with the breaker off."),
+    "asym_retry_cb_5xx": ("Breaker and weights", B, K10, "Breaker on 5xx only, 90/5/5",
+                          "Skewed weights, breaker on 5xx only. Running out of quota never trips the breaker."),
+    "weight_70_15_15": ("Breaker and weights", B, K10, "Breaker, 70/15/15",
+                        "A gentler skew than 90/5/5, with the breaker on 429 and 5xx."),
+    "weight_80_10_10": ("Breaker and weights", B, K10, "Breaker, 80/10/10",
+                        "An in-between skew: the spare regions get 10% each, with the breaker on 429 and 5xx."),
+    "trip_count_1": ("Breaker and weights", B, K10, "Breaker trips on first failure, 90/5/5",
+                     "90/5/5 weights, with the breaker tripping on the first failure instead of the third."),
     # --- quota to spare (60K burst) --------------------------------------------------
-    "apim_retry_equal_r2": ("Quota to spare", B, K60, "Pool retry, even split, no breaker",
-                            "The pool-retry setup from the 10,000 TPM group, with six times the quota. "
-                            "200 requests fit inside one minute's quota."),
-    "optimal_equal_apim_r2": ("Quota to spare", B, K60, "Pool retry, even split, no breaker (repeat)",
+    "apim_retry_equal_r2": ("Quota to spare", B, K60, "Even split, no breaker",
+                            "The even-split control with six times the quota. 200 requests fit inside one minute's quota. "
+                            "A gateway retry rule was set but never worked."),
+    "optimal_equal_apim_r2": ("Quota to spare", B, K60, "Even split, no breaker (repeat)",
                               "The same configuration again, run on its own later."),
-    "asym_retry_no_cb_r2": ("Quota to spare", B, K60, "Pool retry, 90/5/5, no breaker",
-                            "Skewed weights and pool retry with the breaker off, at 60,000 TPM."),
-    # --- sustained 60K ---------------------------------------------------------------
-    "sustained_baseline_r2": ("5-minute runs", S, K60, "Control: even split, no policies",
-                              "Five minutes of equal weights, no breaker, no retry."),
-    "sustained_apim_retry_60k": ("5-minute runs", S, K60, "Pool retry, even split, no breaker",
-                                 "Five minutes of equal weights, no breaker, and pool retry."),
-    "sustained_cb_only_r2": ("5-minute runs", S, K60, "Breaker only, even split",
-                             "Five minutes of equal weights and a breaker on 429 and 5xx, with no retry."),
-    "sustained_apim_asym_60k": ("5-minute runs", S, K60, "Pool retry and breaker (429 + 5xx), 90/5/5",
-                                "Five minutes of 90/5/5 weights, a breaker on 429 and 5xx, and pool retry."),
-    # --- one region saturated (raw runs, aggregated into arms below) -----------------
-    "car_baseline": ("Primary region short", P, K60, "calibration", ""),
-    "car_90_5_5": ("Primary region short", P, K60, "no_recovery", ""),
-    "car_90_5_5_r2": ("Primary region short", P, K60, "no_recovery", ""),
-    "car_90_5_5_r3": ("Primary region short", P, K60, "no_recovery", ""),
-    "car_cb5xx_90_5_5": ("Primary region short", P, K60, "cb5xx", ""),
-    "car_retry_90_5_5": ("Primary region short", P, K60, "retry_only", ""),
-    "car_retry_90_5_5_r2": ("Primary region short", P, K60, "retry_only", ""),
-    "car_retry_90_5_5_r3": ("Primary region short", P, K60, "retry_only", ""),
-    "car_retry_cb5xx_90_5_5": ("Primary region short", P, K60, "retry_cb5xx", ""),
-    "car_retry_cb429_90_5_5": ("Primary region short", P, K60, "retry_cb429", ""),
-    "car_retry_cb429_90_5_5_r2": ("Primary region short", P, K60, "retry_cb429", ""),
-    "car_retry_cb429_90_5_5_r3": ("Primary region short", P, K60, "retry_cb429", ""),
-    "car_retry_cb429_90_5_5_trip1": ("Primary region short", P, K60, "retry_cb429_trip1", ""),
-    "car_direct_spill": ("Primary region short", P, K60, "direct", ""),
-    "car_direct_spill_r2": ("Primary region short", P, K60, "direct", ""),
-    "car_direct_spill_r3": ("Primary region short", P, K60, "direct", ""),
+    "asym_retry_no_cb_r2": ("Quota to spare", B, K60, "Skewed 90/5/5, no breaker",
+                            "Skewed weights with the breaker off, at 60,000 TPM."),
 }
 
-# Arms of the one-region-saturated experiment (2 requests a second, 90/5/5 unless stated).
-ARMS: dict[str, tuple[str, str]] = {
-    "calibration": ("Calibration: even split at 1 request a second",
-                    "Equal weights at half the rate used for the other runs, with nothing wrong with any region. "
-                    "If this does not reach about 100%, the rate is too high for the test to mean anything."),
-    "no_recovery": ("No recovery: 90/5/5, nothing else",
-                    "UK South is offered about 108 requests a minute against a ceiling near 72. "
-                    "The other two regions are nearly idle."),
-    "cb5xx": ("Breaker on server errors only",
-              "The breaker ignores 429s, so running out of quota never trips it. No retry."),
-    "retry_only": ("Pool retry, no breaker",
-                   "The gateway retries a 429 up to three times against the pool. Nothing is ever taken out of the pool."),
-    "retry_cb5xx": ("Pool retry, breaker on server errors only",
-                    "Pool retry with a breaker that never fires under quota errors."),
-    "retry_cb429": ("Pool retry and breaker on 429, trips after three failures",
-                    "UK South trips after three 429s and leaves the pool for 60 seconds, so retries can only reach the other two regions."),
-    "retry_cb429_trip1": ("Pool retry and breaker on 429, trips after one failure",
-                          "The same as the three-failure setup, but UK South leaves the pool after its first 429."),
-    "direct": ("Direct: try UK South, then the next region",
-               "No gateway. The client sends every call to UK South first and moves on after a 429. "
-               "It needs credentials for all three regions."),
+# ---------------------------------------------------------------------------
+# Matched pairs at a steady rate (60,000 TPM per region, five minutes per run).
+# Each arm: id -> dict(tab, side, title, desc, stems | explicit)
+#   stems:    run ids look like <stem>_r1, <stem>_r2 ...
+#   explicit: complete run ids
+# side: "gateway" (tab colour edge) or "client" (grey edge, no gateway)
+# ---------------------------------------------------------------------------
+GREY = "#5c6b73"
+PRIMARY, FALLBACKS, EVERYWHERE, HEALTHY = ("Primary region short", "Fallbacks busy",
+                                           "Every region short (steady)", "Nothing wrong")
+
+MATCHED: dict[str, dict] = {
+    # ---- Primary region short: 2 requests a second, 90/5/5 -----------------------------
+    "a_reference": dict(tab=PRIMARY, side="gateway", explicit=["car_90_5_5", "car_90_5_5_r2", "car_90_5_5_r3"],
+        title="Gateway: 90/5/5, nothing else",
+        desc="No breaker and no retry. UK South is offered about 108 requests a minute against a ceiling near 72, "
+             "and the other two regions are nearly idle."),
+    "a_gw_cb5xx": dict(tab=PRIMARY, side="gateway", explicit=["car_cb5xx_90_5_5"],
+        title="Gateway: breaker on server errors only",
+        desc="The breaker ignores 429s, so running out of quota never removes UK South. No retry."),
+    "a_gw_retry": dict(tab=PRIMARY, side="gateway", stems=["p6a_apim_retry_no_cb"],
+        title="Gateway: retry only, no breaker",
+        desc="The gateway retries a refused call up to twice more, waiting one second each time. "
+             "Nothing is remembered, so each retry picks a region by weight again."),
+    "a_gw_retry0": dict(tab=PRIMARY, side="gateway", stems=["p6a_apim_retry_no_cb_int0"],
+        title="Gateway: retry only, no waiting",
+        desc="The same, with no pause between attempts."),
+    "a_gw_cb3": dict(tab=PRIMARY, side="gateway", stems=["p6a_apim_retry_cb"],
+        title="Gateway: retry and breaker (trips after 3 failures)",
+        desc="UK South leaves the pool for 60 seconds after three refusals, so retries can only reach the other two regions."),
+    "a_gw_cb1": dict(tab=PRIMARY, side="gateway", stems=["p6a_apim_retry_cb_trip1"],
+        title="Gateway: retry and breaker (trips after 1 failure)",
+        desc="The same, but UK South leaves the pool after its first refusal."),
+    "a_gw_priority": dict(tab=PRIMARY, side="gateway", stems=["p6a_apim_priority"],
+        title="Gateway: priority list",
+        desc="UK South is first choice and the others are used only when it is out of the pool. Breaker trips after one failure."),
+    "a_cl_weighted": dict(tab=PRIMARY, side="client", stems=["p5a_direct_weighted", "p6a_direct_weighted"],
+        title="Client: 90/5/5, retry, no memory",
+        desc="No gateway. The client picks a region by weight and retries up to twice more, picking again each time."),
+    "a_cl_weighted_mem": dict(tab=PRIMARY, side="client", stems=["p5a_direct_weighted_mem", "p6a_direct_weighted_mem"],
+        title="Client: 90/5/5, retry, 60 s cool-down",
+        desc="As above, but after a refusal that caller skips that region for 60 seconds."),
+    "a_cl_seq_mem": dict(tab=PRIMARY, side="client", stems=["p5a_direct_seq_mem", "p6a_direct_seq_mem"],
+        title="Client: UK South first, 60 s cool-down",
+        desc="The client tries UK South, then the next region, and skips a region for 60 seconds after a refusal."),
+    "a_cl_seq": dict(tab=PRIMARY, side="client", stems=["p5a_direct_seq"],
+        title="Client: UK South first, no memory",
+        desc="The client tries UK South, then the next region, with nothing remembered between requests."),
+    # ---- Fallbacks busy: 3 requests a second -------------------------------------------
+    "b_gw_cb3": dict(tab=FALLBACKS, side="gateway", stems=["p6b_apim_retry_cb"],
+        title="Gateway: retry and breaker (trips after 3 failures)",
+        desc="UK South leaves the pool for 60 seconds after three refusals."),
+    "b_gw_cb1": dict(tab=FALLBACKS, side="gateway", stems=["p6b_apim_retry_cb_trip1"],
+        title="Gateway: retry and breaker (trips after 1 failure)",
+        desc="UK South leaves the pool after its first refusal."),
+    "b_gw_priority": dict(tab=FALLBACKS, side="gateway", stems=["p6b_apim_priority"],
+        title="Gateway: priority list",
+        desc="UK South first, the others only when it is out of the pool. Breaker trips after one failure."),
+    "b_cl_seq": dict(tab=FALLBACKS, side="client", stems=["p5b_direct_seq"],
+        title="Client: UK South first, no memory",
+        desc="No gateway. Every request tries UK South first and moves on after a refusal."),
+    "b_cl_seq_mem": dict(tab=FALLBACKS, side="client", stems=["p5b_direct_seq_mem"],
+        title="Client: UK South first, 60 s cool-down",
+        desc="As above, but a region that refused is skipped for 60 seconds."),
+    "b_cl_weighted_mem": dict(tab=FALLBACKS, side="client", stems=["p5b_direct_weighted_mem"],
+        title="Client: 90/5/5, retry, 60 s cool-down",
+        desc="The client picks a region by weight, retries, and skips a region for 60 seconds after a refusal."),
+    # ---- Every region short: 6 requests a second ---------------------------------------
+    "d_gw_priority": dict(tab=EVERYWHERE, side="gateway", stems=["p6d_apim_priority"],
+        title="Gateway: priority list",
+        desc="UK South first, the others only when it is out of the pool. Breaker trips after one failure."),
+    "d_gw_cb1": dict(tab=EVERYWHERE, side="gateway", stems=["p6d_apim_retry_cb_trip1_eq"],
+        title="Gateway: retry and breaker (trips after 1 failure), even split",
+        desc="Equal weights, retry, and a breaker that trips after one failure."),
+    "d_cl_seq_mem": dict(tab=EVERYWHERE, side="client", stems=["p5d_direct_seq_mem"],
+        title="Client: UK South first, 60 s cool-down",
+        desc="No gateway. The client tries UK South, then the next region, and skips a region for 60 seconds after a refusal."),
+    "d_cl_weighted_mem": dict(tab=EVERYWHERE, side="client", stems=["p5d_direct_weighted_mem_eq"],
+        title="Client: even split, retry, 60 s cool-down",
+        desc="The client picks a region at random, retries, and skips a region for 60 seconds after a refusal."),
+    # ---- Nothing wrong: 1 request a second ---------------------------------------------
+    "c_cl": dict(tab=HEALTHY, side="client", stems=["p5c_direct_equal"],
+        title="Client: even split",
+        desc="No gateway and no failures: the client splits calls evenly across the three regions."),
+    "c_gw": dict(tab=HEALTHY, side="gateway", stems=["p5c_apim_baseline"],
+        title="Gateway: even split",
+        desc="The same traffic through the gateway with equal weights and no breaker. Nothing is refused, so no recovery is needed."),
 }
 
-# Tabs: (group name, slug, colour, note)
+# Which arm is pinned as the reference card in each matched tab (None = no pin).
+MATCHED_PIN = {PRIMARY: "a_reference", FALLBACKS: None, EVERYWHERE: None, HEALTHY: "c_cl"}
+
+# Azure Monitor counts from isolated single runs: arm -> run id in the region-count files.
+AZURE_MONITOR = {
+    "a_gw_retry": ("p6r_region_counts.json", "p6r_apim_retry_no_cb_r1"),
+    "a_gw_cb3": ("p6r_region_counts.json", "p6r_apim_retry_cb_r1"),
+    "a_gw_cb1": ("p6r_region_counts.json", "p6r_apim_retry_cb_trip1_r1"),
+    "a_gw_priority": ("p6r_region_counts.json", "p6r_apim_priority_r1"),
+    "a_cl_weighted_mem": ("p5r_region_counts.json", "p5r_direct_weighted_mem_r1"),
+}
+
+# Tabs: (group name, slug, colour, note). Matched-pair tabs first: they are the headline.
 TABS = [
+    (PRIMARY, "primary", "#9c6644",
+     "Steady 2 requests a second for five minutes at 60,000 TPM per region, with 90% of traffic aimed at UK South, "
+     "which can only serve about two thirds of that. Cards with a coloured edge go through the gateway; "
+     "grey-edged cards are a client calling the regions directly. Where a setup was repeated, the card shows "
+     "the middle result of its valid runs."),
+    (FALLBACKS, "fallbacks", "#bc4749",
+     "Steady 3 requests a second for five minutes at 60,000 TPM per region, with 90% aimed at UK South. "
+     "The two fallback regions must take about 108 requests a minute between them, three quarters of what they can serve. "
+     "Grey-edged cards are a client calling the regions directly."),
+    (EVERYWHERE, "everywhere", "#264653",
+     "Steady 6 requests a second for five minutes at 60,000 TPM per region, about 1.7 times what the three regions can serve "
+     "(3.6 a second). The best any setup can do is about 60%. Grey-edged cards are a client calling the regions directly."),
+    (HEALTHY, "healthy", "#6a994e",
+     "Steady 1 request a second for five minutes at 60,000 TPM per region, an even split and no failures. "
+     "This measures what the gateway costs when nothing is wrong. The grey-edged card is the reference."),
     ("No retry", "none", "#1f7a8c",
      "200-request bursts, 10,000 TPM per region. With no retry, nothing gets past about 17%. "
      "A breaker or a request cap on its own makes it worse, and the busiest run completes nothing."),
@@ -175,50 +244,48 @@ TABS = [
     ("Client retry", "client", "#e09f3e",
      "200-request bursts, 10,000 TPM per region. Short pauses do nothing useful. "
      "Only sleeping for the full Retry-After works, and it costs about 30 seconds a call."),
-    ("Pool retry", "pool", "#2a9d8f",
-     "200-request bursts, 10,000 TPM per region. Retrying inside the gateway lands at the same 16-18% plateau as everything else, "
-     "except where a breaker empties the pool. Identical configurations differ between runs."),
-    ("Stacked retries", "stacked", "#bc4749",
-     "200-request bursts, 10,000 TPM per region. A client Retry-After behind a breaker, with and without pool retry."),
+    ("Breaker and weights", "breaker", "#2a9d8f",
+     "200-request bursts, 10,000 TPM per region. A gateway retry rule was set in these runs but never worked (a bug I found later), "
+     "so read them as breaker and weights only. Nearly all land at the same 16-18%, "
+     "and two identical runs of one setup differ widely."),
     ("Quota to spare", "spare", "#8e7dbe",
      "200-request bursts, 60,000 TPM per region: six times the quota, so 200 requests fit inside one minute's allowance. "
+     "A gateway retry rule was set but never worked, so these are even-split and skewed controls. "
      "The control from the 10,000 TPM runs is pinned for contrast."),
-    ("5-minute runs", "sustained", "#264653",
-     "Five minutes of continuous load at 60,000 TPM per region. The quota ceiling is about 1,080 completions. "
-     "Ranked by completions, because success rate here mostly measures how fast the failures came back."),
-    ("Primary region short", "spill", "#9c6644",
-     "Constant 2 requests a second for five minutes at 60,000 TPM, with 90% of traffic aimed at UK South. "
-     "Where a setup was repeated the card shows the mean of the runs and every individual result."),
 ]
 
-REFERENCE = {  # tab group -> pinned item id and tag
-    "default": ("baseline", "Reference, 10,000 TPM"),
-    "5-minute runs": ("sustained_baseline_r2", "Reference"),
-    "Primary region short": ("no_recovery", "Reference"),
-}
+REFERENCE_BURST = ("baseline", "Reference, 10,000 TPM")
+REFERENCE_TAG = "Reference"
 
 
 # ---------------------------------------------------------------------------
 # Ingest
 # ---------------------------------------------------------------------------
+def _vals(m: dict, key: str) -> dict:
+    return m.get(key, {}).get("values", {})
+
+
 def summarise(run_id: str) -> dict:
     j = json.loads((RESULTS / f"{run_id}.json").read_text())
     m = j["metrics"]
     dur = j["state"]["testRunDurationMs"] / 1000
-    iters = int(m["iterations"]["values"]["count"])
+    iters = int(_vals(m, "original_iterations").get("count") or m["iterations"]["values"]["count"])
     checks = {c["name"]: c for c in j["root_group"].get("checks", [])}
     if "eventual_successes" in m:
         succ = int(m["eventual_successes"]["values"]["count"])
     else:
         succ = int(checks["http 200 ok"]["passes"])
-    calls = m.get("total_http_calls", {}).get("values", {}).get("count")
+    calls = _vals(m, "total_http_calls").get("count")
     if calls is None and run_id == "direct_sequential":
         calls = int(m["http_reqs"]["values"]["count"])
-    p50_all = m["http_req_duration"]["values"]["med"] if "med" in m["http_req_duration"]["values"] else m["http_req_duration"]["values"]["p(50)"]
-    ok = m.get("http_req_duration{expected_response:true}", {}).get("values", {})
+    d = _vals(m, "http_req_duration")
+    p50_all = d.get("med", d.get("p(50)"))
+    ok = _vals(m, "http_req_duration{expected_response:true}")
     p50_ok = ok.get("med", ok.get("p(50)"))
-    tts = m.get("time_to_success", {}).get("values", {})
+    tts = _vals(m, "time_to_success")
     tts50 = tts.get("med", tts.get("p(50)"))
+    tts95 = tts.get("p(95)")
+    dropped = int(_vals(m, "dropped_iterations").get("count", 0))
     return {
         "iterations": iters,
         "successes": succ,
@@ -230,29 +297,63 @@ def summarise(run_id: str) -> dict:
         "p50_ms": round(p50_all, 1),
         "p50_success_ms": round(p50_ok, 1) if p50_ok is not None else None,
         "tts_p50_ms": round(tts50, 1) if tts50 is not None else None,
+        "tts_p95_ms": round(tts95, 1) if tts95 is not None else None,
+        "dropped_iterations": dropped,
+        "valid": bool(dur <= MAX_VALID_SECONDS and dropped == 0),
         "fast_refusals": bool(p50_all < 20),
     }
+
+
+def run_ids_for(stem: str) -> list[str]:
+    pat = re.compile(re.escape(stem) + r"_r(\d+)")
+    found = [(int(pat.fullmatch(p.stem).group(1)), p.stem) for p in RESULTS.glob(f"{stem}_r*.json")
+             if pat.fullmatch(p.stem)]
+    return [rid for _, rid in sorted(found)]
+
+
+def azure_monitor_summary() -> dict:
+    out = {}
+    for arm, (fname, key) in AZURE_MONITOR.items():
+        rec = json.loads((RESULTS / fname).read_text())[key]
+        orig = rec["orig"]
+        calls = sum(rec["calls"].values())
+        out[arm] = {
+            "run_id": key,
+            "requests": orig,
+            "model_calls": calls,
+            "calls_per_request": round(calls / orig, 2),
+            "refused": sum(rec["t429"].values()),
+            "by_region": rec["calls"],
+        }
+    return out
 
 
 def ingest(path: Path) -> dict:
     old = json.loads(path.read_text()) if path.exists() else {}
     runs = []
     for run_id, (group, regime, quota, label, description) in RUNS.items():
-        rec = {"run_id": run_id, "group": group, "regime": regime, "quota_tpm": quota}
+        rec = {"run_id": run_id, "group": group, "regime": regime, "quota_tpm": quota,
+               "label": label, "description": description}
         rec.update(summarise(run_id))
-        if regime != P:
-            rec["label"], rec["description"] = label, description
-        else:
-            rec["arm"] = label
         runs.append(rec)
+    for arm_id, arm in MATCHED.items():
+        ids = arm.get("explicit") or [rid for stem in arm["stems"] for rid in run_ids_for(stem)]
+        for rid in ids:
+            rec = {"run_id": rid, "group": arm["tab"], "regime": "matched", "arm": arm_id,
+                   "side": arm["side"], "quota_tpm": K60}
+            rec.update(summarise(rid))
+            runs.append(rec)
     return {
         "metrics": {
             "success_rate": "Eventual HTTP 200s with a valid body / original requests x 100",
             "throughput": "Original requests / wall-clock seconds",
             "goodput": "Successful completions / wall-clock seconds (= throughput x success rate)",
+            "tts": "Time to success: first attempt to final valid answer, including retries and pauses",
         },
+        "validity_rule": f"A matched-pair run is discarded if k6 ran for more than {MAX_VALID_SECONDS} s "
+                         "(the laptop slept) or dropped iterations.",
         "source": old.get("source", "https://github.com/r-leyshon/azure-load-balance-perf"),
-        "sustained_ceiling_completions": SUSTAINED_CEILING,
+        "azure_monitor": azure_monitor_summary(),
         "runs": runs,
     }
 
@@ -313,46 +414,61 @@ def burst_card(r: dict, maxima: dict, colour: str, tag: str = "") -> str:
     return card(r["label"], r["run_id"], r["description"], bars, meta, colour, tag, r["fast_refusals"])
 
 
-def sustained_card(r: dict, ceiling: int, colour: str, tag: str = "") -> str:
-    of_ceiling = r["successes"] / ceiling * 100
-    meta = [
-        f'<b>{r["successes"]:,}</b> completions in {r["duration_s"]:.0f} s from {r["iterations"]:,} requests tried '
-        f'&middot; median call {r["p50_ms"]:.0f} ms'
-    ]
-    bars = [
-        bar("Of ceiling", of_ceiling, f"{of_ceiling:.1f}%"),
-        bar("Goodput", r["goodput_rps"] / (ceiling / 300) * 100, f'{r["goodput_rps"]:.2f}/s'),
-    ]
-    return card(r["label"], r["run_id"], r["description"], bars, meta, colour, tag, r["fast_refusals"])
+def compact_ids(ids: list[str]) -> str:
+    """Group run ids by stem: 'p6a_apim_retry_cb (r1, r3, r4)'. A stem with an unnumbered id lists full ids."""
+    groups: dict[str, list[str]] = {}
+    for rid in ids:
+        m = re.fullmatch(r"(.*)_r(\d+)", rid)
+        stem = m.group(1) if m else rid
+        groups.setdefault(stem, []).append(rid)
+    parts = []
+    for stem, members in groups.items():
+        if any(rid == stem for rid in members):
+            parts.append(", ".join(members))
+        else:
+            ns = [rid[len(stem) + 1:] for rid in members]
+            parts.append(f"{stem} ({', '.join(ns)})")
+    return ", ".join(parts)
 
 
-def arm_summary(arm_id: str, runs: list[dict]) -> dict:
-    mine = sorted((r for r in runs if r["arm"] == arm_id), key=lambda r: r["run_id"])
-    rates = [r["success_rate_pct"] for r in mine]
-    calls = [r["calls"] / r["iterations"] for r in mine if r["calls"]]
-    ok = [r["p50_success_ms"] for r in mine if r["p50_success_ms"]]
+def arm_summary(arm_id: str, runs: list[dict], monitor: dict) -> dict:
+    mine = [r for r in runs if r.get("arm") == arm_id]
+    good = sorted((r for r in mine if r["valid"]), key=lambda r: r["run_id"])
+    rates = [r["success_rate_pct"] for r in good]
+    calls = [r["calls"] / r["iterations"] for r in good if r["calls"]]
+    p50 = [r["tts_p50_ms"] for r in good if r["tts_p50_ms"]]
+    p95 = [r["tts_p95_ms"] for r in good if r["tts_p95_ms"]]
     return {
         "arm_id": arm_id,
-        "run_ids": [r["run_id"] for r in mine],
-        "rates": rates,
-        "mean": statistics.mean(rates),
-        "n": len(mine),
-        "calls_per_request": (min(calls), max(calls)) if calls else None,
-        "p50_success_ms": statistics.mean(ok),
+        "run_ids": [r["run_id"] for r in good],
+        "rates": sorted(rates, reverse=True),
+        "median": statistics.median(rates),
+        "n": len(good),
+        "excluded": len(mine) - len(good),
+        "calls_per_request": statistics.median(calls) if calls else None,
+        "p50": statistics.median(p50) if p50 else None,
+        "p95": statistics.median(p95) if p95 else None,
+        "monitor": monitor.get(arm_id),
     }
 
 
-def arm_card(s: dict, colour: str, tag: str = "") -> str:
-    title, description = ARMS[s["arm_id"]]
+def matched_card(s: dict, tab_colour: str, tag: str = "") -> str:
+    arm = MATCHED[s["arm_id"]]
+    colour = GREY if arm["side"] == "client" else tab_colour
     rates = ", ".join(f"{x:.1f}%" for x in s["rates"])
-    meta = [f'{str(s["n"]) + " runs" if s["n"] > 1 else "One run"}: {rates}',
-            f'Median successful call {s["p50_success_ms"]:.0f} ms']
-    if s["calls_per_request"] and s["arm_id"] == "direct":
-        lo, hi = s["calls_per_request"]
-        meta.append(f"{lo - 1:.2f} to {hi - 1:.2f} extra calls per request, because the first try at UK South is refused")
-    bars = [bar("Success", s["mean"], f'{s["mean"]:.1f}%')]
-    ids = ", ".join(s["run_ids"])
-    return card(title, ids, description, bars, meta, colour, tag)
+    meta = [f'{str(s["n"]) + " runs" if s["n"] > 1 else "One run"}: {rates}']
+    if s["p50"] and s["p95"]:
+        meta.append(f'Typical answer {s["p50"]:.0f} ms &middot; slowest 1 in 20 took {s["p95"]:,.0f} ms or more')
+    mon = s["monitor"]
+    if mon:
+        meta.append(f'Azure Monitor, one isolated run: {mon["calls_per_request"]:.2f} model calls per request, '
+                    f'{mon["refused"]} of them refused')
+    elif arm["side"] == "client" and s["calls_per_request"]:
+        meta.append(f'{s["calls_per_request"]:.2f} model calls per request')
+    if s["excluded"]:
+        meta.append(f'{s["excluded"]} more run{"s" if s["excluded"] > 1 else ""} discarded (laptop slept)')
+    bars = [bar("Success", s["median"], f'{s["median"]:.1f}%')]
+    return card(arm["title"], compact_ids(s["run_ids"]), arm["desc"], bars, meta, colour, tag)
 
 
 def grid(note: str, cards: list[str]) -> str:
@@ -372,7 +488,8 @@ def main() -> None:
     path.write_text(json.dumps(data, indent=2, ensure_ascii=True) + "\n")
 
     runs = data["runs"]
-    by_id = {r["run_id"]: r for r in runs}
+    monitor = data.get("azure_monitor", {})
+    by_id = {r["run_id"]: r for r in runs if r["regime"] == B}
     colours = {name: colour for name, _, colour, _ in TABS}
 
     burst = [r for r in runs if r["regime"] == B]
@@ -380,34 +497,34 @@ def main() -> None:
         "throughput": max(r["throughput_rps"] for r in burst),
         "goodput": max(r["goodput_rps"] for r in burst),
     }
-    arms = {a: arm_summary(a, [r for r in runs if r["regime"] == P]) for a in ARMS}
+    arms = {a: arm_summary(a, [r for r in runs if r["regime"] == "matched"], monitor) for a in MATCHED}
 
     for name, slug, colour, note in TABS:
-        members = [r for r in runs if r["group"] == name]
-        pin_id, pin_tag = REFERENCE.get(name, REFERENCE["default"])
         cards: list[str] = []
-        if name == "Primary region short":
-            ordered = sorted(arms.values(), key=lambda s: -s["mean"])
-            cards.append(arm_card(arms[pin_id], colour, pin_tag))
-            cards += [arm_card(s, colour) for s in ordered if s["arm_id"] != pin_id]
-        elif name == "5-minute runs":
-            ordered = sorted(members, key=lambda r: -r["successes"])
-            cards.append(sustained_card(by_id[pin_id], SUSTAINED_CEILING, colour, pin_tag))
-            cards += [sustained_card(r, SUSTAINED_CEILING, colour) for r in ordered if r["run_id"] != pin_id]
+        if any(a["tab"] == name for a in MATCHED.values()):
+            members = [s for a, s in arms.items() if MATCHED[a]["tab"] == name]
+            pin = MATCHED_PIN.get(name)
+            ordered = sorted(members, key=lambda s: (-s["median"], s["p95"] or 1e9))
+            if pin:
+                cards.append(matched_card(arms[pin], colour, REFERENCE_TAG))
+            cards += [matched_card(s, colour) for s in ordered if s["arm_id"] != pin]
         else:
+            members = [r for r in burst if r["group"] == name]
+            pin_id, pin_tag = REFERENCE_BURST
             ordered = sorted(members, key=sort_key)
             in_group = any(r["run_id"] == pin_id for r in members)
             cards.append(burst_card(by_id[pin_id], maxima, colours[by_id[pin_id]["group"]], pin_tag))
             cards += [burst_card(r, maxima, colour) for r in ordered if not (in_group and r["run_id"] == pin_id)]
         (INC / f"24-runs-{slug}.html").write_text(grid(note, cards))
 
-    # Remove include files from the previous design.
-    stale = INC / "24-runs-all.html"
-    if stale.exists():
-        stale.unlink()
+    # Remove include files from previous designs.
+    live = {f"24-runs-{slug}.html" for _, slug, _, _ in TABS}
+    for f in INC.glob("24-runs-*.html"):
+        if f.name not in live:
+            f.unlink()
 
-    # Chart data: bursts only (sustained and arrival-rate runs are not comparable on goodput).
-    chart = {**{k: v for k, v in data.items() if k != "runs"}, "runs": [
+    # Chart data: bursts only (steady-rate runs are not comparable on goodput).
+    chart = {**{k: v for k, v in data.items() if k not in ("runs", "azure_monitor")}, "runs": [
         {k: r[k] for k in ("run_id", "group", "quota_tpm", "iterations", "successes", "success_rate_pct",
                            "duration_s", "throughput_rps", "goodput_rps", "label", "description", "fast_refusals")}
         for r in sorted(burst, key=lambda r: -r["success_rate_pct"])
@@ -425,8 +542,9 @@ def main() -> None:
         raise SystemExit("could not find the DATA block in scatter.html")
     scatter.write_text(new_text)
 
-    for s in sorted(arms.values(), key=lambda s: -s["mean"]):
-        print(f'arm {s["arm_id"]:18s} mean {s["mean"]:.1f}  {s["rates"]}')
+    for s in sorted(arms.values(), key=lambda s: (MATCHED[s["arm_id"]]["tab"], -s["median"])):
+        print(f'{MATCHED[s["arm_id"]]["tab"][:18]:18s} {s["arm_id"]:18s} n={s["n"]} excl={s["excluded"]} '
+              f'median {s["median"]:.1f}  p50 {s["p50"]} p95 {s["p95"]}  {s["rates"]}')
     print(f"{len(runs)} runs ({len(burst)} burst); wrote runs.json, scatter.html and {len(TABS)} include files")
 
 

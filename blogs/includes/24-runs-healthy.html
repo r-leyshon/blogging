@@ -1,0 +1,17 @@
+<p class="tab-note">Steady 1 request a second for five minutes at 60,000 TPM per region, an even split and no failures. This measures what the gateway costs when nothing is wrong. The grey-edged card is the reference.</p>
+<div class="exp-grid">
+<article class="exp-card exp-ref" style="--edge:#5c6b73">
+<h4>Client: even split<span class="ref-tag">Reference</span></h4>
+<code class="run-id">p5c_direct_equal (r1, r2, r3)</code>
+<p>No gateway and no failures: the client splits calls evenly across the three regions.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Typical answer 396 ms &middot; slowest 1 in 20 took 593 ms or more</p><p class="meta">1.00 model calls per request</p>
+</article>
+<article class="exp-card" style="--edge:#6a994e">
+<h4>Gateway: even split</h4>
+<code class="run-id">p5c_apim_baseline (r1, r2, r3)</code>
+<p>The same traffic through the gateway with equal weights and no breaker. Nothing is refused, so no recovery is needed.</p>
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Typical answer 372 ms &middot; slowest 1 in 20 took 710 ms or more</p>
+</article>
+</div>
