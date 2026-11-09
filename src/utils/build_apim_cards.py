@@ -245,7 +245,7 @@ TABS = [
      "200-request bursts, 10,000 TPM per region. Short pauses do nothing useful. "
      "Only sleeping for the full Retry-After works, and it costs about 30 seconds a call."),
     ("Breaker and weights", "breaker", "#2a9d8f",
-     "200-request bursts, 10,000 TPM per region. A gateway retry rule was set in these runs but never worked (a bug I found later), "
+     "200-request bursts, 10,000 TPM per region. A gateway retry rule was set in these runs but never worked (a bug found later), "
      "so read them as breaker and weights only. Nearly all land at the same 16-18%, "
      "and two identical runs of one setup differ widely."),
     ("Quota to spare", "spare", "#8e7dbe",
@@ -446,13 +446,15 @@ def arm_summary(arm_id: str, runs: list[dict], monitor: dict) -> dict:
         "n": len(good),
         "excluded": len(mine) - len(good),
         "calls_per_request": statistics.median(calls) if calls else None,
+        "throughput": statistics.median(r["throughput_rps"] for r in good),
+        "goodput": statistics.median(r["goodput_rps"] for r in good),
         "p50": statistics.median(p50) if p50 else None,
         "p95": statistics.median(p95) if p95 else None,
         "monitor": monitor.get(arm_id),
     }
 
 
-def matched_card(s: dict, tab_colour: str, tag: str = "") -> str:
+def matched_card(s: dict, tab_colour: str, maxima: dict, tag: str = "") -> str:
     arm = MATCHED[s["arm_id"]]
     colour = GREY if arm["side"] == "client" else tab_colour
     rates = ", ".join(f"{x:.1f}%" for x in s["rates"])
@@ -467,7 +469,11 @@ def matched_card(s: dict, tab_colour: str, tag: str = "") -> str:
         meta.append(f'{s["calls_per_request"]:.2f} model calls per request')
     if s["excluded"]:
         meta.append(f'{s["excluded"]} more run{"s" if s["excluded"] > 1 else ""} discarded (laptop slept)')
-    bars = [bar("Success", s["median"], f'{s["median"]:.1f}%')]
+    bars = [
+        bar("Success", s["median"], f'{s["median"]:.1f}%'),
+        bar("Throughput", s["throughput"] / maxima["throughput"] * 100, f'{fmt_rate(s["throughput"])}/s'),
+        bar("Goodput", s["goodput"] / maxima["goodput"] * 100, f'{fmt_rate(s["goodput"])}/s'),
+    ]
     return card(arm["title"], compact_ids(s["run_ids"]), arm["desc"], bars, meta, colour, tag)
 
 
@@ -505,9 +511,11 @@ def main() -> None:
             members = [s for a, s in arms.items() if MATCHED[a]["tab"] == name]
             pin = MATCHED_PIN.get(name)
             ordered = sorted(members, key=lambda s: (-s["median"], s["p95"] or 1e9))
+            tab_max = {"throughput": max(s["throughput"] for s in members),
+                       "goodput": max(s["goodput"] for s in members)}
             if pin:
-                cards.append(matched_card(arms[pin], colour, REFERENCE_TAG))
-            cards += [matched_card(s, colour) for s in ordered if s["arm_id"] != pin]
+                cards.append(matched_card(arms[pin], colour, tab_max, REFERENCE_TAG))
+            cards += [matched_card(s, colour, tab_max) for s in ordered if s["arm_id"] != pin]
         else:
             members = [r for r in burst if r["group"] == name]
             pin_id, pin_tag = REFERENCE_BURST

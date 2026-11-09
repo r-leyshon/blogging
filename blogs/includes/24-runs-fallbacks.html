@@ -5,6 +5,8 @@
 <code class="run-id">p5b_direct_weighted_mem (r1, r2, r3)</code>
 <p>The client picks a region by weight, retries, and skips a region for 60 seconds after a refusal.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
 <p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Typical answer 340 ms &middot; slowest 1 in 20 took 563 ms or more</p><p class="meta">1.09 model calls per request</p>
 </article>
 <article class="exp-card" style="--edge:#5c6b73">
@@ -12,6 +14,8 @@
 <code class="run-id">p5b_direct_seq_mem (r1, r2, r3)</code>
 <p>As above, but a region that refused is skipped for 60 seconds.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
 <p class="meta">3 runs: 100.0%, 100.0%, 99.9%</p><p class="meta">Typical answer 350 ms &middot; slowest 1 in 20 took 706 ms or more</p><p class="meta">1.14 model calls per request</p>
 </article>
 <article class="exp-card" style="--edge:#5c6b73">
@@ -19,6 +23,8 @@
 <code class="run-id">p5b_direct_seq (r1, r2, r3)</code>
 <p>No gateway. Every request tries UK South first and moves on after a refusal.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">3.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">3.00/s</span></div>
 <p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Typical answer 478 ms &middot; slowest 1 in 20 took 830 ms or more</p><p class="meta">1.83 model calls per request</p>
 </article>
 <article class="exp-card" style="--edge:#bc4749">
@@ -26,6 +32,8 @@
 <code class="run-id">p6b_apim_priority (r1, r3)</code>
 <p>UK South first, the others only when it is out of the pool. Breaker trips after one failure.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
 <p class="meta">2 runs: 100.0%, 100.0%</p><p class="meta">Typical answer 350 ms &middot; slowest 1 in 20 took 842 ms or more</p><p class="meta">1 more run discarded (laptop slept)</p>
 </article>
 <article class="exp-card" style="--edge:#bc4749">
@@ -33,6 +41,8 @@
 <code class="run-id">p6b_apim_retry_cb_trip1 (r1, r2, r3)</code>
 <p>UK South leaves the pool after its first refusal.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
 <p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Typical answer 354 ms &middot; slowest 1 in 20 took 872 ms or more</p>
 </article>
 <article class="exp-card" style="--edge:#bc4749">
@@ -40,6 +50,8 @@
 <code class="run-id">p6b_apim_retry_cb (r1, r2, r3)</code>
 <p>UK South leaves the pool for 60 seconds after three refusals.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.00/s</span></div>
 <p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Typical answer 368 ms &middot; slowest 1 in 20 took 1,104 ms or more</p>
 </article>
 </div>

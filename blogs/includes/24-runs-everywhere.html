@@ -5,6 +5,8 @@
 <code class="run-id">p5d_direct_weighted_mem_eq (r1, r2, r3)</code>
 <p>The client picks a region at random, retries, and skips a region for 60 seconds after a refusal.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:59.9"></i></span><span class="v">59.9%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.8"></i></span><span class="v">5.99/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">3.59/s</span></div>
 <p class="meta">3 runs: 60.0%, 59.9%, 59.8%</p><p class="meta">Typical answer 452 ms &middot; slowest 1 in 20 took 786 ms or more</p><p class="meta">2.21 model calls per request</p>
 </article>
 <article class="exp-card" style="--edge:#5c6b73">
@@ -12,6 +14,8 @@
 <code class="run-id">p5d_direct_seq_mem (r1, r2, r3)</code>
 <p>No gateway. The client tries UK South, then the next region, and skips a region for 60 seconds after a refusal.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:57.5"></i></span><span class="v">57.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">6.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:96.1"></i></span><span class="v">3.45/s</span></div>
 <p class="meta">3 runs: 57.7%, 57.5%, 57.2%</p><p class="meta">Typical answer 365 ms &middot; slowest 1 in 20 took 706 ms or more</p><p class="meta">0.75 model calls per request</p>
 </article>
 <article class="exp-card" style="--edge:#264653">
@@ -19,6 +23,8 @@
 <code class="run-id">p6d_apim_priority (r1, r2, r3)</code>
 <p>UK South first, the others only when it is out of the pool. Breaker trips after one failure.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:56.7"></i></span><span class="v">56.7%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">6.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:94.7"></i></span><span class="v">3.40/s</span></div>
 <p class="meta">3 runs: 57.1%, 56.7%, 55.9%</p><p class="meta">Typical answer 359 ms &middot; slowest 1 in 20 took 922 ms or more</p>
 </article>
 <article class="exp-card" style="--edge:#264653">
@@ -26,6 +32,8 @@
 <code class="run-id">p6d_apim_retry_cb_trip1_eq (r2, r3)</code>
 <p>Equal weights, retry, and a breaker that trips after one failure.</p>
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:56.0"></i></span><span class="v">56.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">6.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:93.7"></i></span><span class="v">3.36/s</span></div>
 <p class="meta">2 runs: 57.1%, 54.9%</p><p class="meta">Typical answer 350 ms &middot; slowest 1 in 20 took 858 ms or more</p><p class="meta">1 more run discarded (laptop slept)</p>
 </article>
 </div>

@@ -1,9 +1,9 @@
 ---
 title: "Will an API Gateway Optimise Token Consumption at Scale?"
-subtitle: "Azure APIM load balancing across three AI Foundry regions, tested when quota runs out"
+subtitle: "Azure API Management in front of three AI model regions, tested when quota runs out"
 author: "Rich Leyshon"
 date: "November 2 2026"
-description: "An explanation of what an API gateway can and cannot do when AI model quota runs out. It works if it remembers failures, but a well-built client does just as well."
+description: "Is an API gateway better than client-side retry and failover when AI model quota runs out? The tests say no, and show what to build instead."
 categories:
     - Explanation
     - Azure
@@ -108,124 +108,34 @@ resources:
 ```
 
 
-*For engineers whose services already retry and fail over between AI model regions in the client code, and who are asking whether a gateway is worth standing up. No Azure experience is assumed.*
+*For engineers who already retry and fail over between AI model regions in client code, and wonder if a gateway is worth it. No Azure experience needed.*
 
 ::: {.callout-note appearance="simple"}
 ### The short answer
 
-If your client already retries and fails over between regions, **a gateway will not make your calls succeed more often, or answer faster.** In my tests it matched a well-built client and never beat it.
+**A gateway did not beat a well-built client.** Nothing in the tests showed APIM doing better. Success rates matched. Its slowest answers were slower.
 
-What decided success was one habit: **remembering which region has just refused, and leaving it alone for a minute.** It did not matter whether that memory lived in the gateway or in a few lines of client code. So the most useful thing to check first is probably not APIM at all. It is whether your client has that memory.
+**What mattered was a sin bin.** When a region refuses a call, it sits out for the next minute. Setups with a sin bin answered every request when one region ran short. Setups that only retried answered 77-79%. The sin bin can live in the gateway or in the client. It works in both.
 
-Here is the evidence, in three situations. The measure is **success rate**: the share of requests that eventually got a valid answer.
+**When every region is out of quota, nothing helps.** Only more quota, or waiting, does.
 
-- **Quota is short everywhere:** nothing helps, gateway or not. In 200-request bursts, nearly every setup answered about 17% of requests. A circuit breaker (a rule that stops sending traffic to a region after it has failed repeatedly) made things worse on an even split, at 4.5%. Only a caller that waited as long as Azure asked, using the `Retry-After` header, got nearly everything through (99.5%), at about 30 seconds a request.
-- **Quota is short in the main region only:** retrying on its own lifted success from 70% to 77-79%, because most retries went straight back to the region that had just said no. Adding the memory took every setup I tried to 100%: a circuit breaker or priority list in the gateway, or a cool-down timer in the client.
-- **Gateway against client:** the same success rate in every test. The gateway's slowest answers were 100 to 400 milliseconds slower. Before testing, I wrote down what would count as the gateway winning (more than 2 points better success, or slowest answers more than 50 ms faster). That never happened.
+**What to build:**
 
-If you do stand up a gateway, do it for what it gives you operationally: one endpoint for callers, model credentials in one place, and rules and monitoring that you change once. I did not test those benefits. The section [Should you stand up APIM?](#should-you-stand-up-apim) sets out how I would weigh them.
+1. **Add a sin bin.** If you stay client-side, give the client a 60-second timeout for any region that returns a 429.
+2. **If you run a gateway,** use a priority list and a circuit breaker that counts 429s and trips on the first failure.
+3. **Buy quota before you tune routing.**
+4. **Pick a gateway for operations, not speed.** One set of credentials, one place for rules and monitoring. Those benefits were not tested.
 :::
 
 ## The problem
 
-Large language models (LLMs) are rationed. In Azure AI Foundry, Microsoft's service for hosting models, each *deployment* (one running copy of a model in one data-centre region) has a quota, counted per minute. When it is used up, the service does not slow down. It refuses the call with HTTP status 429 ("Too Many Requests") and usually says how long to wait.
+AI model services ration access. Each model deployment has a quota, counted per minute. When it runs out, the service refuses the call with HTTP status 429 ("Too Many Requests").
 
-Most teams start the same way. They deploy the same model in several regions and write the fallback into the client, the code that makes the calls: try the first region, and move on to the next after a 429. It works, and it is cheap. Then someone asks whether a **gateway** would do it better. A gateway is a server that sits between your callers and the models and applies rules to every call. Azure API Management (APIM) is Microsoft's.
+The usual fix is to deploy the same model in several regions and fall back between them. Most teams write that logic into the client, the code that makes the calls. The alternative is a **gateway**: a server between your callers and the models that applies rules to every call. Azure API Management (APIM) is Microsoft's gateway service.
 
-A gateway sounds like the grown-up option. It is also one more service to pay for, run and debug, so the question is whether it earns its place. I put an APIM gateway in front of three Foundry deployments and set the quotas low enough to run out on demand. For the part that matters most, I built a client that behaves like the gateway, gave both the same traffic and the same quota, and compared them.
+A gateway is one more service to pay for, run and debug. Is it worth it? This article tests that.
 
-## Just enough APIM
-
-You need ten ideas to follow every experiment.
-
-| Term | What it means here |
-|---|---|
-| **Region and deployment** | Azure runs in data centres around the world, grouped into regions: UK South, West Europe and Sweden Central here. A *deployment* is one running copy of a model in one region, with its own allowance. |
-| **Quota** | The allowance for a deployment, counted per minute. It has two parts: tokens per minute (TPM, where a token is a chunk of text the model reads or writes) and requests per minute. Run past either and calls are refused. |
-| **429, 503 and `Retry-After`** | A 429 means "out of quota, try later". The reply usually carries a `Retry-After` header, a note saying how many seconds to wait. A 5xx status (500 to 599) means the service itself failed; 503 means "unavailable". |
-| **Gateway** | APIM, a proxy that every caller talks to. It applies *policies*, which are rules written in XML, to each request as it passes through. |
-| **Backend pool** | A [group of endpoints behind one name](https://learn.microsoft.com/en-us/azure/api-management/backends). Here, the three regions. The gateway picks one for each call. |
-| **Weights** | The share of traffic each pool member gets. **90/5/5** means 90% to UK South and 5% each to the others. **Even** means 33/33/34. |
-| **Priority** | A pool can rank its members. Lower-ranked members only receive traffic when every higher-ranked member has been taken out of the pool. |
-| **Circuit breaker** | Like a fuse. After a set number of failures, a backend is taken out of the pool for a while (60 seconds here), which is called *tripping*. You choose which statuses count as failures: 429 and 5xx, or 5xx only. The state is held in the gateway's memory and shared by every caller. |
-| **Retry** | Trying a failed call again. In the *client* the caller retries. In the *gateway* [the retry policy](https://learn.microsoft.com/en-us/azure/api-management/retry-policy) asks the pool again before the caller sees a failure. |
-| **Failure memory** | My term, not an APIM feature name. It means remembering that a region has just refused and skipping it for a while. In a gateway, a circuit breaker or a priority list does this. In a client, a cool-down timer does. |
-
-Three names for test shapes also recur. A **burst** is a short run of 200 requests fired as fast as 20 simulated callers can send them. A **steady-rate** run sends a fixed number of requests every second for five minutes, whether or not earlier ones have been answered. A **control** is a run with an even split and no policies, to compare against. Some runs skip the gateway and call the regions **directly** from the client.
-
-### The levers
-
-Five settings changed between runs.
-
-| Lever | What it changes | What I saw |
-|---|---|---|
-| **Pool weights** | How often each region is chosen | Changes who runs out first, not the total quota. In bursts it did not change how many calls completed |
-| **Circuit breaker** | Drops a backend for 60 seconds after N failures | The failure memory that fixed the one-region-short case. With every region short in a burst, it emptied the pool and **cut** success. A breaker that counts only 5xx never fired under quota errors |
-| **Priority list** | Uses fallback regions only when the primary is out of the pool | Matched the breaker, and is the simplest gateway setup for one primary and several fallbacks |
-| **Retry** | Where and how often a refused call is tried again | On its own, most retries returned to the region that had just refused. Worth having only alongside failure memory. A pause between attempts adds waiting |
-| **Gateway request cap** | Rejects calls at the gateway once a subscriber exceeds N a minute ([`rate-limit-by-key`](https://learn.microsoft.com/en-us/azure/api-management/rate-limit-by-key-policy)) | Set below real demand, it refused work that would have succeeded |
-
-## Measuring the outcome
-
-Four numbers describe each run.
-
-| Metric | Definition | The question it answers |
-|---|---|---|
-| **Success rate** | Requests that eventually got a valid answer ÷ original requests | Did the caller get an answer? |
-| **Throughput** | Original requests ÷ elapsed seconds | How quickly are requests being dealt with? |
-| **Goodput** | Answered requests ÷ elapsed seconds (throughput × success rate) | How much useful work landed per second? |
-| **Time to answer** | From the first attempt to the final valid answer, including retries and pauses | How long did the caller wait? |
-
-"Eventual" and "original" matter because of retries. A call that fails, is retried and then succeeds counts once, as a success. Retries are not counted as extra requests, so a retry storm cannot make a run look faster. For time to answer, I quote the **typical** answer (the middle one) and the **slowest 1 in 20**, which shows what the unlucky callers see.
-
-A worked example: 100 requests, 90 of them end in a 200 (some after retries), and the whole test takes 10 seconds. Success rate is 90%, throughput is 10 a second, and goodput is 9 a second.
-
-Goodput is useful because the other two can each be gamed. A gateway that refuses every call instantly has excellent throughput and no goodput. A client that sleeps for 30 seconds per call has near-perfect success rate and almost no throughput. In a burst, the number of answered requests is capped by the quota, so goodput mostly reflects how quickly the run ended. Compare runs only within a group that shares a quota and a load shape. Cards in the tabs below say which group they belong to.
-
-## How the tests ran
-
-The tests came in two stages. First, short **bursts** at a low quota (10,000 TPM per region), to see what each setting does when regions run dry. Later, **matched pairs** at a steady rate and 60,000 TPM per region, built to compare the gateway fairly with a client. The matched pairs carry the main conclusions.
-
-| Parameter | Value |
-|---|---|
-| Gateway | APIM Developer tier, UK South |
-| Backends | 3 × Azure AI Foundry: UK South, West Europe, Sweden Central |
-| Model | `gpt-4.1-mini`, `max_tokens: 5`, one fixed prompt |
-| Quota | 10,000 TPM per region for the bursts, 60,000 TPM per region for everything else |
-| Load generator | [Grafana k6](https://k6.io) on my laptop |
-| Burst run | 200 requests (300 for one run), 20 virtual users (concurrent simulated callers) |
-| Steady-rate run | 1, 2, 3 or 6 requests a second for 5 minutes |
-| Between runs | A 60-second wait, so a tripped breaker from the previous run has reset, and 2 minutes after any policy change |
-| Success | An HTTP 200 whose body contains a valid answer |
-
-The Terraform, the k6 scripts and the results are in
-<a href="https://github.com/r-leyshon/azure-load-balance-perf" target="_blank" rel="noopener noreferrer">r-leyshon/azure-load-balance-perf</a>.
-
-### Which limit did the tests hit?
-
-Each deployment has two limits: 60,000 tokens a minute and **60 requests a minute**. My calls are tiny (about 5 tokens back), so the request limit ran out first, long before the token limit. That is about one request a minute for every 1,000 TPM, far lower than the six per 1,000 you may have seen quoted. I measured the real ceiling at about 72 requests a minute per region at 60,000 TPM, roughly 20% above the configured 60. I cannot explain the extra 20%. At 10,000 TPM I measured about 12 a minute.
-
-I use "quota" below to mean "whichever limit the deployment enforced". With larger prompts, the token limit would bind first.
-
-### Making the comparison fair
-
-For the gateway-against-client question, each gateway setup got a client counterpart, run in the same session, one after the other.
-
-**Held the same:** quota, model, prompt, arrival rate, load generator and machine, three attempts per request, the definition of success, and how time was measured.
-
-**Not the same, and worth knowing:**
-
-- **Retry pause.** The gateway waits one second between attempts. The client waits none.
-- **Memory.** The gateway's breaker is one shared memory for all traffic. The client's cool-down is kept separately by each of the 20 virtual users, so each one has to learn the lesson itself.
-- **Region choice.** The clients with a cool-down never retry a region they have already tried for that request. The gateway can draw the same region again until its breaker trips.
-- **Network path.** The client called Foundry from my laptop. The gateway sits in UK South, next to one of the regions.
-
-**Two rules set before the matched runs:**
-
-- **Decision rule.** The gateway adds measurable performance value if, over at least three repeats, its middle success rate beats the matching client by more than 2 percentage points, or its slowest-1-in-20 time is more than 50 ms faster. Otherwise its value is operational. I committed this before running anything.
-- **Validity rule.** A run is thrown away if it lasted more than 330 seconds instead of 300 (my laptop had gone to sleep and stalled the test) or if it dropped requests. Ten of the runs I would otherwise have used were discarded, and the cards show how many for each setup. That is why some setups have fewer than five repeats.
-
-### Request path
+## How it fits together
 
 ```{=html}
 <figure class="rp-fig">
@@ -246,7 +156,7 @@ For the gateway-against-client question, each gateway setup got a client counter
       <div class="rp-step"><strong>Inbound policy</strong><span>Admits the call and hands it to the pool. It can also cap how many calls one subscriber makes each minute; the cap was set far above the load, except in two burst runs.</span></div>
       <div class="rp-step"><strong>Weighted backend pool</strong><span>Sends each call to a region in proportion to that region's weight.</span></div>
       <div class="rp-split">
-        <div class="rp-step"><strong>Circuit breakers</strong><span>After repeated failures (5xx, and optionally 429), takes that backend out of the pool for 60 seconds. This is the gateway's failure memory.</span></div>
+        <div class="rp-step"><strong>Circuit breakers</strong><span>After repeated failures (5xx, and optionally 429), takes that backend out of the pool for 60 seconds: the gateway's sin bin.</span></div>
         <div class="rp-step"><strong>Retry on 429</strong><span>When a region refuses with a 429, asks the pool again, up to three attempts in all, then passes on the last refusal. This sits in the backend section, not inbound.</span></div>
       </div>
     </section>
@@ -267,50 +177,191 @@ For the gateway-against-client question, each gateway setup got a client counter
 </figure>
 ```
 
-::: {.callout-note appearance="simple"}
-### Tier and auth, as context
+Callers send requests to the gateway. The gateway picks a region. If that region is out of quota, it refuses with a 429. The gateway can then try another region, or take the refusing region out of rotation. A client-side setup does the same job without the middle box. The gateway holds the model credentials, so callers only need the gateway's key.
 
-The pool, breaker, retry and managed identity used here are available on every [API Management tier](https://learn.microsoft.com/en-us/azure/api-management/api-management-features) except Consumption, which has no backend circuit breaker. I used Developer: it has the features, no SLA, and one gateway unit. Callers present a subscription key to the gateway, and the gateway calls Foundry with a managed identity (an Azure-issued identity, so no model keys sit on the gateway). Neither was varied between runs.
-:::
+## Terms you need
 
-## What the experiments show
+| Term | Meaning |
+|---|---|
+| **Quota** | What a model deployment can handle each minute. Exceed it and calls are refused. There are two limits: tokens per minute (TPM, where a token is a chunk of text) and requests per minute. |
+| **429 and `Retry-After`** | A 429 means "out of quota, try later". The reply often carries a `Retry-After` header: how many seconds to wait. A 5xx error means the service itself failed. |
+| **Pool, weights, priority** | The pool is the three regions behind one name. Weights set each region's share: 90/5/5 sends 90% to UK South. Priority ranks the regions: a lower-ranked region gets traffic only when the higher ones are out. |
+| **Retry** | Try a failed call again. The client can do it, or the gateway can. |
+| **Sin bin** | A region that just refused a call sits out for 60 seconds. This is the name used here for the idea. |
+| **Circuit breaker** | The gateway's sin bin. After a set number of failures, a region leaves the pool for 60 seconds. You choose which errors count. All callers share it. |
+| **Cool-down** | The client's sin bin: a timer that skips a region after it refuses a call. |
 
-Every run is listed in [All the runs](#all-the-runs) at the end. This section is the argument they support, in three situations that differ in how much quota was left. The story in one line: quota sets the ceiling, remembering failures decides who reaches it, and a gateway changes neither.
+## What was tested
 
-| Situation | What helped | What did not | Evidence |
-|---|---|---|---|
-| Every region out of quota | A client that waits for `Retry-After`: 99.5%, at about 30 s a request | Weights, breakers and most retries all landed on the same 16.5-18.5%. A breaker on an even split fell to 4.5% | 27 bursts at 10,000 TPM, and 6 requests a second for five minutes |
-| Only the primary region out of quota | Failure memory, in the gateway or the client: 100% | Retry without memory: 77% (gateway) and 79% (client). A breaker that ignores 429s: 70% | 2 and 3 requests a second, up to 9 valid runs per setup |
-| Nothing wrong | Nothing needed: both sides 100% | The gateway made the slowest answers about 100-300 ms slower | 1 request a second, 3 runs each |
+Three Azure AI Foundry regions each got a small quota, so they ran out on demand: UK South, West Europe and Sweden Central. A load tool sent requests through the gateway, or straight to the regions. One setting changed at a time.
 
-### One idea explains most of the numbers
+There were two stages:
 
-Each region behaved as if it answered a fixed number of requests a minute and refused the rest until the next minute began. I measured that ceiling at about 72 a minute per region at 60,000 TPM, and about 12 at 10,000 TPM. These four results line up with it. They are sanity checks, not predictions: I did not set the ceiling from one result and test it on the others.
+- **Bursts.** A quick look at what each setting does when every region runs out.
+- **Gateway against client.** The main test. Each gateway setup was paired with a client built to do the same job. Both got the same steady stream of requests and the same quota, in alternating five-minute runs. The plain baseline in the cards, called the control, splits traffic evenly (33/33/34) with no circuit breaker, no retry and no cap.
 
-- With 90% of the traffic aimed at UK South at 2 requests a second, that region is offered about 108 requests a minute against a ceiling near 72. It can serve about two thirds of what it is sent, and the other 10% of calls go to idle regions that serve everything. Expected success is 0.9 × 72/108 + 0.1 = 70%. The setup with no recovery delivered 69.8%. Azure Monitor, Azure's own metrics service, counted 360 successful calls on UK South in one five-minute run, which is exactly 72 a minute.
-- Across three regions at 60,000 TPM, the ceiling is 216 a minute, or 3.6 a second. Offered 6 a second, the best any setup can do is 60%. The best client reached 59.9%.
-- Across three regions at 10,000 TPM, the ceiling is about 36 a minute. The 200-request bursts finished in a few seconds and answered 33 to 37 requests.
-- At 60,000 TPM the three regions can serve 216 a minute, more than a 200-request burst needs. Those bursts answered 90-96%.
+Three situations were tested:
 
-A gateway moves requests between regions. It cannot raise the ceiling. What it can do is decide which region takes the shortfall.
+| Situation | What it models |
+|---|---|
+| **Every region short** | Demand beyond all your quota |
+| **Main region short** | One region overloaded, the others have room |
+| **Nothing wrong** | What the gateway costs when all is healthy |
 
-### 1. Every region out of quota (10,000 TPM bursts)
+A rule was fixed before the main test. The gateway counts as better if it gets more than 2 points more success, or answers the slowest 1 in 20 more than 50 ms faster. The rule was never met.
 
-Start with the hardest case. Every region is short, so there is nowhere for overflow to go.
+### The ceiling
 
-**A gateway on its own adds nothing.** The control (even split, no policies) answered 17.5% of requests, 35 of 200. Calling Foundry directly with an even split gave the same 17.5%. The gateway is a place to put policies. It is not a source of quota.
+Each deployment allowed 60 requests a minute. The test calls were tiny, so that limit bit before the token limit did. In practice a region answered about 72 a minute. A gateway can move requests between regions. It cannot raise that ceiling.
 
-**Walking the regions in order does not help either.** A client that tries UK South, then West Europe, then Sweden Central answered 16.5% and made 567 HTTP calls to land 33 successes. When every region is short, a fallback order moves demand around and creates no capacity.
+## How results are measured
 
-**Most settings land on the same result.** Sixteen of the 27 bursts answered between 33 and 37 requests (16.5-18.5%), which I call the plateau. They include the control, calling the regions directly, skewed and unskewed weights, a breaker that only counts 5xx, tripping on the first failure instead of the third, and immediate client retries. My reading is that a burst that finishes in seconds can only draw on about one minute of quota, so every setup that kept answering at that pace hit the same wall.
+| Measure | Meaning |
+|---|---|
+| **Success rate** | Share of requests that got a valid answer |
+| **Time to answer** | The typical answer, and the slowest 1 in 20 |
+| **Throughput** | Requests handled per second |
+| **Goodput** | Answered requests per second (throughput × success rate) |
 
-**Policies can make things worse.** A circuit breaker that counts 429s, on an even split, cut a burst to 4.5% in both runs. It removes exhausted regions one by one until callers have nowhere to go. With skewed weights the same kind of breaker stayed on the plateau in five of six runs and once fell to 5.5%, so whether it collapses depends on timing within the quota minute. A gateway cap below real demand refuses calls that would have succeeded (3.5%). Combine weights, a breaker and a cap and you get the busiest run (238 requests a second) with no completions at all. The gateway was fast at saying no. This is what goodput is for.
+Goodput catches a trick. A gateway that refuses everything instantly has high throughput and zero goodput. Watch the animation: 100 requests, 10 seconds, 90 answered.
 
-**With client retry, either wait out the whole quota minute or do not bother.** Immediate retry matched the control. Fixed-pause and backoff retries answered slightly fewer (12-13%), which is within the run-to-run swing described below, so I read them as no better. A pause shorter than the quota minute cannot help, because the retry arrives in the same exhausted window. Sleeping for the `Retry-After` value reached 99.5%, and 99.0% on a repeat, but the median time to answer was about 30 seconds and goodput 0.44 a second. That is fine for a nightly job and wrong for a chat request. It also answers more only because it runs for longer: 199 answers took 456 seconds, which spans several quota minutes.
+```{=html}
+<style>
+.plinko { margin: 1.25rem auto 1.5rem; max-width: 680px; }
+.plinko canvas { width: 100%; height: auto; display: block; border: 1px solid rgba(127,127,127,.28); border-radius: 8px; }
+.plinko-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; margin-top: .6rem; }
+.plinko-stats div { border: 1px solid rgba(127,127,127,.28); border-radius: 6px; padding: .35rem .5rem; text-align: center; }
+.plinko-stats span { display: block; font-size: .7rem; letter-spacing: .03em; text-transform: uppercase; opacity: .7; }
+.plinko-stats b { font-variant-numeric: tabular-nums; font-size: 1.05rem; }
+.plinko-replay { margin-top: .6rem; padding: .25rem .8rem; border-radius: 99px; border: 1px solid rgba(127,127,127,.5); background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: .85rem; }
+.plinko-replay:hover { background: rgba(31,122,140,.12); }
+.plinko figcaption { margin-top: .5rem; font-size: .9rem; opacity: .8; }
+@media (max-width: 560px) { .plinko-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+<figure class="plinko" id="plinko">
+  <canvas width="640" height="340" role="img" aria-label="Animation: 100 requests drop through pegs. 90 land in the answered bin and 10 in the refused bin over 10 seconds."></canvas>
+  <div class="plinko-stats">
+    <div><span>Sent</span><b data-sent>0</b></div>
+    <div><span>Time</span><b data-time>0 s</b></div>
+    <div><span>Success rate</span><b data-succ>-</b></div>
+    <div><span>Throughput</span><b data-thr>-</b></div>
+    <div><span>Goodput</span><b data-good>-</b></div>
+  </div>
+  <button type="button" class="plinko-replay">Replay</button>
+  <figcaption>100 requests over 10 seconds. Ninety are answered and ten are refused.</figcaption>
+</figure>
+<script>
+(function () {
+  var root = document.getElementById("plinko");
+  if (!root) return;
+  var canvas = root.querySelector("canvas"), ctx = canvas.getContext("2d");
+  var W = 640, H = 340, dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr; ctx.scale(dpr, dpr);
+  var el = function (k) { return root.querySelector("[data-" + k + "]"); };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var GOOD = "#1f7a8c", BAD = "#bc4749", GREY = "rgba(127,127,127,.55)";
+  var TOTAL = 100, REFUSED = 10, SECONDS = 10, FALL = 1.3;
+  var ROWS = 7, ROW0 = 70, ROWGAP = 22, PEGX0 = 40, PEGGAP = 40;
+  var BIN_TOP = 250, BIN_Y = H - 12, R = 4.5, STEP = 11;
+  var bins = { good: { x0: 22, x1: 442 }, bad: { x0: 472, x1: 618 } };
+  var balls, started, raf, startTime;
 
-**Identical configurations gave different answers.** A breaker on 429 and 5xx at 90/5/5 answered 18.0% on one run and 5.5% on its repeat. Where in the quota minute a burst lands matters at this scale, so read any single burst result as a range, 5-18% here, not a point.
+  function slot(kind, i) {
+    var b = bins[kind], cols = Math.floor((b.x1 - b.x0) / STEP);
+    return { x: b.x0 + R + (i % cols) * STEP, y: BIN_Y - Math.floor(i / cols) * STEP };
+  }
+  function plan() {
+    var fates = [];
+    for (var i = 0; i < TOTAL; i++) fates.push(i < REFUSED ? "bad" : "good");
+    for (var j = fates.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var t = fates[j]; fates[j] = fates[k]; fates[k] = t; }
+    var gi = 0, bi = 0;
+    balls = fates.map(function (kind, n) {
+      var s = slot(kind, kind === "good" ? gi++ : bi++), pts = [{ y: 8, x: 240 }];
+      for (var r = 0; r < ROWS; r++) {
+        var y = ROW0 + r * ROWGAP, want = 240 + (s.x - 240) * ((r + 1) / (ROWS + 1)) + (Math.random() - .5) * 60;
+        var off = PEGX0 + (r % 2 ? PEGGAP / 2 : 0) + PEGGAP / 2;
+        var gx = off + Math.round((want - off) / PEGGAP) * PEGGAP;
+        pts.push({ y: y, x: Math.max(30, Math.min(W - 30, gx)) });
+      }
+      pts.push({ y: s.y, x: s.x });
+      return { kind: kind, at: n / TOTAL * SECONDS, pts: pts, slot: s, landed: false };
+    });
+  }
+  function posAt(b, p) {
+    var y0 = b.pts[0].y, y1 = b.pts[b.pts.length - 1].y, y = y0 + (y1 - y0) * p * p, pts = b.pts;
+    for (var i = 1; i < pts.length; i++) {
+      if (y <= pts[i].y || i === pts.length - 1) {
+        var a = pts[i - 1], c = pts[i], u = Math.max(0, Math.min(1, (y - a.y) / (c.y - a.y || 1)));
+        u = u * u * (3 - 2 * u);
+        return { x: a.x + (c.x - a.x) * u, y: y };
+      }
+    }
+  }
+  function ball(x, y, kind) { ctx.beginPath(); ctx.arc(x, y, R, 0, 6.2832); ctx.fillStyle = kind === "good" ? GOOD : BAD; ctx.fill(); }
+  function scene(t) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = GREY;
+    for (var r = 0; r < ROWS; r++) {
+      var off = PEGX0 + (r % 2 ? PEGGAP / 2 : 0);
+      for (var x = off; x < W - 20; x += PEGGAP) { ctx.beginPath(); ctx.arc(x, ROW0 + r * ROWGAP - ROWGAP / 2, 2.5, 0, 6.2832); ctx.fill(); }
+    }
+    ctx.strokeStyle = GREY; ctx.lineWidth = 1.5;
+    ctx.strokeRect(bins.good.x0 - 4, BIN_TOP, bins.good.x1 - bins.good.x0 + 8, H - BIN_TOP - 2);
+    ctx.strokeRect(bins.bad.x0 - 4, BIN_TOP, bins.bad.x1 - bins.bad.x0 + 8, H - BIN_TOP - 2);
+    ctx.fillStyle = GREY; ctx.font = "13px sans-serif";
+    ctx.fillText("Answered (200)", bins.good.x0, BIN_TOP + 16);
+    ctx.fillText("Refused", bins.bad.x0, BIN_TOP + 16);
+    var sent = 0, good = 0;
+    balls.forEach(function (b) {
+      var p = (t - b.at) / FALL;
+      if (p < 0) return;
+      sent++; if (b.kind === "good") good++;
+      if (p >= 1) ball(b.slot.x, b.slot.y, b.kind);
+      else { var q = posAt(b, p); ball(q.x, q.y, b.kind); }
+    });
+    var clock = Math.min(t, SECONDS);
+    el("sent").textContent = sent;
+    el("time").textContent = (clock >= SECONDS ? SECONDS : clock.toFixed(1)) + " s";
+    if (sent > 0 && clock > 0.3) {
+      el("succ").textContent = Math.round(good / sent * 100) + "%";
+      el("thr").textContent = (sent / Math.max(clock, 1)).toFixed(1) + "/s";
+      el("good").textContent = (good / Math.max(clock, 1)).toFixed(1) + "/s";
+    }
+    if (clock >= SECONDS && sent === TOTAL) {
+      el("succ").textContent = "90%"; el("thr").textContent = "10/s"; el("good").textContent = "9/s";
+    }
+  }
+  function run() {
+    cancelAnimationFrame(raf); plan();
+    if (reduce) { scene(SECONDS + FALL); return; }
+    startTime = performance.now();
+    (function frame(now) {
+      var t = (now - startTime) / 1000; scene(t);
+      if (t < SECONDS + FALL + .1) raf = requestAnimationFrame(frame);
+    })(startTime);
+  }
+  root.querySelector(".plinko-replay").addEventListener("click", run);
+  plan(); scene(0);
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (e) {
+      if (!started && e.some(function (x) { return x.isIntersecting; })) { started = true; io.disconnect(); run(); }
+    }, { threshold: 0.5 });
+    io.observe(root);
+  } else { run(); }
+})();
+</script>
+```
 
-The chart below shows every 200-request burst. **X** is success rate. **Y** is throughput: original requests per second, on a log scale because the runs span more than two orders of magnitude. The grey curves are lines of constant goodput, because goodput is throughput × success rate. The diamonds are the 60,000 TPM runs. Hover a point for its name, run id and numbers. The steady-rate runs are not on the chart, because goodput is not comparable between runs of different quota and load shape.
+
+## What happened
+
+### 1. Every region short
+
+Nothing helped. In 200-request bursts, nearly every setup answered about 17%. A circuit breaker on an even split made it worse (4.5%): it removed each region in turn until none was left. Only a client that waited as long as `Retry-After` asked got nearly everything through (99.5%). That took about 30 seconds a request.
+
+Steady load told the same story. Every setup answered 56-60% of requests, close to the best possible, and none collapsed.
+
+Each dot below is one burst. Right is more answered. Higher is faster. Most land in the same cluster, whatever was configured.
 
 ```{=html}
 <iframe
@@ -324,184 +375,116 @@ The chart below shows every 200-request burst. **X** is success rate. **Y** is t
 <p class="rp-fig" style="text-align:center;margin-top:.35rem;color:#52606d;">goodput = throughput × success rate</p>
 ```
 
-Top-right is where an interactive API wants to be: high success and high throughput. Bottom-left is "most calls fail". Hard against the right edge and low down is "they succeed, eventually, if the user is prepared to wait half a minute". The cluster in the left half is the plateau, which is the main message of the chart: most 10,000 TPM runs end up in the same place whatever was configured.
+### 2. Main region short
 
-::: {.callout-important appearance="simple"}
-### High success is not the same as a good result
+Here the setup mattered. UK South got 90% of the traffic, more than it could serve. The other two regions sat nearly idle.
 
-Waiting for `Retry-After` gets almost every call a 200 at about half a request a second. The run with the 500-a-minute cap is the mirror image: the gateway was quick and nobody got an answer. Success rate says whether the work was done, goodput says how quickly. When a product needs both, read both.
-:::
+| Setup | Success |
+|---|---:|
+| Nothing | 70% |
+| Retry only, in the gateway | 77% |
+| Retry only, in the client | 79% |
+| **Sin bin in the gateway** (circuit breaker or priority list) | **100%** |
+| **Sin bin in the client** (cool-down) | **100%** |
+| Client tries UK South first, nothing remembered | 100% |
 
-### 2. Every region out of quota (steady load)
+- **Retry alone barely helped.** Each retry picked a region again by weight, so nine in ten went straight back to the region that had just said no.
+- **A sin bin fixed it.** The region sat out, and every call went where there was room.
+- **Trip on the first failure.** It was safe at every rate tested, and it wasted the fewest calls.
+- **No sin bin costs calls.** Trying UK South first took 1.4 calls per request. A sin bin took about 1.1.
+- **The gateway matched the client.** Same success. The slowest 1 in 20 answers took 880-1,040 ms through the gateway and 640-770 ms through the client.
 
-I repeated the situation at a steady 6 requests a second, which is about 1.7 times what three regions can serve, so at best 60% of requests can succeed. Every setup landed close to that ceiling, and none collapsed:
+Raising the load did not change this.
 
-| Setup | Valid runs | Success (middle run) |
-|---|---:|---:|
-| Client: even split, retry, 60 s cool-down | 3 | 59.9% |
-| Client: UK South first, 60 s cool-down | 3 | 57.5% |
-| Gateway: priority list | 3 | 56.7% |
-| Gateway: retry and breaker, even split | 2 | 56.0% |
+### 3. Nothing wrong
 
-The gateway setups sit a few points under the ceiling, and the best client sits on it. A plausible reason is a breaker removing regions that had already regained quota, but I did not test that, and the gateway breaker result rests on two runs, so treat the gap as weak. The collapse seen in bursts did not appear here.
+Both sides answered everything. The typical answer took 372 ms through the gateway and 396 ms direct. The slowest 1 in 20 was 710 ms against 593 ms. The gateway's cost is in the slow tail.
 
-### 3. Quota to spare (60,000 TPM bursts)
+## What to build
 
-With six times the quota, 200 requests fit within one minute's allowance. An even split with no breaker answered 193 (96.5%) and 181 (90.5%) in two runs, and skewing the weights to 90/5/5 gave 190 (95.0%). The shortfall of 4-10% is small, and I did not investigate it. The two identical runs differ by six points.
-
-This fits the idea that quota, not gateway settings, set the plateau in section 1. It is not a controlled comparison, though: the two sets of bursts were run on different days, so other conditions may differ as well as the quota.
-
-### 4. Only the primary region short (steady load)
-
-This is the situation where the choice of setup mattered, and the one the matched pairs were built for. I sent 90% of the traffic to UK South at 2 requests a second. That deliberately overloads UK South, the primary region, and leaves West Europe and Sweden Central nearly idle. It resembles a deployment where one region has reserved capacity (a fixed amount bought in advance) and the others are pay-as-you-go overflow. Success is the middle result of the valid runs. The last column is the slowest 1 in 20 time to answer.
-
-| Setup | Valid runs | Success | Range | Slowest 1 in 20 (ms) |
-|---|---:|---:|---|---:|
-| Gateway: 90/5/5, nothing else | 3 | 69.8% | 69.6-70.4% | 856 |
-| Gateway: breaker on 5xx only | 1 | 69.9% | | 539 |
-| Gateway: retry only, no breaker | 5 | 76.7% | 76.4-79.5% | 2,635 |
-| Gateway: retry only, no pause | 2 | 77.1% | 75.0-79.2% | 995 |
-| Gateway: retry and breaker (trips after 3) | 4 | 100.0% | | 1,044 |
-| Gateway: retry and breaker (trips after 1) | 5 | 100.0% | | 888 |
-| Gateway: priority list | 3 | 100.0% | | 882 |
-| Client: retry, no memory | 7 | 79.0% | 77.9-81.9% | 714 |
-| Client: retry, 60 s cool-down | 9 | 100.0% | | 638 |
-| Client: UK South first, 60 s cool-down | 8 | 100.0% | | 708 |
-| Client: UK South first, no memory | 2 | 100.0% | | 770 |
-
-**With no recovery, success was about 70%.** The result was very stable and matches the arithmetic above.
-
-**Retry on its own helped a little, and nothing more.** The gateway with retry only scored 76.7% and the matching client 79.0%. Azure Monitor shows why. In one isolated run, the gateway made 1,165 calls to the models for 600 requests. 1,048 of them went to UK South, the region that was out of quota, and 687 of those were refused. Each retry re-rolls the weights, so about nine retries in ten go straight back to the region that just said no. Retrying here nearly doubled the load on the models for a small gain.
-
-**Remembering the failure fixed it.** Every setup with failure memory reached 100%. With the gateway's breaker or priority list, UK South is taken out after its first refusals and every call goes to the regions with room. In an isolated run, the gateway wasted 4 to 12 calls in total, because it learns once for all callers. The client's cool-down is per virtual user, so each of the 20 learns separately, and it wasted about 45. A single shared client process would probably learn faster than that. Either way, the result was the same 100%.
-
-**Tripping on the first failure is safe.** At 2 and 3 requests a second it scored 100% in every valid run (5 and 3), with fewer refused calls than tripping after three (4 against 12). I had worried that a breaker that trips this quickly would throw away good regions. It did not.
-
-**A breaker that ignores quota errors did nothing.** Counting only 5xx errors, it scored 69.9% (one run), the same as no breaker. Quota errors are 429s, so it never fires.
-
-**A client that tries UK South first and then the next region also reached 100%,** without any memory. It did so at the cost of extra calls: 1.40 per request, because every request tries the exhausted region first. With memory or through the gateway it was about 1.01 to 1.1.
-
-**The gateway matched the client, and did not beat it.** Pairing each gateway setup with its client counterpart, the success gap was 0.0 points for the retry and breaker pairs and the priority list, and 1.8 points *lower* for the gateway with retry only. The decision rule I set in advance was not met. Time to answer pointed the other way. The typical answer took about the same (365-385 ms for the gateway setups that worked, 358-367 ms for the client ones), but the slowest 1 in 20 was consistently slower through the gateway: 882-1,044 ms against 638-770 ms.
-
-**Why are the gateway's slowest answers slower?** I do not know. It is on the Developer tier, a single unit with no SLA, so the extra hop through the gateway is a likely suspect, and the nothing-wrong test (section 6) shows a similar gap. I did not test it directly. In the retry-only setups, the one-second pause between attempts is clearly part of the story. With no pause, the slowest 1 in 20 fell from 2.6 seconds to about 1 second (two runs), and success did not change.
-
-### 5. Only the primary region short, with fallbacks near their limit
-
-I raised the rate to 3 requests a second. UK South can still only serve about 72 a minute, so the two fallback regions must take about 108 a minute between them, three quarters of what they can serve.
-
-Every setup scored 100% across two or three valid runs, bar one run at 99.9%. The gateway with breaker trips after one and three failures, the gateway priority list, and three client variants all tied. The gateway's slowest 1 in 20 was again slower: 842-1,104 ms against 563-830 ms. That settles a worry from the previous test: tripping on the first failure did not throw away good regions under heavier load either.
-
-### 6. Nothing wrong: what does the gateway cost?
-
-At 1 request a second with an even split, nothing is refused and everything should succeed. It did, 100% on both sides. The typical answer took 372 ms through the gateway and 396 ms directly, so no cost to the typical caller. The slowest 1 in 20 was 710 ms through the gateway against 593 ms directly. With three runs each (673-893 against 572-597), that suggests a heavier tail through the gateway, but it does not establish one.
-
-### What did not matter
-
-In bursts, none of these changed the result: weights (even, 60/25/15, 70/15/15, 80/10/10 and 90/5/5 all sat at 16-18% when quota was short), the breaker's trip count, and a breaker that counts only 5xx. At a steady rate, the pause between retries changed how long callers waited, but not how many got an answer.
-
-::: {.callout-note appearance="simple"}
-### A note on noise: how many times each result was seen
-
-Most 10,000 TPM burst runs were single runs of one to ten seconds. The one configuration that was repeated gave 18.0% and 5.5%, so a swing of that size can happen with nothing changed, and differences of a few points between bursts are ties. Only effects that repeat, or are far larger, are worth reading: the breaker on an even split gave 4.5% twice, and sleeping for `Retry-After` gave about 99% twice. The 60,000 TPM bursts were single runs. The steady-rate setups ran two to nine valid times each, and the cards list every result. Retry-only and no-recovery runs were tight (69.6-70.4%, 76.4-79.5%). Setups with two valid runs, such as the breaker in section 2, are weak evidence.
-:::
+1. **Add a sin bin.** Whether in the client or the gateway, this is the one thing that made a difference. Retrying without it mostly sends calls back to the region that just refused.
+2. **In a gateway, use a priority list for one main region and some fallbacks.** Add a circuit breaker that counts 429s and trips on the first failure. A breaker that counts only 5xx never fires on quota errors.
+3. **Mind the retry pause.** In one test, a one-second pause pushed the slowest 1 in 20 answers to 2.6 seconds. With no pause it was about 1 second (two runs).
+4. **Use `Retry-After` for batch work only.** Waiting out the minute suits a nightly job. It does not suit a chat.
+5. **Handle the 503.** If every region is short, a breaker on 429 can empty the pool. Callers then get instant 503s.
+6. **Do not cap requests below real demand.** The cap will refuse work that would have succeeded.
 
 ## Should you stand up APIM? {#should-you-stand-up-apim}
 
-If your client already retries and fails over, this is how I would weigh it. The tests tell you what a gateway will not do. They cannot tell you what its operational benefits are worth to your team.
+**What it will not do.** Create quota. Beat a good client on success or speed. Fix retries on its own.
 
-### What it will not do
+**What it can give you.** These are the usual reasons. None were tested.
 
-- **Create quota.** When every region is short, nothing helps, and the options are more quota, a smaller workload, or callers that can wait. Buy quota before you tune routing.
-- **Beat a good client.** On success rate and speed, the gateway matched the client or lost to it in every test.
-- **Fix retries on its own.** A retry rule alone sent most retries back to the region that had just refused.
+- One place for credentials. Callers hold one gateway key, not a key per region.
+- One place to change routing. No client redeploys.
+- One place to log, cap and watch every call.
+- The same behaviour for every team and language.
 
-### First, check your client
+**What it costs.** Another service to run and pay for. Slower slowest answers. New ways to fail (see below). A shared dependency for every caller.
 
-This is cheap, and it is where I found the gain. When a region returns a 429, does your client skip that region for the next minute, or does every new request try it first?
+**How to decide.**
 
-Without that memory, my client with retries scored 79% when one region was short. A client that always tried the main region first still reached 100%, but it made 1.4 calls to the models for every request, 40% more than needed. With a 60-second cool-down per region it reached 100% at about 1.1 calls. That change is a small piece of client code, and it did as well as any gateway setup I tried.
+- **A few callers, one team, one language:** add the sin bin to the client. Skip the gateway.
+- **Many callers or teams, credentials you would rather not spread, or routing you must change fast:** a gateway is worth considering. Buy it for those reasons, not for speed.
 
-### What a gateway adds
+## Gotchas
 
-These are the usual reasons to run one. I did not measure any of them.
-
-- **One place for credentials.** Callers hold one key for the gateway. The gateway calls the models using a managed identity, so no per-region model keys sit in every client.
-- **One place to change the rules.** Weights, priorities and retry settings change once, without redeploying every client or touching every language you use.
-- **One place to watch.** Every call goes through the same door, so you can log it, cap it and count it in one place.
-- **The same behaviour for every caller.** Each team does not need to get the retry logic right for itself.
-
-### What it costs
-
-- **One more service to run and pay for.** The Developer tier I used has no SLA, so it is not what you would run in production.
-- **Slower slowest answers.** In my tests the slowest 1 in 20 answers were 100 to 400 ms slower through the gateway. I do not know why (see [What I would test next](#what-i-would-test-next)).
-- **New ways to fail.** The footguns below are real. The worst one made a retry rule do nothing while looking fine.
-- **A shared dependency.** Every caller now depends on it.
-
-### How I would decide
-
-- **A few callers, one team, one language:** fix the client's memory and stay client-side. The performance is the same, and you avoid a new service.
-- **Many callers or teams, credentials you would rather not spread, or routing you need to change quickly:** the gateway is worth considering, for those reasons and not for speed. Start with a priority list, and use a circuit breaker that counts 429s and trips on the first failure.
-- **Either way,** do not expect routing to rescue you when every region is short.
-
-### If you build it
-
-- **Count 429s in the breaker and trip early.** A breaker that counts only 5xx never fires on quota errors. Tripping on the first failure was safe at every rate I tested and wasted the fewest calls. The catch: with every region short, a breaker on 429 can empty the pool, so callers get instant 503s. Make clients handle them.
-- **Start with a priority list for one primary and some fallbacks.** It matched the breaker setups and is easy to read.
-- **Think about the retry pause.** A one-second pause is one second more for the unlucky callers.
-- **Use `Retry-After` for batch work only.** Waiting for the quota minute is right when work can wait, and wrong when a person is waiting.
-- **Set a request cap only above the traffic you mean to serve.** Set below it, a cap refuses the work you wanted done.
-
-## Footguns: what bit me so it need not bite you
-
-Working this out cost days, and most of the lost time came from configuration surprises, not from the results. These are the ones I would want to have known about.
+These cost days. Check them first.
 
 | What goes wrong | What to do |
 |---|---|
-| **APIM retry silently does nothing when the request has a body.** The first forward consumes the body, so the second attempt fails inside the gateway and never reaches the model. A call that should have been rescued just fails. My first retry experiments were affected for this reason. | Put `<forward-request buffer-request-body="true" />` inside the retry block. Then check that the model sees more than one call per refused request. |
-| **A retry block with no `forward-request` returns instant fake 200s** (about 14 ms) without calling the model. It looks like a triumph. | Check that the response body holds a real answer, and that successful calls take model-sized time, not milliseconds. |
-| **`count` means retries, not attempts.** `count="3"` is four attempts. | Match your client's attempts to the gateway's, or the comparison is unfair. |
-| **Retry without a breaker re-enters the weighted pool,** so it can pick the region that just refused, in proportion to its weight. | Pair retry with failure memory, or do not expect it to redirect traffic. |
-| **Policy changes take up to two minutes to reach the gateway.** A call 25 seconds after an apply still ran the old policy. | Wait about two minutes after a change before sending load. |
-| **Breaker state lives in the gateway's memory and survives a redeploy.** A run with the breaker off straight after one with it on can inherit tripped backends. On a multi-unit tier, each gateway instance keeps its own. | Leave at least 60 seconds between runs, and do not assume a deploy resets runtime state. |
-| **Turning a breaker off with an empty rules list is rejected** by Azure Resource Manager (ARM). | Set the breaker property to `null` explicitly if you use Terraform or ARM. |
-| **A breaker on 429 trips every region when all are short.** The pool empties and callers get instant 503s. | Treat 503 from the gateway as "everything is out of quota", and make clients handle it. |
-| **The request limit is a ceiling too, and it is low.** Each deployment has 60 requests a minute alongside 60,000 tokens a minute. | Read the limits (`az cognitiveservices account deployment show`, then `properties.rateLimits`) before you plan around token quota. |
-| **Fast failures look like throughput.** With a fixed number of simulated callers, a setup that fails quickly sends far more requests per second than one that fails slowly, so the setups are not facing the same load. | Use a constant arrival rate for comparisons, and read goodput as well as success rate. |
-| **A 200 is not proof of an answer.** | Validate the body, and compare success against the model-side call count. |
-| **Laptop sleep corrupts a run and it still produces numbers.** My results looked plausible, sometimes 99.5% where 79% was expected. | Discard any run that took much longer than planned or dropped requests, and keep the machine awake for long batches. |
-| **Running all the client tests, then all the gateway tests, mixes up the setup with the time of day.** | Alternate them, leave 60 seconds between runs, and repeat each headline setup at least five times. |
-| **The applied configuration is not always the intended one.** | Read the pool, breaker and retry settings back from ARM after every apply and store them with the run. |
-| **Azure Monitor's per-region counts lag by up to a minute,** and your own test calls pollute the window. | Isolate counted runs with at least three idle minutes either side, and do not run ad-hoc tests near them. |
+| **APIM retry silently does nothing on requests with a body.** The retry fails inside the gateway and never reaches the model. | Add `buffer-request-body="true"` to the forward-request inside the retry. Then check that the model sees more than one call per refused request. |
+| **A retry block with no forward-request returns instant fake 200s.** | Check the body holds a real answer. Real answers take hundreds of milliseconds, not 14. |
+| **`count` means retries, not attempts.** `count="3"` is four attempts. | Match your client's attempts to the gateway's. |
+| **Retry without a sin bin re-rolls the weights.** It can pick the region that just refused. | Pair retry with a breaker or priority list. |
+| **Policy changes take up to two minutes to apply. Breaker state survives a redeploy.** | Wait two minutes after a change. Leave 60 seconds between tests. |
+| **A breaker on 429 empties the pool when every region is short.** | Treat a fast 503 as "all regions out" and handle it. |
+| **The request limit is low.** 60 requests a minute alongside 60,000 tokens. | Read your limits first: `az cognitiveservices account deployment show`, then `properties.rateLimits`. |
+| **Turning a breaker off with an empty rules list is rejected.** | Set the breaker to `null` in Terraform or ARM. |
+| **A laptop that sleeps ruins a test and still produces numbers.** | Discard any run that took much longer than planned. |
+| **Fixed-user load tests mislead.** A setup that fails fast sends more requests than one that fails slowly. | Use a fixed arrival rate. |
 
-## Where this stops applying
+## Limits
 
-- **Tiny calls.** My calls returned about 5 tokens, so the request limit decided everything. With real prompts the token limit would come first, and the ceiling would move with your prompt sizes.
-- **Developer tier.** One gateway unit and no SLA. Latency tails and scaling will differ on Standard or Premium. On multi-unit tiers, breaker state is per instance and, as Microsoft notes in the [backends documentation](https://learn.microsoft.com/en-us/azure/api-management/backends), pool load balancing is approximate because instances do not share that state.
-- **Not a perfect match.** The gateway and the client differed in retry pause, in how memory is shared, in how a retry chooses a region, and in where they sat on the network (see "Making the comparison fair").
-- **A shared client.** My clients were 20 independent virtual users. One shared client process would learn from failures faster than that, so the client's wasted calls are probably an overestimate.
-- **Few repeats for some setups.** Several setups have two or three valid runs, because I discarded runs the laptop had slept through. The cards list every number.
-- **The slow tail is unexplained.** The gateway's slowest answers were slower in every comparison. The extra hop through the gateway is my best guess, and it is only a guess. I did not test it, and the Developer tier may make it look worse than a production tier would.
-- **Gateway retry in bursts.** The burst runs ran before I found the retry bug, so they say what weights and breakers do, but not what a working gateway retry does in a burst. The steady-rate runs are the ones with working retry.
-- **The 20% above the configured limit.** The measured ceiling sits about 20% above the configured 60 requests a minute. I cannot explain it.
-- **Priority lists got less testing.** They matched the breaker in every steady-rate test, but I did not test them in bursts.
-- **Success means a valid answer.** I did not judge answer quality, only that a response came back.
-- **Laptop load.** k6 ran from my machine, so absolute latency includes that round trip. Comparisons between runs share the path.
-- **The case for a gateway beyond performance.** One endpoint, managed credentials, central policy and monitoring were not part of any test.
-- **Alternatives I did not test.** APIM also documents an [LLM token-limit policy](https://learn.microsoft.com/en-us/azure/api-management/llm-token-limit-policy), which limits tokens rather than requests. My gateway cap counted requests per minute.
+- **Tiny calls.** Real prompts hit the token limit first.
+- **Developer tier.** One gateway unit, no SLA. Production tiers will differ. On multi-unit tiers each instance keeps its own [breaker state](https://learn.microsoft.com/en-us/azure/api-management/backends).
+- **Gateway and client were not identical.** The gateway paused one second between retries and the client none. The gateway shared its sin bin across all callers. The client kept one per simulated caller. The client ran from a laptop. The gateway sat in UK South.
+- **Few runs for some setups.** Ten runs were discarded when the laptop slept. Several setups have two or three valid runs. The cards list every one.
+- **The slow tail is unexplained.** The extra hop is the best guess. It is a guess.
+- **The bursts ran with a broken retry rule.** They show what weights and breakers do, not what a working retry does in a burst. The steady runs had working retry.
+- **The measured ceiling sat about 20% above the configured limit.** The reason is unknown.
+- **Success means a valid answer.** Answer quality was not judged.
 
-## What I would test next {#what-i-would-test-next}
+## What to test next {#what-to-test-next}
 
-I am done experimenting for now, but these would answer the open questions:
+- **The slow tail.** Send the same load through a bare gateway (no pool, breaker or retry) and straight to one region, and compare. APIM's diagnostic logs also split each request into total time and time waiting on the model. Then run the client from a machine in UK South, and repeat on a production tier.
+- **Real prompts.** Longer prompts would hit the token limit first.
+- **One shared client.** A single cool-down shared by all callers, as most services run.
+- **The operational case.** Count what a gateway saves: credential rotation, a routing change across several codebases.
 
-- **Is the slow tail the gateway hop?** Send the same steady load through a bare gateway (no pool, breaker or retry) and straight to one region, and compare. APIM's own diagnostic logs also record total time and time spent waiting on the model for each request, and the difference is the gateway's share. Then run the client from a machine in UK South instead of my laptop, so the network path is the same, and repeat on a production tier.
-- **Real prompts.** Longer prompts and answers would hit the token limit before the request limit. That moves the ceiling, and it may change how much each setup wastes.
-- **One shared client.** A single client process with one shared cool-down, instead of 20 separate ones, is how most services run. It should learn from failures faster.
-- **Gateway retry in bursts.** Re-run the 10,000 TPM bursts now that the retry rule works.
-- **The operational case.** Count what a gateway saves in practice: credential rotation, a routing change across several client codebases, and time to answer "what happened to that request?".
 
 ## Appendix: all the runs {#all-the-runs}
 
-Each card is one run, or one setup that was repeated, shown as the middle result of its valid runs. Only runs in the same tab are comparable, because each tab has its own quota and load, given in the note at the top of the tab. The first four tabs hold the steady-rate matched pairs. On those, a grey edge marks a client calling the regions directly and a coloured edge marks the gateway. The other five hold the 200-request bursts. The matched-pair tabs list setups by success rate and then by speed. The burst tabs list runs by success rate and then completions. A reference is pinned at the top of most tabs for contrast. The key below the colour legend explains each part of a card. Hover over a note to highlight that part.
+Every run, as a card. Each tab holds runs that share a quota and load, so compare cards within a tab. The first four tabs are the gateway-against-client tests: a coloured edge is the gateway and a grey edge is a client calling the regions directly. The last five are the 200-request bursts. A reference card is pinned on most tabs. Hover a numbered note to highlight that part of the card.
+
+### Test setup
+
+| | |
+|---|---|
+| Gateway | APIM Developer tier, UK South |
+| Regions | Azure AI Foundry in UK South, West Europe and Sweden Central |
+| Model | `gpt-4.1-mini`, answers of about 5 tokens, one fixed prompt |
+| Quota | 10,000 TPM per region for the bursts, 60,000 TPM for everything else |
+| Load tool | [Grafana k6](https://k6.io) on a Mac laptop |
+| Bursts | 200 requests from 20 simulated callers, sent as fast as possible |
+| Steady runs | 1, 2, 3 or 6 requests a second for five minutes |
+| Gaps | 60 seconds between runs, 2 minutes after a policy change |
+| Success | HTTP 200 with a valid answer in the body |
+| Discarded | Steady runs longer than 330 seconds (the laptop slept) or with dropped requests |
+
+The Terraform, k6 scripts and results are in <a href="https://github.com/r-leyshon/azure-load-balance-perf" target="_blank" rel="noopener noreferrer">r-leyshon/azure-load-balance-perf</a>.
+
+### Run cards
 
 ```{=html}
 <div class="phase-legend">
@@ -535,8 +518,8 @@ Each card is one run, or one setup that was repeated, shown as the middle result
     <li data-part="1"><b>1</b><span>Plain-language name. A grey tag on some cards marks the reference pinned for comparison. The coloured edge matches the tab; on the matched-pair tabs a grey edge means a client with no gateway.</span></li>
     <li data-part="2"><b>2</b><span>The id used in the repo and on the chart.</span></li>
     <li data-part="3"><b>3</b><span>What this run changed.</span></li>
-    <li data-part="4"><b>4</b><span>Success, throughput and goodput. Bar length is this run against the best run in the tab (matched-pair cards show success out of 100%), coloured red (low) through yellow to green (best).</span></li>
-    <li data-part="5"><b>5</b><span>The plain numbers behind the bars: completions out of requests, run length and quota. Matched-pair cards show the success rate of each run and the time to answer instead.</span></li>
+    <li data-part="4"><b>4</b><span>Success, throughput and goodput. Bar length is this run against the best run in the tab, coloured red (low) through yellow to green (best).</span></li>
+    <li data-part="5"><b>5</b><span>The plain numbers behind the bars: completions out of requests, run length and quota. Gateway-against-client cards list each run's success rate and answer times instead.</span></li>
   </ol>
 </div>
 ```
@@ -646,6 +629,16 @@ Thanks to Harry, Francis and Adela for their thoughts and feedback.
     observer.observe(card);
   });
 })();
+</script>
+```
+
+```{=html}
+<script>
+// Links within this page should scroll, not open a new tab.
+document.addEventListener("click", function (e) {
+  var a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (a) { a.removeAttribute("target"); }
+}, true);
 </script>
 ```
 
