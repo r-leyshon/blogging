@@ -111,20 +111,27 @@ resources:
 *For engineers who already retry and fail over between AI model regions in client code, and wonder if a gateway is worth it. No Azure experience needed.*
 
 ::: {.callout-note appearance="simple"}
-### The short answer
+### TLDR
 
-**A gateway did not beat a well-built client.** Nothing in the tests showed APIM doing better. Success rates matched. Its slowest answers were slower.
+**A gateway did not beat a well-built client.** Nothing in the tests showed APIM doing better. Success rates matched. Its p95 answer time was worse, by about a quarter of a second in a clean test.
 
-**What mattered was a sin bin.** When a region refuses a call, it sits out for the next minute. Setups with a sin bin answered every request when one region ran short. Setups that only retried answered 77-79%. The sin bin can live in the gateway or in the client. It works in both.
+**What mattered was a sin bin.** When a region refuses a call, it sits out for the next minute. Setups with a sin bin answered every request when one region ran short. Setups that only retried answered 77-79%. It works in the gateway or in the client.
 
 **When every region is out of quota, nothing helps.** Only more quota, or waiting, does.
 
+**Regions differ in speed.** From a UK laptop, UK South answered in about 300 ms, Sweden Central in 365 and West Europe in 480, and West Europe was the least steady.
+
 **What to build:**
 
-1. **Add a sin bin.** If you stay client-side, give the client a 60-second timeout for any region that returns a 429.
-2. **If you run a gateway,** use a priority list and a circuit breaker that counts 429s and trips on the first failure.
-3. **Buy quota before you tune routing.**
-4. **Pick a gateway for operations, not speed.** One set of credentials, one place for rules and monitoring. Those benefits were not tested.
+1. **Add a sin bin.** In the client, a 60-second timeout for any region that returns a 429.
+2. **In a gateway, use a priority list** with the fastest region first, and a circuit breaker that counts 429s and trips on the first failure.
+3. **Handle the 503.** A breaker on 429 can empty the pool when every region is short.
+4. **Mind the retry pause.** A one-second pause pushed the p95 to 2.6 seconds.
+5. **Use `Retry-After` for batch work only.** It suits a nightly job, not a chat.
+6. **Do not cap requests below real demand.**
+7. **Buy quota before you tune routing.**
+
+**Should you stand up APIM?** Do it for operations, not speed: one set of credentials, one place for rules and monitoring. Those benefits were not tested. With a few callers in one team, add the sin bin to the client and skip the gateway.
 :::
 
 ## The problem
@@ -208,7 +215,7 @@ Three situations were tested:
 | **Main region short** | One region overloaded, the others have room |
 | **Nothing wrong** | What the gateway costs when all is healthy |
 
-A rule was fixed before the main test. The gateway counts as better if it gets more than 2 points more success, or answers the slowest 1 in 20 more than 50 ms faster. The rule was never met.
+A rule was fixed before the main test. The gateway counts as better if it gets more than 2 points more success, or has a p95 answer time more than 50 ms faster. The rule was never met.
 
 ### The ceiling
 
@@ -219,7 +226,7 @@ Each deployment allowed 60 requests a minute. The test calls were tiny, so that 
 | Measure | Meaning |
 |---|---|
 | **Success rate** | Share of requests that got a valid answer |
-| **Time to answer** | The typical answer, and the slowest 1 in 20 |
+| **Time to answer** | The median (half of answers are faster) and the p95 (19 in 20 are faster; the slow tail) |
 | **Throughput** | Requests handled per second |
 | **Goodput** | Answered requests per second (throughput × success rate) |
 
@@ -227,10 +234,15 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
 
 ```{=html}
 <style>
-.plinko { margin: 1.25rem auto 1.5rem; max-width: 480px; }
+.plinko { position: relative; margin: 1.25rem auto 1.5rem; max-width: 480px; }
 .plinko canvas { width: 100%; height: auto; display: block; border: 1px solid rgba(127,127,127,.28); border-radius: 8px; }
 .plinko-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; margin-top: .6rem; }
-.plinko-stats div { border: 1px solid rgba(127,127,127,.28); border-radius: 6px; padding: .35rem .5rem; text-align: center; }
+.plinko-stats div { border: 1px solid rgba(127,127,127,.28); border-radius: 6px; padding: .35rem .5rem; text-align: center; cursor: help; transition: border-color .15s, background .15s; }
+.plinko-stats div:hover, .plinko-stats div:focus-visible, .plinko-stats div.on { border-color: #e0a800; background: rgba(224,168,0,.12); outline: none; }
+.plinko-tip { position: absolute; z-index: 5; width: min(300px, 100%); box-sizing: border-box; background: #1f2937; color: #f9fafb; font-size: .85rem; line-height: 1.4; padding: .55rem .75rem; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,.28); pointer-events: none; opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .15s; }
+.plinko-tip.on { opacity: 1; transform: none; }
+.plinko-tip::before { content: ""; position: absolute; top: -6px; left: var(--ax, 50%); margin-left: -6px; border: 6px solid transparent; border-top: 0; border-bottom-color: #1f2937; }
+.plinko-tip strong { display: block; margin-bottom: .15rem; color: #fbbf24; }
 .plinko-stats span { display: block; font-size: .7rem; letter-spacing: .03em; text-transform: uppercase; opacity: .7; }
 .plinko-stats b { font-variant-numeric: tabular-nums; font-size: 1.05rem; }
 .plinko-replay { margin-top: .6rem; padding: .25rem .8rem; border-radius: 99px; border: 1px solid rgba(127,127,127,.5); background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: .85rem; }
@@ -239,16 +251,17 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
 @media (max-width: 560px) { .plinko-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>
 <figure class="plinko" id="plinko">
-  <canvas width="440" height="340" role="img" aria-label="Animation: 100 requests drop through pegs. 90 land in the answered bin and 10 in the refused bin over 10 seconds."></canvas>
+  <canvas width="440" height="340" role="img" aria-label="Animation: 100 requests drop through pegs. 90 land in the bin for answers (HTTP 200) and 10 in the bin for refusals (HTTP 429) over 10 seconds."></canvas>
   <div class="plinko-stats">
-    <div><span>Sent</span><b data-sent>0</b></div>
-    <div><span>Time</span><b data-time>0 s</b></div>
-    <div><span>Success rate</span><b data-succ>-</b></div>
-    <div><span>Throughput</span><b data-thr>-</b></div>
-    <div><span>Goodput</span><b data-good>-</b></div>
+    <div tabindex="0" data-tip="sent" aria-describedby="plinko-tip"><span>Sent</span><b data-sent>0</b></div>
+    <div tabindex="0" data-tip="time" aria-describedby="plinko-tip"><span>Time</span><b data-time>0 s</b></div>
+    <div tabindex="0" data-tip="succ" aria-describedby="plinko-tip"><span>Success rate</span><b data-succ>-</b></div>
+    <div tabindex="0" data-tip="thr" aria-describedby="plinko-tip"><span>Throughput</span><b data-thr>-</b></div>
+    <div tabindex="0" data-tip="good" aria-describedby="plinko-tip"><span>Goodput</span><b data-good>-</b></div>
   </div>
+  <div class="plinko-tip" id="plinko-tip" role="tooltip"></div>
   <button type="button" class="plinko-replay">Replay</button>
-  <figcaption>100 requests over 10 seconds. Ninety are answered and ten are refused.</figcaption>
+  <figcaption>100 requests over 10 seconds. Ninety are answered and ten are refused. Hover over a box to see what it means.</figcaption>
 </figure>
 <script>
 (function () {
@@ -297,11 +310,23 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
       }
     }
   }
-  function ball(x, y, kind, k) {
+  var AMBER = "#e0a800", hl = null, lastT = 0;
+  var TIPS = {
+    sent: ["Sent", "Requests fired off so far. Each ball is one request leaving the caller. Every ball is ringed while you point here."],
+    time: ["Time", "How long the test has run, on a 10-second clock. Throughput and goodput are counts divided by this time."],
+    succ: ["Success rate", "Of the requests that finished, the share that got a valid answer (HTTP 200). Green balls out of all balls in the bins: 90 of 100 here. Refusals (HTTP 429) count against it."],
+    thr: ["Throughput", "Requests handled per second, answered or refused. Every ball in either bin counts, whatever its colour. A gateway that refuses everything instantly would still score high here."],
+    good: ["Goodput", "Answered requests per second: only the green balls. Throughput times success rate (10 a second at 90% is 9 a second). This is the useful work."]
+  };
+  function ball(x, y, kind, k, alpha, halo) {
     var to = kind === "good" ? GOOD : BAD, c = BLUE.map(function (v, i) { return Math.round(v + (to[i] - v) * k); });
+    ctx.globalAlpha = alpha;
     ctx.beginPath(); ctx.arc(x, y, R, 0, 6.2832); ctx.fillStyle = "rgb(" + c.join(",") + ")"; ctx.fill();
+    if (halo) { ctx.beginPath(); ctx.arc(x, y, R + 2.5, 0, 6.2832); ctx.strokeStyle = AMBER; ctx.lineWidth = 1.6; ctx.stroke(); }
+    ctx.globalAlpha = 1;
   }
   function scene(t) {
+    lastT = t;
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = GREY;
     for (var r = 0; r < ROWS; r++) {
@@ -312,21 +337,44 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
         ctx.beginPath(); ctx.arc(x, ROW0 + r * ROWGAP - ROWGAP / 2, 2.5, 0, 6.2832); ctx.fill();
       }
     }
-    ctx.strokeStyle = GREY; ctx.lineWidth = 1.5;
+    var succ = hl === "succ";
+    ctx.lineWidth = succ ? 3 : 1.5;
+    ctx.strokeStyle = succ ? "rgb(" + GOOD.join(",") + ")" : GREY;
     ctx.strokeRect(bins.good.x0 - 4, BIN_TOP, bins.good.x1 - bins.good.x0 + 8, H - BIN_TOP - 2);
+    ctx.strokeStyle = succ ? "rgb(" + BAD.join(",") + ")" : GREY;
     ctx.strokeRect(bins.bad.x0 - 4, BIN_TOP, bins.bad.x1 - bins.bad.x0 + 8, H - BIN_TOP - 2);
     ctx.fillStyle = GREY; ctx.font = "13px sans-serif";
-    ctx.fillText("Answered (200)", bins.good.x0, BIN_TOP + 16);
+    ctx.fillText("Answered", bins.good.x0, BIN_TOP + 16);
     ctx.fillText("Refused", bins.bad.x0, BIN_TOP + 16);
-    var sent = 0, good = 0;
+    ctx.font = "11px sans-serif";
+    ctx.fillText("HTTP 200", bins.good.x0, BIN_TOP + 30);
+    ctx.fillText("HTTP 429", bins.bad.x0, BIN_TOP + 30);
+    var sent = 0, good = 0, landed = 0, landedGood = 0, clock = Math.min(t, SECONDS);
     balls.forEach(function (b) {
       var p = (t - b.at) / FALL;
       if (p < 0) return;
       sent++; if (b.kind === "good") good++;
-      if (p >= 1) ball(b.slot.x, b.slot.y, b.kind, Math.min(1, (p - 1) * FALL / FADE));
-      else { var q = posAt(b, p); ball(q.x, q.y, b.kind, 0); }
+      var done = p >= 1, isGood = b.kind === "good", alpha = 1, halo = false;
+      if (done) { landed++; if (isGood) landedGood++; }
+      if (hl === "sent") halo = true;
+      else if (hl === "thr" || hl === "succ") { halo = done; alpha = done ? 1 : .35; }
+      else if (hl === "good") { halo = done && isGood; alpha = halo ? 1 : .25; }
+      if (done) ball(b.slot.x, b.slot.y, b.kind, Math.min(1, (p - 1) * FALL / FADE), alpha, halo);
+      else { var q = posAt(b, p); ball(q.x, q.y, b.kind, 0, alpha, halo); }
     });
-    var clock = Math.min(t, SECONDS);
+    if (succ) {
+      ctx.font = "bold 20px sans-serif"; ctx.textAlign = "right";
+      ctx.fillStyle = "rgb(" + GOOD.join(",") + ")"; ctx.fillText(landedGood, bins.good.x1, BIN_TOP + 24);
+      ctx.fillStyle = "rgb(" + BAD.join(",") + ")"; ctx.fillText(landed - landedGood, bins.bad.x1, BIN_TOP + 24);
+      ctx.textAlign = "left";
+    }
+    if (hl === "time") {
+      ctx.lineWidth = 4; ctx.lineCap = "round";
+      ctx.strokeStyle = GREY; ctx.beginPath(); ctx.moveTo(12, 6); ctx.lineTo(W - 12, 6); ctx.stroke();
+      ctx.strokeStyle = AMBER; ctx.beginPath(); ctx.moveTo(12, 6); ctx.lineTo(12 + (W - 24) * clock / SECONDS, 6); ctx.stroke();
+      ctx.lineCap = "butt"; ctx.fillStyle = GREY; ctx.font = "11px sans-serif";
+      ctx.fillText("0 s", 12, 22); ctx.textAlign = "right"; ctx.fillText("10 s", W - 12, 22); ctx.textAlign = "left";
+    }
     el("sent").textContent = sent;
     el("time").textContent = (clock >= SECONDS ? SECONDS : clock.toFixed(1)) + " s";
     if (sent > 0 && clock > 0.3) {
@@ -347,6 +395,27 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
       if (t < SECONDS + FALL + FADE + .1) raf = requestAnimationFrame(frame);
     })(startTime);
   }
+  var tip = document.getElementById("plinko-tip"), cards = root.querySelectorAll("[data-tip]");
+  function show(card) {
+    var key = card.getAttribute("data-tip");
+    hl = key; Array.prototype.forEach.call(cards, function (c) { c.classList.toggle("on", c === card); });
+    tip.innerHTML = "<strong>" + TIPS[key][0] + "</strong>" + TIPS[key][1];
+    var rr = root.getBoundingClientRect(), cr = card.getBoundingClientRect(), sr = card.parentNode.getBoundingClientRect();
+    var tw = tip.offsetWidth, mid = cr.left + cr.width / 2 - rr.left, left = Math.max(0, Math.min(rr.width - tw, mid - tw / 2));
+    tip.style.left = left + "px"; tip.style.top = (sr.bottom - rr.top + 10) + "px"; tip.style.setProperty("--ax", (mid - left) + "px");
+    tip.classList.add("on"); scene(lastT);
+  }
+  function hide() {
+    hl = null; tip.classList.remove("on");
+    Array.prototype.forEach.call(cards, function (c) { c.classList.remove("on"); }); scene(lastT);
+  }
+  Array.prototype.forEach.call(cards, function (c) {
+    c.addEventListener("mouseenter", function () { show(c); });
+    c.addEventListener("focus", function () { show(c); });
+    c.addEventListener("click", function () { show(c); });
+    c.addEventListener("mouseleave", hide);
+    c.addEventListener("blur", hide);
+  });
   root.querySelector(".plinko-replay").addEventListener("click", run);
   plan(); scene(0);
   if ("IntersectionObserver" in window) {
@@ -399,22 +468,40 @@ Here the setup mattered. UK South got 90% of the traffic, more than it could ser
 - **A sin bin fixed it.** The region sat out, and every call went where there was room.
 - **Trip on the first failure.** It was safe at every rate tested, and it wasted the fewest calls.
 - **No sin bin costs calls.** Trying UK South first took 1.4 calls per request. A sin bin took about 1.1.
-- **The gateway matched the client.** Same success. The slowest 1 in 20 answers took 880-1,040 ms through the gateway and 640-770 ms through the client.
+- **The gateway matched the client.** Same success. The p95 was 880-1,040 ms through the gateway and 640-770 ms through the client.
 
 Raising the load did not change this.
 
 ### 3. Nothing wrong
 
-Both sides answered everything. The typical answer took 372 ms through the gateway and 396 ms direct. The slowest 1 in 20 was 710 ms against 593 ms. The gateway's cost is in the slow tail.
+Both sides answered everything. The median answer took 372 ms through the gateway and 396 ms direct. The p95 was 710 ms against 593 ms. The gateway's cost is in the slow tail. The next section looks at that more closely.
+
+### 4. How fast is each region?
+
+A separate set of tests measured speed alone. Quota was plentiful, each request got one attempt, and there was no retry, no sin bin and no cool-down. Calls went straight to each region, then through the gateway pinned to one region at a time.
+
+| Region | Direct: median | Direct: p95 | Via gateway: median | Via gateway: p95 |
+|---|---:|---:|---:|---:|
+| UK South | 297 ms | 434 ms | 299 ms | 798 ms |
+| Sweden Central | 365 ms | 675 ms | 396 ms | 929 ms |
+| West Europe | 481 ms | 982 ms | 473 ms | 1,233 ms |
+
+- **The order held.** UK South was fastest, Sweden Central about 65 ms behind, West Europe slowest. The same order appeared in all three repeats across the day, and in a one-region-at-a-time check.
+- **West Europe was the least steady.** Its median ranged from 450 to 764 ms between runs. The others moved by about 10 ms.
+- **The gateway added nothing visible to the median** for UK South and West Europe, and about 30 ms for Sweden Central.
+- **It did raise the p95.** By 250-360 ms in every region. This time there was no retry, no breaker and no quota pressure, so those are not the cause. The extra hop is still the best guess. It is a guess.
+
+All of this was measured from one laptop in the UK on one day. A caller elsewhere could see a different order.
 
 ## What to build
 
 1. **Add a sin bin.** Whether in the client or the gateway, this is the one thing that made a difference. Retrying without it mostly sends calls back to the region that just refused.
-2. **In a gateway, use a priority list for one main region and some fallbacks.** Add a circuit breaker that counts 429s and trips on the first failure. A breaker that counts only 5xx never fires on quota errors.
-3. **Mind the retry pause.** In one test, a one-second pause pushed the slowest 1 in 20 answers to 2.6 seconds. With no pause it was about 1 second (two runs).
-4. **Use `Retry-After` for batch work only.** Waiting out the minute suits a nightly job. It does not suit a chat.
-5. **Handle the 503.** If every region is short, a breaker on 429 can empty the pool. Callers then get instant 503s.
+2. **In a gateway, use a priority list for one main region and some fallbacks.** Rank them by speed from where your callers are. From the UK that meant UK South, then Sweden Central, then West Europe. Add a circuit breaker that counts 429s and trips on the first failure. A breaker that counts only 5xx never fires on quota errors.
+3. **Handle the 503.** If every region is short, a breaker on 429 can empty the pool. Callers then get instant 503s.
+4. **Mind the retry pause.** In one test, a one-second pause pushed the p95 to 2.6 seconds. With no pause it was about 1 second (two runs).
+5. **Use `Retry-After` for batch work only.** Waiting out the minute suits a nightly job. It does not suit a chat.
 6. **Do not cap requests below real demand.** The cap will refuse work that would have succeeded.
+7. **Buy quota before you tune routing.** When every region is short, nothing else helps.
 
 ## Should you stand up APIM? {#should-you-stand-up-apim}
 
@@ -427,29 +514,25 @@ Both sides answered everything. The typical answer took 372 ms through the gatew
 - One place to log, cap and watch every call.
 - The same behaviour for every team and language.
 
-**What it costs.** Another service to run and pay for. Slower slowest answers. New ways to fail (see below). A shared dependency for every caller.
+**What it costs.** Another service to run and pay for. The p95 was 250-360 ms higher. New ways to fail (see Before you go live). A shared dependency for every caller.
 
 **How to decide.**
 
 - **A few callers, one team, one language:** add the sin bin to the client. Skip the gateway.
 - **Many callers or teams, credentials you would rather not spread, or routing you must change fast:** a gateway is worth considering. Buy it for those reasons, not for speed.
 
-## Gotchas
+## Before you go live
 
-These cost days. Check them first.
+Checks for anyone running this in production.
 
 | What goes wrong | What to do |
 |---|---|
-| **APIM retry silently does nothing on requests with a body.** The retry fails inside the gateway and never reaches the model. | Add `buffer-request-body="true"` to the forward-request inside the retry. Then check that the model sees more than one call per refused request. |
-| **A retry block with no forward-request returns instant fake 200s.** | Check the body holds a real answer. Real answers take hundreds of milliseconds, not 14. |
+| **APIM retry silently does nothing on requests with a body.** The retry fails inside the gateway and never reaches the model. | Add `buffer-request-body="true"` to the forward-request inside the retry. Then confirm the model sees more than one call per refused request. |
+| **A retry block with no forward-request returns instant fake 200s.** | Alert on answers that come back far faster than the model can respond (here, 14 ms against hundreds). Check the body holds a real answer. |
 | **`count` means retries, not attempts.** `count="3"` is four attempts. | Match your client's attempts to the gateway's. |
-| **Retry without a sin bin re-rolls the weights.** It can pick the region that just refused. | Pair retry with a breaker or priority list. |
-| **Policy changes take up to two minutes to apply. Breaker state survives a redeploy.** | Wait two minutes after a change. Leave 60 seconds between tests. |
-| **A breaker on 429 empties the pool when every region is short.** | Treat a fast 503 as "all regions out" and handle it. |
-| **The request limit is low.** 60 requests a minute alongside 60,000 tokens. | Read your limits first: `az cognitiveservices account deployment show`, then `properties.rateLimits`. |
+| **Policy changes take up to two minutes. Breaker state survives a redeploy.** | Wait two minutes after a change before you trust it. |
+| **The request limit can bite before the token limit.** Here it was 60 requests a minute alongside 60,000 tokens. | Read your limits first: `az cognitiveservices account deployment show`, then `properties.rateLimits`. |
 | **Turning a breaker off with an empty rules list is rejected.** | Set the breaker to `null` in Terraform or ARM. |
-| **A laptop that sleeps ruins a test and still produces numbers.** | Discard any run that took much longer than planned. |
-| **Fixed-user load tests mislead.** A setup that fails fast sends more requests than one that fails slowly. | Use a fixed arrival rate. |
 
 ## Limits
 
@@ -457,14 +540,16 @@ These cost days. Check them first.
 - **Developer tier.** One gateway unit, no SLA. Production tiers will differ. On multi-unit tiers each instance keeps its own [breaker state](https://learn.microsoft.com/en-us/azure/api-management/backends).
 - **Gateway and client were not identical.** The gateway paused one second between retries and the client none. The gateway shared its sin bin across all callers. The client kept one per simulated caller. The client ran from a laptop. The gateway sat in UK South.
 - **Few runs for some setups.** Ten runs were discarded when the laptop slept. Several setups have two or three valid runs. The cards list every one.
-- **The slow tail is unexplained.** The extra hop is the best guess. It is a guess.
+- **The slow tail is unexplained.** The speed tests ruled out retry, breakers and quota. The extra hop is the best guess. It is a guess.
+- **Region speed came from one laptop in the UK, over one day.** West Europe moved a lot between runs. The one-region-at-a-time check has one run per region. For West Europe the gateway's slow-tail cost overlaps with the spread between direct runs, so it is less clear there than in UK South and Sweden Central.
 - **The bursts ran with a broken retry rule.** They show what weights and breakers do, not what a working retry does in a burst. The steady runs had working retry.
 - **The measured ceiling sat about 20% above the configured limit.** The reason is unknown.
 - **Success means a valid answer.** Answer quality was not judged.
 
 ## What to test next {#what-to-test-next}
 
-- **The slow tail.** Send the same load through a bare gateway (no pool, breaker or retry) and straight to one region, and compare. APIM's diagnostic logs also split each request into total time and time waiting on the model. Then run the client from a machine in UK South, and repeat on a production tier.
+- **The slow tail.** The speed tests already compared a bare gateway with direct calls. What is left is the cause. APIM's diagnostic logs split each request into total time and time waiting on the model. Then run the client from a machine in UK South, and repeat on a production tier.
+- **Region speed from elsewhere.** Repeat the speed tests from a machine in each region, and over several days.
 - **Real prompts.** Longer prompts would hit the token limit first.
 - **One shared client.** A single cool-down shared by all callers, as most services run.
 - **The operational case.** Count what a gateway saves: credential rotation, a routing change across several codebases.
@@ -472,7 +557,7 @@ These cost days. Check them first.
 
 ## Appendix: all the runs {#all-the-runs}
 
-Every run, as a card. Each tab holds runs that share a quota and load, so compare cards within a tab. The first four tabs are the gateway-against-client tests: a coloured edge is the gateway and a grey edge is a client calling the regions directly. The last five are the 200-request bursts. A reference card is pinned on most tabs. Hover a numbered note to highlight that part of the card.
+Every success-rate run, as a card. The speed tests follow the cards as a table. Each tab holds runs that share a quota and load, so compare cards within a tab. The first four tabs are the gateway-against-client tests: a coloured edge is the gateway and a grey edge is a client calling the regions directly. The last five are the 200-request bursts. A reference card is pinned on most tabs. Hover a numbered note to highlight that part of the card.
 
 ### Test setup
 
@@ -488,6 +573,7 @@ Every run, as a card. Each tab holds runs that share a quota and load, so compar
 | Gaps | 60 seconds between runs, 2 minutes after a policy change |
 | Success | HTTP 200 with a valid answer in the body |
 | Discarded | Steady runs longer than 330 seconds (the laptop slept) or with dropped requests |
+| Speed tests | Rebuilt regions and gateway, 60,000 TPM per region, one request every 2 seconds per region for about 11 minutes, first 20 per region ignored |
 
 The Terraform, k6 scripts and results are in <a href="https://github.com/r-leyshon/azure-load-balance-perf" target="_blank" rel="noopener noreferrer">r-leyshon/azure-load-balance-perf</a>.
 
@@ -570,6 +656,24 @@ The Terraform, k6 scripts and results are in <a href="https://github.com/r-leysh
 {{< include includes/24-runs-spare.html >}}
 
 :::
+
+### Region speed runs
+
+Median and p95 answer times, in milliseconds. About 300 answers per region per run. Every valid run had zero refusals and zero errors. Ranges are across runs.
+
+| Test | Region | Runs | Median | p95 |
+|---|---|---:|---|---|
+| Direct, regions mixed in one run | UK South | 3 | 297 (296-306) | 434 (428-442) |
+| Direct, regions mixed in one run | Sweden Central | 3 | 365 (361-372) | 675 (656-749) |
+| Direct, regions mixed in one run | West Europe | 3 | 481 (450-764) | 982 (816-1,212) |
+| Direct, one region per run | UK South | 1 | 284 | 385 |
+| Direct, one region per run | Sweden Central | 1 | 364 | 749 |
+| Direct, one region per run | West Europe | 1 | 575 | 1,000 |
+| Gateway pinned to one region | UK South | 3 | 299 (297-310) | 798 (729-874) |
+| Gateway pinned to one region | Sweden Central | 3 | 396 (383-402) | 929 (806-973) |
+| Gateway pinned to one region | West Europe | 3 | 473 (459-517) | 1,233 (1,063-1,286) |
+
+Two mixed-region runs were discarded and repeated because each dropped one request. The repeats were valid. For the gateway runs, Azure Monitor confirmed that every call reached only the pinned region. The rules for judging a difference were written down before the first run. The gateway's pinned set-up had no breaker and no retry, and the normal settings were restored and read back afterwards.
 
 ## Further reading
 

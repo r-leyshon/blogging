@@ -460,7 +460,7 @@ def matched_card(s: dict, tab_colour: str, maxima: dict, tag: str = "") -> str:
     rates = ", ".join(f"{x:.1f}%" for x in s["rates"])
     meta = [f'{str(s["n"]) + " runs" if s["n"] > 1 else "One run"}: {rates}']
     if s["p50"] and s["p95"]:
-        meta.append(f'Typical answer {s["p50"]:.0f} ms &middot; slowest 1 in 20 took {s["p95"]:,.0f} ms or more')
+        meta.append(f'Median answer {s["p50"]:.0f} ms &middot; p95 {s["p95"]:,.0f} ms')
     mon = s["monitor"]
     if mon:
         meta.append(f'Azure Monitor, one isolated run: {mon["calls_per_request"]:.2f} model calls per request, '
