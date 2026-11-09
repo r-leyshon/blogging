@@ -227,7 +227,7 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
 
 ```{=html}
 <style>
-.plinko { margin: 1.25rem auto 1.5rem; max-width: 680px; }
+.plinko { margin: 1.25rem auto 1.5rem; max-width: 480px; }
 .plinko canvas { width: 100%; height: auto; display: block; border: 1px solid rgba(127,127,127,.28); border-radius: 8px; }
 .plinko-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; margin-top: .6rem; }
 .plinko-stats div { border: 1px solid rgba(127,127,127,.28); border-radius: 6px; padding: .35rem .5rem; text-align: center; }
@@ -239,7 +239,7 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
 @media (max-width: 560px) { .plinko-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>
 <figure class="plinko" id="plinko">
-  <canvas width="640" height="340" role="img" aria-label="Animation: 100 requests drop through pegs. 90 land in the answered bin and 10 in the refused bin over 10 seconds."></canvas>
+  <canvas width="440" height="340" role="img" aria-label="Animation: 100 requests drop through pegs. 90 land in the answered bin and 10 in the refused bin over 10 seconds."></canvas>
   <div class="plinko-stats">
     <div><span>Sent</span><b data-sent>0</b></div>
     <div><span>Time</span><b data-time>0 s</b></div>
@@ -255,15 +255,15 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
   var root = document.getElementById("plinko");
   if (!root) return;
   var canvas = root.querySelector("canvas"), ctx = canvas.getContext("2d");
-  var W = 640, H = 340, dpr = window.devicePixelRatio || 1;
+  var W = 440, H = 340, CX = W / 2, dpr = window.devicePixelRatio || 1;
   canvas.width = W * dpr; canvas.height = H * dpr; ctx.scale(dpr, dpr);
   var el = function (k) { return root.querySelector("[data-" + k + "]"); };
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var GOOD = "#1f7a8c", BAD = "#bc4749", GREY = "rgba(127,127,127,.55)";
+  var BLUE = [58, 134, 200], GOOD = [76, 154, 62], BAD = [188, 71, 73], FADE = 0.5, GREY = "rgba(127,127,127,.55)";
   var TOTAL = 100, REFUSED = 10, SECONDS = 10, FALL = 1.3;
-  var ROWS = 7, ROW0 = 70, ROWGAP = 22, PEGX0 = 40, PEGGAP = 40;
+  var ROWS = 7, ROW0 = 70, ROWGAP = 22, PEGGAP = 40;
   var BIN_TOP = 250, BIN_Y = H - 12, R = 4.5, STEP = 11;
-  var bins = { good: { x0: 22, x1: 442 }, bad: { x0: 472, x1: 618 } };
+  var bins = { good: { x0: 16, x1: 292 }, bad: { x0: 322, x1: 424 } };
   var balls, started, raf, startTime;
 
   function slot(kind, i) {
@@ -276,12 +276,12 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
     for (var j = fates.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var t = fates[j]; fates[j] = fates[k]; fates[k] = t; }
     var gi = 0, bi = 0;
     balls = fates.map(function (kind, n) {
-      var s = slot(kind, kind === "good" ? gi++ : bi++), pts = [{ y: 8, x: 240 }];
+      var s = slot(kind, kind === "good" ? gi++ : bi++), pts = [{ y: 8, x: CX }];
       for (var r = 0; r < ROWS; r++) {
-        var y = ROW0 + r * ROWGAP, want = 240 + (s.x - 240) * ((r + 1) / (ROWS + 1)) + (Math.random() - .5) * 60;
-        var off = PEGX0 + (r % 2 ? PEGGAP / 2 : 0) + PEGGAP / 2;
+        var y = ROW0 + r * ROWGAP, want = CX + (s.x - CX) * ((r + 1) / (ROWS + 1)) + (Math.random() - .5) * 60;
+        var off = CX + (r % 2 ? 0 : PEGGAP / 2);
         var gx = off + Math.round((want - off) / PEGGAP) * PEGGAP;
-        pts.push({ y: y, x: Math.max(30, Math.min(W - 30, gx)) });
+        pts.push({ y: y, x: Math.max(20, Math.min(W - 20, gx)) });
       }
       pts.push({ y: s.y, x: s.x });
       return { kind: kind, at: n / TOTAL * SECONDS, pts: pts, slot: s, landed: false };
@@ -297,13 +297,20 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
       }
     }
   }
-  function ball(x, y, kind) { ctx.beginPath(); ctx.arc(x, y, R, 0, 6.2832); ctx.fillStyle = kind === "good" ? GOOD : BAD; ctx.fill(); }
+  function ball(x, y, kind, k) {
+    var to = kind === "good" ? GOOD : BAD, c = BLUE.map(function (v, i) { return Math.round(v + (to[i] - v) * k); });
+    ctx.beginPath(); ctx.arc(x, y, R, 0, 6.2832); ctx.fillStyle = "rgb(" + c.join(",") + ")"; ctx.fill();
+  }
   function scene(t) {
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = GREY;
     for (var r = 0; r < ROWS; r++) {
-      var off = PEGX0 + (r % 2 ? PEGGAP / 2 : 0);
-      for (var x = off; x < W - 20; x += PEGGAP) { ctx.beginPath(); ctx.arc(x, ROW0 + r * ROWGAP - ROWGAP / 2, 2.5, 0, 6.2832); ctx.fill(); }
+      var off = CX + (r % 2 ? PEGGAP / 2 : 0);
+      for (var k = -6; k <= 6; k++) {
+        var x = off + k * PEGGAP;
+        if (x < 8 || x > W - 8) continue;
+        ctx.beginPath(); ctx.arc(x, ROW0 + r * ROWGAP - ROWGAP / 2, 2.5, 0, 6.2832); ctx.fill();
+      }
     }
     ctx.strokeStyle = GREY; ctx.lineWidth = 1.5;
     ctx.strokeRect(bins.good.x0 - 4, BIN_TOP, bins.good.x1 - bins.good.x0 + 8, H - BIN_TOP - 2);
@@ -316,8 +323,8 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
       var p = (t - b.at) / FALL;
       if (p < 0) return;
       sent++; if (b.kind === "good") good++;
-      if (p >= 1) ball(b.slot.x, b.slot.y, b.kind);
-      else { var q = posAt(b, p); ball(q.x, q.y, b.kind); }
+      if (p >= 1) ball(b.slot.x, b.slot.y, b.kind, Math.min(1, (p - 1) * FALL / FADE));
+      else { var q = posAt(b, p); ball(q.x, q.y, b.kind, 0); }
     });
     var clock = Math.min(t, SECONDS);
     el("sent").textContent = sent;
@@ -333,11 +340,11 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
   }
   function run() {
     cancelAnimationFrame(raf); plan();
-    if (reduce) { scene(SECONDS + FALL); return; }
+    if (reduce) { scene(SECONDS + FALL + FADE); return; }
     startTime = performance.now();
     (function frame(now) {
       var t = (now - startTime) / 1000; scene(t);
-      if (t < SECONDS + FALL + .1) raf = requestAnimationFrame(frame);
+      if (t < SECONDS + FALL + FADE + .1) raf = requestAnimationFrame(frame);
     })(startTime);
   }
   root.querySelector(".plinko-replay").addEventListener("click", run);
