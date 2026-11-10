@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>APIM experiments: throughput vs success rate</title>
+  <title>APIM experiments: every run, by situation</title>
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <style>
     html, body { margin: 0; padding: 0; background: #fff; overflow: hidden; font-family: system-ui, sans-serif; }
@@ -23,6 +23,1589 @@
   },
   "validity_rule": "A matched-pair run is discarded if k6 ran for more than 330 s (the laptop slept) or dropped iterations.",
   "source": "https://github.com/r-leyshon/azure-load-balance-perf",
+  "steady": [
+    {
+      "run_id": "car_90_5_5",
+      "view": "main",
+      "title": "Gateway: 90/5/5, nothing else",
+      "side": "gateway",
+      "series": "Nothing: no retry, no sin bin",
+      "colour": "#bc4749",
+      "rate": 2,
+      "successes": 423,
+      "iterations": 601,
+      "success_rate_pct": 70.383,
+      "median_ms": 326,
+      "p95_ms": 701.3,
+      "throughput_rps": 2.002,
+      "goodput_rps": 1.409,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "car_90_5_5_r2",
+      "view": "main",
+      "title": "Gateway: 90/5/5, nothing else",
+      "side": "gateway",
+      "series": "Nothing: no retry, no sin bin",
+      "colour": "#bc4749",
+      "rate": 2,
+      "successes": 418,
+      "iterations": 601,
+      "success_rate_pct": 69.551,
+      "median_ms": 338.5,
+      "p95_ms": 888.4,
+      "throughput_rps": 2.003,
+      "goodput_rps": 1.393,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "car_90_5_5_r3",
+      "view": "main",
+      "title": "Gateway: 90/5/5, nothing else",
+      "side": "gateway",
+      "series": "Nothing: no retry, no sin bin",
+      "colour": "#bc4749",
+      "rate": 2,
+      "successes": 419,
+      "iterations": 600,
+      "success_rate_pct": 69.833,
+      "median_ms": 326,
+      "p95_ms": 855.5,
+      "throughput_rps": 2.0,
+      "goodput_rps": 1.397,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "car_cb5xx_90_5_5",
+      "view": "main",
+      "title": "Gateway: breaker on server errors only",
+      "side": "gateway",
+      "series": "Nothing: no retry, no sin bin",
+      "colour": "#bc4749",
+      "rate": 2,
+      "successes": 420,
+      "iterations": 601,
+      "success_rate_pct": 69.884,
+      "median_ms": 312,
+      "p95_ms": 539.0,
+      "throughput_rps": 2.003,
+      "goodput_rps": 1.4,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_no_cb_r1",
+      "view": "main",
+      "title": "Gateway: retry only, no breaker",
+      "side": "gateway",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 476,
+      "iterations": 601,
+      "success_rate_pct": 79.201,
+      "median_ms": 669,
+      "p95_ms": 3506.2,
+      "throughput_rps": 1.988,
+      "goodput_rps": 1.574,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_no_cb_r2",
+      "view": "main",
+      "title": "Gateway: retry only, no breaker",
+      "side": "gateway",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 478,
+      "iterations": 601,
+      "success_rate_pct": 79.534,
+      "median_ms": 484.5,
+      "p95_ms": 3016.6,
+      "throughput_rps": 1.976,
+      "goodput_rps": 1.572,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_no_cb_r3",
+      "view": "main",
+      "title": "Gateway: retry only, no breaker",
+      "side": "gateway",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 459,
+      "iterations": 601,
+      "success_rate_pct": 76.373,
+      "median_ms": 324,
+      "p95_ms": 2591,
+      "throughput_rps": 1.994,
+      "goodput_rps": 1.523,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_no_cb_r4",
+      "view": "main",
+      "title": "Gateway: retry only, no breaker",
+      "side": "gateway",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 459,
+      "iterations": 600,
+      "success_rate_pct": 76.5,
+      "median_ms": 354,
+      "p95_ms": 2576.1,
+      "throughput_rps": 1.99,
+      "goodput_rps": 1.523,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_no_cb_r5",
+      "view": "main",
+      "title": "Gateway: retry only, no breaker",
+      "side": "gateway",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 460,
+      "iterations": 600,
+      "success_rate_pct": 76.667,
+      "median_ms": 402.5,
+      "p95_ms": 2635.2,
+      "throughput_rps": 1.991,
+      "goodput_rps": 1.527,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_no_cb_int0_r2",
+      "view": "main",
+      "title": "Gateway: retry only, no waiting",
+      "side": "gateway",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 451,
+      "iterations": 601,
+      "success_rate_pct": 75.042,
+      "median_ms": 345,
+      "p95_ms": 926.0,
+      "throughput_rps": 2.001,
+      "goodput_rps": 1.502,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_no_cb_int0_r3",
+      "view": "main",
+      "title": "Gateway: retry only, no waiting",
+      "side": "gateway",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 476,
+      "iterations": 601,
+      "success_rate_pct": 79.201,
+      "median_ms": 420,
+      "p95_ms": 1063.5,
+      "throughput_rps": 2.0,
+      "goodput_rps": 1.584,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_r1",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 3 failures)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 379,
+      "p95_ms": 1060,
+      "throughput_rps": 1.999,
+      "goodput_rps": 1.999,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_r3",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 3 failures)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 327,
+      "p95_ms": 906.1,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_r4",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 3 failures)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 392,
+      "p95_ms": 1088,
+      "throughput_rps": 1.998,
+      "goodput_rps": 1.998,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_r5",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 3 failures)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 391.5,
+      "p95_ms": 1028.7,
+      "throughput_rps": 1.993,
+      "goodput_rps": 1.993,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_trip1_r1",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 379,
+      "p95_ms": 1012,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_trip1_r2",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 329,
+      "p95_ms": 861,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_trip1_r3",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 330,
+      "p95_ms": 821,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_trip1_r4",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 393,
+      "p95_ms": 888,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_retry_cb_trip1_r5",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 398,
+      "p95_ms": 922,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_priority_r1",
+      "view": "main",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 365,
+      "p95_ms": 957,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_priority_r2",
+      "view": "main",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 343,
+      "p95_ms": 881.8,
+      "throughput_rps": 1.997,
+      "goodput_rps": 1.997,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6a_apim_priority_r5",
+      "view": "main",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 394,
+      "p95_ms": 706,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p5a_direct_weighted_r1",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, no memory",
+      "side": "client",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 478,
+      "iterations": 600,
+      "success_rate_pct": 79.667,
+      "median_ms": 428.5,
+      "p95_ms": 821.1,
+      "throughput_rps": 2.0,
+      "goodput_rps": 1.593,
+      "calls_per_request": 1.82
+    },
+    {
+      "run_id": "p5a_direct_weighted_r2",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, no memory",
+      "side": "client",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 492,
+      "iterations": 601,
+      "success_rate_pct": 81.864,
+      "median_ms": 451,
+      "p95_ms": 733.5,
+      "throughput_rps": 2.0,
+      "goodput_rps": 1.637,
+      "calls_per_request": 1.92
+    },
+    {
+      "run_id": "p5a_direct_weighted_r3",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, no memory",
+      "side": "client",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 472,
+      "iterations": 601,
+      "success_rate_pct": 78.536,
+      "median_ms": 423.5,
+      "p95_ms": 713.8,
+      "throughput_rps": 2.0,
+      "goodput_rps": 1.571,
+      "calls_per_request": 1.93
+    },
+    {
+      "run_id": "p5a_direct_weighted_r4",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, no memory",
+      "side": "client",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 468,
+      "iterations": 601,
+      "success_rate_pct": 77.87,
+      "median_ms": 431.5,
+      "p95_ms": 669.5,
+      "throughput_rps": 2.001,
+      "goodput_rps": 1.559,
+      "calls_per_request": 1.93
+    },
+    {
+      "run_id": "p5a_direct_weighted_r5",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, no memory",
+      "side": "client",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 471,
+      "iterations": 601,
+      "success_rate_pct": 78.369,
+      "median_ms": 462,
+      "p95_ms": 718.5,
+      "throughput_rps": 2.0,
+      "goodput_rps": 1.567,
+      "calls_per_request": 2.01
+    },
+    {
+      "run_id": "p6a_direct_weighted_r1",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, no memory",
+      "side": "client",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 475,
+      "iterations": 601,
+      "success_rate_pct": 79.035,
+      "median_ms": 420,
+      "p95_ms": 613.1,
+      "throughput_rps": 2.001,
+      "goodput_rps": 1.582,
+      "calls_per_request": 1.86
+    },
+    {
+      "run_id": "p6a_direct_weighted_r3",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, no memory",
+      "side": "client",
+      "series": "Retry only",
+      "colour": "#e09f3e",
+      "rate": 2,
+      "successes": 484,
+      "iterations": 601,
+      "success_rate_pct": 80.532,
+      "median_ms": 396.5,
+      "p95_ms": 580.9,
+      "throughput_rps": 1.956,
+      "goodput_rps": 1.575,
+      "calls_per_request": 1.98
+    },
+    {
+      "run_id": "p5a_direct_weighted_mem_r1",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 368.5,
+      "p95_ms": 771.3,
+      "throughput_rps": 1.997,
+      "goodput_rps": 1.997,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p5a_direct_weighted_mem_r2",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 370,
+      "p95_ms": 668,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p5a_direct_weighted_mem_r3",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 341,
+      "p95_ms": 600,
+      "throughput_rps": 1.968,
+      "goodput_rps": 1.968,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p5a_direct_weighted_mem_r4",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 331,
+      "p95_ms": 610,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p5a_direct_weighted_mem_r5",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 350,
+      "p95_ms": 671,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p6a_direct_weighted_mem_r1",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 367,
+      "p95_ms": 542,
+      "throughput_rps": 2.002,
+      "goodput_rps": 2.002,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p6a_direct_weighted_mem_r3",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 312,
+      "p95_ms": 595,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p6a_direct_weighted_mem_r4",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 370,
+      "p95_ms": 638,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p6a_direct_weighted_mem_r5",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 372,
+      "p95_ms": 643,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.07
+    },
+    {
+      "run_id": "p5a_direct_seq_mem_r1",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 330,
+      "p95_ms": 634,
+      "throughput_rps": 1.998,
+      "goodput_rps": 1.998,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p5a_direct_seq_mem_r2",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 327,
+      "p95_ms": 658,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p5a_direct_seq_mem_r3",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 354,
+      "p95_ms": 680,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p5a_direct_seq_mem_r4",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 367.5,
+      "p95_ms": 785.9,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p5a_direct_seq_mem_r5",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 363,
+      "p95_ms": 739,
+      "throughput_rps": 1.996,
+      "goodput_rps": 1.996,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p6a_direct_seq_mem_r1",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 347,
+      "p95_ms": 594,
+      "throughput_rps": 2.001,
+      "goodput_rps": 2.001,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p6a_direct_seq_mem_r4",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 388,
+      "p95_ms": 787.5,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p6a_direct_seq_mem_r5",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 393,
+      "p95_ms": 735,
+      "throughput_rps": 1.999,
+      "goodput_rps": 1.999,
+      "calls_per_request": 1.1
+    },
+    {
+      "run_id": "p5a_direct_seq_r4",
+      "view": "main",
+      "title": "Client: UK South first, no memory",
+      "side": "client",
+      "series": "UK South first, nothing remembered",
+      "colour": "#8e7dbe",
+      "rate": 2,
+      "successes": 600,
+      "iterations": 600,
+      "success_rate_pct": 100.0,
+      "median_ms": 353,
+      "p95_ms": 772.0,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.4
+    },
+    {
+      "run_id": "p5a_direct_seq_r5",
+      "view": "main",
+      "title": "Client: UK South first, no memory",
+      "side": "client",
+      "series": "UK South first, nothing remembered",
+      "colour": "#8e7dbe",
+      "rate": 2,
+      "successes": 601,
+      "iterations": 601,
+      "success_rate_pct": 100.0,
+      "median_ms": 372,
+      "p95_ms": 768,
+      "throughput_rps": 2.0,
+      "goodput_rps": 2.0,
+      "calls_per_request": 1.4
+    },
+    {
+      "run_id": "p6b_apim_retry_cb_r1",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 3 failures)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 901,
+      "iterations": 901,
+      "success_rate_pct": 100.0,
+      "median_ms": 375,
+      "p95_ms": 1104,
+      "throughput_rps": 2.998,
+      "goodput_rps": 2.998,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6b_apim_retry_cb_r2",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 3 failures)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 368.5,
+      "p95_ms": 1247.1,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6b_apim_retry_cb_r3",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 3 failures)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 901,
+      "iterations": 901,
+      "success_rate_pct": 100.0,
+      "median_ms": 347,
+      "p95_ms": 1063,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6b_apim_retry_cb_trip1_r1",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 360,
+      "p95_ms": 944.0,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6b_apim_retry_cb_trip1_r2",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 353.5,
+      "p95_ms": 872.1,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6b_apim_retry_cb_trip1_r3",
+      "view": "main",
+      "title": "Gateway: retry and breaker (trips after 1 failure)",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 341.5,
+      "p95_ms": 774,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6b_apim_priority_r1",
+      "view": "main",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 358,
+      "p95_ms": 781.1,
+      "throughput_rps": 2.999,
+      "goodput_rps": 2.999,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6b_apim_priority_r3",
+      "view": "main",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 901,
+      "iterations": 901,
+      "success_rate_pct": 100.0,
+      "median_ms": 341,
+      "p95_ms": 902,
+      "throughput_rps": 2.999,
+      "goodput_rps": 2.999,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p5b_direct_seq_r1",
+      "view": "main",
+      "title": "Client: UK South first, no memory",
+      "side": "client",
+      "series": "UK South first, nothing remembered",
+      "colour": "#8e7dbe",
+      "rate": 3,
+      "successes": 901,
+      "iterations": 901,
+      "success_rate_pct": 100.0,
+      "median_ms": 498,
+      "p95_ms": 850,
+      "throughput_rps": 2.996,
+      "goodput_rps": 2.996,
+      "calls_per_request": 1.83
+    },
+    {
+      "run_id": "p5b_direct_seq_r2",
+      "view": "main",
+      "title": "Client: UK South first, no memory",
+      "side": "client",
+      "series": "UK South first, nothing remembered",
+      "colour": "#8e7dbe",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 476,
+      "p95_ms": 795.2,
+      "throughput_rps": 2.996,
+      "goodput_rps": 2.996,
+      "calls_per_request": 1.83
+    },
+    {
+      "run_id": "p5b_direct_seq_r3",
+      "view": "main",
+      "title": "Client: UK South first, no memory",
+      "side": "client",
+      "series": "UK South first, nothing remembered",
+      "colour": "#8e7dbe",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 478,
+      "p95_ms": 830,
+      "throughput_rps": 2.998,
+      "goodput_rps": 2.998,
+      "calls_per_request": 1.83
+    },
+    {
+      "run_id": "p5b_direct_seq_mem_r1",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 351,
+      "p95_ms": 790.1,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": 1.14
+    },
+    {
+      "run_id": "p5b_direct_seq_mem_r2",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 901,
+      "iterations": 901,
+      "success_rate_pct": 100.0,
+      "median_ms": 344,
+      "p95_ms": 706,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": 1.14
+    },
+    {
+      "run_id": "p5b_direct_seq_mem_r3",
+      "view": "main",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 899,
+      "iterations": 900,
+      "success_rate_pct": 99.889,
+      "median_ms": 350,
+      "p95_ms": 674,
+      "throughput_rps": 2.999,
+      "goodput_rps": 2.996,
+      "calls_per_request": 1.13
+    },
+    {
+      "run_id": "p5b_direct_weighted_mem_r1",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 901,
+      "iterations": 901,
+      "success_rate_pct": 100.0,
+      "median_ms": 344,
+      "p95_ms": 631,
+      "throughput_rps": 3.0,
+      "goodput_rps": 3.0,
+      "calls_per_request": 1.09
+    },
+    {
+      "run_id": "p5b_direct_weighted_mem_r2",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 900,
+      "iterations": 900,
+      "success_rate_pct": 100.0,
+      "median_ms": 339.5,
+      "p95_ms": 563.1,
+      "throughput_rps": 2.999,
+      "goodput_rps": 2.999,
+      "calls_per_request": 1.09
+    },
+    {
+      "run_id": "p5b_direct_weighted_mem_r3",
+      "view": "main",
+      "title": "Client: 90/5/5, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Sin bin",
+      "colour": "#2a9d8f",
+      "rate": 3,
+      "successes": 901,
+      "iterations": 901,
+      "success_rate_pct": 100.0,
+      "median_ms": 339,
+      "p95_ms": 546,
+      "throughput_rps": 3.001,
+      "goodput_rps": 3.001,
+      "calls_per_request": 1.09
+    },
+    {
+      "run_id": "p6d_apim_priority_r1",
+      "view": "steady_every",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Gateway: priority list",
+      "colour": "#264653",
+      "rate": 6,
+      "successes": 1028,
+      "iterations": 1801,
+      "success_rate_pct": 57.079,
+      "median_ms": 371,
+      "p95_ms": 921.6,
+      "throughput_rps": 5.997,
+      "goodput_rps": 3.423,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6d_apim_priority_r2",
+      "view": "steady_every",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Gateway: priority list",
+      "colour": "#264653",
+      "rate": 6,
+      "successes": 1021,
+      "iterations": 1801,
+      "success_rate_pct": 56.691,
+      "median_ms": 359,
+      "p95_ms": 1003,
+      "throughput_rps": 5.992,
+      "goodput_rps": 3.397,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6d_apim_priority_r3",
+      "view": "steady_every",
+      "title": "Gateway: priority list",
+      "side": "gateway",
+      "series": "Gateway: priority list",
+      "colour": "#264653",
+      "rate": 6,
+      "successes": 1007,
+      "iterations": 1801,
+      "success_rate_pct": 55.913,
+      "median_ms": 342,
+      "p95_ms": 753.8,
+      "throughput_rps": 5.997,
+      "goodput_rps": 3.353,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6d_apim_retry_cb_trip1_eq_r2",
+      "view": "steady_every",
+      "title": "Gateway: retry and breaker (trips after 1 failure), even split",
+      "side": "gateway",
+      "series": "Gateway: breaker, even split",
+      "colour": "#2a9d8f",
+      "rate": 6,
+      "successes": 989,
+      "iterations": 1801,
+      "success_rate_pct": 54.914,
+      "median_ms": 345,
+      "p95_ms": 943.6,
+      "throughput_rps": 6.003,
+      "goodput_rps": 3.296,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p6d_apim_retry_cb_trip1_eq_r3",
+      "view": "steady_every",
+      "title": "Gateway: retry and breaker (trips after 1 failure), even split",
+      "side": "gateway",
+      "series": "Gateway: breaker, even split",
+      "colour": "#2a9d8f",
+      "rate": 6,
+      "successes": 1028,
+      "iterations": 1801,
+      "success_rate_pct": 57.079,
+      "median_ms": 354,
+      "p95_ms": 771.8,
+      "throughput_rps": 6.003,
+      "goodput_rps": 3.426,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p5d_direct_seq_mem_r1",
+      "view": "steady_every",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Client: UK South first, cool-down",
+      "colour": "#e9a23b",
+      "rate": 6,
+      "successes": 1030,
+      "iterations": 1801,
+      "success_rate_pct": 57.19,
+      "median_ms": 380,
+      "p95_ms": 967.4,
+      "throughput_rps": 6.0,
+      "goodput_rps": 3.431,
+      "calls_per_request": 0.75
+    },
+    {
+      "run_id": "p5d_direct_seq_mem_r2",
+      "view": "steady_every",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Client: UK South first, cool-down",
+      "colour": "#e9a23b",
+      "rate": 6,
+      "successes": 1038,
+      "iterations": 1800,
+      "success_rate_pct": 57.667,
+      "median_ms": 365,
+      "p95_ms": 697.1,
+      "throughput_rps": 5.998,
+      "goodput_rps": 3.459,
+      "calls_per_request": 0.75
+    },
+    {
+      "run_id": "p5d_direct_seq_mem_r3",
+      "view": "steady_every",
+      "title": "Client: UK South first, 60 s cool-down",
+      "side": "client",
+      "series": "Client: UK South first, cool-down",
+      "colour": "#e9a23b",
+      "rate": 6,
+      "successes": 1036,
+      "iterations": 1801,
+      "success_rate_pct": 57.524,
+      "median_ms": 358.5,
+      "p95_ms": 706.2,
+      "throughput_rps": 5.996,
+      "goodput_rps": 3.449,
+      "calls_per_request": 0.75
+    },
+    {
+      "run_id": "p5d_direct_weighted_mem_eq_r1",
+      "view": "steady_every",
+      "title": "Client: even split, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Client: even split, cool-down",
+      "colour": "#e76f51",
+      "rate": 6,
+      "successes": 1076,
+      "iterations": 1800,
+      "success_rate_pct": 59.778,
+      "median_ms": 452,
+      "p95_ms": 859.5,
+      "throughput_rps": 5.99,
+      "goodput_rps": 3.581,
+      "calls_per_request": 2.21
+    },
+    {
+      "run_id": "p5d_direct_weighted_mem_eq_r2",
+      "view": "steady_every",
+      "title": "Client: even split, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Client: even split, cool-down",
+      "colour": "#e76f51",
+      "rate": 6,
+      "successes": 1079,
+      "iterations": 1801,
+      "success_rate_pct": 59.911,
+      "median_ms": 444,
+      "p95_ms": 734.2,
+      "throughput_rps": 5.989,
+      "goodput_rps": 3.588,
+      "calls_per_request": 2.18
+    },
+    {
+      "run_id": "p5d_direct_weighted_mem_eq_r3",
+      "view": "steady_every",
+      "title": "Client: even split, retry, 60 s cool-down",
+      "side": "client",
+      "series": "Client: even split, cool-down",
+      "colour": "#e76f51",
+      "rate": 6,
+      "successes": 1080,
+      "iterations": 1801,
+      "success_rate_pct": 59.967,
+      "median_ms": 456.5,
+      "p95_ms": 785.5,
+      "throughput_rps": 5.995,
+      "goodput_rps": 3.595,
+      "calls_per_request": 2.23
+    },
+    {
+      "run_id": "p5c_direct_equal_r1",
+      "view": "healthy",
+      "title": "Client: even split",
+      "side": "client",
+      "series": "Direct to the regions",
+      "colour": "#5c6b73",
+      "rate": 1,
+      "successes": 301,
+      "iterations": 301,
+      "success_rate_pct": 100.0,
+      "median_ms": 374,
+      "p95_ms": 572,
+      "throughput_rps": 1.002,
+      "goodput_rps": 1.002,
+      "calls_per_request": 1.0
+    },
+    {
+      "run_id": "p5c_direct_equal_r2",
+      "view": "healthy",
+      "title": "Client: even split",
+      "side": "client",
+      "series": "Direct to the regions",
+      "colour": "#5c6b73",
+      "rate": 1,
+      "successes": 301,
+      "iterations": 301,
+      "success_rate_pct": 100.0,
+      "median_ms": 400,
+      "p95_ms": 597,
+      "throughput_rps": 1.002,
+      "goodput_rps": 1.002,
+      "calls_per_request": 1.0
+    },
+    {
+      "run_id": "p5c_direct_equal_r3",
+      "view": "healthy",
+      "title": "Client: even split",
+      "side": "client",
+      "series": "Direct to the regions",
+      "colour": "#5c6b73",
+      "rate": 1,
+      "successes": 301,
+      "iterations": 301,
+      "success_rate_pct": 100.0,
+      "median_ms": 396,
+      "p95_ms": 593,
+      "throughput_rps": 1.002,
+      "goodput_rps": 1.002,
+      "calls_per_request": 1.0
+    },
+    {
+      "run_id": "p5c_apim_baseline_r1",
+      "view": "healthy",
+      "title": "Gateway: even split",
+      "side": "gateway",
+      "series": "Through the gateway",
+      "colour": "#6a994e",
+      "rate": 1,
+      "successes": 301,
+      "iterations": 301,
+      "success_rate_pct": 100.0,
+      "median_ms": 371,
+      "p95_ms": 710,
+      "throughput_rps": 0.997,
+      "goodput_rps": 0.997,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p5c_apim_baseline_r2",
+      "view": "healthy",
+      "title": "Gateway: even split",
+      "side": "gateway",
+      "series": "Through the gateway",
+      "colour": "#6a994e",
+      "rate": 1,
+      "successes": 301,
+      "iterations": 301,
+      "success_rate_pct": 100.0,
+      "median_ms": 389,
+      "p95_ms": 893,
+      "throughput_rps": 1.002,
+      "goodput_rps": 1.002,
+      "calls_per_request": null
+    },
+    {
+      "run_id": "p5c_apim_baseline_r3",
+      "view": "healthy",
+      "title": "Gateway: even split",
+      "side": "gateway",
+      "series": "Through the gateway",
+      "colour": "#6a994e",
+      "rate": 1,
+      "successes": 301,
+      "iterations": 301,
+      "success_rate_pct": 100.0,
+      "median_ms": 372,
+      "p95_ms": 673,
+      "throughput_rps": 1.002,
+      "goodput_rps": 1.002,
+      "calls_per_request": null
+    }
+  ],
+  "region_speed": [
+    {
+      "run_id": "rlA_r1",
+      "condition": "A",
+      "region": "UK South",
+      "samples": 301,
+      "median_ms": 296.6,
+      "p95_ms": 441.5
+    },
+    {
+      "run_id": "rlA_r1",
+      "condition": "A",
+      "region": "West Europe",
+      "samples": 300,
+      "median_ms": 764.2,
+      "p95_ms": 1211.8
+    },
+    {
+      "run_id": "rlA_r1",
+      "condition": "A",
+      "region": "Sweden Central",
+      "samples": 300,
+      "median_ms": 372.1,
+      "p95_ms": 748.7
+    },
+    {
+      "run_id": "rlA_r2_x2",
+      "condition": "A",
+      "region": "UK South",
+      "samples": 300,
+      "median_ms": 306.0,
+      "p95_ms": 428.2
+    },
+    {
+      "run_id": "rlA_r2_x2",
+      "condition": "A",
+      "region": "West Europe",
+      "samples": 300,
+      "median_ms": 449.7,
+      "p95_ms": 815.8
+    },
+    {
+      "run_id": "rlA_r2_x2",
+      "condition": "A",
+      "region": "Sweden Central",
+      "samples": 300,
+      "median_ms": 365.3,
+      "p95_ms": 675.2
+    },
+    {
+      "run_id": "rlA_r3_x2",
+      "condition": "A",
+      "region": "UK South",
+      "samples": 301,
+      "median_ms": 296.4,
+      "p95_ms": 434.3
+    },
+    {
+      "run_id": "rlA_r3_x2",
+      "condition": "A",
+      "region": "West Europe",
+      "samples": 300,
+      "median_ms": 480.5,
+      "p95_ms": 982.5
+    },
+    {
+      "run_id": "rlA_r3_x2",
+      "condition": "A",
+      "region": "Sweden Central",
+      "samples": 300,
+      "median_ms": 361.0,
+      "p95_ms": 655.5
+    },
+    {
+      "run_id": "rlB_swedencentral_r1",
+      "condition": "B",
+      "region": "Sweden Central",
+      "samples": 300,
+      "median_ms": 364.4,
+      "p95_ms": 749.1
+    },
+    {
+      "run_id": "rlB_uksouth_r1",
+      "condition": "B",
+      "region": "UK South",
+      "samples": 301,
+      "median_ms": 284.1,
+      "p95_ms": 384.5
+    },
+    {
+      "run_id": "rlB_westeurope_r1",
+      "condition": "B",
+      "region": "West Europe",
+      "samples": 301,
+      "median_ms": 574.8,
+      "p95_ms": 999.8
+    },
+    {
+      "run_id": "rlC_swedencentral_r1",
+      "condition": "C",
+      "region": "Sweden Central",
+      "samples": 301,
+      "median_ms": 401.8,
+      "p95_ms": 928.9
+    },
+    {
+      "run_id": "rlC_swedencentral_r2",
+      "condition": "C",
+      "region": "Sweden Central",
+      "samples": 300,
+      "median_ms": 383.4,
+      "p95_ms": 805.7
+    },
+    {
+      "run_id": "rlC_swedencentral_r3",
+      "condition": "C",
+      "region": "Sweden Central",
+      "samples": 301,
+      "median_ms": 396.0,
+      "p95_ms": 972.7
+    },
+    {
+      "run_id": "rlC_uksouth_r1",
+      "condition": "C",
+      "region": "UK South",
+      "samples": 301,
+      "median_ms": 296.9,
+      "p95_ms": 798.0
+    },
+    {
+      "run_id": "rlC_uksouth_r2",
+      "condition": "C",
+      "region": "UK South",
+      "samples": 301,
+      "median_ms": 309.5,
+      "p95_ms": 874.3
+    },
+    {
+      "run_id": "rlC_uksouth_r3",
+      "condition": "C",
+      "region": "UK South",
+      "samples": 301,
+      "median_ms": 298.8,
+      "p95_ms": 728.5
+    },
+    {
+      "run_id": "rlC_westeurope_r1",
+      "condition": "C",
+      "region": "West Europe",
+      "samples": 301,
+      "median_ms": 458.5,
+      "p95_ms": 1062.5
+    },
+    {
+      "run_id": "rlC_westeurope_r2",
+      "condition": "C",
+      "region": "West Europe",
+      "samples": 301,
+      "median_ms": 473.2,
+      "p95_ms": 1285.9
+    },
+    {
+      "run_id": "rlC_westeurope_r3",
+      "condition": "C",
+      "region": "West Europe",
+      "samples": 300,
+      "median_ms": 516.9,
+      "p95_ms": 1233.2
+    }
+  ],
   "runs": [
     {
       "run_id": "retry_after_header",
@@ -446,6 +2029,9 @@
     }
   ]
 };
+    const VIEW = new URLSearchParams(location.search).get('view') || 'bursts';
+
+    // ---------- Bursts: throughput against success rate, with goodput lines ----------
     const colours = {
       'No retry': '#1f7a8c',
       'Direct (no gateway)': '#5c6b73',
@@ -474,13 +2060,13 @@
       { g: 30, dash: 'solid' },
     ];
 
-    function isoTraces() {
-      const lines = isoLevels.map(({ g, dash }) => {
+    function isoTraces(levels = isoLevels, yMax = Y_MAX, labelX = 55, yMin = Y_MIN) {
+      const lines = levels.map(({ g, dash }) => {
         const x = [];
         const y = [];
         for (let s = 1; s <= 100; s += 1) {
           const thr = g / (s / 100);
-          if (thr <= Y_MAX) {
+          if (thr <= yMax) {
             x.push(s);
             y.push(thr);
           }
@@ -496,12 +2082,16 @@
           hovertemplate: 'goodput = ' + g + '/s<extra></extra>',
         };
       });
+      const shown = levels.filter((l) => {
+        const y = (l.g / (labelX / 100)) * 1.1;
+        return y >= yMin && y <= yMax;
+      });
       const labels = {
         type: 'scatter',
         mode: 'text',
-        x: isoLevels.map(() => 55),
-        y: isoLevels.map((l) => (l.g / 0.55) * 1.1),
-        text: isoLevels.map((l) => `${l.g}/s`),
+        x: shown.map(() => labelX),
+        y: shown.map((l) => (l.g / (labelX / 100)) * 1.1),
+        text: shown.map((l) => `${l.g}/s`),
         textposition: 'top right',
         textfont: { size: 11, color: 'rgba(70,70,70,0.9)' },
         showlegend: false,
@@ -546,19 +2136,11 @@
         .filter(Boolean);
     }
 
-    function draw() {
-      if (typeof Plotly === 'undefined') {
-        document.getElementById('chart').innerHTML =
-          '<p class="err">Plotly failed to load (needs network). Use quarto preview or a local server.</p>';
-        return;
-      }
-      const el = document.getElementById('chart');
-      const w = Math.max(320, el.clientWidth || 900);
-      Plotly.newPlot(
-        el,
-        [...isoTraces(), ...pointTraces(DATA.runs)],
-        {
-          title: { text: 'The 200-request bursts: throughput vs success rate', font: { size: 16 } },
+    function burstView() {
+      return {
+        traces: [...isoTraces(), ...pointTraces(DATA.runs)],
+        layout: {
+          title: { text: 'Every region short, bursts: throughput vs success rate', font: { size: 16 } },
           xaxis: { title: 'Success rate (%)', range: [-2, 106] },
           yaxis: {
             title: 'Throughput (original requests per second, log scale)',
@@ -569,16 +2151,233 @@
           },
           legend: { orientation: 'h', yanchor: 'top', y: -0.18, x: 0 },
           margin: { l: 64, r: 24, t: 64, b: 110 },
-          hovermode: 'closest',
-          width: w,
-          height: 640,
         },
-        {
-          responsive: false,
-          displayModeBar: true,
-          staticPlot: false,
-        }
-      );
+      };
+    }
+
+    // ---------- Legend filters ----------
+    // Legend entries carry a key (trace.meta.key). Clicking one toggles that key in `hidden`,
+    // and the chart is rebuilt: colour entries hide a series or region, shape entries hide
+    // gateway/client or an experiment type, and the hollow entry hides the 3-a-second runs.
+    const hidden = new Set();
+    const GREY_MARK = '#7a858c';
+    const ms = (v) => Math.round(v).toLocaleString('en-GB') + ' ms';
+
+    function dummy(name, symbol, line, key) {
+      return {
+        type: 'scatter', mode: 'markers', x: [null], y: [null], name, meta: { key },
+        visible: hidden.has(key) ? 'legendonly' : true,
+        marker: { size: 11, symbol, color: line ? 'rgba(255,255,255,0)' : GREY_MARK, line: { width: 2, color: GREY_MARK } },
+        hoverinfo: 'skip',
+      };
+    }
+
+    // Dots at exactly 100% would hide each other, so nudge them sideways a little (hover shows the true value).
+    function nudge(id) {
+      let h = 0;
+      for (let i = 0; i < id.length; i += 1) h = (h * 31 + id.charCodeAt(i)) % 997;
+      return ((h % 21) - 10) / 10 * 1.3;
+    }
+
+    function steadyHover(p) {
+      return '<b>' + p.title + '</b><br>' + p.run_id + '<br>' + p.rate + ' requests a second<br>' +
+        p.success_rate_pct.toFixed(1) + '% success (' + p.successes + ' of ' + p.iterations + ')<br>' +
+        p.throughput_rps.toFixed(2) + '/s throughput, ' + p.goodput_rps.toFixed(2) + '/s goodput<br>' +
+        'median ' + ms(p.median_ms) + ', p95 ' + ms(p.p95_ms) +
+        (p.calls_per_request ? '<br>' + p.calls_per_request.toFixed(2) + ' model calls per request' : '') +
+        '<extra></extra>';
+    }
+
+    function steadyTraces(view, xKey, hollowAtRate, yKey) {
+      const all = DATA.steady.filter((p) => p.view === view);
+      const order = [];
+      all.forEach((p) => { if (!order.includes(p.series)) order.push(p.series); });
+      return order.map((name) => {
+        const key = 'series:' + name;
+        const mine = all.filter((p) => p.series === name && !hidden.has('side:' + p.side) &&
+          !(hollowAtRate && hidden.has('rate:' + p.rate)));
+        const colour = all.find((p) => p.series === name).colour;
+        return {
+          type: 'scatter', mode: 'markers', name, meta: { key },
+          visible: hidden.has(key) ? 'legendonly' : true,
+          x: mine.map((p) => p[xKey] + (xKey === 'success_rate_pct' && p[xKey] >= 99.5 ? nudge(p.run_id) : 0)),
+          y: mine.map((p) => (yKey ? p[yKey] : p.p95_ms)),
+          marker: {
+            opacity: 0.8,
+            size: 12,
+            symbol: mine.map((p) => (p.side === 'client' ? 'diamond' : 'circle')),
+            color: mine.map((p) => (hollowAtRate && p.rate === hollowAtRate ? 'rgba(255,255,255,0)' : colour)),
+            line: { width: 2, color: colour },
+          },
+          text: mine.map(steadyHover),
+          hovertemplate: '%{text}',
+          hoverlabel: { align: 'left' },
+        };
+      });
+    }
+
+    const THR_TITLE = 'Throughput (original requests per second, log scale)';
+    const levels = (gs) => gs.map((g, k) => ({ g, dash: ['dot', 'dot', 'dash', 'solid'][Math.min(k, 3)] }));
+
+    function mainView() {
+      const yMin = 1, yMax = 5;
+      return {
+        traces: [
+          ...isoTraces(levels([1, 1.5, 2, 3]), yMax, 75, yMin),
+          ...steadyTraces('main', 'success_rate_pct', 3, 'throughput_rps'),
+          dummy('Gateway', 'circle', false, 'side:gateway'),
+          dummy('Client, no gateway', 'diamond', false, 'side:client'),
+          dummy('Hollow: 3 requests a second (filled: 2)', 'circle', true, 'rate:3'),
+        ],
+        layout: {
+          title: { text: 'Main region short: throughput vs success rate', font: { size: 16 } },
+          xaxis: { title: 'Success rate (%)', range: [60, 104] },
+          yaxis: {
+            title: THR_TITLE, type: 'log',
+            range: [Math.log10(yMin), Math.log10(yMax)],
+            tickvals: [1, 1.5, 2, 3, 4, 5], ticktext: ['1', '1.5', '2', '3', '4', '5'],
+          },
+          legend: { orientation: 'h', yanchor: 'top', y: -0.2, x: 0 },
+          margin: { l: 64, r: 24, t: 64, b: 130 },
+        },
+      };
+    }
+
+    function everyView() {
+      const yMin = 2, yMax = 12;
+      return {
+        traces: [
+          ...isoTraces(levels([2, 3, 4, 5]), yMax, 52, yMin),
+          ...steadyTraces('steady_every', 'success_rate_pct', 0, 'throughput_rps'),
+          dummy('Gateway', 'circle', false, 'side:gateway'),
+          dummy('Client, no gateway', 'diamond', false, 'side:client'),
+        ],
+        layout: {
+          title: { text: 'Every region short, steady: throughput vs success rate', font: { size: 16 } },
+          xaxis: { title: 'Success rate (%)', range: [50, 64] },
+          yaxis: {
+            title: THR_TITLE, type: 'log',
+            range: [Math.log10(yMin), Math.log10(yMax)],
+            tickvals: [2, 3, 4, 5, 6, 8, 10, 12], ticktext: ['2', '3', '4', '5', '6', '8', '10', '12'],
+          },
+          shapes: [{ type: 'line', x0: 60, x1: 60, y0: 0, y1: 1, yref: 'paper',
+                     line: { color: 'rgba(90,90,90,0.55)', width: 2, dash: 'dash' } }],
+          annotations: [
+            { x: 60, y: 1, yref: 'paper', xanchor: 'left', yanchor: 'top', showarrow: false,
+              text: ' Quota limit: 60% (3.6 of 6 a second)', font: { size: 12, color: 'rgba(70,70,70,0.9)' } },
+          ],
+          legend: { orientation: 'h', yanchor: 'top', y: -0.2, x: 0 },
+          margin: { l: 64, r: 24, t: 64, b: 130 },
+        },
+      };
+    }
+
+    function healthyView() {
+      const yMin = 0.5, yMax = 2;
+      return {
+        traces: [
+          ...isoTraces(levels([0.5, 0.75, 1, 1.5]), yMax, 60, yMin),
+          ...steadyTraces('healthy', 'success_rate_pct', 0, 'throughput_rps'),
+        ],
+        layout: {
+          title: { text: 'Nothing wrong: throughput vs success rate', font: { size: 16 } },
+          xaxis: { title: 'Success rate (%)', range: [50, 104] },
+          yaxis: {
+            title: THR_TITLE, type: 'log',
+            range: [Math.log10(yMin), Math.log10(yMax)],
+            tickvals: [0.5, 0.75, 1, 1.5, 2], ticktext: ['0.5', '0.75', '1', '1.5', '2'],
+          },
+          legend: { orientation: 'h', yanchor: 'top', y: -0.2, x: 0 },
+          margin: { l: 64, r: 24, t: 64, b: 110 },
+        },
+      };
+    }
+
+    // ---------- Region speed: median against p95, one dot per run ----------
+    const regionColour = { 'UK South': '#2a9d8f', 'Sweden Central': '#e09f3e', 'West Europe': '#bc4749' };
+    const condSymbol = { A: 'diamond', B: 'square', C: 'circle' };
+    const condLabel = {
+      A: 'Direct, all regions together',
+      B: 'Direct, one region at a time',
+      C: 'Through the gateway, pinned to one region',
+    };
+
+    function speedView() {
+      const traces = Object.keys(regionColour).map((region) => {
+        const key = 'region:' + region;
+        const mine = DATA.region_speed.filter((p) => p.region === region && !hidden.has('cond:' + p.condition));
+        return {
+          type: 'scatter', mode: 'markers', name: region, meta: { key },
+          visible: hidden.has(key) ? 'legendonly' : true,
+          x: mine.map((p) => p.median_ms),
+          y: mine.map((p) => p.p95_ms),
+          marker: {
+            size: 13, color: regionColour[region],
+            symbol: mine.map((p) => condSymbol[p.condition]),
+            line: { width: 1, color: '#fff' },
+          },
+          text: mine.map((p) => '<b>' + region + '</b><br>' + condLabel[p.condition] + '<br>' + p.run_id +
+            '<br>median ' + ms(p.median_ms) + ', p95 ' + ms(p.p95_ms) + '<br>' + p.samples + ' answers' +
+            '<extra></extra>'),
+          hovertemplate: '%{text}',
+          hoverlabel: { align: 'left' },
+        };
+      });
+      return {
+        traces: [
+          ...traces,
+          dummy('Through the gateway', 'circle', false, 'cond:C'),
+          dummy('Direct, all regions together', 'diamond', false, 'cond:A'),
+          dummy('Direct, one region at a time', 'square', false, 'cond:B'),
+        ],
+        layout: {
+          title: { text: 'Region speed: median vs p95 answer time', font: { size: 16 } },
+          xaxis: { title: 'Median answer time (ms)', range: [200, 850] },
+          yaxis: { title: 'p95 answer time (ms)', range: [300, 1350] },
+          annotations: [{ x: 200, y: 300, xanchor: 'left', yanchor: 'bottom', showarrow: false,
+                          text: 'Best: bottom left', font: { size: 12, color: 'rgba(70,70,70,0.9)' } }],
+          legend: { orientation: 'h', yanchor: 'top', y: -0.2, x: 0 },
+          margin: { l: 64, r: 24, t: 64, b: 130 },
+        },
+      };
+    }
+
+    const VIEWS = { bursts: burstView, main: mainView, steady_every: everyView, healthy: healthyView, speed: speedView };
+
+    function render(first) {
+      const el = document.getElementById('chart');
+      const w = Math.max(320, el.clientWidth || 900);
+      const v = (VIEWS[VIEW] || burstView)();
+      const layout = { hovermode: 'closest', width: w, height: 640, ...v.layout };
+      const config = { responsive: false, displayModeBar: true, staticPlot: false };
+      if (first) Plotly.newPlot(el, v.traces, layout, config);
+      else Plotly.react(el, v.traces, layout, config);
+      return el;
+    }
+
+    function draw() {
+      if (typeof Plotly === 'undefined') {
+        document.getElementById('chart').innerHTML =
+          '<p class="err">Plotly failed to load (needs network). Use quarto preview or a local server.</p>';
+        return;
+      }
+      const el = render(true);
+      // Legend entries with a key filter the points; others keep Plotly's default behaviour.
+      el.on('plotly_legendclick', (ev) => {
+        const key = ev.data[ev.curveNumber].meta && ev.data[ev.curveNumber].meta.key;
+        if (!key) return true;
+        if (hidden.has(key)) hidden.delete(key); else hidden.add(key);
+        render(false);
+        return false;
+      });
+      el.on('plotly_legenddoubleclick', (ev) => {
+        const key = ev.data[ev.curveNumber].meta && ev.data[ev.curveNumber].meta.key;
+        if (!key) return true;
+        // Double-click shows everything again.
+        hidden.clear();
+        render(false);
+        return false;
+      });
     }
 
     if (document.readyState === 'loading') {

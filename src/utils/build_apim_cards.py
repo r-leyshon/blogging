@@ -9,7 +9,8 @@ Inputs
 
 Outputs
   * www/24-apim-load-balance-perf/runs.json     (the only committed copy of the data)
-  * www/24-apim-load-balance-perf/scatter.html  (refreshes the embedded DATA)
+  * www/24-apim-load-balance-perf/scatter.html  (refreshes the embedded DATA: bursts, steady runs,
+                                                  region speed; page shows one view via ?view=)
   * blogs/includes/24-runs-*.html               (one card set per tab)
 
 Validity rule for the matched pairs (set in the experiment repo before the runs): a run is
@@ -328,6 +329,52 @@ def azure_monitor_summary() -> dict:
     return out
 
 
+REGION_ID = re.compile(r"^rl([ABC])(?:_([a-z]+))?_r(\d+)(?:_x(\d+))?$")
+REGION_NAMES = {"uksouth": "UK South", "westeurope": "West Europe", "swedencentral": "Sweden Central"}
+REGION_CONDITIONS = {"A": "Direct, all regions together", "B": "Direct, one region at a time",
+                     "C": "Through the gateway, pinned to one region"}
+SPEED_PLANNED_S, SPEED_WALL_SLACK_S, SPEED_MIN_SAMPLES = 640, 30, 295
+
+
+def region_speed() -> list[dict]:
+    """Per-run, per-region latency from the speed tests (rl* runs). Valid runs only.
+
+    Rule (fixed before the runs): discard a run with dropped iterations, a wall time more than 30 s
+    over plan, any non-200 response, fewer than 295 measured samples for a region, or (gateway
+    runs) an Azure Monitor pin check that failed.
+    """
+    out = []
+    for p in sorted(RESULTS.glob("rl*.json")):
+        if p.name.endswith((".meta.json", ".azmon.json", ".config.json")):
+            continue
+        mt = REGION_ID.match(p.stem)
+        if not mt:
+            continue
+        j = json.loads(p.read_text())
+        m = j["metrics"]
+        wall = j["state"]["testRunDurationMs"] / 1000
+        dropped = int(_vals(m, "dropped_iterations").get("count", 0))
+        rows = []
+        bad = dropped > 0 or wall > SPEED_PLANNED_S + SPEED_WALL_SLACK_S
+        for key in REGION_NAMES:
+            t = _vals(m, f"latency_{key}")
+            if not t.get("count"):
+                continue
+            if int(_vals(m, f"non200_{key}").get("count", 0)) or t["count"] < SPEED_MIN_SAMPLES:
+                bad = True
+            rows.append((key, t))
+        az = p.with_suffix(".azmon.json")
+        if az.exists() and not json.loads(az.read_text()).get("ok", False):
+            bad = True
+        if bad:
+            continue
+        for key, t in rows:
+            out.append({"run_id": p.stem, "condition": mt.group(1), "region": REGION_NAMES[key],
+                        "samples": int(t["count"]), "median_ms": round(t["p(50)"], 1),
+                        "p95_ms": round(t["p(95)"], 1)})
+    return out
+
+
 def ingest(path: Path) -> dict:
     old = json.loads(path.read_text()) if path.exists() else {}
     runs = []
@@ -354,6 +401,7 @@ def ingest(path: Path) -> dict:
                          "(the laptop slept) or dropped iterations.",
         "source": old.get("source", "https://github.com/r-leyshon/azure-load-balance-perf"),
         "azure_monitor": azure_monitor_summary(),
+        "region_speed": region_speed(),
         "runs": runs,
     }
 
@@ -481,6 +529,44 @@ def grid(note: str, cards: list[str]) -> str:
     return f'<p class="tab-note">{html.escape(note)}</p>\n<div class="exp-grid">\n' + "\n".join(cards) + "\n</div>\n"
 
 
+# Chart series for the steady-rate runs: arm -> (series name, colour). Symbol is set by side.
+STEADY_RATE = {PRIMARY: 2, FALLBACKS: 3, EVERYWHERE: 6, HEALTHY: 1}
+SERIES_NOTHING = ("Nothing: no retry, no sin bin", "#bc4749")
+SERIES_RETRY = ("Retry only", "#e09f3e")
+SERIES_FIRST = ("UK South first, nothing remembered", "#8e7dbe")
+SERIES_BIN = ("Sin bin", "#2a9d8f")
+STEADY_SERIES = {
+    "a_reference": SERIES_NOTHING, "a_gw_cb5xx": SERIES_NOTHING,
+    "a_gw_retry": SERIES_RETRY, "a_gw_retry0": SERIES_RETRY, "a_cl_weighted": SERIES_RETRY,
+    "a_cl_seq": SERIES_FIRST, "b_cl_seq": SERIES_FIRST,
+    "d_gw_priority": ("Gateway: priority list", "#264653"),
+    "d_gw_cb1": ("Gateway: breaker, even split", "#2a9d8f"),
+    "d_cl_seq_mem": ("Client: UK South first, cool-down", "#e9a23b"),
+    "d_cl_weighted_mem": ("Client: even split, cool-down", "#e76f51"),
+    "c_gw": ("Through the gateway", "#6a994e"),
+    "c_cl": ("Direct to the regions", "#5c6b73"),
+}
+STEADY_VIEW = {PRIMARY: "main", FALLBACKS: "main", EVERYWHERE: "steady_every", HEALTHY: "healthy"}
+
+
+def steady_points(runs: list[dict]) -> list[dict]:
+    out = []
+    for r in runs:
+        if r["regime"] != "matched" or not r["valid"] or not r["tts_p95_ms"]:
+            continue
+        arm = MATCHED[r["arm"]]
+        name, colour = STEADY_SERIES.get(r["arm"], SERIES_BIN)
+        out.append({
+            "run_id": r["run_id"], "view": STEADY_VIEW[r["group"]], "title": arm["title"], "side": arm["side"],
+            "series": name, "colour": colour, "rate": STEADY_RATE[r["group"]],
+            "successes": r["successes"], "iterations": r["iterations"], "success_rate_pct": r["success_rate_pct"],
+            "median_ms": r["tts_p50_ms"], "p95_ms": r["tts_p95_ms"],
+            "throughput_rps": r["throughput_rps"], "goodput_rps": r["goodput_rps"],
+            "calls_per_request": round(r["calls"] / r["iterations"], 2) if arm["side"] == "client" and r["calls"] else None,
+        })
+    return out
+
+
 def sort_key(r: dict):
     return (-r["success_rate_pct"], -r["successes"], -r["goodput_rps"])
 
@@ -531,8 +617,9 @@ def main() -> None:
         if f.name not in live:
             f.unlink()
 
-    # Chart data: bursts only (steady-rate runs are not comparable on goodput).
-    chart = {**{k: v for k, v in data.items() if k not in ("runs", "azure_monitor")}, "runs": [
+    # Chart data: bursts (throughput against success), steady-rate runs and the region speed tests.
+    chart = {**{k: v for k, v in data.items() if k not in ("runs", "azure_monitor", "region_speed")},
+             "steady": steady_points(runs), "region_speed": data.get("region_speed", []), "runs": [
         {k: r[k] for k in ("run_id", "group", "quota_tpm", "iterations", "successes", "success_rate_pct",
                            "duration_s", "throughput_rps", "goodput_rps", "label", "description", "fast_refusals")}
         for r in sorted(burst, key=lambda r: -r["success_rate_pct"])

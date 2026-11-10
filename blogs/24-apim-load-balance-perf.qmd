@@ -425,23 +425,56 @@ A gateway that refuses everything instantly has high throughput and zero goodput
 
 ## What happened
 
-### 1. Every region short
+Each dot below is one run. Pick a situation to see its runs and what they showed.
 
-Nothing helped. In 200-request bursts, nearly every setup answered about 17%. A circuit breaker on an even split made it worse (4.5%). Only a client that waited as long as `Retry-After` asked got nearly everything through (99.5%). That took about 30 seconds per request.
+::: {.panel-tabset}
+
+### Every region short
+
+**Bursts.** Short, sharp tests. 200 requests were fired as fast as possible at three small quotas (10,000 tokens a minute each), so every region ran out within seconds. The question was whether any setting helps when demand beats all the quota at once. Gateway setups, direct calls and client retries all took part.
 
 ```{=html}
 <iframe
   class="shaded_box"
-  title="Interactive scatter of the APIM burst experiments"
-  src="/./www/24-apim-load-balance-perf/scatter.html"
+  title="Interactive scatter of the 200-request burst runs"
+  src="/./www/24-apim-load-balance-perf/scatter.html?view=bursts"
   loading="lazy"
   referrerpolicy="no-referrer"
   style="display:block;width:100%;max-width:960px;height:720px;margin:0 auto;border:none;overflow:hidden;">
 </iframe>
-<p class="rp-fig" style="text-align:center;margin-top:.35rem;color:#52606d;">goodput = throughput × success rate</p>
 ```
 
-### 2. Main region short
+**Steady load.** The same situation with a realistic load. Requests arrived at a steady 6 a second for five minutes against bigger quotas (60,000 tokens a minute each). In practice each region answered about 72 requests a minute, so together the three could serve 3.6 of the 6 requests a second. That caps any setup at 60% answered. Each gateway setup was paired with a client built to do the same job. The question was how close to that cap each one could get.
+
+```{=html}
+<iframe
+  class="shaded_box"
+  title="Interactive scatter of the steady runs when every region was short"
+  src="/./www/24-apim-load-balance-perf/scatter.html?view=steady_every"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  style="display:block;width:100%;max-width:960px;height:720px;margin:0 auto;border:none;overflow:hidden;">
+</iframe>
+```
+
+Nothing helped. In 200-request bursts, nearly every setup answered about 17%. A circuit breaker on an even split made it worse (4.5%). Only a client that waited as long as `Retry-After` asked got nearly everything through (99.5%). That took about 30 seconds per request.
+
+Under steady load every setup answered 55-60%, at or close to the 60% cap, so there was little left for any setup to win.
+
+### Main region short
+
+One region overloaded, the others with room to spare. UK South was sent 90% of the traffic, more than its quota allowed, and the other two regions 5% each. Requests arrived at a steady 2 a second (filled dots) or 3 a second (hollow dots), when the fallbacks were busy too, for five minutes. Each gateway setup was paired with a client built to do the same job. The question was which setups steer calls to the regions with room. Dots at 100% are nudged sideways so they do not hide each other.
+
+```{=html}
+<iframe
+  class="shaded_box"
+  title="Interactive scatter of the steady runs when the main region was short"
+  src="/./www/24-apim-load-balance-perf/scatter.html?view=main"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  style="display:block;width:100%;max-width:960px;height:720px;margin:0 auto;border:none;overflow:hidden;">
+</iframe>
+```
 
 Here the setup mattered. UK South got 90% of the traffic, more than it could serve. The other two regions sat nearly idle.
 
@@ -462,13 +495,37 @@ Here the setup mattered. UK South got 90% of the traffic, more than it could ser
 
 Raising the load did not change this.
 
-### 3. Nothing wrong
+### Nothing wrong
 
-Both sides answered everything. The median answer took 372 ms through the gateway and 396 ms direct. The p95 was 710 ms against 593 ms. The gateway's cost is in the slow tail. The next section looks at that more closely.
+What a gateway costs when nothing is wrong. Requests arrived at a steady 1 a second for five minutes, split evenly across three regions with quota to spare, so nothing was ever refused. There was nothing to recover from, so any difference between the gateway and direct calls is the gateway's own overhead. Hover over a dot for its answer times.
 
-### 4. How fast is each region?
+```{=html}
+<iframe
+  class="shaded_box"
+  title="Interactive scatter of the steady runs when nothing was wrong"
+  src="/./www/24-apim-load-balance-perf/scatter.html?view=healthy"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  style="display:block;width:100%;max-width:960px;height:720px;margin:0 auto;border:none;overflow:hidden;">
+</iframe>
+```
 
-A separate set of tests measured speed alone. Quota was plentiful, each request got one attempt, and there was no retry, no sin bin and no cool-down. Calls went straight to each region, then through the gateway pinned to one region at a time.
+Both sides answered everything. The median answer took 372 ms through the gateway and 396 ms direct. The p95 was 710 ms against 593 ms. The gateway's cost is in the slow tail. The next tab looks at that more closely.
+
+### How fast is each region?
+
+A separate set of tests that measured speed alone. Quota was plentiful, each request got one attempt, and there was no retry, sin bin or cool-down. Three kinds of run were compared, shown as shapes. **Through the gateway** (circles) pinned the gateway to one region at a time. **Direct, all regions together** (diamonds) sent calls straight to the three regions in one run, alternating between them. **Direct, one region at a time** (squares) did the same one region per run, so the regions were never tested together. The question was how fast each region is from a UK laptop, and what the gateway adds.
+
+```{=html}
+<iframe
+  class="shaded_box"
+  title="Interactive scatter of the region speed tests"
+  src="/./www/24-apim-load-balance-perf/scatter.html?view=speed"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  style="display:block;width:100%;max-width:960px;height:720px;margin:0 auto;border:none;overflow:hidden;">
+</iframe>
+```
 
 | Region | Direct: median | Direct: p95 | Via gateway: median | Via gateway: p95 |
 |---|---:|---:|---:|---:|
@@ -482,6 +539,8 @@ A separate set of tests measured speed alone. Quota was plentiful, each request 
 - **It did raise the p95.** By 250-360 ms in every region. This time there was no retry, no breaker and no quota pressure, so those are not the cause. The extra hop is still the best guess. It is a guess.
 
 All of this was measured from one laptop in the UK on one day. A caller elsewhere could see a different order.
+
+:::
 
 ## What to build
 
@@ -653,12 +712,12 @@ Median and p95 answer times, in milliseconds. About 300 answers per region per r
 
 | Test | Region | Runs | Median | p95 |
 |---|---|---:|---|---|
-| Direct, regions mixed in one run | UK South | 3 | 297 (296-306) | 434 (428-442) |
-| Direct, regions mixed in one run | Sweden Central | 3 | 365 (361-372) | 675 (656-749) |
-| Direct, regions mixed in one run | West Europe | 3 | 481 (450-764) | 982 (816-1,212) |
-| Direct, one region per run | UK South | 1 | 284 | 385 |
-| Direct, one region per run | Sweden Central | 1 | 364 | 749 |
-| Direct, one region per run | West Europe | 1 | 575 | 1,000 |
+| Direct, all regions together | UK South | 3 | 297 (296-306) | 434 (428-442) |
+| Direct, all regions together | Sweden Central | 3 | 365 (361-372) | 675 (656-749) |
+| Direct, all regions together | West Europe | 3 | 481 (450-764) | 982 (816-1,212) |
+| Direct, one region at a time | UK South | 1 | 284 | 385 |
+| Direct, one region at a time | Sweden Central | 1 | 364 | 749 |
+| Direct, one region at a time | West Europe | 1 | 575 | 1,000 |
 | Gateway pinned to one region | UK South | 3 | 299 (297-310) | 798 (729-874) |
 | Gateway pinned to one region | Sweden Central | 3 | 396 (383-402) | 929 (806-973) |
 | Gateway pinned to one region | West Europe | 3 | 473 (459-517) | 1,233 (1,063-1,286) |
