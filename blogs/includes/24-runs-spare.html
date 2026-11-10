@@ -1,0 +1,47 @@
+<p class="tab-note">200-request bursts, 60,000 TPM per region: six times the quota, so 200 requests fit inside one minute&#x27;s allowance. A gateway retry rule was set but never worked, so these are even-split and skewed controls. The control from the 10,000 TPM runs is pinned for contrast.</p>
+<div class="exp-grid">
+<article class="exp-card exp-ref" style="--edge:#1f7a8c">
+<h4>Control: even split, no policies<span class="ref-tag">Reference, 10,000 TPM</span></h4>
+<code class="run-id">baseline</code>
+<p>Equal weights across the three regions. No circuit breaker, no retry.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:17.5"></i></span><span class="v">17.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:16.4"></i></span><span class="v">39.0/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:19.8"></i></span><span class="v">6.83/s</span></div>
+</div>
+<div class="metas"><p class="meta">Completed <b>35</b> of 200 requests in 5.1 s &middot; 10,000 TPM per region</p></div>
+</article>
+<article class="exp-card" style="--edge:#8e7dbe">
+<h4>Even split, no breaker</h4>
+<code class="run-id">apim_retry_equal_r2</code>
+<p>The even-split control with six times the quota. 200 requests fit inside one minute&#x27;s quota. A gateway retry rule was set but never worked.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:96.5"></i></span><span class="v">96.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:15.0"></i></span><span class="v">35.8/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">34.5/s</span></div>
+</div>
+<div class="metas"><p class="meta">Completed <b>193</b> of 200 requests in 5.6 s &middot; 60,000 TPM per region</p></div>
+</article>
+<article class="exp-card" style="--edge:#8e7dbe">
+<h4>Skewed 90/5/5, no breaker</h4>
+<code class="run-id">asym_retry_no_cb_r2</code>
+<p>Skewed weights with the breaker off, at 60,000 TPM.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:95.0"></i></span><span class="v">95.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:11.4"></i></span><span class="v">27.1/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:74.5"></i></span><span class="v">25.7/s</span></div>
+</div>
+<div class="metas"><p class="meta">Completed <b>190</b> of 200 requests in 7.4 s &middot; 60,000 TPM per region</p></div>
+</article>
+<article class="exp-card" style="--edge:#8e7dbe">
+<h4>Even split, no breaker (repeat)</h4>
+<code class="run-id">optimal_equal_apim_r2</code>
+<p>The same configuration again, run on its own later.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:90.5"></i></span><span class="v">90.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:5.9"></i></span><span class="v">14.1/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:36.9"></i></span><span class="v">12.7/s</span></div>
+</div>
+<div class="metas"><p class="meta">Completed <b>181</b> of 200 requests in 14.2 s &middot; 60,000 TPM per region</p></div>
+</article>
+</div>

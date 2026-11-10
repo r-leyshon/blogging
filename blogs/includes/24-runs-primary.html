@@ -1,0 +1,124 @@
+<p class="tab-note">Steady 2 requests a second for five minutes at 60,000 TPM per region, with 90% of traffic aimed at UK South, which can only serve about two thirds of that. Cards with a coloured edge go through the gateway; grey-edged cards are a client calling the regions directly. Where a setup was repeated, the card shows the middle result of its valid runs.</p>
+<div class="exp-grid">
+<article class="exp-card exp-ref" style="--edge:#9c6644">
+<h4>Gateway: 90/5/5, nothing else<span class="ref-tag">Reference</span></h4>
+<code class="run-id">car_90_5_5, car_90_5_5_r2, car_90_5_5_r3</code>
+<p>No breaker and no retry. UK South is offered about 108 requests a minute against a ceiling near 72, and the other two regions are nearly idle.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:69.8"></i></span><span class="v">69.8%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:69.8"></i></span><span class="v">1.40/s</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs: 70.4%, 69.8%, 69.6%</p><p class="meta">Median answer 326 ms &middot; p95 856 ms</p></div>
+</article>
+<article class="exp-card" style="--edge:#9c6644">
+<h4>Gateway: priority list</h4>
+<code class="run-id">p6a_apim_priority (r1, r2, r5)</code>
+<p>UK South is first choice and the others are used only when it is out of the pool. Breaker trips after one failure.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">2.00/s</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 365 ms &middot; p95 882 ms</p><p class="meta">Azure Monitor, one isolated run: 1.01 model calls per request, 4 of them refused</p><p class="meta">2 more runs discarded (laptop slept)</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Client: 90/5/5, retry, 60 s cool-down</h4>
+<code class="run-id">p5a_direct_weighted_mem (r1, r2, r3, r4, r5), p6a_direct_weighted_mem (r1, r3, r4, r5)</code>
+<p>As above, but after a refusal that caller skips that region for 60 seconds.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">2.00/s</span></div>
+</div>
+<div class="metas"><p class="meta">9 runs: 100.0%, 100.0%, 100.0%, 100.0%, 100.0%, 100.0%, 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 367 ms &middot; p95 638 ms</p><p class="meta">Azure Monitor, one isolated run: 1.08 model calls per request, 45 of them refused</p><p class="meta">1 more run discarded (laptop slept)</p></div>
+</article>
+<article class="exp-card" style="--edge:#9c6644">
+<h4>Gateway: retry and breaker (trips after 1 failure)</h4>
+<code class="run-id">p6a_apim_retry_cb_trip1 (r1, r2, r3, r4, r5)</code>
+<p>The same, but UK South leaves the pool after its first refusal.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">2.00/s</span></div>
+</div>
+<div class="metas"><p class="meta">5 runs: 100.0%, 100.0%, 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 379 ms &middot; p95 888 ms</p><p class="meta">Azure Monitor, one isolated run: 1.01 model calls per request, 4 of them refused</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Client: UK South first, 60 s cool-down</h4>
+<code class="run-id">p5a_direct_seq_mem (r1, r2, r3, r4, r5), p6a_direct_seq_mem (r1, r4, r5)</code>
+<p>The client tries UK South, then the next region, and skips a region for 60 seconds after a refusal.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">2.00/s</span></div>
+</div>
+<div class="metas"><p class="meta">8 runs: 100.0%, 100.0%, 100.0%, 100.0%, 100.0%, 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 358 ms &middot; p95 708 ms</p><p class="meta">1.10 model calls per request</p><p class="meta">2 more runs discarded (laptop slept)</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Client: UK South first, no memory</h4>
+<code class="run-id">p5a_direct_seq (r4, r5)</code>
+<p>The client tries UK South, then the next region, with nothing remembered between requests.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">2.00/s</span></div>
+</div>
+<div class="metas"><p class="meta">2 runs: 100.0%, 100.0%</p><p class="meta">Median answer 362 ms &middot; p95 770 ms</p><p class="meta">1.40 model calls per request</p></div>
+</article>
+<article class="exp-card" style="--edge:#9c6644">
+<h4>Gateway: retry and breaker (trips after 3 failures)</h4>
+<code class="run-id">p6a_apim_retry_cb (r1, r3, r4, r5)</code>
+<p>UK South leaves the pool for 60 seconds after three refusals, so retries can only reach the other two regions.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.8"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+</div>
+<div class="metas"><p class="meta">4 runs: 100.0%, 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 385 ms &middot; p95 1,044 ms</p><p class="meta">Azure Monitor, one isolated run: 1.02 model calls per request, 12 of them refused</p><p class="meta">1 more run discarded (laptop slept)</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Client: 90/5/5, retry, no memory</h4>
+<code class="run-id">p5a_direct_weighted (r1, r2, r3, r4, r5), p6a_direct_weighted (r1, r3)</code>
+<p>No gateway. The client picks a region by weight and retries up to twice more, picking again each time.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:79.0"></i></span><span class="v">79.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:78.7"></i></span><span class="v">1.57/s</span></div>
+</div>
+<div class="metas"><p class="meta">7 runs: 81.9%, 80.5%, 79.7%, 79.0%, 78.5%, 78.4%, 77.9%</p><p class="meta">Median answer 428 ms &middot; p95 714 ms</p><p class="meta">1.93 model calls per request</p><p class="meta">1 more run discarded (laptop slept)</p></div>
+</article>
+<article class="exp-card" style="--edge:#9c6644">
+<h4>Gateway: retry only, no waiting</h4>
+<code class="run-id">p6a_apim_retry_no_cb_int0 (r2, r3)</code>
+<p>The same, with no pause between attempts.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:77.1"></i></span><span class="v">77.1%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.9"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:77.1"></i></span><span class="v">1.54/s</span></div>
+</div>
+<div class="metas"><p class="meta">2 runs: 79.2%, 75.0%</p><p class="meta">Median answer 382 ms &middot; p95 995 ms</p><p class="meta">1 more run discarded (laptop slept)</p></div>
+</article>
+<article class="exp-card" style="--edge:#9c6644">
+<h4>Gateway: retry only, no breaker</h4>
+<code class="run-id">p6a_apim_retry_no_cb (r1, r2, r3, r4, r5)</code>
+<p>The gateway retries a refused call up to twice more, waiting one second each time. Nothing is remembered, so each retry picks a region by weight again.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:76.7"></i></span><span class="v">76.7%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:99.4"></i></span><span class="v">1.99/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:76.3"></i></span><span class="v">1.53/s</span></div>
+</div>
+<div class="metas"><p class="meta">5 runs: 79.5%, 79.2%, 76.7%, 76.5%, 76.4%</p><p class="meta">Median answer 402 ms &middot; p95 2,635 ms</p><p class="meta">Azure Monitor, one isolated run: 1.94 model calls per request, 687 of them refused</p></div>
+</article>
+<article class="exp-card" style="--edge:#9c6644">
+<h4>Gateway: breaker on server errors only</h4>
+<code class="run-id">car_cb5xx_90_5_5</code>
+<p>The breaker ignores 429s, so running out of quota never removes UK South. No retry.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:69.9"></i></span><span class="v">69.9%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">2.00/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:70.0"></i></span><span class="v">1.40/s</span></div>
+</div>
+<div class="metas"><p class="meta">One run: 69.9%</p><p class="meta">Median answer 312 ms &middot; p95 539 ms</p></div>
+</article>
+</div>
