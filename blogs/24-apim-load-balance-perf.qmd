@@ -556,21 +556,24 @@ All of this was measured from one laptop in the UK on one day. A caller elsewher
 
 ## Should you stand up APIM? {#should-you-stand-up-apim}
 
-**What it will not do.** Create quota. Beat a good client on success or speed. Fix retries on its own.
+**If success rate matters more than speed, start with client rules.** Take a batch job such as transcription, where a few hundred milliseconds do not matter. The gateway's one measured cost, a slower p95, stops mattering. But it never won on success either: a client with a sin bin matched the gateway's success rate in every matched test. A gateway cannot create quota or fix retries on its own.
 
-**What it can give you.** These are the usual reasons. None were tested.
+**Client rules**
 
-- One place for credentials. Callers hold one gateway key, not a key per region.
-- One place to change routing. No client redeploys.
-- One place to log, cap and watch every call.
-- The same behaviour for every team and language.
+- **Pros:** nothing new to run, pay for or debug. No extra hop or shared point of failure. The best success result in the tests, including waiting out `Retry-After` when every region was short. Easy to change.
+- **Cons:** every caller has to implement it. Each caller learns about a failing region on its own, because the sin bin is per caller. Rules get copied per language or service and drift apart. There is no central view of refusals.
 
-**What it costs.** Another service to run and pay for. The p95 was 250-360 ms higher. New ways to fail (see Before you go live). A shared dependency for every caller.
+**A gateway (APIM)**
 
-**How to decide.**
+- **Pros:** one sin bin shared by every caller. Callers need no regional logic. One place for credentials, routing changes, logging and limits. The same behaviour for every team and language. None of these were tested.
+- **Cons:** another service to run and pay for. A p95 250-360 ms higher. New ways to fail (see Before you go live). A shared dependency for every caller. The tier tested, Developer, has no SLA.
 
-- **A few callers, one team, one language:** add the sin bin to the client. Skip the gateway.
-- **Many callers or teams, credentials you would rather not spread, or routing you must change fast:** a gateway is worth considering. Buy it for those reasons, not for speed.
+**For a use-case where success matters more than speed**
+
+1. A sin bin in the client: skip a region for 60 seconds after a 429.
+2. Regions ordered by speed from where you run.
+3. When every region is refusing, wait out `Retry-After` and retry. It is slow, but latency is not the goal.
+4. A clean way to handle "every region refusing", so the job is queued instead of failed.
 
 ## Before you go live
 
@@ -587,7 +590,9 @@ Checks for anyone running this in production.
 
 ## Limits
 
-- **Tiny calls.** Real prompts hit the token limit first.
+- **Tiny calls.** Every request was a short chat prompt with a one-word answer, and the request limit bit first. Transcription sends larger payloads, often limited by tokens or audio length, and every retry sends the audio again. Check where your real ceiling is.
+- **No queue.** A job queue with retry and backoff is probably the most robust design for batch work. It was not tested.
+- **Retry safety.** A refusal (429) is safe to retry. For a 5xx, check that a repeated request cannot be billed or applied twice.
 - **Developer tier.** One gateway unit, no SLA. Production tiers will differ. On multi-unit tiers each instance keeps its own [breaker state](https://learn.microsoft.com/en-us/azure/api-management/backends).
 - **Gateway and client were not identical.** The gateway paused one second between retries and the client none. The gateway shared its sin bin across all callers. The client kept one per simulated caller. The client ran from a laptop. The gateway sat in UK South.
 - **Few runs for some setups.** Ten runs were discarded when the laptop slept. Several setups have two or three valid runs. The cards list every one.
