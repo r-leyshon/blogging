@@ -1,9 +1,9 @@
 ---
-title: "Will an API Gateway Optimise Token Consumption at Scale?"
-subtitle: "Azure API Management in front of three AI model regions, tested when quota runs out"
+title: "Comparing Azure Foundry Load Balancing"
+subtitle: "Azure API Management versus client-side failover"
 author: "Rich Leyshon"
 date: "November 2 2026"
-description: "Is an API gateway better than client-side retry and failover when AI model quota runs out? The tests say no, and show what to build instead."
+description: "Is it better to load balance server or client side?"
 categories:
     - Explanation
     - Azure
@@ -111,34 +111,29 @@ resources:
 *For engineers who already retry and fail over between AI model regions in client code, and wonder if a gateway is worth it. No Azure experience needed.*
 
 ::: {.callout-note appearance="simple"}
-### TLDR
+### tl;dr
 
-**A gateway did not beat a well-built client.** Nothing in the tests showed APIM doing better. Success rates matched. Its p95 answer time was worse, by about a quarter of a second in a clean test.
+**A gateway did not beat a well-built client.** Nothing in the tests showed API Management (APIM) performing better. Success rates matched. APIM p95 answer time was worse, by about a quarter of a second in a clean test.
 
-**What mattered was a sin bin.** When a region refuses a call, it sits out for the next minute. Setups with a sin bin answered every request when one region ran short. Setups that only retried answered 77-79%. It works in the gateway or in the client.
+**What mattered was a sin bin.** When a region refuses a call,a circuit breaker makes it sit out for the next minute. Setups with a sin bin answered every request when one region ran short. 
 
-**When every region is out of quota, nothing helps.** Only more quota, or waiting, does.
+**When every region is out of quota, nothing helps.** Only more quota, or waiting for theresponse's `Retry-After` header was better for success rate.  
 
 **Regions differ in speed.** From a UK laptop, UK South answered in about 300 ms, Sweden Central in 365 and West Europe in 480, and West Europe was the least steady.
 
 **What to build:**
 
-1. **Add a sin bin.** In the client, a 60-second timeout for any region that returns a 429.
-2. **In a gateway, use a priority list** with the fastest region first, and a circuit breaker that counts 429s and trips on the first failure.
-3. **Handle the 503.** A breaker on 429 can empty the pool when every region is short.
-4. **Mind the retry pause.** A one-second pause pushed the p95 to 2.6 seconds.
-5. **Use `Retry-After` for batch work only.** It suits a nightly job, not a chat.
-6. **Do not cap requests below real demand.**
-7. **Buy quota before you tune routing.**
+1. **Add a sin bin.** In the client, a 60-second circuit breaker for a region that returns a 429.
+2. **Use a priority list** with the fastest region first.
 
-**Should you stand up APIM?** Do it for operations, not speed: one set of credentials, one place for rules and monitoring. Those benefits were not tested. With a few callers in one team, add the sin bin to the client and skip the gateway.
+**Should you stand up APIM?** Do it for operations, not speed: one set of credentials, one place for rules and monitoring. Those benefits were not tested. Goodput did not make the case for APIM.
 :::
 
 ## The problem
 
-AI model services ration access. Each model deployment has a quota, counted per minute. When it runs out, the service refuses the call with HTTP status 429 ("Too Many Requests").
+AI services ration tokens. Each model deployment has a quota, counted per minute. When it runs out, the service refuses the call with HTTP status 429 ("Too Many Requests").
 
-The usual fix is to deploy the same model in several regions and fall back between them. Most teams write that logic into the client, the code that makes the calls. The alternative is a **gateway**: a server between your callers and the models that applies rules to every call. Azure API Management (APIM) is Microsoft's gateway service.
+The usual fix is to deploy the same model in several regions and fall back between them. Most teams write that logic into the client. The alternative is a **gateway**: a server between your callers and the AI models that applies rules to every call. Azure API Management (APIM) is Microsoft's gateway service.
 
 A gateway is one more service to pay for, run and debug. Is it worth it? This article tests that.
 
@@ -160,7 +155,7 @@ A gateway is one more service to pay for, run and debug. Is it worth it? This ar
         <img src="/./www/24-apim-load-balance-perf/logos/apim.svg" alt="" width="36" height="36">
         <strong>Azure API Management</strong>
       </header>
-      <div class="rp-step"><strong>Inbound policy</strong><span>Admits the call and hands it to the pool. It can also cap how many calls one subscriber makes each minute; the cap was set far above the load, except in two burst runs.</span></div>
+      <div class="rp-step"><strong>Inbound policy</strong><span>Admits the call and hands it to the pool. It can also cap how many calls one subscriber makes each minute.</span></div>
       <div class="rp-step"><strong>Weighted backend pool</strong><span>Sends each call to a region in proportion to that region's weight.</span></div>
       <div class="rp-split">
         <div class="rp-step"><strong>Circuit breakers</strong><span>After repeated failures (5xx, and optionally 429), takes that backend out of the pool for 60 seconds: the gateway's sin bin.</span></div>
@@ -174,9 +169,9 @@ A gateway is one more service to pay for, run and debug. Is it worth it? This ar
         <strong>Azure AI Foundry</strong>
       </header>
       <div class="rp-regions">
-        <div class="rp-region"><div class="rp-copy"><strong>UK South</strong><span>10,000 or 60,000 TPM</span></div></div>
-        <div class="rp-region"><div class="rp-copy"><strong>West Europe</strong><span>10,000 or 60,000 TPM</span></div></div>
-        <div class="rp-region"><div class="rp-copy"><strong>Sweden Central</strong><span>10,000 or 60,000 TPM</span></div></div>
+        <div class="rp-region"><div class="rp-copy"><strong>UK South</strong></div></div>
+        <div class="rp-region"><div class="rp-copy"><strong>West Europe</strong></div></div>
+        <div class="rp-region"><div class="rp-copy"><strong>Sweden Central</strong></div></div>
       </div>
     </section>
   </div>
@@ -194,18 +189,17 @@ Callers send requests to the gateway. The gateway picks a region. If that region
 | **429 and `Retry-After`** | A 429 means "out of quota, try later". The reply often carries a `Retry-After` header: how many seconds to wait. A 5xx error means the service itself failed. |
 | **Pool, weights, priority** | The pool is the three regions behind one name. Weights set each region's share: 90/5/5 sends 90% to UK South. Priority ranks the regions: a lower-ranked region gets traffic only when the higher ones are out. |
 | **Retry** | Try a failed call again. The client can do it, or the gateway can. |
-| **Sin bin** | A region that just refused a call sits out for 60 seconds. This is the name used here for the idea. |
-| **Circuit breaker** | The gateway's sin bin. After a set number of failures, a region leaves the pool for 60 seconds. You choose which errors count. All callers share it. |
-| **Cool-down** | The client's sin bin: a timer that skips a region after it refuses a call. |
+| **Circuit breaker** | The **gateway's** sin bin. After a set number of failures, a region leaves the pool for 60 seconds. You choose which errors count. All callers share it. |
+| **Cool-down** | The **client's** sin bin: a timer that skips a region after it refuses a call. |
 
 ## What was tested
 
-Three Azure AI Foundry regions each got a small quota, so they ran out on demand: UK South, West Europe and Sweden Central. A load tool sent requests through the gateway, or straight to the regions. One setting changed at a time.
+Three Azure AI Foundry regions each got a small quota, so quota exhaustion could be reached easily: UK South, West Europe and Sweden Central. The K6 load tool sent requests through the gateway, or straight to the regions. One setting changed at a time.
 
-There were two stages:
+There were two stages of experiments:
 
-- **Bursts.** A quick look at what each setting does when every region runs out.
-- **Gateway against client.** The main test. Each gateway setup was paired with a client built to do the same job. Both got the same steady stream of requests and the same quota, in alternating five-minute runs. The plain baseline in the cards, called the control, splits traffic evenly (33/33/34) with no circuit breaker, no retry and no cap.
+- **Bursts.** A quick look at what each setting does when every region runs out of quota.
+- **Gateway against client.** The main test. Each gateway setup was paired with a client built to do the same job. Both got the same steady stream of requests and the same quota, in alternating five-minute runs.
 
 Three situations were tested:
 
@@ -215,22 +209,22 @@ Three situations were tested:
 | **Main region short** | One region overloaded, the others have room |
 | **Nothing wrong** | What the gateway costs when all is healthy |
 
-A rule was fixed before the main test. The gateway counts as better if it gets more than 2 points more success, or has a p95 answer time more than 50 ms faster. The rule was never met.
+A rule was fixed before the main test. The gateway counts as better if it gets more than 2 points more success, or has a p95 answer time more than 50 ms faster. In these experiments, the rule was never met.
 
 ### The ceiling
 
-Each deployment allowed 60 requests a minute. The test calls were tiny, so that limit bit before the token limit did. In practice a region answered about 72 a minute. A gateway can move requests between regions. It cannot raise that ceiling.
+Each deployment allowed 60 requests a minute (rpm). The test calls were tiny, so rpm limited rate before the token limit did. A gateway can move requests between regions but cannot raise that ceiling.
 
 ## How results are measured
 
 | Measure | Meaning |
 |---|---|
 | **Success rate** | Share of requests that got a valid answer |
-| **Time to answer** | The median (half of answers are faster) and the p95 (19 in 20 are faster; the slow tail) |
+| **Time to answer** | The median and p95 latencies in milliseconds |
 | **Throughput** | Requests handled per second |
 | **Goodput** | Answered requests per second (throughput × success rate) |
 
-Goodput catches a trick. A gateway that refuses everything instantly has high throughput and zero goodput. Watch the animation: 100 requests, 10 seconds, 90 answered.
+A gateway that refuses everything instantly has high throughput and zero goodput. Goodput is a better measure for meaningful work rate. The animation below visualises a goodput of 9 requests a second.
 
 ```{=html}
 <style>
@@ -433,11 +427,7 @@ Goodput catches a trick. A gateway that refuses everything instantly has high th
 
 ### 1. Every region short
 
-Nothing helped. In 200-request bursts, nearly every setup answered about 17%. A circuit breaker on an even split made it worse (4.5%): it removed each region in turn until none was left. Only a client that waited as long as `Retry-After` asked got nearly everything through (99.5%). That took about 30 seconds a request.
-
-Steady load told the same story. Every setup answered 56-60% of requests, close to the best possible, and none collapsed.
-
-Each dot below is one burst. Right is more answered. Higher is faster. Most land in the same cluster, whatever was configured.
+Nothing helped. In 200-request bursts, nearly every setup answered about 17%. A circuit breaker on an even split made it worse (4.5%). Only a client that waited as long as `Retry-After` asked got nearly everything through (99.5%). That took about 30 seconds per request.
 
 ```{=html}
 <iframe
