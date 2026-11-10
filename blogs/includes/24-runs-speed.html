@@ -1,0 +1,93 @@
+<p class="tab-note">Speed only, with no quota pressure: one request every 2 seconds per region for about 11 minutes, no retry, breaker or cool-down, and the first 20 answers per region ignored. A longer bar means a faster answer. A coloured edge is the gateway, pinned to one region; a grey edge is a direct call. Every valid run had no refusals or errors. Two runs that dropped a request were repeated, and Azure Monitor confirmed that every gateway call reached its pinned region.</p>
+<div class="exp-grid">
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, one region at a time: UK South</h4>
+<code class="run-id">rlB_uksouth (r1)</code>
+<p>No gateway. Each run called one region only, so the regions were never measured together.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">284 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">385 ms</span></div>
+</div>
+<div class="metas"><p class="meta">One run &middot; about 300 answers each</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, all regions together: UK South</h4>
+<code class="run-id">rlA (r1), rlA_r2_x2, rlA_r3_x2</code>
+<p>No gateway. One run called all three regions in turn, so the regions were measured side by side, at 0.5 requests a second each.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:95.8"></i></span><span class="v">297 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:88.5"></i></span><span class="v">434 ms</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs &middot; about 300 answers each</p><p class="meta">Across runs: median 296-306 ms &middot; p95 428-442 ms</p></div>
+</article>
+<article class="exp-card" style="--edge:#457b9d">
+<h4>Gateway: UK South</h4>
+<code class="run-id">rlC_uksouth (r1, r2, r3)</code>
+<p>Through the gateway, pinned to this one region. No retry and no breaker.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:95.1"></i></span><span class="v">299 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:48.2"></i></span><span class="v">798 ms</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs &middot; about 300 answers each</p><p class="meta">Across runs: median 297-310 ms &middot; p95 729-874 ms</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, one region at a time: Sweden Central</h4>
+<code class="run-id">rlB_swedencentral (r1)</code>
+<p>No gateway. Each run called one region only, so the regions were never measured together.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:78.0"></i></span><span class="v">364 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:51.3"></i></span><span class="v">749 ms</span></div>
+</div>
+<div class="metas"><p class="meta">One run &middot; about 300 answers each</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, all regions together: Sweden Central</h4>
+<code class="run-id">rlA (r1), rlA_r2_x2, rlA_r3_x2</code>
+<p>No gateway. One run called all three regions in turn, so the regions were measured side by side, at 0.5 requests a second each.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:77.8"></i></span><span class="v">365 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:57.0"></i></span><span class="v">675 ms</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs &middot; about 300 answers each</p><p class="meta">Across runs: median 361-372 ms &middot; p95 656-749 ms</p></div>
+</article>
+<article class="exp-card" style="--edge:#457b9d">
+<h4>Gateway: Sweden Central</h4>
+<code class="run-id">rlC_swedencentral (r1, r2, r3)</code>
+<p>Through the gateway, pinned to this one region. No retry and no breaker.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:71.7"></i></span><span class="v">396 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:41.4"></i></span><span class="v">929 ms</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs &middot; about 300 answers each</p><p class="meta">Across runs: median 383-402 ms &middot; p95 806-973 ms</p></div>
+</article>
+<article class="exp-card" style="--edge:#457b9d">
+<h4>Gateway: West Europe</h4>
+<code class="run-id">rlC_westeurope (r1, r2, r3)</code>
+<p>Through the gateway, pinned to this one region. No retry and no breaker.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:60.0"></i></span><span class="v">473 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:31.2"></i></span><span class="v">1,233 ms</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs &middot; about 300 answers each</p><p class="meta">Across runs: median 459-517 ms &middot; p95 1,062-1,286 ms</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, all regions together: West Europe</h4>
+<code class="run-id">rlA (r1), rlA_r2_x2, rlA_r3_x2</code>
+<p>No gateway. One run called all three regions in turn, so the regions were measured side by side, at 0.5 requests a second each.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:59.1"></i></span><span class="v">481 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:39.1"></i></span><span class="v">982 ms</span></div>
+</div>
+<div class="metas"><p class="meta">3 runs &middot; about 300 answers each</p><p class="meta">Across runs: median 450-764 ms &middot; p95 816-1,212 ms</p></div>
+</article>
+<article class="exp-card" style="--edge:#5c6b73">
+<h4>Direct, one region at a time: West Europe</h4>
+<code class="run-id">rlB_westeurope (r1)</code>
+<p>No gateway. Each run called one region only, so the regions were never measured together.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Median</span><span class="track"><i style="--pct:49.4"></i></span><span class="v">575 ms</span></div>
+<div class="mbar"><span class="k">p95</span><span class="track"><i style="--pct:38.5"></i></span><span class="v">1,000 ms</span></div>
+</div>
+<div class="metas"><p class="meta">One run &middot; about 300 answers each</p></div>
+</article>
+</div>

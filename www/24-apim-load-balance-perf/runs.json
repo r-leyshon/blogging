@@ -75,39 +75,39 @@
       "condition": "A",
       "region": "UK South",
       "samples": 301,
-      "median_ms": 296.6,
-      "p95_ms": 441.5
+      "median_ms": 296.61,
+      "p95_ms": 441.53
     },
     {
       "run_id": "rlA_r1",
       "condition": "A",
       "region": "West Europe",
       "samples": 300,
-      "median_ms": 764.2,
-      "p95_ms": 1211.8
+      "median_ms": 764.24,
+      "p95_ms": 1211.77
     },
     {
       "run_id": "rlA_r1",
       "condition": "A",
       "region": "Sweden Central",
       "samples": 300,
-      "median_ms": 372.1,
-      "p95_ms": 748.7
+      "median_ms": 372.08,
+      "p95_ms": 748.69
     },
     {
       "run_id": "rlA_r2_x2",
       "condition": "A",
       "region": "UK South",
       "samples": 300,
-      "median_ms": 306.0,
-      "p95_ms": 428.2
+      "median_ms": 306.04,
+      "p95_ms": 428.15
     },
     {
       "run_id": "rlA_r2_x2",
       "condition": "A",
       "region": "West Europe",
       "samples": 300,
-      "median_ms": 449.7,
+      "median_ms": 449.71,
       "p95_ms": 815.8
     },
     {
@@ -115,15 +115,15 @@
       "condition": "A",
       "region": "Sweden Central",
       "samples": 300,
-      "median_ms": 365.3,
-      "p95_ms": 675.2
+      "median_ms": 365.34,
+      "p95_ms": 675.15
     },
     {
       "run_id": "rlA_r3_x2",
       "condition": "A",
       "region": "UK South",
       "samples": 301,
-      "median_ms": 296.4,
+      "median_ms": 296.37,
       "p95_ms": 434.3
     },
     {
@@ -131,7 +131,7 @@
       "condition": "A",
       "region": "West Europe",
       "samples": 300,
-      "median_ms": 480.5,
+      "median_ms": 480.53,
       "p95_ms": 982.5
     },
     {
@@ -139,87 +139,87 @@
       "condition": "A",
       "region": "Sweden Central",
       "samples": 300,
-      "median_ms": 361.0,
-      "p95_ms": 655.5
+      "median_ms": 361.03,
+      "p95_ms": 655.54
     },
     {
       "run_id": "rlB_swedencentral_r1",
       "condition": "B",
       "region": "Sweden Central",
       "samples": 300,
-      "median_ms": 364.4,
-      "p95_ms": 749.1
+      "median_ms": 364.36,
+      "p95_ms": 749.11
     },
     {
       "run_id": "rlB_uksouth_r1",
       "condition": "B",
       "region": "UK South",
       "samples": 301,
-      "median_ms": 284.1,
-      "p95_ms": 384.5
+      "median_ms": 284.12,
+      "p95_ms": 384.54
     },
     {
       "run_id": "rlB_westeurope_r1",
       "condition": "B",
       "region": "West Europe",
       "samples": 301,
-      "median_ms": 574.8,
-      "p95_ms": 999.8
+      "median_ms": 574.83,
+      "p95_ms": 999.85
     },
     {
       "run_id": "rlC_swedencentral_r1",
       "condition": "C",
       "region": "Sweden Central",
       "samples": 301,
-      "median_ms": 401.8,
-      "p95_ms": 928.9
+      "median_ms": 401.84,
+      "p95_ms": 928.94
     },
     {
       "run_id": "rlC_swedencentral_r2",
       "condition": "C",
       "region": "Sweden Central",
       "samples": 300,
-      "median_ms": 383.4,
-      "p95_ms": 805.7
+      "median_ms": 383.38,
+      "p95_ms": 805.71
     },
     {
       "run_id": "rlC_swedencentral_r3",
       "condition": "C",
       "region": "Sweden Central",
       "samples": 301,
-      "median_ms": 396.0,
-      "p95_ms": 972.7
+      "median_ms": 396.05,
+      "p95_ms": 972.75
     },
     {
       "run_id": "rlC_uksouth_r1",
       "condition": "C",
       "region": "UK South",
       "samples": 301,
-      "median_ms": 296.9,
-      "p95_ms": 798.0
+      "median_ms": 296.93,
+      "p95_ms": 798.01
     },
     {
       "run_id": "rlC_uksouth_r2",
       "condition": "C",
       "region": "UK South",
       "samples": 301,
-      "median_ms": 309.5,
-      "p95_ms": 874.3
+      "median_ms": 309.52,
+      "p95_ms": 874.26
     },
     {
       "run_id": "rlC_uksouth_r3",
       "condition": "C",
       "region": "UK South",
       "samples": 301,
-      "median_ms": 298.8,
-      "p95_ms": 728.5
+      "median_ms": 298.76,
+      "p95_ms": 728.53
     },
     {
       "run_id": "rlC_westeurope_r1",
       "condition": "C",
       "region": "West Europe",
       "samples": 301,
-      "median_ms": 458.5,
+      "median_ms": 458.53,
       "p95_ms": 1062.5
     },
     {
@@ -227,7 +227,7 @@
       "condition": "C",
       "region": "West Europe",
       "samples": 301,
-      "median_ms": 473.2,
+      "median_ms": 473.16,
       "p95_ms": 1285.9
     },
     {
@@ -235,8 +235,8 @@
       "condition": "C",
       "region": "West Europe",
       "samples": 300,
-      "median_ms": 516.9,
-      "p95_ms": 1233.2
+      "median_ms": 516.86,
+      "p95_ms": 1233.25
     }
   ],
   "runs": [

@@ -4,72 +4,88 @@
 <h4>Control: even split, no policies<span class="ref-tag">Reference, 10,000 TPM</span></h4>
 <code class="run-id">baseline</code>
 <p>Equal weights across the three regions. No circuit breaker, no retry.</p>
+<div class="mbars">
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:17.5"></i></span><span class="v">17.5%</span></div>
 <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:16.4"></i></span><span class="v">39.0/s</span></div>
 <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:19.8"></i></span><span class="v">6.83/s</span></div>
-<p class="meta">Completed <b>35</b> of 200 requests in 5.1 s &middot; 10,000 TPM per region</p>
-</article>
-<article class="exp-card" style="--edge:#e09f3e">
-<h4>Client retry, wait for Retry-After</h4>
-<code class="run-id">retry_after_header</code>
-<p>The client sleeps for the Retry-After value Azure returns, usually the rest of the quota window.</p>
-<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:99.5"></i></span><span class="v">99.5%</span></div>
-<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.5"></i></span><span class="v">0.44/s</span></div>
-<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.3"></i></span><span class="v">0.44/s</span></div>
-<p class="meta">Completed <b>199</b> of 200 requests in 456.4 s &middot; 10,000 TPM per region</p>
-</article>
-<article class="exp-card" style="--edge:#e09f3e">
-<h4>Client retry, wait for Retry-After (repeat)</h4>
-<code class="run-id">optimal_equal_client</code>
-<p>A repeat of the same setup, run again under another name.</p>
-<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:99.0"></i></span><span class="v">99.0%</span></div>
-<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.5"></i></span><span class="v">0.47/s</span></div>
-<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.3"></i></span><span class="v">0.47/s</span></div>
-<p class="meta">Completed <b>198</b> of 200 requests in 426.2 s &middot; 10,000 TPM per region</p>
-</article>
-<article class="exp-card" style="--edge:#e09f3e">
-<h4>Breaker plus client Retry-After</h4>
-<code class="run-id">optimal_asym_client</code>
-<p>Skewed 90/5/5 weights and a breaker on 429 and 5xx, with the client sleeping for Retry-After.</p>
-<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:36.0"></i></span><span class="v">36.0%</span></div>
-<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.7"></i></span><span class="v">1.61/s</span></div>
-<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.7"></i></span><span class="v">0.58/s</span></div>
-<p class="meta">Completed <b>72</b> of 200 requests in 124.1 s &middot; 10,000 TPM per region</p>
+</div>
+<div class="metas"><p class="meta">Completed <b>35</b> of 200 requests in 5.1 s &middot; 10,000 TPM per region</p></div>
 </article>
 <article class="exp-card" style="--edge:#e09f3e">
 <h4>Client retry, immediately</h4>
 <code class="run-id">retry_immediate</code>
 <p>The client retries a 429 straight away, up to three times, against an equal-weight pool with no breaker.</p>
+<div class="mbars">
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:17.5"></i></span><span class="v">17.5%</span></div>
 <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:11.9"></i></span><span class="v">28.4/s</span></div>
 <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:14.4"></i></span><span class="v">4.98/s</span></div>
-<p class="meta">Completed <b>35</b> of 200 requests in 7.0 s &middot; 10,000 TPM per region</p>
+</div>
+<div class="metas"><p class="meta">Completed <b>35</b> of 200 requests in 7.0 s &middot; 10,000 TPM per region</p></div>
 </article>
 <article class="exp-card" style="--edge:#e09f3e">
 <h4>Client retry, exponential backoff</h4>
 <code class="run-id">retry_backoff</code>
 <p>Client retry with exponential backoff: 500 ms, then 1 s, then 2 s.</p>
+<div class="mbars">
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:13.0"></i></span><span class="v">13.0%</span></div>
 <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:2.1"></i></span><span class="v">4.98/s</span></div>
 <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.9"></i></span><span class="v">0.65/s</span></div>
-<p class="meta">Completed <b>26</b> of 200 requests in 40.2 s &middot; 10,000 TPM per region</p>
+</div>
+<div class="metas"><p class="meta">Completed <b>26</b> of 200 requests in 40.2 s &middot; 10,000 TPM per region</p></div>
 </article>
 <article class="exp-card" style="--edge:#e09f3e">
 <h4>Client retry, backoff with jitter</h4>
 <code class="run-id">retry_backoff_jitter</code>
 <p>Backoff plus jitter, so the virtual users do not all wake up on the same tick.</p>
+<div class="mbars">
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:13.0"></i></span><span class="v">13.0%</span></div>
 <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:2.0"></i></span><span class="v">4.79/s</span></div>
 <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.8"></i></span><span class="v">0.62/s</span></div>
-<p class="meta">Completed <b>26</b> of 200 requests in 41.8 s &middot; 10,000 TPM per region</p>
+</div>
+<div class="metas"><p class="meta">Completed <b>26</b> of 200 requests in 41.8 s &middot; 10,000 TPM per region</p></div>
 </article>
 <article class="exp-card" style="--edge:#e09f3e">
 <h4>Client retry, fixed 1 s pause</h4>
 <code class="run-id">retry_fixed_1s</code>
 <p>The same client retry, with a fixed one second pause between attempts.</p>
+<div class="mbars">
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:12.0"></i></span><span class="v">12.0%</span></div>
 <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:2.1"></i></span><span class="v">4.94/s</span></div>
 <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.7"></i></span><span class="v">0.59/s</span></div>
-<p class="meta">Completed <b>24</b> of 200 requests in 40.5 s &middot; 10,000 TPM per region</p>
+</div>
+<div class="metas"><p class="meta">Completed <b>24</b> of 200 requests in 40.5 s &middot; 10,000 TPM per region</p></div>
+</article>
+<article class="exp-card" style="--edge:#e09f3e">
+<h4>Breaker plus client Retry-After</h4>
+<code class="run-id">optimal_asym_client</code>
+<p>Skewed 90/5/5 weights and a breaker on 429 and 5xx, with the client sleeping for Retry-After.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:36.0"></i></span><span class="v">36.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.7"></i></span><span class="v">1.61/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.7"></i></span><span class="v">0.58/s</span></div>
+</div>
+<div class="metas"><p class="meta">Completed <b>72</b> of 200 requests in 124.1 s &middot; 10,000 TPM per region</p></div>
+</article>
+<article class="exp-card" style="--edge:#e09f3e">
+<h4>Client retry, wait for Retry-After (repeat)</h4>
+<code class="run-id">optimal_equal_client</code>
+<p>A repeat of the same setup, run again under another name.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:99.0"></i></span><span class="v">99.0%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.5"></i></span><span class="v">0.47/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.3"></i></span><span class="v">0.47/s</span></div>
+</div>
+<div class="metas"><p class="meta">Completed <b>198</b> of 200 requests in 426.2 s &middot; 10,000 TPM per region</p></div>
+</article>
+<article class="exp-card" style="--edge:#e09f3e">
+<h4>Client retry, wait for Retry-After</h4>
+<code class="run-id">retry_after_header</code>
+<p>The client sleeps for the Retry-After value Azure returns, usually the rest of the quota window.</p>
+<div class="mbars">
+<div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:99.5"></i></span><span class="v">99.5%</span></div>
+<div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:0.5"></i></span><span class="v">0.44/s</span></div>
+<div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:1.3"></i></span><span class="v">0.44/s</span></div>
+</div>
+<div class="metas"><p class="meta">Completed <b>199</b> of 200 requests in 456.4 s &middot; 10,000 TPM per region</p></div>
 </article>
 </div>

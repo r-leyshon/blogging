@@ -37,7 +37,9 @@ resources:
 .phase-legend { display: flex; flex-wrap: wrap; gap: .45rem 1rem; margin: .25rem 0 1.25rem; }
 .phase-legend span { display: inline-flex; align-items: center; gap: .4rem; }
 .swatch { width: .85rem; height: .85rem; border-radius: 2px; display: inline-block; }
-.exp-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; margin: .75rem 0 1.25rem; align-items: start; }
+.exp-grid { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: .75rem; row-gap: 0; margin: .75rem 0 1.25rem; align-items: stretch; }
+/* Each card spans five rows (title, run id, description, bars, notes) so the parts line up across a row. */
+.exp-grid .exp-card { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; margin-bottom: .75rem; }
 @media (min-width: 800px) { .exp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .exp-card { border: 1px solid rgba(127,127,127,.28); border-left: 4px solid var(--edge, rgba(127,127,127,.28)); border-radius: 6px; padding: .75rem .9rem; }
 .exp-card.exp-ref { background: rgba(127,127,127,.07); }
@@ -589,24 +591,14 @@ Checks for anyone running this in production.
 - **Developer tier.** One gateway unit, no SLA. Production tiers will differ. On multi-unit tiers each instance keeps its own [breaker state](https://learn.microsoft.com/en-us/azure/api-management/backends).
 - **Gateway and client were not identical.** The gateway paused one second between retries and the client none. The gateway shared its sin bin across all callers. The client kept one per simulated caller. The client ran from a laptop. The gateway sat in UK South.
 - **Few runs for some setups.** Ten runs were discarded when the laptop slept. Several setups have two or three valid runs. The cards list every one.
-- **The slow tail is unexplained.** The speed tests ruled out retry, breakers and quota. The extra hop is the best guess. It is a guess.
 - **Region speed came from one laptop in the UK, over one day.** West Europe moved a lot between runs. The one-region-at-a-time check has one run per region. For West Europe the gateway's slow-tail cost overlaps with the spread between direct runs, so it is less clear there than in UK South and Sweden Central.
 - **The bursts ran with a broken retry rule.** They show what weights and breakers do, not what a working retry does in a burst. The steady runs had working retry.
 - **The measured ceiling sat about 20% above the configured limit.** The reason is unknown.
 - **Success means a valid answer.** Answer quality was not judged.
 
-## What to test next {#what-to-test-next}
-
-- **The slow tail.** The speed tests already compared a bare gateway with direct calls. What is left is the cause. APIM's diagnostic logs split each request into total time and time waiting on the model. Then run the client from a machine in UK South, and repeat on a production tier.
-- **Region speed from elsewhere.** Repeat the speed tests from a machine in each region, and over several days.
-- **Real prompts.** Longer prompts would hit the token limit first.
-- **One shared client.** A single cool-down shared by all callers, as most services run.
-- **The operational case.** Count what a gateway saves: credential rotation, a routing change across several codebases.
-
-
 ## Appendix: all the runs {#all-the-runs}
 
-Every success-rate run, as a card. The speed tests follow the cards as a table. Each tab holds runs that share a quota and load, so compare cards within a tab. The first four tabs are the gateway-against-client tests: a coloured edge is the gateway and a grey edge is a client calling the regions directly. The last five are the 200-request bursts. A reference card is pinned on most tabs. Hover a numbered note to highlight that part of the card.
+Every run, as a card. Each tab holds runs that share a quota and load, so compare cards within a tab. Cards run from highest goodput to lowest, with any reference card first (the speed tab runs fastest to slowest). The first four tabs are the gateway-against-client tests: a coloured edge is the gateway and a grey edge is a client calling the regions directly. The fifth is the region speed tests, which measured answer time only. The last five are the 200-request bursts. A reference card is pinned on most tabs. Hover a numbered note to highlight that part of the card.
 
 ### Test setup
 
@@ -634,6 +626,7 @@ The Terraform, k6 scripts and results are in <a href="https://github.com/r-leysh
   <span><i class="swatch" style="background:#bc4749"></i> Fallbacks busy</span>
   <span><i class="swatch" style="background:#264653"></i> Every region short (steady)</span>
   <span><i class="swatch" style="background:#6a994e"></i> Nothing wrong</span>
+  <span><i class="swatch" style="background:#457b9d"></i> Region speed</span>
   <span><i class="swatch" style="background:#1f7a8c"></i> No retry</span>
   <span><i class="swatch" style="background:#5c6b73"></i> Direct (no gateway)</span>
   <span><i class="swatch" style="background:#e09f3e"></i> Client retry</span>
@@ -660,7 +653,7 @@ The Terraform, k6 scripts and results are in <a href="https://github.com/r-leysh
     <li data-part="1"><b>1</b><span>Plain-language name. A grey tag on some cards marks the reference pinned for comparison. The coloured edge matches the tab; on the matched-pair tabs a grey edge means a client with no gateway.</span></li>
     <li data-part="2"><b>2</b><span>The id used in the repo and on the chart.</span></li>
     <li data-part="3"><b>3</b><span>What this run changed.</span></li>
-    <li data-part="4"><b>4</b><span>Success, throughput and goodput. Bar length is this run against the best run in the tab, coloured red (low) through yellow to green (best).</span></li>
+    <li data-part="4"><b>4</b><span>Success, throughput and goodput. Bar length is this run against the best run in the tab, coloured red (low) through yellow to green (best). On the region speed tab the bars are median and p95 answer time instead, and a longer bar means a faster answer.</span></li>
     <li data-part="5"><b>5</b><span>The plain numbers behind the bars: completions out of requests, run length and quota. Gateway-against-client cards list each run's success rate and answer times instead.</span></li>
   </ol>
 </div>
@@ -684,6 +677,10 @@ The Terraform, k6 scripts and results are in <a href="https://github.com/r-leysh
 
 {{< include includes/24-runs-healthy.html >}}
 
+### Region speed
+
+{{< include includes/24-runs-speed.html >}}
+
 ### No retry
 
 {{< include includes/24-runs-none.html >}}
@@ -705,24 +702,6 @@ The Terraform, k6 scripts and results are in <a href="https://github.com/r-leysh
 {{< include includes/24-runs-spare.html >}}
 
 :::
-
-### Region speed runs
-
-Median and p95 answer times, in milliseconds. About 300 answers per region per run. Every valid run had zero refusals and zero errors. Ranges are across runs.
-
-| Test | Region | Runs | Median | p95 |
-|---|---|---:|---|---|
-| Direct, all regions together | UK South | 3 | 297 (296-306) | 434 (428-442) |
-| Direct, all regions together | Sweden Central | 3 | 365 (361-372) | 675 (656-749) |
-| Direct, all regions together | West Europe | 3 | 481 (450-764) | 982 (816-1,212) |
-| Direct, one region at a time | UK South | 1 | 284 | 385 |
-| Direct, one region at a time | Sweden Central | 1 | 364 | 749 |
-| Direct, one region at a time | West Europe | 1 | 575 | 1,000 |
-| Gateway pinned to one region | UK South | 3 | 299 (297-310) | 798 (729-874) |
-| Gateway pinned to one region | Sweden Central | 3 | 396 (383-402) | 929 (806-973) |
-| Gateway pinned to one region | West Europe | 3 | 473 (459-517) | 1,233 (1,063-1,286) |
-
-Two mixed-region runs were discarded and repeated because each dropped one request. The repeats were valid. For the gateway runs, Azure Monitor confirmed that every call reached only the pinned region. The rules for judging a difference were written down before the first run. The gateway's pinned set-up had no breaker and no retry, and the normal settings were restored and read back afterwards.
 
 ## Further reading
 

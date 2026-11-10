@@ -128,6 +128,7 @@ RUNS: dict[str, tuple[str, str, int, str, str]] = {
 GREY = "#5c6b73"
 PRIMARY, FALLBACKS, EVERYWHERE, HEALTHY = ("Primary region short", "Fallbacks busy",
                                            "Every region short (steady)", "Nothing wrong")
+SPEED = "Region speed"
 
 MATCHED: dict[str, dict] = {
     # ---- Primary region short: 2 requests a second, 90/5/5 -----------------------------
@@ -236,6 +237,12 @@ TABS = [
     (HEALTHY, "healthy", "#6a994e",
      "Steady 1 request a second for five minutes at 60,000 TPM per region, an even split and no failures. "
      "This measures what the gateway costs when nothing is wrong. The grey-edged card is the reference."),
+    (SPEED, "speed", "#457b9d",
+     "Speed only, with no quota pressure: one request every 2 seconds per region for about 11 minutes, no retry, "
+     "breaker or cool-down, and the first 20 answers per region ignored. A longer bar means a faster answer. "
+     "A coloured edge is the gateway, pinned to one region; a grey edge is a direct call. Every valid run had no refusals "
+     "or errors. Two runs that dropped a request were repeated, and Azure Monitor confirmed that every gateway call "
+     "reached its pinned region."),
     ("No retry", "none", "#1f7a8c",
      "200-request bursts, 10,000 TPM per region. With no retry, nothing gets past about 17%. "
      "A breaker or a request cap on its own makes it worse, and the busiest run completes nothing."),
@@ -370,8 +377,8 @@ def region_speed() -> list[dict]:
             continue
         for key, t in rows:
             out.append({"run_id": p.stem, "condition": mt.group(1), "region": REGION_NAMES[key],
-                        "samples": int(t["count"]), "median_ms": round(t["p(50)"], 1),
-                        "p95_ms": round(t["p(95)"], 1)})
+                        "samples": int(t["count"]), "median_ms": round(t["p(50)"], 2),
+                        "p95_ms": round(t["p(95)"], 2)})
     return out
 
 
@@ -442,8 +449,10 @@ def card(title: str, ident: str, description: str, bars: list[str], meta: list[s
             f'<h4>{html.escape(title)}{tag_html}{fast_html}</h4>',
             f'<code class="run-id">{ident}</code>',
             f'<p>{html.escape(description)}</p>',
+            '<div class="mbars">',
             *bars,
-            meta_html,
+            "</div>",
+            f'<div class="metas">{meta_html}</div>',
             "</article>",
         ]
     )
@@ -525,6 +534,50 @@ def matched_card(s: dict, tab_colour: str, maxima: dict, tag: str = "") -> str:
     return card(arm["title"], compact_ids(s["run_ids"]), arm["desc"], bars, meta, colour, tag)
 
 
+SPEED_DESC = {
+    "A": "No gateway. One run called all three regions in turn, so the regions were measured side by side, "
+         "at 0.5 requests a second each.",
+    "B": "No gateway. Each run called one region only, so the regions were never measured together.",
+    "C": "Through the gateway, pinned to this one region. No retry and no breaker.",
+}
+
+
+def ms(x: float) -> str:
+    """Whole milliseconds, thousands separated."""
+    return f"{x:,.0f}"
+
+
+def speed_cards(points: list[dict], colour: str) -> list[str]:
+    """One card per route and region, summarising that route's valid runs (median of the runs' medians)."""
+    groups: dict[tuple[str, str], list[dict]] = {}
+    for p in points:
+        groups.setdefault((p["condition"], p["region"]), []).append(p)
+    stats = []
+    for (cond, region), pts in groups.items():
+        meds, p95s = [p["median_ms"] for p in pts], [p["p95_ms"] for p in pts]
+        stats.append({"cond": cond, "region": region, "ids": [p["run_id"] for p in pts], "n": len(pts),
+                      "median": statistics.median(meds), "p95": statistics.median(p95s),
+                      "med_range": (min(meds), max(meds)), "p95_range": (min(p95s), max(p95s)),
+                      "samples": min(p["samples"] for p in pts)})
+    best_med = min(s["median"] for s in stats)
+    best_p95 = min(s["p95"] for s in stats)
+    cards = []
+    for s in sorted(stats, key=lambda s: (s["median"], s["p95"])):
+        cond = s["cond"]
+        label = {"A": "Direct, all regions together", "B": "Direct, one region at a time", "C": "Gateway"}[cond]
+        meta = [f'{str(s["n"]) + " runs" if s["n"] > 1 else "One run"} &middot; about {round(s["samples"], -1)} answers each']
+        if s["n"] > 1:
+            (m0, m1), (q0, q1) = s["med_range"], s["p95_range"]
+            meta.append(f'Across runs: median {ms(m0)}-{ms(m1)} ms &middot; p95 {ms(q0)}-{ms(q1)} ms')
+        bars = [
+            bar("Median", best_med / s["median"] * 100, f'{ms(s["median"])} ms'),
+            bar("p95", best_p95 / s["p95"] * 100, f'{ms(s["p95"])} ms'),
+        ]
+        edge = colour if cond == "C" else GREY
+        cards.append(card(f'{label}: {s["region"]}', compact_ids(s["ids"]), SPEED_DESC[cond], bars, meta, edge))
+    return cards
+
+
 def grid(note: str, cards: list[str]) -> str:
     return f'<p class="tab-note">{html.escape(note)}</p>\n<div class="exp-grid">\n' + "\n".join(cards) + "\n</div>\n"
 
@@ -568,7 +621,7 @@ def steady_points(runs: list[dict]) -> list[dict]:
 
 
 def sort_key(r: dict):
-    return (-r["success_rate_pct"], -r["successes"], -r["goodput_rps"])
+    return (-r["goodput_rps"], -r["success_rate_pct"])
 
 
 def main() -> None:
@@ -593,10 +646,12 @@ def main() -> None:
 
     for name, slug, colour, note in TABS:
         cards: list[str] = []
-        if any(a["tab"] == name for a in MATCHED.values()):
+        if name == SPEED:
+            cards = speed_cards(data.get("region_speed", []), colour)
+        elif any(a["tab"] == name for a in MATCHED.values()):
             members = [s for a, s in arms.items() if MATCHED[a]["tab"] == name]
             pin = MATCHED_PIN.get(name)
-            ordered = sorted(members, key=lambda s: (-s["median"], s["p95"] or 1e9))
+            ordered = sorted(members, key=lambda s: (-s["goodput"], -s["median"]))
             tab_max = {"throughput": max(s["throughput"] for s in members),
                        "goodput": max(s["goodput"] for s in members)}
             if pin:

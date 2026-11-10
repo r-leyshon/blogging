@@ -4,18 +4,22 @@
 <h4>Client: even split<span class="ref-tag">Reference</span></h4>
 <code class="run-id">p5c_direct_equal (r1, r2, r3)</code>
 <p>No gateway and no failures: the client splits calls evenly across the three regions.</p>
+<div class="mbars">
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
 <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">1.00/s</span></div>
 <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">1.00/s</span></div>
-<p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 396 ms &middot; p95 593 ms</p><p class="meta">1.00 model calls per request</p>
+</div>
+<div class="metas"><p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 396 ms &middot; p95 593 ms</p><p class="meta">1.00 model calls per request</p></div>
 </article>
 <article class="exp-card" style="--edge:#6a994e">
 <h4>Gateway: even split</h4>
 <code class="run-id">p5c_apim_baseline (r1, r2, r3)</code>
 <p>The same traffic through the gateway with equal weights and no breaker. Nothing is refused, so no recovery is needed.</p>
+<div class="mbars">
 <div class="mbar"><span class="k">Success</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">100.0%</span></div>
 <div class="mbar"><span class="k">Throughput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">1.00/s</span></div>
 <div class="mbar"><span class="k">Goodput</span><span class="track"><i style="--pct:100.0"></i></span><span class="v">1.00/s</span></div>
-<p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 372 ms &middot; p95 710 ms</p>
+</div>
+<div class="metas"><p class="meta">3 runs: 100.0%, 100.0%, 100.0%</p><p class="meta">Median answer 372 ms &middot; p95 710 ms</p></div>
 </article>
 </div>
